@@ -37,7 +37,7 @@ namespace Quantum.Kata.Measurements
                     // state = 1 true return
                     let state = RandomIntPow2(1);
 
-                    // do state prep: convert |0〉 to outcome with false return or to outcome with true return depending on state
+                    // do state prep: convert |0⟩ to outcome with false return or to outcome with true return depending on state
                     statePrep(qs[0], state);
         
                     // get the solution's answer and verify that it's a match
@@ -58,9 +58,9 @@ namespace Quantum.Kata.Measurements
     operation StatePrep_IsQubitOne (q : Qubit, state : Int) : () {
         body {
             if (state == 0) {
-                // convert |0〉 to |0〉
+                // convert |0⟩ to |0⟩
             } else {
-                // convert |0〉 to |1〉
+                // convert |0⟩ to |1⟩
                 X(q);
             }
         }
@@ -78,11 +78,11 @@ namespace Quantum.Kata.Measurements
     operation StatePrep_IsQubitPlus (q : Qubit, state : Int) : () {
         body {
             if (state == 0) {
-                // convert |0〉 to |-〉
+                // convert |0⟩ to |-⟩
                 X(q);
                 H(q);
             } else {
-                // convert |0〉 to |+〉
+                // convert |0⟩ to |+⟩
                 H(q);
             }
         }
@@ -97,16 +97,16 @@ namespace Quantum.Kata.Measurements
     }
 
     // ------------------------------------------------------
-    // |A〉 =   cos(alpha) * |0〉 + sin(alpha) * |1〉, 
-    // |B〉 = - sin(alpha) * |0〉 + cos(alpha) * |1〉.
+    // |A⟩ =   cos(alpha) * |0⟩ + sin(alpha) * |1⟩, 
+    // |B⟩ = - sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
     operation StatePrep_IsQubitA (alpha : Double, q : Qubit, state : Int) : () {
         body {
             if (state == 0) {
-                // convert |0〉 to |B〉
+                // convert |0⟩ to |B⟩
                 X(q);
                 Ry(2.0 * alpha, q);
             } else {
-                // convert |0〉 to |A〉
+                // convert |0⟩ to |A⟩
                 Ry(2.0 * alpha, q);
             }
         }
@@ -152,7 +152,7 @@ namespace Quantum.Kata.Measurements
                     // get a random integer to define the state of the qubits
                     let state = RandomInt(Nstate);
 
-                    // do state prep: convert |0...0〉 to outcome with return equal to state
+                    // do state prep: convert |0...0⟩ to outcome with return equal to state
                     statePrep(qs, state);
         
                     // get the solution's answer and verify that it's a match
@@ -173,7 +173,7 @@ namespace Quantum.Kata.Measurements
     operation StatePrep_ZeroZeroOrOneOne (qs : Qubit[], state : Int) : () {
         body {
             if (state == 1) {
-                // |11〉
+                // |11⟩
                 X(qs[0]);
                 X(qs[1]);
             }
@@ -190,11 +190,11 @@ namespace Quantum.Kata.Measurements
     operation StatePrep_BasisStateMeasurement (qs : Qubit[], state : Int) : () {
         body {
             if (state / 2 == 1) {
-                // |10〉 or |11〉
+                // |10⟩ or |11⟩
                 X(qs[0]);
             }
             if (state % 2 == 1) {
-                // |01〉 or |11〉
+                // |01⟩ or |11⟩
                 X(qs[1]);
             }
         }
@@ -259,12 +259,12 @@ namespace Quantum.Kata.Measurements
         {
             let N = Length(qs);
             if (N == 1) {
-                // base case of recursion: |1〉
+                // base case of recursion: |1⟩
                 X(qs[0]);
             } else {
-                // |W_N> = |0〉|W_(N-1)> + |1〉|0...0〉
-                // do a rotation on the first qubit to split it into |0〉 and |1〉 with proper weights
-                // |0〉 -> sqrt((N-1)/N) |0〉 + 1/sqrt(N) |1〉
+                // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
+                // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
+                // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
                 let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
                 Ry(2.0 * theta, qs[0]);
                 // do a zero-controlled W-state generation for qubits 1..N-1
@@ -329,15 +329,15 @@ namespace Quantum.Kata.Measurements
     }
 
     // ------------------------------------------------------
-    // 0 - |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2)
-    // 1 - |Φ⁻〉 = (|00〉 - |11〉) / sqrt(2)
-    // 2 - |Ψ⁺〉 = (|01〉 + |10〉) / sqrt(2)
-    // 3 - |Ψ⁻〉 = (|01〉 - |10〉) / sqrt(2)
+    // 0 - |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+    // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+    // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+    // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
     operation StatePrep_BellState (qs : Qubit[], state : Int) : () {
         body {
             H(qs[0]);
             CNOT(qs[0], qs[1]);
-            // now we have |00〉 + |11〉 - modify it based on state arg
+            // now we have |00⟩ + |11⟩ - modify it based on state arg
             if (state % 2 == 1) {
                 // negative phase
                 Z(qs[1]);
@@ -355,10 +355,10 @@ namespace Quantum.Kata.Measurements
     }
 
     // ------------------------------------------------------
-    // 0 - (|00〉 + |01〉 + |10〉 + |11〉) / 2
-    // 1 - (|00〉 - |01〉 + |10〉 - |11〉) / 2
-    // 2 - (|00〉 + |01〉 - |10〉 - |11〉) / 2
-    // 3 - (|00〉 - |01〉 - |10〉 + |11〉) / 2
+    // 0 - (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
+    // 1 - (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
+    // 2 - (|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
+    // 3 - (|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2
     operation StatePrep_TwoQubitState (qs : Qubit[], state : Int) : () {
         body {
             // start with state prep of basis vectors
@@ -369,10 +369,10 @@ namespace Quantum.Kata.Measurements
     }
     
     // ------------------------------------------------------
-    // 0 - ( |00〉 - |01〉 - |10〉 - |11〉) / 2
-    // 1 - (-|00〉 + |01〉 - |10〉 - |11〉) / 2
-    // 2 - (-|00〉 - |01〉 + |10〉 - |11〉) / 2
-    // 3 - (-|00〉 - |01〉 - |10〉 + |11〉) / 2
+    // 0 - ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
+    // 1 - (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
+    // 2 - (-|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
+    // 3 - (-|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2
     operation StatePrep_TwoQubitStatePartTwo (qs : Qubit[], state : Int) : () {
         body {
             // start with state prep of basis vectors
@@ -406,9 +406,9 @@ namespace Quantum.Kata.Measurements
     operation StatePrep_IsQubitZeroOrPlus (q : Qubit, state : Int) : () {
         body {
             if (state == 0) {
-                // convert |0〉 to |0〉
+                // convert |0⟩ to |0⟩
             } else {
-                // convert |0〉 to |+〉
+                // convert |0⟩ to |+⟩
                 H(q);
             }
         }
@@ -436,7 +436,7 @@ namespace Quantum.Kata.Measurements
                     // get a random integer to define the state of the qubits
                     let state = RandomInt(Nstate);
 
-                    // do state prep: convert |0〉 to outcome with return equal to state
+                    // do state prep: convert |0⟩ to outcome with return equal to state
                     statePrep(qs[0], state);
                     // get the solution's answer and verify that it's a match
                     let ans = testImpl(qs[0]);
@@ -472,7 +472,7 @@ namespace Quantum.Kata.Measurements
         {
             let nTotal = 10000;
             mutable nInconc = 0; // counts total inconclusive answers
-            mutable nConclOne = 0; // counts total conclusive |0〉 state identifications
+            mutable nConclOne = 0; // counts total conclusive |0⟩ state identifications
             mutable nConclPlus = 0; // counts total conclusive |+> state identifications
 
             using (qs = Qubit[Nqubit]) 
@@ -481,7 +481,7 @@ namespace Quantum.Kata.Measurements
                 {
                     // get a random integer to define the state of the qubits
                     let state = RandomInt(Nstate);
-                    // do state prep: convert |0〉 to outcome with return equal to state
+                    // do state prep: convert |0⟩ to outcome with return equal to state
                     statePrep(qs[0], state);
                     // get the solution's answer and verify that it's a match
                     let ans = testImpl(qs[0]);
@@ -511,7 +511,7 @@ namespace Quantum.Kata.Measurements
                 fail $"{nInconc} test runs out of {nTotal} returned inconclusive which does not meet the required threshold of at most {thresholdInconcl*100}%.";
             }
             if (ToDouble(nConclOne) < thresholdConcl * ToDouble(nTotal)) {
-                fail $"Only {nConclOne} test runs out of {nTotal} returned conclusive |0〉 which does not meet the required threshold of at least {thresholdConcl*100}%.";
+                fail $"Only {nConclOne} test runs out of {nTotal} returned conclusive |0⟩ which does not meet the required threshold of at least {thresholdConcl*100}%.";
             }
             if (ToDouble(nConclPlus) < thresholdConcl * ToDouble(nTotal)) {
                 fail $"Only {nConclPlus} test runs out of {nTotal} returned conclusive |+> which does not meet the required threshold of at least {thresholdConcl*100}%.";

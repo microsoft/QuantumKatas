@@ -84,13 +84,13 @@ namespace Quantum.Kata.Superposition
 
     // Task 5. All Bell states
     // Inputs:
-    //      1) two qubits in |00〉 state (stored in an array of length 2)
+    //      1) two qubits in |00⟩ state (stored in an array of length 2)
     //      2) an integer index
     // Goal: create one of the Bell states based on the value of index:
-    //       0: |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2)
-    //       1: |Φ⁻〉 = (|00〉 - |11〉) / sqrt(2)
-    //       2: |Ψ⁺〉 = (|01〉 + |10〉) / sqrt(2)
-    //       3: |Ψ⁻〉 = (|01〉 - |10〉) / sqrt(2)
+    //       0: |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+    //       1: |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+    //       2: |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+    //       3: |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
     operation AllBellStates (qs : Qubit[], index : Int) : ()
     {
         body

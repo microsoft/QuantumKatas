@@ -19,9 +19,9 @@ namespace Quantum.Kata.Measurements
     // Part I. Single-Qubit Measurements
     //////////////////////////////////////////////////////////////////
 
-    // Task 1.1. |0〉 or |1〉 ?
-    // Input: a qubit which is guaranteed to be in |0〉 or |1〉 state.
-    // Output: true if qubit was in |1〉 state, or false if it was in |0〉 state.
+    // Task 1.1. |0⟩ or |1⟩ ?
+    // Input: a qubit which is guaranteed to be in |0⟩ or |1⟩ state.
+    // Output: true if qubit was in |1⟩ state, or false if it was in |0⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitOne_Reference (q : Qubit) : Bool
     {
@@ -32,10 +32,10 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.2. |+〉 or |-〉 ?
-    // Input: a qubit which is guaranteed to be in |+〉 or |-〉 state
-    //        (|+〉 = (|0〉 + |1〉) / sqrt(2), |-〉 = (|0〉 - |1〉) / sqrt(2)).
-    // Output: true if qubit was in |+〉 state, or false if it was in |-〉 state.
+    // Task 1.2. |+⟩ or |-⟩ ?
+    // Input: a qubit which is guaranteed to be in |+⟩ or |-⟩ state
+    //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
+    // Output: true if qubit was in |+⟩ state, or false if it was in |-⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitPlus_Reference (q : Qubit) : Bool
     {
@@ -47,30 +47,30 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.3. |A〉 or |B〉 ?
+    // Task 1.3. |A⟩ or |B⟩ ?
     // Inputs:
     //      1) angle alpha, in radians, represented as Double
-    //      2) a qubit which is guaranteed to be in |A〉 or |B〉 state
-    //         |A〉 =   cos(alpha) * |0〉 + sin(alpha) * |1〉, 
-    //         |B〉 = - sin(alpha) * |0〉 + cos(alpha) * |1〉.
-    // Output: true if qubit was in |A〉 state, or false if it was in |B〉 state.
+    //      2) a qubit which is guaranteed to be in |A⟩ or |B⟩ state
+    //         |A⟩ =   cos(alpha) * |0⟩ + sin(alpha) * |1⟩, 
+    //         |B⟩ = - sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
+    // Output: true if qubit was in |A⟩ state, or false if it was in |B⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitA_Reference (alpha : Double, q : Qubit) : Bool
     {
         body
         {
-            // |0〉 is converted into |A〉 and |1〉 into |B〉 by Ry(2.0 * alpha)
-            // so |A〉 is converted into |0〉 by the opposite rotation
+            // |0⟩ is converted into |A⟩ and |1⟩ into |B⟩ by Ry(2.0 * alpha)
+            // so |A⟩ is converted into |0⟩ by the opposite rotation
             Ry(- 2.0 * alpha, q);
             let res = M(q);
             return res == Zero;
         }
     }
 
-    // Task 1.4. |00〉 or |11〉 ?
-    // Input: two qubits (stored in an array) which are guaranteed to be in |00〉 or |11〉 state.
-    // Output: 0 if qubits were in |00〉 state,
-    //         1 if they were in |11〉 state.
+    // Task 1.4. |00⟩ or |11⟩ ?
+    // Input: two qubits (stored in an array) which are guaranteed to be in |00⟩ or |11⟩ state.
+    // Output: 0 if qubits were in |00⟩ state,
+    //         1 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne_Reference (qs : Qubit[]) : Int
     {
@@ -88,11 +88,11 @@ namespace Quantum.Kata.Measurements
 
     // Task 1.5. Distinguish four basis states
     // Input: two qubits (stored in an array) which are guaranteed to be 
-    //        in one of the four basis states (|00〉, |01〉, |10〉 or |11〉).
-    // Output: 0 if qubits were in |00〉 state,
-    //         1 if they were in |01〉 state,
-    //         2 if they were in |10〉 state,
-    //         3 if they were in |11〉 state.
+    //        in one of the four basis states (|00⟩, |01⟩, |10⟩ or |11⟩).
+    // Output: 0 if qubits were in |00⟩ state,
+    //         1 if they were in |01⟩ state,
+    //         2 if they were in |10⟩ state,
+    //         3 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BasisStateMeasurement_Reference (qs : Qubit[]) : Int
     {
@@ -118,13 +118,13 @@ namespace Quantum.Kata.Measurements
     //      2) two bit string represented as Bool[]s.
     // Output: 0 if qubits were in the basis state described by the first bit string,
     //         1 if they were in the basis state described by the second bit string.
-    // Bit values false and true correspond to |0〉 and |1〉 states.
+    // Bit values false and true correspond to |0⟩ and |1⟩ states.
     // The state of the qubits at the end of the operation does not matter.
     // You are guaranteed that the both bit strings have the same length as the qubit array,
     // and that the bit strings will differ in at least one bit.
     // You can use exactly one measurement.
     // Example: for bit strings [false; true; false] and [false; false; true] 
-    //          return 0 corresponds to state |010〉, and return 1 corresponds to state |001〉.
+    //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
 
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int
     {
@@ -152,18 +152,18 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.7. |0...0〉 state or W state ?
+    // Task 1.7. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be 
-    //        either in |0...0〉 state
+    //        either in |0...0⟩ state
     //        or in W state (https://en.wikipedia.org/wiki/W_state).
-    // Output: 0 if qubits were in |0...0〉 state,
+    // Output: 0 if qubits were in |0...0⟩ state,
     //         1 if they were in W state.
     // The state of the qubits at the end of the operation does not matter.
     operation AllZerosOrWState_Reference (qs : Qubit[]) : Int
     {
         body
         {
-            // measure all qubits; if there is exactly one One, it's W state, if there are no Ones, it's |0...0〉
+            // measure all qubits; if there is exactly one One, it's W state, if there are no Ones, it's |0...0⟩
             // (and there should never be two or more Ones)
             mutable countOnes = 0;
             for (i in 0..Length(qs)-1) {
@@ -214,14 +214,14 @@ namespace Quantum.Kata.Measurements
 
     // Task 1.9. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
-    //         |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2)
-    //         |Φ⁻〉 = (|00〉 - |11〉) / sqrt(2)
-    //         |Ψ⁺〉 = (|01〉 + |10〉) / sqrt(2)
-    //         |Ψ⁻〉 = (|01〉 - |10〉) / sqrt(2)
-    // Output: 0 if qubits were in |Φ⁺〉 state,
-    //         1 if they were in |Φ⁻〉 state,
-    //         2 if they were in |Ψ⁺〉 state,
-    //         3 if they were in |Ψ⁻〉 state.
+    //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+    //         |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+    //         |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+    //         |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
+    // Output: 0 if qubits were in |Φ⁺⟩ state,
+    //         1 if they were in |Φ⁻⟩ state,
+    //         2 if they were in |Ψ⁺⟩ state,
+    //         3 if they were in |Ψ⁻⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BellState_Reference (qs : Qubit[]) : Int
     {
@@ -245,14 +245,14 @@ namespace Quantum.Kata.Measurements
 
     // Task 1.10*. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
-    //         |S0〉 = (|00〉 + |01〉 + |10〉 + |11〉) / 2
-    //         |S1〉 = (|00〉 - |01〉 + |10〉 - |11〉) / 2
-    //         |S2〉 = (|00〉 + |01〉 - |10〉 - |11〉) / 2
-    //         |S3〉 = (|00〉 - |01〉 - |10〉 + |11〉) / 2
-    // Output: 0 if qubits were in |S0〉 state,
-    //         1 if they were in |S1〉 state,
-    //         2 if they were in |S2〉 state,
-    //         3 if they were in |S3〉 state.
+    //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
+    //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
+    //         |S2⟩ = (|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
+    //         |S3⟩ = (|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2
+    // Output: 0 if qubits were in |S0⟩ state,
+    //         1 if they were in |S1⟩ state,
+    //         2 if they were in |S2⟩ state,
+    //         3 if they were in |S3⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation TwoQubitState_Reference (qs : Qubit[]) : Int
     {
@@ -269,14 +269,14 @@ namespace Quantum.Kata.Measurements
     
     // Task 1.11**. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
-    //         |S0〉 = ( |00〉 - |01〉 - |10〉 - |11〉) / 2
-    //         |S1〉 = (-|00〉 + |01〉 - |10〉 - |11〉) / 2
-    //         |S2〉 = (-|00〉 - |01〉 + |10〉 - |11〉) / 2
-    //         |S3〉 = (-|00〉 - |01〉 - |10〉 + |11〉) / 2
-    // Output: 0 if qubits were in |S0〉 state,
-    //         1 if they were in |S1〉 state,
-    //         2 if they were in |S2〉 state,
-    //         3 if they were in |S3〉 state.
+    //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
+    //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
+    //         |S2⟩ = (-|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
+    //         |S3⟩ = (-|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2
+    // Output: 0 if qubits were in |S0⟩ state,
+    //         1 if they were in |S1⟩ state,
+    //         2 if they were in |S2⟩ state,
+    //         3 if they were in |S3⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     
     // Helper function to implement diag(-1, 1, 1, 1)
@@ -296,7 +296,7 @@ namespace Quantum.Kata.Measurements
     {
         body
         {
-            // Observe that the unitary matrix A formed by the columns |S0〉, ..., |S3〉
+            // Observe that the unitary matrix A formed by the columns |S0⟩, ..., |S3⟩
             // is up to permutations matrices and diagonal +1/-1 matrices equal to the 
             // tensor product H ⊗ H when multiplied from the left and the right. 
             // Specifically, A = diag(-1, 1, 1, 1) (H ⊗ H) diag(-1, 1, 1, 1) pi, 
@@ -312,10 +312,10 @@ namespace Quantum.Kata.Measurements
     // Part II*. Discriminating Nonorthogonal States
     //////////////////////////////////////////////////////////////////
 
-    // Task 2.1*. |0〉 or |+〉 ?
+    // Task 2.1*. |0⟩ or |+⟩ ?
     //           (quantum hypothesis testing or state discrimination with minimum error)
-    // Input: a qubit which is guaranteed to be in |0〉 or |+〉 state with equal probability.
-    // Output: true if qubit was in |0〉 state, or false if it was in |+〉 state.
+    // Input: a qubit which is guaranteed to be in |0⟩ or |+⟩ state with equal probability.
+    // Output: true if qubit was in |0⟩ state, or false if it was in |+⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     // Note: in this task you have to get accuracy of at least 80%.
     operation IsQubitPlusOrZero_Reference (q : Qubit) : Bool
@@ -323,11 +323,11 @@ namespace Quantum.Kata.Measurements
         body
         {
             // Let {E_a, E_b} be a measurement with two outcomes a and b, which we identify with 
-            // the answers, i.e., "a" = "state was |0〉" and "b = state was |+〉". Then we define
-            // P(a|0) = probability to observe first outcome given that the state was |0〉
-            // P(b|0) = probability to observe second outcome given that the state was |0〉
-            // P(a|+) = probability to observe first outcome given that the state was |+〉
-            // P(b|+) = probability to observe second outcome given that the state was |+〉
+            // the answers, i.e., "a" = "state was |0⟩" and "b = state was |+⟩". Then we define
+            // P(a|0) = probability to observe first outcome given that the state was |0⟩
+            // P(b|0) = probability to observe second outcome given that the state was |0⟩
+            // P(a|+) = probability to observe first outcome given that the state was |+⟩
+            // P(b|+) = probability to observe second outcome given that the state was |+⟩
             // the task is to maximize the probability to be correct on a single shot experiment
             // which is the same as to minimize the probability to be wrong (on a single shot).
             // Assuming uniform prior, i.e., P(+) = P(0) = 1/2, we get 
@@ -343,17 +343,17 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 2.2**. |0〉, |+〉 or inconclusive?
+    // Task 2.2**. |0⟩, |+⟩ or inconclusive?
     //           (unambiguous state discrimination)
-    // Input: a qubit which is guaranteed to be in |0〉 or |+〉 state with equal probability.
-    // Output: 0 if qubit was in |0〉 state,
-    //         1 if it was in |+〉 state,
+    // Input: a qubit which is guaranteed to be in |0⟩ or |+⟩ state with equal probability.
+    // Output: 0 if qubit was in |0⟩ state,
+    //         1 if it was in |+⟩ state,
     //         -1 if you can't decide, i.e., an "inconclusive" result.
     // Your solution:
-    //  - can never give 0 or 1 answer incorrectly (i.e., identify |0〉 as 1 or |+〉 as 0).
+    //  - can never give 0 or 1 answer incorrectly (i.e., identify |0⟩ as 1 or |+⟩ as 0).
     //  - must give inconclusive (-1) answer at most 80% of the times. 
-    //  - must correctly identify |0〉 state as 0 at least 10% of the times.
-    //  - must correctly identify |1〉 state as 1 at least 10% of the times.
+    //  - must correctly identify |0⟩ state as 0 at least 10% of the times.
+    //  - must correctly identify |1⟩ state as 1 at least 10% of the times.
     //
     // The state of the qubit at the end of the operation does not matter.
     // You are allowed to use ancilla qubit(s). 
@@ -365,21 +365,21 @@ namespace Quantum.Kata.Measurements
             // and never errs in case it yields a conclusive result can be obtained from 
             // randomizing the choice of measurement basis between the computational basis (std)
             // and the Hadamard basis (had). Observe that when measured in the standard basis, 
-            // the state |0〉 will always lead to the outcome "0", whereas the state |+〉 
+            // the state |0⟩ will always lead to the outcome "0", whereas the state |+⟩ 
             // will lead to outcomes "0" respectively "1" with probability 1/2. This means
-            // that upon measuring "1" we can with certainty conclude that the state was |+〉. 
+            // that upon measuring "1" we can with certainty conclude that the state was |+⟩. 
             // A similar argument applies to the scenario where we measure in the Hadamard 
-            // basis, where |0〉 can lead to both outcomes, whereas |+〉 always leads to "0". 
-            // Then upon measuring "1" we can with certainty conclude that the state was |0〉.
+            // basis, where |0⟩ can lead to both outcomes, whereas |+⟩ always leads to "0". 
+            // Then upon measuring "1" we can with certainty conclude that the state was |0⟩.
             //
             // This leads to the following scenarios (shown are the conditional probabilities 
             // of the above scenarios and resulting answers).
             // state | basis | output 0 | output 1 | output -1 
             // -----------------------------------------------
-            //   |0〉 |   std |     0    |     0    |     1
-            //   |+〉 |   std |     0    |    1/2   |    1/2 
-            //   |0〉 |   had |    1/2   |     0    |    1/2
-            //   |+〉 |   had |     0    |     0    |     1
+            //   |0⟩ |   std |     0    |     0    |     1
+            //   |+⟩ |   std |     0    |    1/2   |    1/2 
+            //   |0⟩ |   had |    1/2   |     0    |    1/2
+            //   |+⟩ |   had |     0    |     0    |     1
             
             mutable output = 0; 
             let basis = RandomInt(2); 
@@ -389,7 +389,7 @@ namespace Quantum.Kata.Measurements
                 // use standard basis
                 let result = M(q); 				
                 if (result == One) { 
-                    // this can only arise if the state was |+〉
+                    // this can only arise if the state was |+⟩
                     set output = 1; 
                 } 				
                 else { 
@@ -401,7 +401,7 @@ namespace Quantum.Kata.Measurements
                 H(q);
                 let result = M(q); 
                 if (result == One) { 
-                    // this can only arise if the state was |0〉
+                    // this can only arise if the state was |0⟩
                     set output = 0; 
                 } 				
                 else { 

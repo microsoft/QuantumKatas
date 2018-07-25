@@ -25,10 +25,10 @@ namespace Quantum.Kata.Superposition
                 // apply operation that needs to be tested
                 testImpl(qs);
 
-                // apply adjoint reference operation and check that the result is |0〉
+                // apply adjoint reference operation and check that the result is |0⟩
                 (Adjoint refImpl)(qs);
 
-                // assert that all qubits end up in |0〉 state
+                // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
             }
         }
@@ -96,7 +96,7 @@ namespace Quantum.Kata.Superposition
     {
         body
         {
-            // for N = 1 it's just |+〉
+            // for N = 1 it's just |+⟩
             AssertEqualOnZeroState(1, GHZ_State, PlusState_Reference);
             // for N = 2 it's Bell state
             AssertEqualOnZeroState(2, GHZ_State, BellState_Reference);
@@ -111,7 +111,7 @@ namespace Quantum.Kata.Superposition
     {
         body
         {
-            // for N = 1 it's just |+〉
+            // for N = 1 it's just |+⟩
             AssertEqualOnZeroState(1, AllBasisVectorsSuperposition, PlusState_Reference);
 
             for (n in 2..9) {
@@ -198,7 +198,7 @@ namespace Quantum.Kata.Superposition
     {
         body
         {
-            // separate check for N = 1 (return must be |1〉)
+            // separate check for N = 1 (return must be |1⟩)
             using (qs = Qubit[1]) {
                 WState_PowerOfTwo(qs);
                 Assert([PauliZ], qs, One, "");
@@ -217,7 +217,7 @@ namespace Quantum.Kata.Superposition
     {
         body
         {
-            // separate check for N = 1 (return must be |1〉)
+            // separate check for N = 1 (return must be |1⟩)
             using (qs = Qubit[1]) {
                 WState_Arbitrary_Reference(qs);
                 Assert([PauliZ], qs, One, "");
