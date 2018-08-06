@@ -90,15 +90,15 @@ namespace Quantum.Kata.BasicGates
     }
 
     // ------------------------------------------------------
-    // 0 - |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2)
-    // 1 - |Φ⁻〉 = (|00〉 - |11〉) / sqrt(2)
-    // 2 - |Ψ⁺〉 = (|01〉 + |10〉) / sqrt(2)
-    // 3 - |Ψ⁻〉 = (|01〉 - |10〉) / sqrt(2)
+    // 0 - |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+    // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+    // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+    // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
     operation StatePrep_BellState (qs : Qubit[], state : Int) : () {
         body {
             H(qs[0]);
             CNOT(qs[0], qs[1]);
-            // now we have |00〉 + |11〉 - modify it based on state arg
+            // now we have |00⟩ + |11⟩ - modify it based on state arg
             if (state % 2 == 1) {
                 // negative phase
                 Z(qs[1]);
@@ -127,7 +127,7 @@ namespace Quantum.Kata.BasicGates
                 // verify the result by applying adjoint of state prep for target state
                 (Adjoint StatePrep_BellState)(qs, targetState);
 
-                // assert that all qubits end up in |0〉 state
+                // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
             }
         }
@@ -160,7 +160,7 @@ namespace Quantum.Kata.BasicGates
     }
 
     // ------------------------------------------------------
-    // prepare state |A〉 = cos(α) * |0〉 + sin(α) * |1〉
+    // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
     operation StatePrep_A (alpha : Double, q : Qubit) : () {
         body {
             Ry(2.0 * alpha, q);
@@ -174,7 +174,7 @@ namespace Quantum.Kata.BasicGates
         body
         {
             // Note that the way the problem is formulated, we can't just compare two unitaries, 
-            // we need to create an input state |A〉 and check that the output state is correct
+            // we need to create an input state |A⟩ and check that the output state is correct
             using (qs = Qubit[2])
             {
                 for (i in 0..36) {
@@ -190,7 +190,7 @@ namespace Quantum.Kata.BasicGates
                     (Adjoint TwoQubitGate1_Reference)(qs);
                     (Adjoint StatePrep_A)(alpha, qs[0]);
 
-                    // assert that all qubits end up in |0〉 state
+                    // assert that all qubits end up in |0⟩ state
                     AssertAllZero(qs);
                 }
             }
@@ -223,7 +223,7 @@ namespace Quantum.Kata.BasicGates
                 (Adjoint TwoQubitGate2_Reference)(qs);
                 (Adjoint StatePrep_PlusPlus)(qs);
 
-                // assert that all qubits end up in |0〉 state
+                // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
             }
         }

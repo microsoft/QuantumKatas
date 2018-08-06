@@ -36,15 +36,15 @@ namespace Quantum.Kata.BasicGates
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the state of the qubit to α |1⟩ + β |0⟩.
     // Example: 
-    //        If the qubit is in state |0〉, change its state to |1〉. 
-    //        If the qubit is in state |1〉, change its state to |0〉. 
+    //        If the qubit is in state |0⟩, change its state to |1⟩. 
+    //        If the qubit is in state |1⟩, change its state to |0⟩. 
     // Note that this operation is self-adjoint: applying it for a second time 
     // returns the qubit to the original state.
     operation StateFlip (q : Qubit) : ()
     {
         body
         {
-            // The Pauli X gate will change the |0〉 state to the |1〉 state and vice versa.
+            // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.
             // Type X(q);
             // Then rebuild the project and rerun the tests - T11_StateFlip_Test should now pass!
             
@@ -56,11 +56,11 @@ namespace Quantum.Kata.BasicGates
     // Task 1.2. Basis change: |0⟩ to |+⟩ and |1⟩ to |-⟩ (and vice versa)
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the state of the qubit as follows:
-    //        If the qubit is in state |0〉, change its state to |+〉 = (|0⟩ + |1⟩) / sqrt(2).
-    //        If the qubit is in state |1〉, change its state to |-〉 = (|0⟩ - |1⟩) / sqrt(2).
+    //        If the qubit is in state |0⟩, change its state to |+⟩ = (|0⟩ + |1⟩) / sqrt(2).
+    //        If the qubit is in state |1⟩, change its state to |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    // Note:  |+〉 and |-〉 form a different basis for single-qubit states, called X basis.
-    // |0〉 and |1〉 are called Z basis.
+    // Note:  |+⟩ and |-⟩ form a different basis for single-qubit states, called X basis.
+    // |0⟩ and |1⟩ are called Z basis.
     operation BasisChange (q : Qubit) : ()
     {
         body
@@ -70,7 +70,7 @@ namespace Quantum.Kata.BasicGates
         adjoint self;
     }
 
-    // Task 1.3. Sign flip: |+〉 to |-〉 and vice versa.
+    // Task 1.3. Sign flip: |+⟩ to |-⟩ and vice versa.
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the qubit state to α |0⟩ - β |1⟩ (flip the sign of |1⟩ component of the superposition).
     operation SignFlip (q : Qubit) : ()
@@ -82,13 +82,13 @@ namespace Quantum.Kata.BasicGates
         adjoint self;
     }
 
-    // Task 1.4*. Amplitude change: |0⟩ to cos(alpha)*|0〉 + sin(alpha)*|1〉.
+    // Task 1.4*. Amplitude change: |0⟩ to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     // Inputs: 
     //     1) A qubit in state β|0⟩ + γ|1⟩.
     //     2) Angle alpha, in radians, represented as Double
     // Goal:  Change the state of the qubit as follows:
-    //        If the qubit is in state |0〉, change its state to cos(alpha)*|0〉 + sin(alpha)*|1〉.
-    //        If the qubit is in state |1〉, change its state to -sin(alpha)*|0〉 + cos(alpha)*|1〉.
+    //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
+    //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
     operation AmplitudeChange (q : Qubit, alpha : Double) : ()
     {
@@ -116,8 +116,8 @@ namespace Quantum.Kata.BasicGates
     //     1) A qubit in state β|0⟩ + γ|1⟩.
     //     2) Angle alpha, in radians, represented as Double
     // Goal:  Change the state of the qubit as follows:
-    //        If the qubit is in state |0〉, don't change its state.
-    //        If the qubit is in state |1〉, change its state to exp(i*alpha)|1〉.
+    //        If the qubit is in state |0⟩, don't change its state.
+    //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
     operation PhaseChange (q : Qubit, alpha : Double) : ()
     {
@@ -129,8 +129,8 @@ namespace Quantum.Kata.BasicGates
     }
 
     // Task 1.7. Bell state change - 1
-    // Input: Two entangled qubits in Bell state |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2).
-    // Goal:  Change the two-qubit state to |Φ⁻〉 = (|00〉 - |11〉) / sqrt(2).
+    // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
+    // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
     operation BellStateChange1 (qs : Qubit[]) : ()
     {
         body
@@ -141,8 +141,8 @@ namespace Quantum.Kata.BasicGates
     }
 
     // Task 1.8. Bell state change - 2
-    // Input: Two entangled qubits in Bell state |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2).
-    // Goal:  Change the two-qubit state to |Ψ⁺〉 = (|01〉 + |10〉) / sqrt(2).
+    // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
+    // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
     operation BellStateChange2 (qs : Qubit[]) : ()
     {
         body
@@ -153,8 +153,8 @@ namespace Quantum.Kata.BasicGates
     }
 
     // Task 1.9. Bell state change - 3
-    // Input: Two entangled qubits in Bell state |Φ⁺〉 = (|00〉 + |11〉) / sqrt(2).
-    // Goal:  Change the two-qubit state to |Ψ⁻〉 = (|01〉 - |10〉) / sqrt(2).
+    // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
+    // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
     operation BellStateChange3 (qs : Qubit[]) : ()
     {
         body
@@ -171,10 +171,10 @@ namespace Quantum.Kata.BasicGates
 
     // Task 2.1. Two-qubit gate - 1
     // Input: Two unentangled qubits (stored in an array of length 2).
-    //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0〉
-    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊕ |0〉).
+    //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0⟩
+    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊕ |0⟩).
     // Goal:  Change the two-qubit state to α |00⟩ + β |11⟩.
-    // Note that unless the starting state of the first qubit was |0〉 or |1〉,
+    // Note that unless the starting state of the first qubit was |0⟩ or |1⟩,
     // the resulting two-qubit state can not be represented as a tensor product 
     // of the states of individual qubits any longer; thus the qubits become entangled.
     operation TwoQubitGate1 (qs : Qubit[]) : ()

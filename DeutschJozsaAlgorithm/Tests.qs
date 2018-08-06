@@ -202,7 +202,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm
                     // apply adjoint reference operation
                     (Adjoint BV_StatePrep_Reference)(qs[0..N-1], qs[N]);
 
-                    // assert that all qubits end up in |0〉 state
+                    // assert that all qubits end up in |0⟩ state
                     AssertAllZero(qs);
                 }
             }
