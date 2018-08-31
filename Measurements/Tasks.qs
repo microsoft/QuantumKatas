@@ -148,7 +148,7 @@ namespace Quantum.Kata.Measurements
     }
 
     // Task 1.8. GHZ state or W state ?
-    // Input: N qubits (stored in an array) which are guaranteed to be 
+    // Input: N >= 2 qubits (stored in an array) which are guaranteed to be 
     //        either in GHZ state (https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in W state (https://en.wikipedia.org/wiki/W_state).
     // Output: 0 if qubits were in GHZ state,
@@ -261,7 +261,7 @@ namespace Quantum.Kata.Measurements
     //  - can never give 0 or 1 answer incorrectly (i.e., identify |0⟩ as 1 or |+⟩ as 0).
     //  - must give inconclusive (-1) answer at most 80% of the times. 
     //  - must correctly identify |0⟩ state as 0 at least 10% of the times.
-    //  - must correctly identify |1⟩ state as 1 at least 10% of the times.
+    //  - must correctly identify |+⟩ state as 1 at least 10% of the times.
     //
     // The state of the qubit at the end of the operation does not matter.
     // You are allowed to use ancilla qubit(s). 
