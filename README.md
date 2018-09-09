@@ -69,7 +69,7 @@ To open the **BasicGates** kata in Visual Studio Code, open the `QuantumKatas/Ba
 Press Ctrl + Shift + P / ⌘ + Shift + P to open the Command Palette and type "Open Folder" on Windows 10 or Linux or "Open" on macOS.
 
 > **TIP**: Almost all commands available in Visual Studio Code can be found in the Command Palette.
-> If you ever get stuck, press Ctrl + Shfit + P / ⌘ + Shift + P and type some letters to search through all available commands.
+> If you ever get stuck, press Ctrl + Shift + P / ⌘ + Shift + P and type some letters to search through all available commands.
 
 > **TIP**: You can also launch Visual Studio Code from the command line if you prefer:
 > ```bash
