@@ -12,7 +12,7 @@ using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
 
-namespace Quantum.Kata.Superposition
+namespace Quantum.Kata.Teleportation
 {
     public class TestSuiteRunner
     {
@@ -25,7 +25,7 @@ namespace Quantum.Kata.Superposition
 
         /// <summary>
         /// This driver will run all Q# tests (operations named "...Test") 
-        /// that belong to namespace Quantum.Kata.Superposition.
+        /// that belong to namespace Quantum.Kata.Teleportation.
         /// </summary>
         [OperationDriver(TestNamespace = "Quantum.Kata.Teleportation")]
         public void TestTarget(TestOperation op)
