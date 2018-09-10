@@ -5,12 +5,6 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>Quantum.Kata.Teleportation</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="revquantum.sty" />
-    <None Remove="superposition-content.tex" />
-    <None Remove="superposition.bib" />
-    <None Remove="superposition.tex" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Canon" Version="0.2.1806.3001-preview" />
