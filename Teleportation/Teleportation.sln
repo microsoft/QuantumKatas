@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teleportation", "Teleportation.csproj", "{1FD1C660-6646-44B0-B252-32378CBF682B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DE89BFF-6EB5-4848-AB40-A01C1CD406FB}
+	EndGlobalSection
+EndGlobal
