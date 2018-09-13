@@ -6,13 +6,17 @@ Each kata covers one topic.
 Currently covered topics are:
 
 * **[Basic quantum computing gates](./BasicGates/)**.
-  Tasks which focus on main single-qubit and multi-qubit gates used in quantum computing.
+  This kata focuses on main single-qubit and multi-qubit gates used in quantum computing.
 * **[Superposition](./Superposition/)**.
-  Tasks which focus on preparing a certain superposition state on one or multiple qubits.
+  The tasks focus on preparing a certain superposition state on one or multiple qubits.
 * **[Measurements](./Measurements/)**.
-  Tasks which focus on distinguishing quantum states using measurements.
+  The tasks focus on distinguishing quantum states using measurements.
+* **[Teleportation](./Teleportation/)**.
+  This kata walks you through the standard teleportation protocol and several variations.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
-  Tasks which focus on writing quantum oracles which implement classical functions, and the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+  This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+* **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
+  This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
 
 Each kata is a separate project which includes:
 
@@ -66,10 +70,10 @@ QuantumKatas/
 To open the **BasicGates** kata in Visual Studio 2017, open the `QuantumKatas/BasicGates.sln` solution file.
 
 To open the **BasicGates** kata in Visual Studio Code, open the `QuantumKatas/BasicGates/` folder.
-Press Ctrl + Shift + P / ⌘ + Shift + P to open the Command Palette and type "Open Folder" on Windows 10 or Linux or "Open" on macOS.
+Press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) to open the Command Palette. Type "Open Folder" on Windows 10 or Linux or "Open" on macOS.
 
 > **TIP**: Almost all commands available in Visual Studio Code can be found in the Command Palette.
-> If you ever get stuck, press Ctrl + Shift + P / ⌘ + Shift + P and type some letters to search through all available commands.
+> If you ever get stuck, press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) and type some letters to search through all available commands.
 
 > **TIP**: You can also launch Visual Studio Code from the command line if you prefer:
 > ```bash
@@ -91,7 +95,7 @@ Open the `Tasks.qs` file and start filling in the code to complete the tasks. Ea
 
 #### Visual Studio Code
 
-1. Press Ctrl + \` / ⌘ + \` to open the integrated terminal.
+1. Press Ctrl + \` (or ⌘ + \` on macOS) to open the integrated terminal.
    The terminal should already start in the kata directory, but if not, use `cd` to navigate to the folder containing the `*.csproj` file for the kata.
 2. Run `dotnet test` in the integrated terminal.
    This should automatically build the kata project and run all unit tests; initially, all unit tests should fail.
@@ -99,7 +103,7 @@ Open the `Tasks.qs` file and start filling in the code to complete the tasks. Ea
 4. To test your code changes for a task, run `dotnet test` again.
 
 For convenience, we also provide a `tasks.json` configuration for each kata that allows Visual Studio Code to run the build and test steps from the Command Palette.
-Press Ctrl + Shift + P / ⌘ + Shift + P to open the Palette and type "Run Build Task" or "Run Test Task," then press Enter.
+Press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) to open the Palette and type "Run Build Task" or "Run Test Task," then press Enter.
 
 # Contributing
 
