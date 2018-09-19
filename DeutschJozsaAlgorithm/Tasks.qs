@@ -339,8 +339,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm
     {
         body
         {
-		    // Hint: The bit vector r does not need to be the same as the one used by the oracle,
-			// it just needs to produce equivalent results.
+            // Hint: The bit vector r does not need to be the same as the one used by the oracle,
+            // it just needs to produce equivalent results.
 
             // Declare a Bool array in which the result will be stored;
             // the array has to be mutable to allow updating its elements.
