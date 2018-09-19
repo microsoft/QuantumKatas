@@ -309,7 +309,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm
     {
         body
         {
-            // Hint: you will need to use partial application to test Oracle_Kth_Qubit and Oracle_ParityFunction;
+            // Hint: you will need to use partial application to test ones such as Oracle_Kth_Qubit and Oracle_ProductFunction;
             // see task 2.3 for a description of how to do that.
 
             // Hint: use AssertBoolEqual function to assert that the return value of DJ_Algorithm operation matches the expected value
@@ -339,6 +339,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm
     {
         body
         {
+		    // Hint: The bit vector r does not need to be the same as the one used by the oracle,
+			// it just needs to produce equivalent results.
+
             // Declare a Bool array in which the result will be stored;
             // the array has to be mutable to allow updating its elements.
             mutable r = new Int[N];
