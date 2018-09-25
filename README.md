@@ -13,6 +13,8 @@ Currently covered topics are:
   The tasks focus on distinguishing quantum states using measurements.
 * **[Teleportation](./Teleportation/)**.
   This kata walks you through the standard teleportation protocol and several variations.
+* **[Superdense Coding](./SuperdenseCoding/)**.
+  This kata walks you through the superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
   This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.

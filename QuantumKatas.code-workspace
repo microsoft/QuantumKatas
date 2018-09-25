@@ -22,6 +22,10 @@
 			"name": "QEC: Bit-flip Code"
 		},
 		{
+			"path": "SuperdenseCoding",
+			"name": "Superdense Coding"
+		},
+		{
 			"path": "Superposition"
 		},
 		{
