@@ -5,37 +5,37 @@
 			"quantum.quantum-devkit-vscode"
 		]
 	},
-  "folders": [
-    {
-      "path": "BasicGates",
-      "name": "Basic Gates"
-    },
-    {
-      "path": "DeutschJozsaAlgorithm",
-      "name": "Deutsch–Jozsa Algorithm"
-    },
-    {
-      "path": "Measurements"
-    },
-    {
-      "path": "QEC_BitFlipCode",
-      "name": "QEC: Bit-flip Code"
-    },
-    {
-      "path": "SimonsAlgorithm",
-      "name": "Simon's Algorithm"
-    },
-    {
-      "path": "SuperdenseCoding",
-      "name": "Superdense Coding"
-    },
-    {
-      "path": "Superposition"
-    },
-    {
-      "path": "Teleportation"
-    }
-  ],
+	"folders": [
+		{
+			"path": "BasicGates",
+			"name": "Basic Gates"
+		},
+		{
+			"path": "DeutschJozsaAlgorithm",
+			"name": "Deutsch–Jozsa Algorithm"
+		},
+		{
+			"path": "Measurements"
+		},
+		{
+			"path": "QEC_BitFlipCode",
+			"name": "QEC: Bit-flip Code"
+		},
+		{
+			"path": "SimonsAlgorithm",
+			"name": "Simon's Algorithm"
+		},
+		{
+			"path": "SuperdenseCoding",
+			"name": "Superdense Coding"
+		},
+		{
+			"path": "Superposition"
+		},
+		{
+			"path": "Teleportation"	
+		}
+	],
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,
 		"files.exclude": {
