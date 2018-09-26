@@ -17,6 +17,8 @@ Currently covered topics are:
   This kata walks you through the superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
   This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+* **[Simon's Algorithm](./SimonsAlgorithm/)**.
+  This kata introduces Simon's algorithm.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
 
