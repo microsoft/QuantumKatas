@@ -60,6 +60,31 @@ namespace Quantum.Kata.Teleportation
         }
     }
 
+    // Task 1.5. Prepare the message specified and send it (Alice's task)
+    operation PrepareAndSendMessage_Reference (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool)
+    {
+        body {
+            mutable classicalBits = (false, false);
+            using (qs = Qubit[1])
+            {
+                if (state) { X(qs[0]); }      
+                PrepareQubit(basis, qs[0]); 
+                set classicalBits = SendMessage_Reference(qAlice, qs[0]);
+                Reset(qs[0]);
+            }
+            return classicalBits;
+        }
+    }
+    
+    // Task 1.6. Reconstruct the message and measure it (Bob's task)
+    operation ReconstructAndMeasureMessage_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool), basis : Pauli) : (Bool)
+    {
+        body {
+            ReconstructMessage_Reference(qBob, (b1, b2));
+            return (Measure([basis], [qBob]) == One);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////
     // Part II. Teleportation using different entangled pair
     //////////////////////////////////////////////////////////////////
@@ -97,6 +122,10 @@ namespace Quantum.Kata.Teleportation
         }
     }
 
+    //////////////////////////////////////////////////////////////////
+    // Part III. Principle of deferred measurement
+    //////////////////////////////////////////////////////////////////
+
     // Task 3.1. Measurement-free teleportation.
     operation MeasurementFreeTeleport_Reference (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : ()
     {
@@ -108,6 +137,42 @@ namespace Quantum.Kata.Teleportation
             // Classically controlled gates applied by Bob are replaced by controlled gates
             (Controlled Z)([qMessage], qBob);
             (Controlled X)([qAlice], qBob);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Teleportation with three entangled qubits
+    //////////////////////////////////////////////////////////////////
+
+    // Task 4.1. Entangled trio
+    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : ()
+    {
+        body
+        {
+            H(qAlice);
+            H(qBob);
+            X(qCharlie);
+
+            CCNOT(qAlice, qBob, qCharlie);
+                
+            X(qAlice);
+            X(qBob);
+
+            CCNOT(qAlice, qBob, qCharlie);
+
+            X(qAlice);
+            X(qBob);
+        }
+        adjoint auto;
+    }
+
+    // Task 4.2. Reconstruct the message (Charlie's task)
+    operation ReconstructMessageWhenThreeEntangledQubits_Reference (qCharlie : Qubit, (b1 : Bool, b2 : Bool), b3 : Bool) : ()
+    {
+        body {
+            if (b1) { Z(qCharlie); }
+            if (b2) { Z(qCharlie); Y(qCharlie); }
+            if (b3) { X(qCharlie); }
         }
     }
 }

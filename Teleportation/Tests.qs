@@ -22,13 +22,13 @@ namespace Quantum.Kata.Teleportation
             {
                 let q0 = qs[0];
                 let q1 = qs[1];
-                // apply operation that needs to be tested
+                // Apply operation that needs to be tested
                 Entangle(q0, q1);
 
-                // apply adjoint reference operation and check that the result is |00⟩
+                // Apply adjoint reference operation and check that the result is |00⟩
                 (Adjoint Entangle_Reference)(q0, q1);
 
-                // assert that all qubits end up in |0⟩ state
+                // Assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
             }
         }
@@ -174,6 +174,63 @@ namespace Quantum.Kata.Teleportation
     }
 
     // ------------------------------------------------------
+    // Runs teleportation for each state that is to be prepared and
+    // sent by Alice. Success is asserted after each teleportation.
+    // Also repeats for each state several times; this is because 
+    // code is expected to take different paths each time since
+    // measurements done by Alice are not deterministic.
+    operation TeleportPreparedStateTestLoop(
+        prepareAndSendMessageOp : ((Qubit, Pauli, Bool) => (Bool, Bool)),
+        reconstructAndMeasureMessageOp : ((Qubit, (Bool, Bool), Pauli) => (Bool))
+    ) : ()
+    {
+        body
+        {
+            let messages = [(PauliX, false); (PauliX, true); (PauliY, false); (PauliY, true); (PauliZ, false); (PauliZ, true)];
+            let numRepetitions = 100;
+
+            using(qs = Qubit[2])
+            {
+                let qAlice = qs[0];
+                let qBob   = qs[1];            
+
+                for (i in 0..Length(messages)-1)
+                {
+                    for (j in 1..numRepetitions)
+                    {
+                        let (basis, sentState) = messages[i];
+                        StatePrep_BellState(qAlice, qBob, 0);
+                        let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
+                        let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
+                        AssertBoolEqual(receivedState, sentState, "Sent and recieved states were not equal.");
+                        ResetAll(qs);
+                    }
+                }
+            }
+        }
+    }
+
+    // Test the 'PrepareAndSendMessage' operation by using it as one part of full teleportation, 
+    // taking reference implementation for the other parts.
+    operation T15_PrepareAndSendMessage_Test() : ()
+    {
+        body
+        {
+            TeleportPreparedStateTestLoop(PrepareAndSendMessage, ReconstructAndMeasureMessage_Reference);
+        }
+    }
+
+    // Test the 'ReconstructAndMeasureMessage' operation by using it as one part of full teleportation,
+    // taking reference implementation for the other parts.
+    operation T16_ReconstructAndMeasureMessage_Test() : ()
+    {
+        body
+        {
+            TeleportPreparedStateTestLoop(PrepareAndSendMessage_Reference, ReconstructAndMeasureMessage);
+        }
+    }
+
+    // ------------------------------------------------------
     // Test variations of the teleport protocol using different state prep procedures
     operation T21_ReconstructMessage_PhiMinus_Test() : ()
     {
@@ -228,6 +285,64 @@ namespace Quantum.Kata.Teleportation
 
                         AssertQubit(Zero, qBob);
 
+                        ResetAll(qs);
+                    }
+                }
+            }
+        }
+    }
+
+    // ------------------------------------------------------
+    operation T41_EntangleThreeQubits_Test() : ()
+    {
+        body
+        {
+            using (qs = Qubit[3])
+            {
+                let qAlice =   qs[0];
+                let qBob =     qs[1];
+                let qCharlie = qs[2];
+
+                // Apply operation that needs to be tested
+                EntangleThreeQubits(qAlice, qBob, qCharlie);
+
+                // Apply adjoint reference operation and check that the result is |000⟩
+                (Adjoint EntangleThreeQubits_Reference)(qAlice, qBob, qCharlie);
+
+                // Assert that all qubits end up in |0⟩ state
+                AssertAllZero(qs);
+            }
+        }
+    }
+
+    operation T42_ReconstructMessageWhenThreeEntangledQubits_Test() : ()
+    {
+        body
+        {
+            let setupPsiOps = [I; X; H; Ry(42.0, _)];
+            let numRepetitions = 100;
+            using (qs = Qubit[4])
+            {
+                let qMessage = qs[0];
+                let qAlice =   qs[1];
+                let qBob =     qs[2];
+                let qCharlie = qs[3];
+            
+                for (i in 0..Length(setupPsiOps)-1)
+                {
+                    for (j in 1..numRepetitions)
+                    {
+                        (setupPsiOps[i])(qMessage);
+                        EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
+                
+                        let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
+                        let b3 = BoolFromResult(M(qBob));
+                        ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
+                
+                        (Adjoint setupPsiOps[i])(qCharlie);
+                
+                        AssertQubit(Zero, qCharlie);
+                
                         ResetAll(qs);
                     }
                 }
