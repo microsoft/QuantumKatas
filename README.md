@@ -111,7 +111,7 @@ Press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) to open the Palette and typ
 
 # Contributing
 
-This project welcomes contributions and suggestions.  For details, see [How Can I Contribute?](./CONTRIBUTING.md)
+This project welcomes contributions and suggestions.  For details, see [How Can I Contribute?](.github/CONTRIBUTING.md)
 
 # Code of Conduct
 
