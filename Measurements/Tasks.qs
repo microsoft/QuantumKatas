@@ -16,7 +16,6 @@ namespace Quantum.Kata.Measurements
     // to get you familiar with programming in Q#.
     // It covers the following topics:
     //  - single-qubit measurements,
-    //  - joint measurements,
     //  - discriminating orthogonal and nonorthogonal states.
     //
     // Each task is wrapped in one operation preceded by the description of the task.
