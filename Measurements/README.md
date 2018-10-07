@@ -1,8 +1,7 @@
-﻿# Welcome!
+# Welcome!
 
 The measurements kata covers the following topics:
 - single-qubit measurements
-- joint measurements
 - quantum state discrimination for both orthogonal and non-orthogonal states
 
 Variations of quantum state discrimination tasks are covered in the paper ["Quantum State Discrimination"](https://arxiv.org/pdf/quant-ph/0010114.pdf).
