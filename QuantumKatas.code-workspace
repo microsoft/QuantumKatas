@@ -22,6 +22,14 @@
 			"name": "QEC: Bit-flip Code"
 		},
 		{
+			"path": "SimonsAlgorithm",
+			"name": "Simon's Algorithm"
+		},
+		{
+			"path": "SuperdenseCoding",
+			"name": "Superdense Coding"
+		},
+		{
 			"path": "Superposition"
 		},
 		{

@@ -13,8 +13,12 @@ Currently covered topics are:
   The tasks focus on distinguishing quantum states using measurements.
 * **[Teleportation](./Teleportation/)**.
   This kata walks you through the standard teleportation protocol and several variations.
+* **[Superdense Coding](./SuperdenseCoding/)**.
+  This kata walks you through the superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
   This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+* **[Simon's Algorithm](./SimonsAlgorithm/)**.
+  This kata introduces Simon's algorithm.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
 
@@ -107,13 +111,9 @@ Press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) to open the Palette and typ
 
 # Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+This project welcomes contributions and suggestions.  For details, see [How Can I Contribute?](.github/CONTRIBUTING.md)
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+# Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
