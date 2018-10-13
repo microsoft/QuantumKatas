@@ -75,6 +75,27 @@ namespace Quantum.Kata.Measurements
     }
 
     // ------------------------------------------------------
+    operation T102_InitializeQubit_Test () : ()
+    {
+        body
+        {
+            using (qs = Qubit[1])
+            {
+                for (i in 0..36) {
+                    let alpha = 2.0 * PI() * ToDouble(i) / 36.0;
+                    Ry(2.0 * alpha, qs[0]);
+
+                    // Test Task 1
+                    InitializeQubit(qs[0]);
+
+                    // Confirm that the state is |0⟩.
+                    AssertAllZero(qs);
+                }
+            }
+        }
+    }
+
+    // ------------------------------------------------------
     operation StatePrep_IsQubitPlus (q : Qubit, state : Int) : () {
         body {
             if (state == 0) {
@@ -88,7 +109,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T102_IsQubitPlus_Test () : ()
+    operation T103_IsQubitPlus_Test () : ()
     {
         body
         {
@@ -112,7 +133,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T103_IsQubitA_Test () : ()
+    operation T104_IsQubitA_Test () : ()
     {
         body
         {
@@ -180,7 +201,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T104_ZeroZeroOrOneOne_Test () : () {
+    operation T105_ZeroZeroOrOneOne_Test () : () {
         body {
             DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne);
         }
@@ -200,7 +221,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T105_BasisStateMeasurement_Test () : () {
+    operation T106_BasisStateMeasurement_Test () : () {
         body {
             DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement);
         }
@@ -227,7 +248,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T106_TwoBitstringsMeasurement_Test () : () {
+    operation T107_TwoBitstringsMeasurement_Test () : () {
         body {
             for (i in 1..1) {
                 let b1 = [false; true];
@@ -287,7 +308,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T107_AllZerosOrWState_Test () : () {
+    operation T108_AllZerosOrWState_Test () : () {
         body {
             for (i in 2..6) {
                 DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState);
@@ -320,7 +341,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T108_GHZOrWState_Test () : () {
+    operation T109_GHZOrWState_Test () : () {
         body {
             for (i in 2..6) {
                 DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState);
@@ -348,7 +369,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T109_BellState_Test () : () {
+    operation T110_BellState_Test () : () {
         body {
             DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState);
         }
@@ -389,13 +410,13 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    operation T110_TwoQubitState_Test () : () {
+    operation T111_TwoQubitState_Test () : () {
         body {
             DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState);
         }
     }
 
-    operation T111_TwoQubitStatePartTwo_Test () : () {
+    operation T112_TwoQubitStatePartTwo_Test () : () {
         body {
             DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo);
         }
@@ -413,7 +434,7 @@ namespace Quantum.Kata.Measurements
             }
         }
     }
-
+    
 
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return. Framework tests against a threshold parameter for the fraction of runs that must succeed.
