@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.Teleportation
@@ -91,7 +91,7 @@ namespace Quantum.Kata.Teleportation
     //      1) The two qubits qAlice and qBob in |0⟩ state. 
     //      2) The message qubit qMessage in the state |ψ⟩ to be teleported.
     // Goal: transform Bob's qubit qBob into the state |ψ⟩.
-    // The state of the qubits qAlice and qBob in the end of the operation doesn't matter.
+    // The state of the qubits qAlice and qMessage in the end of the operation doesn't matter.
     operation StandardTeleport (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : ()
     {
         body {
@@ -114,18 +114,18 @@ namespace Quantum.Kata.Teleportation
     //      The first bit in the tuple should hold the result of measurement of the message qubit,
     //      the second bit - the result of measurement of Alice's qubit.
     //      Represent measurement result 'One' as 'True' and 'Zero' as 'False'.
-    // The state of the qubits in the end of the operation doesn't matter.
-   operation PrepareAndSendMessage (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool)
-   {
-       body {
-           // ...
-           return (false, false);
-       }
-   }
+    // The state of the qubit qAlice in the end of the operation doesn't matter.
+    operation PrepareAndSendMessage (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool)
+    {
+        body {
+            // ...
+            return (false, false);
+        }
+    }
 
     // Task 1.6. Reconstruct and measure the message state (Bob's task)
     // Transform Bob's qubit into the required state using the two classical bits
-    // received from Alice and measure it in the same basis she prepared the message in.
+    // received from Alice and measure it in the same basis in which she prepared the message.
     // Inputs:
     //      1) Bob's part of the entangled pair of qubits qBob.
     //      2) The tuple of classical bits received from Alice, 
@@ -136,7 +136,7 @@ namespace Quantum.Kata.Teleportation
     //      A Bool indicating the eigenstate in which the message qubit was prepared, 'One' as 
     //      'True' and 'Zero' as 'False'.
     // Goal: transform Bob's qubit qBob into the state in which the message qubit was originally 
-    // prepared then measure it. The state of the qubits in the end of the operation doesn't matter.
+    // prepared, then measure it. The state of the qubit qBob in the end of the operation doesn't matter.
     operation ReconstructAndMeasureMessage (qBob : Qubit, (b1 : Bool, b2 : Bool), basis : Pauli) : (Bool)
     {
         body {
@@ -147,16 +147,15 @@ namespace Quantum.Kata.Teleportation
 
     // Task 1.7. Testing standard quantum teleportation
     // Goal: Test that the StandardTeleport operation from task 1.4 is able 
-    // to successfully teleport the states |0> and |1>, as well as superpositions 
-    // of these states such as,
-    // (|0> + |1>) / sqrt(2),
-    // (|0> - |1>) / sqrt(2),
-    // (|0> + i|1>) / sqrt(2), and 
-    // (|0> - i|1>) / sqrt(2)
+    // to successfully teleport the states |0⟩ and |1⟩, as well as superpositions such as
+    // (|0⟩ + |1⟩) / sqrt(2),
+    // (|0⟩ - |1⟩) / sqrt(2),
+    // (|0⟩ + i|1⟩) / sqrt(2), and 
+    // (|0⟩ - i|1⟩) / sqrt(2)
     operation StandardTeleport_Test () : ()
     {
         body {
-            // Hint: you may find your answers for 1.5 and 1.6 useful
+            // Hint: You may find your answers for 1.5 and 1.6 useful
 
             // StandardTeleport_Test appears in the list of unit tests for the solution; run it to verify your code.
 
