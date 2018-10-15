@@ -202,7 +202,7 @@ namespace Quantum.Kata.Teleportation
                         StatePrep_BellState(qAlice, qBob, 0);
                         let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
                         let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
-                        AssertBoolEqual(receivedState, sentState, "Sent and recieved states were not equal.");
+                        AssertBoolEqual(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
                         ResetAll(qs);
                     }
                 }
