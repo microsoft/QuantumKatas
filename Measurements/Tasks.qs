@@ -42,7 +42,18 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.2. |+⟩ or |-⟩ ?
+    // Task 1.2. Set qubit to |0⟩ state
+    // Input: a qubit in an arbitrary state.
+    // Goal:  change the state of the qubit to |0⟩.
+    operation InitializeQubit (q : Qubit) : ()
+    {
+        body
+        {
+            // ...
+        }
+    }
+
+    // Task 1.3. |+⟩ or |-⟩ ?
     // Input: a qubit which is guaranteed to be in |+⟩ or |-⟩ state
     //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
     // Output: true if qubit was in |+⟩ state, or false if it was in |-⟩ state.
@@ -56,7 +67,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.3. |A⟩ or |B⟩ ?
+    // Task 1.4. |A⟩ or |B⟩ ?
     // Inputs:
     //      1) angle alpha, in radians, represented as Double
     //      2) a qubit which is guaranteed to be in |A⟩ or |B⟩ state
@@ -73,7 +84,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.4. |00⟩ or |11⟩ ?
+    // Task 1.5. |00⟩ or |11⟩ ?
     // Input: two qubits (stored in an array) which are guaranteed to be in |00⟩ or |11⟩ state.
     // Output: 0 if qubits were in |00⟩ state,
     //         1 if they were in |11⟩ state.
@@ -87,7 +98,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.5. Distinguish four basis states
+    // Task 1.6. Distinguish four basis states
     // Input: two qubits (stored in an array) which are guaranteed to be 
     //        in one of the four basis states (|00⟩, |01⟩, |10⟩ or |11⟩).
     // Output: 0 if qubits were in |00⟩ state,
@@ -107,7 +118,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.6. Distinguish two basis states given by bit strings
+    // Task 1.7. Distinguish two basis states given by bit strings
     // Inputs:
     //      1) N qubits (stored in an array) which are guaranteed to be 
     //         in one of the two basis states described by the given bit strings.
@@ -130,7 +141,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.7. |0...0⟩ state or W state ?
+    // Task 1.8. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be 
     //        either in |0...0⟩ state
     //        or in W state (https://en.wikipedia.org/wiki/W_state).
@@ -146,7 +157,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.8. GHZ state or W state ?
+    // Task 1.9. GHZ state or W state ?
     // Input: N >= 2 qubits (stored in an array) which are guaranteed to be 
     //        either in GHZ state (https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in W state (https://en.wikipedia.org/wiki/W_state).
@@ -162,7 +173,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.9. Distinguish four Bell states
+    // Task 1.10. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
     //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
     //         |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
@@ -184,7 +195,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.10*. Distinguish four orthogonal 2-qubit states
+    // Task 1.11*. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -204,7 +215,7 @@ namespace Quantum.Kata.Measurements
         }
     }
 
-    // Task 1.11**. Distinguish four orthogonal 2-qubit states, part two
+    // Task 1.12**. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
