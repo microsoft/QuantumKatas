@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.Teleportation
@@ -33,14 +33,14 @@ namespace Quantum.Kata.Teleportation
     // * Sending the message (Alice's task): Entangling the message qubit with Alice's qubit
     //   and extracting two classical bits to be sent to Bob.
     // * Reconstructing the message (Bob's task): Using the two classical bits Bob received from Alice 
-    //   to get Bob's qubit into the state in which the message qubit has been originally.
+    //   to get Bob's qubit into the state in which the message qubit had been originally.
     // Finally, we compose these steps into the complete teleportation protocol.
 
     // Task 1.1. Entangled pair
     // Input: two qubits qAlice and qBob, each in |0⟩ state.
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     //
-    // In the context of quantum teleportation protocol, this is the preparation step:
+    // In the context of the quantum teleportation protocol, this is the preparation step:
     // qubits qAlice and qBob will be sent to Alice and Bob, respectively. 
     operation Entangle (qAlice : Qubit, qBob : Qubit) : ()
     {
@@ -54,7 +54,7 @@ namespace Quantum.Kata.Teleportation
     // and extract two classical bits to be sent to Bob.
     // Inputs: 
     //      1) Alice's part of the entangled pair of qubits qAlice.
-    //      2) the message qubit qMessage.
+    //      2) The message qubit qMessage.
     // Output:
     //      Two classical bits Alice will send to Bob via classical channel as a tuple of Bool values.
     //      The first bit in the tuple should hold the result of measurement of the message qubit,
@@ -74,9 +74,9 @@ namespace Quantum.Kata.Teleportation
     // received from Alice.
     // Inputs:
     //      1) Bob's part of the entangled pair of qubits qBob.
-    //      2) the tuple of classical bits received from Alice, 
+    //      2) The tuple of classical bits received from Alice, 
     //         in the format used in task 1.2.
-    // Goal: transform Bob's qubit qBob into the state in which the message qubit has been originally.
+    // Goal: transform Bob's qubit qBob into the state in which the message qubit had been originally.
     operation ReconstructMessage (qBob : Qubit, (b1 : Bool, b2 : Bool)) : ()
     {
         body {
@@ -91,10 +91,74 @@ namespace Quantum.Kata.Teleportation
     //      1) The two qubits qAlice and qBob in |0⟩ state. 
     //      2) The message qubit qMessage in the state |ψ⟩ to be teleported.
     // Goal: transform Bob's qubit qBob into the state |ψ⟩.
-    // The state of the qubits qAlice and qBob in the end of the operation doesn't matter.
+    // The state of the qubits qAlice and qMessage in the end of the operation doesn't matter.
     operation StandardTeleport (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : ()
     {
         body {
+            // ...
+        }
+    }
+
+    // Task 1.5. Prepare a state and send it as a message (Alice's task)
+    // Given a Pauli basis along with a state 'True' as 'One' or 'False' 
+    // as 'Zero' prepare a message qubit, entangle it with Alice's qubit, 
+    // and extract two classical bits to be sent to Bob.
+    // Inputs: 
+    //      1) Alice's part of the entangled pair of qubits qAlice.
+    //      2) A PauliX, PauliY, or PauliZ basis in which the message 
+    //         qubit should be prepared
+    //      3) A Bool indicating the eigenstate in which the message 
+    //         qubit should be prepared
+    // Output:
+    //      Two classical bits Alice will send to Bob via classical channel as a tuple of Bool values.
+    //      The first bit in the tuple should hold the result of measurement of the message qubit,
+    //      the second bit - the result of measurement of Alice's qubit.
+    //      Represent measurement result 'One' as 'True' and 'Zero' as 'False'.
+    // The state of the qubit qAlice in the end of the operation doesn't matter.
+    operation PrepareAndSendMessage (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool)
+    {
+        body {
+            // ...
+            return (false, false);
+        }
+    }
+
+    // Task 1.6. Reconstruct and measure the message state (Bob's task)
+    // Transform Bob's qubit into the required state using the two classical bits
+    // received from Alice and measure it in the same basis in which she prepared the message.
+    // Inputs:
+    //      1) Bob's part of the entangled pair of qubits qBob.
+    //      2) The tuple of classical bits received from Alice, 
+    //         in the format used in task 1.5.
+    //      3) The PauliX, PauliY, or PauliZ basis in which the 
+    //         message qubit was originally prepared
+    // Output:
+    //      A Bool indicating the eigenstate in which the message qubit was prepared, 'One' as 
+    //      'True' and 'Zero' as 'False'.
+    // Goal: transform Bob's qubit qBob into the state in which the message qubit was originally 
+    // prepared, then measure it. The state of the qubit qBob in the end of the operation doesn't matter.
+    operation ReconstructAndMeasureMessage (qBob : Qubit, (b1 : Bool, b2 : Bool), basis : Pauli) : (Bool)
+    {
+        body {
+            // ...
+            return false;
+        }
+    }
+
+    // Task 1.7. Testing standard quantum teleportation
+    // Goal: Test that the StandardTeleport operation from task 1.4 is able 
+    // to successfully teleport the states |0⟩ and |1⟩, as well as superpositions such as
+    // (|0⟩ + |1⟩) / sqrt(2),
+    // (|0⟩ - |1⟩) / sqrt(2),
+    // (|0⟩ + i|1⟩) / sqrt(2), and 
+    // (|0⟩ - i|1⟩) / sqrt(2)
+    operation StandardTeleport_Test () : ()
+    {
+        body {
+            // Hint: You may find your answers for 1.5 and 1.6 useful
+
+            // StandardTeleport_Test appears in the list of unit tests for the solution; run it to verify your code.
+
             // ...
         }
     }
@@ -113,7 +177,7 @@ namespace Quantum.Kata.Teleportation
     //      1) Bob's part of the entangled pair of qubits qBob.
     //      2) the tuple of classical bits received from Alice, 
     //         in the format used in task 1.2.
-    // The goal is to transform Bob's qubit qBob into the state in which the message qubit has been originally.
+    // The goal is to transform Bob's qubit qBob into the state in which the message qubit had been originally.
 
     // Task 2.1. Reconstruct the message if the entangled qubits were in the state |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
     operation ReconstructMessage_PhiMinus (qBob : Qubit, (b1 : Bool, b2 : Bool)) : ()
@@ -157,6 +221,49 @@ namespace Quantum.Kata.Teleportation
     // Goal: transform Bob's qubit qBob into the state |ψ⟩ using no measurements.
     // At the end of the operation qubits qAlice and qMessage should not be entangled with qBob.
     operation MeasurementFreeTeleport (qAlice : Qubit, qBob : Qubit, qMessage : Qubit) : ()
+    {
+        body {
+            // ...
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Teleportation with three entangled qubits
+    //////////////////////////////////////////////////////////////////
+
+    // Quantum teleportation using entangled states other than Bell pairs is also feasible.
+    // Here we look at just one of many possible schemes - in it a state is transferred from
+    // Alice to a third participant Charlie, but this may only be accomplished if Charlie 
+    // has the trust of the second participant Bob.
+
+    // Task 4.1*. Entangled trio
+    // Input: three qubits qAlice, qBob, and qCharlie, each in |0⟩ state.
+    // Goal: create an entangled state |Ψ³⟩ = (|000⟩ + |011⟩ + |101⟩ + |110⟩) / 2 on these qubits.
+    //
+    // In the context of the quantum teleportation protocol, this is the preparation step:
+    // qubits qAlice, qBob, and qCharlie will be sent to Alice, Bob, and Charlie respectively. 
+    operation EntangleThreeQubits (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : ()
+    {
+        body {
+            // ...
+        }
+    }
+
+    // Task 4.2*. Reconstruct the message (Charlie's task)
+    // Alice has a message qubit in the state |ψ⟩ to be teleported, she has entangled it with 
+    // her own qubit from |Ψ³⟩ in the same manner as task 1.2 and extracted two classical bits
+    // in order to send them to Charlie. Bob has also measured his own qubit from |Ψ³⟩ and sent 
+    // Charlie the result.
+    //
+    // Transform Charlie's qubit into the required state using the two classical bits
+    // received from Alice, and the one classical bit received from Bob.
+    // Inputs:
+    //      1) Charlie's part of the entangled trio of qubits qCharlie.
+    //      2) The tuple of classical bits received from Alice, 
+    //         in the format used in task 1.2.
+    //      3) A classical bit resulting from the measurement of Bob's qubit.
+    // Goal: transform Charlie's qubit qCharlie into the state in which the message qubit had been originally.
+    operation ReconstructMessageWhenThreeEntangledQubits (qCharlie : Qubit, (b1 : Bool, b2 : Bool), b3 : Bool) : ()
     {
         body {
             // ...
