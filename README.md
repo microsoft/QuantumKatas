@@ -19,6 +19,8 @@ Currently covered topics are:
   This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
 * **[Simon's Algorithm](./SimonsAlgorithm/)**.
   This kata introduces Simon's algorithm.
+* **[Grover's Algorithm](./GroversAlgorithm/)**.
+  This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
 
@@ -71,7 +73,7 @@ QuantumKatas/
     ReferenceImplementation.qs # Q# source code containing solutions to the tasks.
 ```
 
-To open the **BasicGates** kata in Visual Studio 2017, open the `QuantumKatas/BasicGates.sln` solution file.
+To open the **BasicGates** kata in Visual Studio 2017, open the `QuantumKatas/BasicGates/BasicGates.sln` solution file.
 
 To open the **BasicGates** kata in Visual Studio Code, open the `QuantumKatas/BasicGates/` folder.
 Press Ctrl + Shift + P (or ⌘ + Shift + P on macOS) to open the Command Palette. Type "Open Folder" on Windows 10 or Linux or "Open" on macOS.
