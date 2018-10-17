@@ -34,6 +34,10 @@
 		},
 		{
 			"path": "Teleportation"	
+		},
+		{
+			"path": "GroversAlgorithm",
+			"name": "Grover's Search Algorithm"
 		}
 	],
 	"settings": {
