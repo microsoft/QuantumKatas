@@ -101,6 +101,37 @@ namespace Quantum.Kata.SimonsAlgorithm
     // Part II. Simon's Algorithm
     //////////////////////////////////////////////////////////////////
 
+    // The goal of Simon's algorithm:
+    //      1) We are presented with a function that maps N-bit strings to N-bit strings,
+    //         f : {0,1}^N -> {0,1}^N.
+    //
+    //      2) Function f is guaranteed to be:
+    //          a) either a 1-to-1 (aka injective) function - a function that maps each input value to a distinct
+    //             output value;
+    //          b) or a 2-to-1 function - a function where for each output value, exactly two distinct
+    //             input values get mapped to it.
+    //             In addition, the two inputs that map to the same output keep the same distance between
+    //             each other, with respect to the ⊕ operation, for all such input pairs.
+    //             In math terms, this condition can be written as
+    //             +-------------------------------------------------------------------------------------------+
+    //             |  ∀ a, b distinct inputs to f, ∃ c unique bit string such that f(a) = f(b) ⇔ a = b ⊕ c.  |    (1)
+    //             +-------------------------------------------------------------------------------------------+
+    //             Notes:
+    //              * All strings (a, b and c) have the same size (N bits).
+    //              * Since a and b are distinct, c cannot be an all-zeroes bit string.
+    //
+    //      3) We can unify conditions a) and b) by considering a) to be a degenerate case of b) when:
+    //          * c is all zeroes;
+    //          * and a and b represent one and the same string.
+    //
+    //      4) The unified condition that f is guaranteed to satisfy, expressed in math terms is
+    //         +----------------------------------------------------------------------------------+
+    //         |  ∀ a, b inputs to f, ∃ c unique bit string such that f(a) = f(b) ⇔ a = b ⊕ c.  |   (2)
+    //         +----------------------------------------------------------------------------------+
+    //
+    //      5) The end goal of Simon's algorithm:
+    //         Given f, satisfying (2), find the unique bit string c.
+
     // Task 2.1. State preparation for Simon's algorithm
     // Inputs:
     //      1) N qubits in |0⟩ state (query register)
@@ -122,10 +153,7 @@ namespace Quantum.Kata.SimonsAlgorithm
     //         x is N-qubit input register, y is N-qubit answer register, and f is a function
     //         from N-bit strings into N-bit strings
     //
-    // The function f is guaranteed to satisfy the following property: 
-    // there exists some N-bit string s such that for all N-bit strings b and c (b != c)
-    // we have f(b) = f(c) if and only if b = c ⊕ s. In other words, f is a two-to-one function.
-    //
+    // The function f is guaranteed to satisfy  property (2).
     // An example of such function is bitwise right shift function from task 1.2;
     // the bit string s for it is [0, ..., 0, 1].
     // 
