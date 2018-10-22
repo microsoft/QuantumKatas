@@ -15,6 +15,14 @@
 			"name": "Deutsch–Jozsa Algorithm"
 		},
 		{
+			"path": "GroversAlgorithm",
+			"name": "Grover's Search Algorithm"
+		},
+		{
+			"path": "JointMeasurements",
+			"name": "Joint Measurements"
+		},
+		{
 			"path": "Measurements"
 		},
 		{
@@ -34,10 +42,6 @@
 		},
 		{
 			"path": "Teleportation"	
-		},
-		{
-			"path": "GroversAlgorithm",
-			"name": "Grover's Search Algorithm"
 		}
 	],
 	"settings": {

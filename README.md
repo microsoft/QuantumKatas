@@ -11,15 +11,17 @@ Currently covered topics are:
   The tasks focus on preparing a certain superposition state on one or multiple qubits.
 * **[Measurements](./Measurements/)**.
   The tasks focus on distinguishing quantum states using measurements.
+* **[Joint measurements](./JointMeasurements/)**.
+  The tasks focus on using joint (parity) measurements for distinguishing quantum states and performing gates.
 * **[Teleportation](./Teleportation/)**.
   This kata walks you through the standard teleportation protocol and several variations.
-* **[Superdense Coding](./SuperdenseCoding/)**.
+* **[Superdense coding](./SuperdenseCoding/)**.
   This kata walks you through the superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
   This kata starts with writing quantum oracles which implement classical functions, and continues to introduce the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
-* **[Simon's Algorithm](./SimonsAlgorithm/)**.
+* **[Simon's algorithm](./SimonsAlgorithm/)**.
   This kata introduces Simon's algorithm.
-* **[Grover's Algorithm](./GroversAlgorithm/)**.
+* **[Grover's algorithm](./GroversAlgorithm/)**.
   This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
