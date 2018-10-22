@@ -55,7 +55,48 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 4. Bell state
+    // Task 4. Superposition of all basis vectors on two qubits
+    operation AllBasisVectors_TwoQubits_Reference (qs : Qubit[]) : ()
+    {
+        body
+        {
+            // Since a Hadamard gate will change |0⟩ into |+⟩ = (|0⟩ + |1⟩)/sqrt(2)
+            // And the desired state is just a tensor product |+⟩|+⟩, we can apply
+            // a Hadamard transformation to each qubit.
+            H(qs[0]);
+            H(qs[1]);
+        }
+        adjoint auto;
+    }
+
+    // Task 5. Superposition of basis vectors with phases
+    operation AllBasisVectorsWithPhases_TwoQubits_Reference (qs : Qubit[]) : ()
+    {
+        body
+        {
+            // Question:
+            // Is this state separable?
+
+            // Answer:
+            // Yes. It is. We can see that:
+            // ((|0⟩ - |1⟩) / sqrt(2)) ⊗ ((|0⟩ + i*|1⟩) / sqrt(2)) is equal to the desired
+            // state, so we can create it by doing operations on each qubit independently.
+
+            // We can see that the first qubit is in state |-⟩ and the second in state |i⟩, 
+            // so the transformations that we need are:
+
+            // Qubit 0 is taken into |+⟩ and then z-rotated into |-⟩.
+            H(qs[0]);
+            Z(qs[0]);
+
+            // Qubit 1 is taken into |+⟩ and then z-rotated into |i⟩.
+            H(qs[1]);
+            S(qs[1]);
+        }
+        adjoint auto;
+    }
+
+    // Task 6. Bell state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     operation BellState_Reference (qs : Qubit[]) : ()
@@ -68,7 +109,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 5. All Bell states
+    // Task 7. All Bell states
     // Inputs:
     //      1) two qubits in |00⟩ state (stored in an array of length 2)
     //      2) an integer index
@@ -95,7 +136,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 6. Greenberger–Horne–Zeilinger state
+    // Task 8. Greenberger–Horne–Zeilinger state
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
     operation GHZ_State_Reference (qs : Qubit[]) : ()
@@ -110,7 +151,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 7. Superposition of all basis vectors
+    // Task 9. Superposition of all basis vectors
     // Input: N qubits in |0...0⟩ state.
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
     // (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) ).
@@ -125,7 +166,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 8. Superposition of |0...0⟩ and given bit string
+    // Task 10. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -154,7 +195,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 9. Superposition of two bit strings
+    // Task 11. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -207,7 +248,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 10. W state on 2^k qubits
+    // Task 12. W state on 2^k qubits
     // Input: N = 2^k qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -241,7 +282,7 @@ namespace Quantum.Kata.Superposition
         adjoint auto;
     }
 
-    // Task 11. W state on arbitrary number of qubits
+    // Task 13. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
