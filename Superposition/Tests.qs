@@ -72,7 +72,27 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T04_BellState_Test () : ()
+    operation T04_AllBasisVectors_TwoQubits_Test () : ()
+    {
+        body
+        {
+            // We only check for 2 qubits.
+            AssertEqualOnZeroState(2, AllBasisVectors_TwoQubits, AllBasisVectors_TwoQubits_Reference);
+        }
+    }
+
+    // ------------------------------------------------------
+    operation T05_AllBasisVectorsWithPhases_TwoQubits_Test () : ()
+    {
+        body
+        {
+            // We only check for 2 qubits.
+            AssertEqualOnZeroState(2, AllBasisVectorsWithPhases_TwoQubits, AllBasisVectorsWithPhases_TwoQubits_Reference);
+        }
+    }
+
+    // ------------------------------------------------------
+    operation T06_BellState_Test () : ()
     {
         body
         {
@@ -81,7 +101,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T05_AllBellStates_Test () : ()
+    operation T07_AllBellStates_Test () : ()
     {
         body
         {
@@ -92,7 +112,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T06_GHZ_State_Test () : ()
+    operation T08_GHZ_State_Test () : ()
     {
         body
         {
@@ -107,7 +127,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T07_AllBasisVectorsSuperposition_Test () : ()
+    operation T09_AllBasisVectorsSuperposition_Test () : ()
     {
         body
         {
@@ -121,7 +141,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T08_ZeroAndBitstringSuperposition_Test () : ()
+    operation T10_ZeroAndBitstringSuperposition_Test () : ()
     {
         body
         {
@@ -149,7 +169,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T09_TwoBitstringSuperposition_Test () : ()
+    operation T11_TwoBitstringSuperposition_Test () : ()
     {
         body
         {
@@ -194,7 +214,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T10_WState_PowerOfTwo_Test () : ()
+    operation T12_WState_PowerOfTwo_Test () : ()
     {
         body
         {
@@ -213,7 +233,7 @@ namespace Quantum.Kata.Superposition
     }
 
     // ------------------------------------------------------
-    operation T11_WState_Arbitrary_Test () : ()
+    operation T13_WState_Arbitrary_Test () : ()
     {
         body
         {

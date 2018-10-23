@@ -35,7 +35,7 @@ namespace Quantum.Kata.Superposition
         {
             // Hadamard gate H will convert |0⟩ state to |+⟩ state.
             // The first qubit of the array can be accessed as qs[0].
-            // Type H(qs[0]);
+            // Type the following: H(qs[0]);
             // Then rebuild the project and rerun the tests - T01_PlusState_Test should now pass!
 
             // ...
@@ -71,7 +71,38 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 4. Bell state
+    // Task 4. Superposition of all basis vectors on two qubits
+    // Input: two qubits in |00⟩ state (stored in an array of length 2).
+    // Goal:  create the following state on these qubits: (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
+    operation AllBasisVectors_TwoQubits (qs : Qubit[]) : ()
+    {
+        body
+        {
+            // The following lines enforce the constraints on the input that you are given.
+            // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+            AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+
+            // ...
+        }
+    }
+
+    // Task 5. Superposition of basis vectors with phases
+    // Input: two qubits in |00⟩ state (stored in an array of length 2).
+    // Goal:  create the following state on these qubits: (|00⟩ + i*|01⟩ - |10⟩ - i*|11⟩) / 2.
+    operation AllBasisVectorsWithPhases_TwoQubits (qs : Qubit[]) : ()
+    {
+        body
+        {
+            // The following lines enforce the constraints on the input that you are given.
+            // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+            AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+
+            // Hint: Is this state separable?
+            // ...
+        }
+    }
+
+    // Task 6. Bell state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     operation BellState (qs : Qubit[]) : ()
@@ -82,7 +113,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 5. All Bell states
+    // Task 7. All Bell states
     // Inputs:
     //      1) two qubits in |00⟩ state (stored in an array of length 2)
     //      2) an integer index
@@ -99,7 +130,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 6. Greenberger–Horne–Zeilinger state
+    // Task 8. Greenberger–Horne–Zeilinger state
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
     operation GHZ_State (qs : Qubit[]) : ()
@@ -112,7 +143,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 7. Superposition of all basis vectors
+    // Task 9. Superposition of all basis vectors
     // Input: N qubits in |0...0⟩ state.
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
     // (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) ).
@@ -124,7 +155,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 8. Superposition of |0...0⟩ and given bit string
+    // Task 10. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -146,7 +177,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 9. Superposition of two bit strings
+    // Task 11. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -164,7 +195,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 10**. W state on 2^k qubits
+    // Task 12**. W state on 2^k qubits
     // Input: N = 2^k qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -179,7 +210,7 @@ namespace Quantum.Kata.Superposition
         }
     }
 
-    // Task 11**. W state on arbitrary number of qubits
+    // Task 13**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
