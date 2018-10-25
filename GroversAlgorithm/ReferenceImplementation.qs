@@ -38,7 +38,7 @@ namespace Quantum.Kata.GroversAlgorithm
             // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
             FlipOddPositionBits_Reference(queryRegister);
             (Controlled X)(queryRegister, target);
-            FlipOddPositionBits_Reference(queryRegister);
+            (Adjoint FlipOddPositionBits_Reference)(queryRegister);
         }
         adjoint auto;
     }
