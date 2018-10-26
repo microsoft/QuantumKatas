@@ -36,19 +36,22 @@ namespace Quantum.Kata.GroversAlgorithm
         {
             // flip the bits in odd (0-based positions), 
             // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
-            for (n in 0..Length(queryRegister)-1)
-            {
-                if (n % 2 == 1)
-                {
-                    X(queryRegister[n]);
-                }
-            }
+            FlipOddPositionBits_Reference(queryRegister);
             (Controlled X)(queryRegister, target);
-            for (n in 0..Length(queryRegister)-1)
+            (Adjoint FlipOddPositionBits_Reference)(queryRegister);
+        }
+        adjoint auto;
+    }
+
+    operation FlipOddPositionBits_Reference (register : Qubit[]) : ()
+    {
+        body
+        {
+            for (i in 0..Length(register) - 1)
             {
-                if (n % 2 == 1)
+                if (i % 2 == 1)
                 {
-                    X(queryRegister[n]);
+                    X(register[i]);
                 }
             }
         }
