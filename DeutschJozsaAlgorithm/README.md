@@ -4,7 +4,7 @@ This kata covers several well-studied algorithms and concepts.
 
 #### Quantum oracles
 
-A good introduction to quantum oracles can be found in [the Q# documentation](https://docs.microsoft.com/en-us/quantum/quantum-concepts-10-oracles).
+A good introduction to quantum oracles can be found in [the Q# documentation](https://docs.microsoft.com/en-us/quantum/concepts/oracles).
 
 #### Deutsch-Jozsa algorithm
 

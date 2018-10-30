@@ -9,4 +9,4 @@ It is recommended to complete the basic gates kata before this one to get famili
 
 You can find detailed coverage of Bell states and their creation [here](https://blogs.msdn.microsoft.com/uk_faculty_connection/2018/02/06/a-beginners-guide-to-quantum-computing-and-q/).
 
-For the syntax of flow control statements in Q#, see [the Q# documentation](https://docs.microsoft.com/en-us/quantum/quantum-qr-statements#control-flow).
+For the syntax of flow control statements in Q#, see [the Q# documentation](https://docs.microsoft.com/en-us/quantum/language/statements#control-flow).
