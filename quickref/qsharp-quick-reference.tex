@@ -116,7 +116,7 @@
 \raggedright\
 
 % \begin{center}
-  \Large{\qs~Language Quick Reference}
+  \Large{\qs~0.3 Language Quick Reference}
 % \end{center}
 
 \footnotesize
@@ -135,6 +135,7 @@
     Sequences of \newline integers   & \texttt{Range}  \newline
                               e.g.: 1..10 or 5..-1..0 \\
     Strings                 & \texttt{String} \\
+    "Return no \newline information" type   & \texttt{Unit} \newline e.g.: \texttt{()} \\
   \end{keysref}
 
   \begin{keysref}{Derived Types}
@@ -142,9 +143,9 @@
     Tuples                  & \texttt{(\emph{type0}, \emph{type1}, ...)} \newline
                               e.g.: \texttt{(Int, Qubit)} \\
     Functions               & \texttt{\emph{input} -> \emph{output}} \newline
-                              e.g.: \texttt{ArcTan2 : (Double, Double) -> Double} \\
+                              e.g.: \texttt{ArcCos : (Double) -> Double} \\
     Operations              & \texttt{\emph{input} => \emph{output} : \emph{variants}} \newline
-                              e.g.: \texttt{H : (Qubit => () : Adjoint, Controlled)} \\
+                              e.g.: \texttt{H : (Qubit => Unit : \newline Adjoint, Controlled)} \\
   \end{keysref}
 
   \begin{keysref}{Functions, Operations and Types}
@@ -160,15 +161,15 @@
                  \texttt{\hphantom{....}adjoint controlled \{ ... \}} \newline
                  \texttt{\}} \\
     Define \newline user-defined type & \texttt{newtype \emph{TypeName} = \emph{BaseType}} \newline
-                         \texttt{newtype TermList = (Int, Int -> (Double, Double))} \\
-    Call adjoint \newline operation & \texttt{(Adjoint \emph{Name})(\emph{parameters})} \\
-    Call controlled \newline operation & \texttt{(Controlled \emph{Name})(\emph{controlQubits}, \emph{parameters})} \\
+                                        e.g.: \texttt{newtype TermList = \newline (Int, Int -> (Double, Double))} \\
+    Call adjoint \newline operation & \texttt{Adjoint \emph{Name}(\emph{parameters})} \\
+    Call controlled \newline operation & \texttt{Controlled \emph{Name}(\emph{controlQubits}, \emph{parameters})} \\
   \end{keysref}
 
   \begin{keysref}{Symbols and Variables}
     Declare immutable \newline symbol & \texttt{let \emph{name} = \emph{value}} \\
-    Declare mutable \newline symbol (variable)  & \texttt{mutable \emph{name} = \emph{value}} \\
-    Update mutable \newline symbol (variable)   & \texttt{set \emph{name} = \emph{value}} \\
+    Declare mutable \newline symbol (variable)  & \texttt{mutable \emph{name} = \emph{initialValue}} \\
+    Update mutable \newline symbol (variable)   & \texttt{set \emph{name} = \emph{newValue}} \\
   \end{keysref}
 
   \columnbreak%\
@@ -177,16 +178,23 @@
     Allocation           & \texttt{mutable \emph{name} = new \emph{Type}[\emph{length}]} \\
     Length               & \texttt{Length(\emph{name})} \\
     k-th element         & \texttt{\emph{name}[k]} \newline NB: indices are 0-based  \\
-    Array literal        & \texttt{[\emph{value0}; \emph{value1}; ...]} \newline
-                           e.g.: \texttt{[true; false; true]} \\
-    Slicing (subarray)   & \texttt{let \emph{name} = \emph{name}[\emph{start}..\emph{end}]} \\
+    Array literal        & \texttt{[\emph{value0}, \emph{value1}, ...]} \newline
+                           e.g.: \texttt{[true, false, true]} \\
+    Slicing (subarray)   & \texttt{\emph{name}[\emph{start}..\emph{end}]} \\
   \end{keysref}
 
   \begin{keysref}{Control Flow}
-    For loop                   & \texttt{for (\emph{ind} in \emph{range}) \{ ... \}} \newline 
-                                 e.g.: \texttt{for (i in 0..N-1) \{ ... \}} \\
-    Repeat-until-success loop  & \texttt{repeat \{ ... \} \newline until \emph{condition} \newline fixup \{ ... \}} \\
-    Conditional \newline statement      & \texttt{if \emph{cond1} \{ ... \} \newline elif \emph{cond2} \{ ... \} \newline else \{ ... \}}\\
+    For loop           & \texttt{for (\emph{index} in \emph{range}) \{ }\newline 
+                         \texttt{\hphantom{....}//} Use integer \texttt{\emph{index}} \newline
+                         \texttt{\}} \newline
+                         e.g.: \texttt{for (i in 0..N-1) \{ ... \}} \\
+    Iterate over \newline an array & \texttt{for (\emph{val} in \emph{array}) \{ }\newline 
+                                     \texttt{\hphantom{....}//} Use value \texttt{\emph{val}} \newline
+                                     \texttt{\}} \newline
+                                     e.g.: \texttt{for (q in register) \{ ... \}} \\
+    Repeat-until-success loop  & \texttt{repeat \{ ... \} \newline until (\emph{condition}) \newline fixup \{ ... \}} \\
+    Conditional \newline statement      & \texttt{if (\emph{cond1}) \{ ... \} \newline elif (\emph{cond2}) \{ ... \} \newline else \{ ... \}}\\
+    Ternary operator   & \texttt{\emph{condition} ? \emph{caseTrue} | \emph{caseFalse} } \\
     Return a value     & \texttt{return \emph{value}} \\
     Stop with an error & \texttt{fail "\emph{Error message}"} \\
   \end{keysref}
@@ -195,51 +203,54 @@
     Print a string     & \texttt{Message("Hello Quantum!")} \\
     Print an \newline interpolated string   
                        & \texttt{Message(\$"Value = \{\emph{val}\}")} \\
-    Assert that qubit is in $\ket{0}$ or $\ket{1}$   & \texttt{AssertQubit (expected : Result, q : Qubit)}\\
-    Print amplitudes \newline of wave function & \texttt{DumpMachine()} \\
+    Assert that a qubit is in $\ket{0}$ or $\ket{1}$ state   & \texttt{AssertQubit(Zero, \emph{oneQubit})}\\
+    Print amplitudes \newline of wave function & \texttt{DumpMachine("dump.txt")} \\
   \end{keysref}
     
-  \begin{keysref}{Qubits and Operations on Qubits}
-    Allocate qubits      & \texttt{using (\emph{name} = Qubit[\emph{length}]) \{} \newline
-                           \texttt{\hphantom{....}//} Qubits in \texttt{\emph{name}} start in $\ket{0}$. \newline
+  \begin{keysref}{Qubit Allocation}
+    Allocate qubits      & \texttt{using (\emph{reg} = Qubit[\emph{length}]) \{} \newline
+                           \texttt{\hphantom{....}//} Qubits in \texttt{\emph{reg}} start in $\ket{0}$. \newline
                            \texttt{\hphantom{....}...} \newline
                            \texttt{\hphantom{....}//} Qubits must be returned to $\ket{0}$. \newline
                            \texttt{\}} \\
-    Pauli gates          & \texttt{X} :
-                           $\ket{0} \mapsto \ket{1}$, $\ket{1} \mapsto \ket{0}$ \newline
-                           \texttt{Y} :
-                           $\ket{0} \mapsto i \ket{1}$, $\ket{1} \mapsto -i \ket{0}$ \newline
-                           \texttt{Z} :
-                           $\ket{0} \mapsto \ket{0}$, $\ket{1} \mapsto -\ket{1}$ \\
-    Hadamard             & \texttt{H} : 
-                           $\ket{0} \mapsto \ket{+} = \frac{1}{\sqrt{2}} ( \ket{0} + \ket{1} )$, \newline
-                           $\ket{1} \mapsto \ket{-} = \frac{1}{\sqrt{2}} ( \ket{0} - \ket{1} )$ \\
-    Controlled-NOT       & \texttt{CNOT : ((control : Qubit, \newline target : Qubit) => ())} \newline
-                           $\ket{00} \mapsto \ket{00}$, $\ket{01} \mapsto \ket{01}$, \newline
-                           $\ket{10} \mapsto \ket{11}$, $\ket{11} \mapsto \ket{10}$ \\
-    Measure qubit in Pauli $Z$ basis & \texttt{M : Qubit => Result} \\
-    Perform joint measurement of qubits in given Pauli bases & \texttt{Measure : (Pauli[], Qubit[]) => Result} \\
-    Rotate about given Pauli axis   & \texttt{R : (Pauli, Double, Qubit) => ()} \\
-    Rotate about Pauli $X$, $Y$, $Z$ axis & \texttt{Rx : (Double, Qubit) => ()} \newline
-                                      \texttt{Ry : (Double, Qubit) => ()} \newline
-                                      \texttt{Rz : (Double, Qubit) => ()} \\
-    Reset qubit to $\ket{0}$     & \texttt{Reset : Qubit => ()} \\
-    Reset qubits to $\ket{0..0}$ & \texttt{ResetAll : Qubit[] => ()} \\
+    Allocate one qubit   & \texttt{using (\emph{one} = Qubit()) \{ ... \} } \\
   \end{keysref}
 
-  \columnbreak%\
+  \begin{keysref}{Measurements}
+    Measure qubit in Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
+    Reset qubit to $\ket{0}$     & \texttt{Reset(\emph{oneQubit})} \\
+    Reset an array of \newline qubits to $\ket{0..0}$ & \texttt{ResetAll(\emph{register})} \\
+  \end{keysref}
+
+  \begin{keysref}{Basic Gates}
+    Pauli gates          & \texttt{X(\emph{qubit})} : \newline
+                           $\ket{0} \mapsto \ket{1}$, $\ket{1} \mapsto \ket{0}$ \newline
+                           \texttt{Y(\emph{qubit})} : \newline
+                           $\ket{0} \mapsto i \ket{1}$, $\ket{1} \mapsto -i \ket{0}$ \newline
+                           \texttt{Z(\emph{qubit})} : \newline
+                           $\ket{0} \mapsto \ket{0}$, $\ket{1} \mapsto -\ket{1}$ \\
+    Hadamard             & \texttt{H(\emph{qubit})} : \newline
+                           $\ket{0} \mapsto \ket{+} = \frac{1}{\sqrt{2}} ( \ket{0} + \ket{1} )$, \newline
+                           $\ket{1} \mapsto \ket{-} = \frac{1}{\sqrt{2}} ( \ket{0} - \ket{1} )$ \\
+    Controlled-NOT       & \texttt{CNOT(\emph{controlQubit}, \emph{targetQubit})} \newline
+                           $\ket{00} \mapsto \ket{00}$, $\ket{01} \mapsto \ket{01}$, \newline
+                           $\ket{10} \mapsto \ket{11}$, $\ket{11} \mapsto \ket{10}$ \\
+    Apply several gates \newline (Bell pair example)  & \texttt{H(\emph{qubit1});} \newline 
+                                                        \texttt{CNOT(\emph{qubit1}, \emph{qubit2});} \\
+  \end{keysref}
 
   \section{Resources}
 
   \begin{keysref}{Documentation}
     Quantum \newline Development Kit & \url{https://docs.microsoft.com/quantum} \\
-    \qs~Language \newline Reference & \url{https://docs.microsoft.com/quantum/quantum-qr-intro} \\
+    \qs~Language \newline Reference & \url{https://docs.microsoft.com/quantum/language/} \\
     \qs~Library \newline Reference  & \url{https://docs.microsoft.com/qsharp/api} \\
   \end{keysref}
 
   \begin{keysref}{\qs~Code Repositories}
-    QDK Samples and Libraries & \url{https://github.com/Microsoft/Quantum} \\
-    Quantum Katas             & \url{https://github.com/Microsoft/QuantumKatas} \\
+    QDK Samples               & \url{https://github.com/Microsoft/Quantum} \\
+    QDK Libraries             & \url{https://github.com/Microsoft/QuantumLibraries} \\
+    Quantum Katas \newline (tutorials) & \url{https://github.com/Microsoft/QuantumKatas} \\
   \end{keysref}
 
   \begin{keysref}{Command Line Basics}
