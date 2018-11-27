@@ -5,7 +5,7 @@ The superposition kata covers the following topics:
  - superposition,
  - flow control and recursion in Q#.
 
-It is recommended to complete the [BasicGates kata](/../BasicGates/) before this one to get familiar with the basic gates used in quantum computing. The list of basic gates available in Q# can be found at [Microsoft.Quantum.Primitive](https://docs.microsoft.com/qsharp/api/prelude/microsoft.quantum.primitive).
+It is recommended to complete the [BasicGates kata](./../BasicGates/) before this one to get familiar with the basic gates used in quantum computing. The list of basic gates available in Q# can be found at [Microsoft.Quantum.Primitive](https://docs.microsoft.com/qsharp/api/prelude/microsoft.quantum.primitive).
 
 You can find detailed coverage of Bell states and their creation [here](https://blogs.msdn.microsoft.com/uk_faculty_connection/2018/02/06/a-beginners-guide-to-quantum-computing-and-q/).
 
