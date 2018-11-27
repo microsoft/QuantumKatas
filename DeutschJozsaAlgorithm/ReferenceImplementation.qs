@@ -255,12 +255,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         mutable r = new Int[N];
         
-        // allocate N+1 qubits
-        using (qs = Qubit[N + 1]) {
-            
-            // split allocated qubits into input register and answer register
-            let x = qs[0 .. N - 1];
-            let y = qs[N];
+        // allocate N qubits for input register and 1 qubit for output
+        using ((x, y) = (Qubit[N], Qubit())) {
             
             // prepare qubits in the right state
             BV_StatePrep_Reference(x, y);
@@ -272,16 +268,16 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             ApplyToEach(H, x);
             
             // measure all qubits of the input register;
-            // the result of each measurement is converted to a Bool
+            // the result of each measurement is converted to an Int
             for (i in 0 .. N - 1) {
-                
                 if (M(x[i]) != Zero) {
                     set r[i] = 1;
                 }
             }
             
             // before releasing the qubits make sure they are all in |0⟩ state
-            ResetAll(qs);
+            ResetAll(x);
+            Reset(y);
         }
         
         return r;
@@ -348,12 +344,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // the array has to be mutable to allow updating its elements.
         mutable r = new Int[N];
         
-        using (qs = Qubit[N + 1]) {
-            
-            // split allocated qubits into input register and answer register
-            let x = qs[0 .. N - 1];
-            let y = qs[N];
-            
+        using ((x, y) = (Qubit[N], Qubit())) {
             // apply oracle to qubits in all 0 state
             Uf(x, y);
             
@@ -373,7 +364,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             }
             
             // before releasing the qubits make sure they are all in |0⟩ state
-            ResetAll(qs);
+            ResetAll(x);
+            Reset(y);
         }
         
         return r;
