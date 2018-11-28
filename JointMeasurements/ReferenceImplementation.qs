@@ -19,41 +19,25 @@ namespace Quantum.Kata.JointMeasurements {
     // Task 1. Single-qubit measurement
     operation SingleQubitMeasurement_Reference (qs : Qubit[]) : Int {
         // Hint: use two single-qubit measurements
-        if (M(qs[0]) == M(qs[1])) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return M(qs[0]) == M(qs[1]) ? 0 | 1;
     }
     
     
     // Task 2. Parity measurement
     operation ParityMeasurement_Reference (qs : Qubit[]) : Int {
-        if (Measure([PauliZ, PauliZ], qs) == Zero) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return Measure([PauliZ, PauliZ], qs) == Zero ? 0 | 1;
     }
     
     
     // Task 3. |0000⟩ + |1111⟩ or |0011⟩ + |1100⟩ ?
     operation GHZOrGHZWithX_Reference (qs : Qubit[]) : Int {
-        if (Measure([PauliZ, PauliZ], qs[1 .. 2]) == Zero) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return Measure([PauliZ, PauliZ], qs[1 .. 2]) == Zero ? 0 | 1;
     }
     
     
     // Task 4. |0..0⟩ + |1..1⟩ or W state ?
     operation GHZOrWState_Reference (qs : Qubit[]) : Int {
-        if (MeasureAllZ(qs) == Zero) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return MeasureAllZ(qs) == Zero ? 0 | 1;
     }
     
     
@@ -61,11 +45,7 @@ namespace Quantum.Kata.JointMeasurements {
     operation DifferentBasis_Reference (qs : Qubit[]) : Int {
         // The first state is a superposition of |++⟩ and |--⟩,
         // the second one - of |+-⟩ and |-+⟩
-        if (Measure([PauliX, PauliX], qs) == Zero) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return Measure([PauliX, PauliX], qs) == Zero ? 0 | 1;
     }
     
     
@@ -85,9 +65,8 @@ namespace Quantum.Kata.JointMeasurements {
             // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
             // Note the parity notation used in the table of fixups in the paper
             // differs from the notation used in Q#.
-            using (ans = Qubit[1]) {
+            using (a = Qubit()) {
                 let c = qs[0];
-                let a = ans[0];
                 let t = qs[1];
                 H(a);
                 let p1 = MeasureAllZ([c, a]);

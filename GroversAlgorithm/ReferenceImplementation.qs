@@ -49,10 +49,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation FlipOddPositionBits_Reference (register : Qubit[]) : Unit {
         
         body (...) {
-            for (i in 0 .. Length(register) - 1) {
-                if (i % 2 == 1) {
-                    X(register[i]);
-                }
+            // iterate over elements in odd positions (indexes are 0-based)
+            for (i in 1 .. 2 .. Length(register) - 1) {
+                X(register[i]);
             }
         }
         
@@ -75,9 +74,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
         
         body (...) {
-            using (ancillae = Qubit[1]) {
-                let target = ancillae[0];
-                
+            using (target = Qubit()) {
                 // Put the target into the |-〉 state
                 X(target);
                 H(target);

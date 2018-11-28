@@ -105,12 +105,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         mutable j = new Int[N];
         
-        // allocate N+N qubits
-        using (qs = Qubit[2 * N]) {
-            // split allocated qubits into input register and answer register
-            let x = qs[0 .. N - 1];
-            let y = qs[N .. 2 * N - 1];
-            
+        // allocate input and answer registers with N qubits each
+        using ((x, y) = (Qubit[N], Qubit[N])) {
             // prepare qubits in the right state
             SA_StatePrep_Reference(x);
             
@@ -123,14 +119,14 @@ namespace Quantum.Kata.SimonsAlgorithm {
             // measure all qubits of the input register;
             // the result of each measurement is converted to a Bool
             for (i in 0 .. N - 1) {
-                
                 if (M(x[i]) == One) {
                     set j[i] = 1;
                 }
             }
             
             // before releasing the qubits make sure they are all in |0⟩ states
-            ResetAll(qs);
+            ResetAll(x);
+            ResetAll(y);
         }
         
         return j;

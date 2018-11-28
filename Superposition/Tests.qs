@@ -119,20 +119,14 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(2, ZeroAndBitstringSuperposition(_, [true, true]), BellState_Reference);
         AssertEqualOnZeroState(3, ZeroAndBitstringSuperposition(_, [true, true, true]), GHZ_State_Reference);
         
-        if (true) {
-            let b = [true, false];
-            AssertEqualOnZeroState(2, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
-        }
+        mutable b = [true, false];
+        AssertEqualOnZeroState(2, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
         
-        if (true) {
-            let b = [true, false, true];
-            AssertEqualOnZeroState(3, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
-        }
-        
-        if (true) {
-            let b = [true, false, true, true, false, false];
-            AssertEqualOnZeroState(6, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
-        }
+        set b = [true, false, true];
+        AssertEqualOnZeroState(3, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
+
+        set b = [true, false, true, true, false, false];
+        AssertEqualOnZeroState(6, ZeroAndBitstringSuperposition(_, b), ZeroAndBitstringSuperposition_Reference(_, b));
     }
     
     
@@ -145,31 +139,23 @@ namespace Quantum.Kata.Superposition {
         
         // compare with reference implementation
         // diff in first position
-        for (i in 1 .. 1) {
-            let b1 = [false, true];
-            let b2 = [true, false];
-            AssertEqualOnZeroState(2, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
-        }
-        
-        for (i in 1 .. 1) {
-            let b1 = [true, true, false];
-            let b2 = [false, true, true];
-            AssertEqualOnZeroState(3, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
-        }
+        mutable b1 = [false, true];
+        mutable b2 = [true, false];
+        AssertEqualOnZeroState(2, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
+
+        set b1 = [true, true, false];
+        set b2 = [false, true, true];
+        AssertEqualOnZeroState(3, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
         
         // diff in last position
-        for (i in 1 .. 1) {
-            let b1 = [false, true, true, false];
-            let b2 = [false, true, true, true];
-            AssertEqualOnZeroState(4, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
-        }
+        set b1 = [false, true, true, false];
+        set b2 = [false, true, true, true];
+        AssertEqualOnZeroState(4, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
         
         // diff in the middle
-        for (i in 1 .. 1) {
-            let b1 = [true, false, false, false];
-            let b2 = [true, false, true, true];
-            AssertEqualOnZeroState(4, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
-        }
+        set b1 = [true, false, false, false];
+        set b2 = [true, false, true, true];
+        AssertEqualOnZeroState(4, TwoBitstringSuperposition(_, b1, b2), TwoBitstringSuperposition_Reference(_, b1, b2));
     }
     
     

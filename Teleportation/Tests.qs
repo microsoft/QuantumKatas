@@ -16,10 +16,7 @@ namespace Quantum.Kata.Teleportation {
     
     // ------------------------------------------------------
     operation T11_Entangle_Test () : Unit {
-        using (qs = Qubit[2]) {
-            let q0 = qs[0];
-            let q1 = qs[1];
-            
+        using ((q0, q1) = (Qubit(), Qubit())) {
             // Apply operation that needs to be tested
             Entangle(q0, q1);
             
@@ -27,7 +24,7 @@ namespace Quantum.Kata.Teleportation {
             Adjoint Entangle_Reference(q0, q1);
             
             // Assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
+            AssertAllZero([q0, q1]);
         }
     }
     
@@ -165,10 +162,7 @@ namespace Quantum.Kata.Teleportation {
                         (PauliZ, true)];
         let numRepetitions = 100;
         
-        using (qs = Qubit[2]) {
-            let qAlice = qs[0];
-            let qBob = qs[1];
-            
+        using ((qAlice, qBob) = (Qubit(), Qubit())) {
             for (i in 0 .. Length(messages) - 1) {
                 for (j in 1 .. numRepetitions) {
                     let (basis, sentState) = messages[i];
@@ -176,7 +170,7 @@ namespace Quantum.Kata.Teleportation {
                     let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
                     let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
                     AssertBoolEqual(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
-                    ResetAll(qs);
+                    ResetAll([qAlice, qBob]);
                 }
             }
         }

@@ -25,8 +25,7 @@ namespace Quantum.Kata.Measurements {
     // Output: true if qubit was in |1⟩ state, or false if it was in |0⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitOne_Reference (q : Qubit) : Bool {
-        let res = M(q);
-        return res == One;
+        return M(q) == One;
     }
     
     
@@ -45,8 +44,7 @@ namespace Quantum.Kata.Measurements {
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitPlus_Reference (q : Qubit) : Bool {
         H(q);
-        let res = M(q);
-        return res == Zero;
+        return M(q) == Zero;
     }
     
     
@@ -62,8 +60,7 @@ namespace Quantum.Kata.Measurements {
         // |0⟩ is converted into |A⟩ and |1⟩ into |B⟩ by Ry(2.0 * alpha)
         // so |A⟩ is converted into |0⟩ by the opposite rotation
         Ry(-2.0 * alpha, q);
-        let res = M(q);
-        return res == Zero;
+        return M(q) == Zero;
     }
     
     
@@ -76,11 +73,7 @@ namespace Quantum.Kata.Measurements {
         // it's enough to do one measurement on any qubit
         let res = M(qs[0]);
         
-        if (res == Zero) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return M(qs[0]) == Zero ? 0 | 1;
     }
     
     
@@ -140,11 +133,7 @@ namespace Quantum.Kata.Measurements {
         let firstDiff = FindFirstDiff_Reference(bits1, bits2);
         let res = M(qs[firstDiff]) == One;
         
-        if (res == bits1[firstDiff]) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return res == bits1[firstDiff] ? 0 | 1;
     }
     
     
