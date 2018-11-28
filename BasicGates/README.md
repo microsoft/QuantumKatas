@@ -10,5 +10,5 @@ The basic gates kata covers the basic operations (a.k.a. "gates") used in quantu
 #### Q# materials
 
 * Basic gates provided in Q# belong to the `Microsoft.Quantum.Primitive` namespace and are listed [here](https://docs.microsoft.com/qsharp/api/prelude/microsoft.quantum.primitive).
-* Using controlled and adjoint versions of gates is covered in the Q# documentation on [operation types](https://docs.microsoft.com/en-us/quantum/language/type-model#operation-and-function-types).
-* Defining controlled and adjoint versions of gates is covered in the Q# documentation on [operation definitions](https://docs.microsoft.com/en-us/quantum/language/file-structure#operation-definitions).
+* Using controlled and adjoint versions of gates is covered in the Q# documentation on [operation types](https://docs.microsoft.com/quantum/language/type-model#operation-and-function-types).
+* Defining controlled and adjoint versions of gates is covered in the Q# documentation on [operation definitions](https://docs.microsoft.com/quantum/language/file-structure#operation-definitions).
