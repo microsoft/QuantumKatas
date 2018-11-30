@@ -33,7 +33,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Part I. Oracles for Grover's Search
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. The |11...1〉 oracle
+    // Task 1.1. The |11...1⟩ oracle
     // Inputs:
     //      1) N qubits in an arbitrary state |x⟩ (input/query register)
     //      2) a qubit in an arbitrary state |y⟩ (target qubit)
@@ -42,11 +42,11 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       and leave it unchanged if the query register is in any other state.
     //       Leave the query register in the same state it started in.
     // Example:
-    //       If the query register is in state |00...0〉, leave the target qubit unchanged.
-    //       If the query register is in state |10...0〉, leave the target qubit unchanged.
-    //       If the query register is in state |11...1〉, flip the target qubit.
-    //       If the query register is in state (|00...0〉 + |11...1〉) / sqrt(2), and the target is in state |0〉,
-    //       the joint state of the query register and the target qubit should be (|00...00〉 + |11...11〉) / sqrt(2).
+    //       If the query register is in state |00...0⟩, leave the target qubit unchanged.
+    //       If the query register is in state |10...0⟩, leave the target qubit unchanged.
+    //       If the query register is in state |11...1⟩, flip the target qubit.
+    //       If the query register is in state (|00...0⟩ + |11...1⟩) / sqrt(2), and the target is in state |0⟩,
+    //       the joint state of the query register and the target qubit should be (|00...00⟩ + |11...11⟩) / sqrt(2).
     operation Oracle_AllOnes (queryRegister : Qubit[], target : Qubit) : Unit {
         
         body (...) {
@@ -57,7 +57,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
     
     
-    // Task 1.2. The |1010...〉 oracle
+    // Task 1.2. The |1010...⟩ oracle
     // Inputs:
     //      1) N qubits in an arbitrary state |x⟩ (input/query register)
     //      2) a qubit in an arbitrary state |y⟩ (target qubit)
@@ -66,8 +66,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        Leave the state of the target qubit unchanged if the query register is in any other state.
     //        Leave the query register in the same state it started in.
     // Example:
-    //        If the register is in state |0000000〉, leave the target qubit unchanged.
-    //        If the register is in state |10101〉, flip the target qubit.
+    //        If the register is in state |0000000⟩, leave the target qubit unchanged.
+    //        If the register is in state |10101⟩, flip the target qubit.
     operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit {
         
         body (...) {
@@ -133,7 +133,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Input: A register of N qubits in an arbitrary state
     // Goal:  Apply the Hadamard transform to each of the qubits in the register.
     //
-    // Note:  If the register started in the |0...0〉 state, this operation
+    // Note:  If the register started in the |0...0⟩ state, this operation
     //        will prepare an equal superposition of all 2^N basis states.
     operation HadamardTransform (register : Qubit[]) : Unit {
         
@@ -147,17 +147,17 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 2.2. Conditional phase flip
     // Input: A register of N qubits in an arbitrary state.
-    // Goal:  Flip the sign of the state of the register if it is not in the |0...0〉 state.
+    // Goal:  Flip the sign of the state of the register if it is not in the |0...0⟩ state.
     // Example:
-    //        If the register is in state |0...0〉, leave it unchanged.
+    //        If the register is in state |0...0⟩, leave it unchanged.
     //        If the register is in any other basis state, multiply its phase by -1.
-    // Note: This operation implements operator 2|0...0〉⟨0...0| - I.
+    // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
     operation ConditionalPhaseFlip (register : Qubit[]) : Unit {
         
         body (...) {
             // Hint 1: Note that quantum states are defined up to a global phase.
             // Thus the state obtained as a result of this operation is the same
-            // as the state obtained by flipping the sign of only the |0...0〉 state.
+            // as the state obtained by flipping the sign of only the |0...0⟩ state.
             
             // Hint 2: You can use the same trick as in the oracle converter task.
             
@@ -196,7 +196,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 3.1. Grover's search
     // Inputs:
-    //      1) N qubits in the |0...0〉 state,
+    //      1) N qubits in the |0...0⟩ state,
     //      2) a marking oracle, and
     //      3) the number of Grover iterations to perform.
     // Goal: Use Grover's algorithm to leave the register in the state that is marked by the oracle as the answer
