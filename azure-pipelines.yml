@@ -12,6 +12,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'filePath'
+    filePath: 'scripts/validate-unicode.ps1'
+
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
