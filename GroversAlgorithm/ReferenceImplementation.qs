@@ -20,7 +20,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Part I. Oracles for Grover's Search
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. The |11...1〉 oracle
+    // Task 1.1. The |11...1⟩ oracle
     operation Oracle_AllOnes_Reference (queryRegister : Qubit[], target : Qubit) : Unit {
         
         body (...) {
@@ -31,7 +31,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
     
     
-    // Task 1.2. The |1010...〉 oracle
+    // Task 1.2. The |1010...⟩ oracle
     operation Oracle_AlternatingBits_Reference (queryRegister : Qubit[], target : Qubit) : Unit {
         
         body (...) {
@@ -75,15 +75,15 @@ namespace Quantum.Kata.GroversAlgorithm {
         
         body (...) {
             using (target = Qubit()) {
-                // Put the target into the |-〉 state
+                // Put the target into the |-⟩ state
                 X(target);
                 H(target);
                 
-                // Apply the marking oracle; since the target is in the |-〉 state,
+                // Apply the marking oracle; since the target is in the |-⟩ state,
                 // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
                 markingOracle(register, target);
                 
-                // Put the target back into |0〉 so we can return it
+                // Put the target back into |0⟩ so we can return it
                 H(target);
                 X(target);
             }
