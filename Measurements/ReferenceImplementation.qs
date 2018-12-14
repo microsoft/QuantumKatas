@@ -313,9 +313,10 @@ namespace Quantum.Kata.Measurements {
         // Assuming uniform prior, i.e., P(+) = P(0) = 1/2, we get
         // P_correct = P(0) P(a|0) + P(+) P(b|+). Assuming a von Neumann measurement of the
         // form E_a = Ry(2*alpha) * (1,0) = (cos(alpha), sin(alpha)) and
-        // E_b = Ry(2*alpha) * (0,1) = (sin(alpha), -cos(alpha)), we get that
-        // P_correct = 1/2 + cos²(alpha) + cos(alpha) sin(alpha). Maximizing this for alpha,
-        // we get max P_success = 1/2 (1 + 1/sqrt(2)) = 0.8535.., which is attained for alpha = π/8.
+        // E_b = Ry(2*alpha) * 1/sqrt(2)(1,1) = 1/sqrt(2)(cos(alpha)-sin(alpha),cos(alpha)+sin(alpha)),
+        // we get that P_correct = 1/2 * (1/2 + cos²(alpha) + cos(alpha) sin(alpha)). 
+        // Maximizing this for alpha, we get max P_success = 1/2 (1 + 1/sqrt(2)) = 0.8535.., 
+        // which is attained for alpha = π/8.
         
         // Rotate the input state by π/8 means to apply Ry with angle 2π/8.
         Ry(0.25 * PI(), q);
