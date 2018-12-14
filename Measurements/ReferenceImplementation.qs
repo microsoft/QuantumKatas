@@ -308,14 +308,17 @@ namespace Quantum.Kata.Measurements {
         // P(b|0) = probability to observe second outcome given that the state was |0⟩
         // P(a|+) = probability to observe first outcome given that the state was |+⟩
         // P(b|+) = probability to observe second outcome given that the state was |+⟩
-        // the task is to maximize the probability to be correct on a single shot experiment
+        // The task is to maximize the probability to be correct on a single shot experiment,
         // which is the same as to minimize the probability to be wrong (on a single shot).
         // Assuming uniform prior, i.e., P(+) = P(0) = 1/2, we get
-        // P_correct = P(0) P(a|0) + P(+) P(b|+). Assuming a von Neumann measurement of the
-        // form E_a = Ry(2*alpha) * (1,0) = (cos(alpha), sin(alpha)) and
-        // E_b = Ry(2*alpha) * 1/sqrt(2)(1,1) = 1/sqrt(2)(cos(alpha)-sin(alpha),cos(alpha)+sin(alpha)),
-        // we get that P_correct = 1/2 * (1/2 + cos²(alpha) + cos(alpha) sin(alpha)). 
-        // Maximizing this for alpha, we get max P_success = 1/2 (1 + 1/sqrt(2)) = 0.8535.., 
+        // P_correct = P(0) P(a|0) + P(+) P(b|+) = 1/2 * (P(a|0) + P(b|+)). 
+        // Assuming a von Neumann measurement of the form
+        // E_a = Ry(2*alpha) * (1,0) = (cos(alpha),  sin(alpha)) and
+        // E_b = Ry(2*alpha) * (0,1) = (sin(alpha), -cos(alpha)), we get
+        // P(a|0) = |〈E_a|0〉|² = cos²(alpha),
+        // P(b|+) = |〈E_b|+〉|² = 1/2 + cos(alpha) sin(alpha), and
+        // P_correct = 1/2 * (1/2 + cos²(alpha) + cos(alpha) sin(alpha)). 
+        // Maximizing this for alpha, we get max P_success = 1/2 (1 + 1/sqrt(2)) = 0.8535..., 
         // which is attained for alpha = π/8.
         
         // Rotate the input state by π/8 means to apply Ry with angle 2π/8.
