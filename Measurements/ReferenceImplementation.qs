@@ -315,8 +315,8 @@ namespace Quantum.Kata.Measurements {
         // Assuming a von Neumann measurement of the form
         // E_a = Ry(2*alpha) * (1,0) = (cos(alpha),  sin(alpha)) and
         // E_b = Ry(2*alpha) * (0,1) = (sin(alpha), -cos(alpha)), we get
-        // P(a|0) = |〈E_a|0〉|² = cos²(alpha),
-        // P(b|+) = |〈E_b|+〉|² = 1/2 + cos(alpha) sin(alpha), and
+        // P(a|0) = |⟨E_a|0⟩|² = cos²(alpha),
+        // P(b|+) = |⟨E_b|+⟩|² = 1/2 + cos(alpha) sin(alpha), and
         // P_correct = 1/2 * (1/2 + cos²(alpha) + cos(alpha) sin(alpha)). 
         // Maximizing this for alpha, we get max P_success = 1/2 (1 + 1/sqrt(2)) = 0.8535..., 
         // which is attained for alpha = π/8.
