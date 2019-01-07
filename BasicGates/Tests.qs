@@ -173,7 +173,7 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    // prepare state |+⟩ ⊕ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
+    // prepare state |+⟩ ⊗ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
     operation StatePrep_PlusPlus (qs : Qubit[]) : Unit {
         
         body (...) {
@@ -187,7 +187,7 @@ namespace Quantum.Kata.BasicGates {
     // ------------------------------------------------------
     operation T22_TwoQubitGate2_Test () : Unit {
         using (qs = Qubit[2]) {
-            // prepare |+⟩ ⊕ |+⟩ state
+            // prepare |+⟩ ⊗ |+⟩ state
             StatePrep_PlusPlus(qs);
             
             // apply operation that needs to be tested

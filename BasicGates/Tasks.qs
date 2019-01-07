@@ -181,7 +181,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 2.1. Two-qubit gate - 1
     // Input: Two unentangled qubits (stored in an array of length 2).
     //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0⟩
-    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊕ |0⟩).
+    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊗ |0⟩).
     // Goal:  Change the two-qubit state to α |00⟩ + β |11⟩.
     // Note that unless the starting state of the first qubit was |0⟩ or |1⟩,
     // the resulting two-qubit state can not be represented as a tensor product
@@ -198,7 +198,7 @@ namespace Quantum.Kata.BasicGates {
     
     // Task 2.2. Two-qubit gate - 2
     // Input: Two qubits (stored in an array of length 2)
-    //        in state |+⟩ ⊕ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
+    //        in state |+⟩ ⊗ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
     // Goal:  Change the two-qubit state to (|00⟩ + |01⟩ + |10⟩ - |11⟩) / 2.
     // Note that while the starting state can be represented as a tensor product of single-qubit states,
     // the resulting two-qubit state can not be represented in such a way.
