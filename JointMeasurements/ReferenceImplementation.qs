@@ -51,7 +51,7 @@ namespace Quantum.Kata.JointMeasurements {
     operation DifferentBasis_Reference (qs : Qubit[]) : Int {
         // The first state is a superposition of the states |++⟩ and |--⟩, 
         // which belong to the +1 eigenspace of the operator X ⊗ X;
-        // the second one - of |+-⟩ and |-+⟩, which belong to the -1 eigenspace.
+        // the second one is a superposition of |+-⟩ and |-+⟩, which belong to the -1 eigenspace.
         return Measure([PauliX, PauliX], qs) == Zero ? 0 | 1;
     }
     
