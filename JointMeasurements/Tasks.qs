@@ -79,7 +79,7 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
     
-    // Task 5. Parity measurement in different basis
+    // Task 5*. Parity measurement in different basis
     // Input: Two qubits (stored in an array) which are guaranteed to be
     //        either in superposition α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩
     //        or in superposition α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩.
@@ -92,10 +92,10 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
     
-    // Task 6. Controlled X gate with |0⟩ target
+    // Task 6*. Controlled X gate with |0⟩ target
     // Input: Two unentangled qubits (stored in an array of length 2).
     //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0⟩
-    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊕ |0⟩).
+    //        (this can be written as two-qubit state (α|0⟩ + β|1⟩) ⊗ |0⟩).
     // Goal:  Change the two-qubit state to α |00⟩ + β |11⟩ using only single-qubit gates and joint measurements.
     //        Do not use two-qubit gates.
     // You do not need to allocate extra qubits.
@@ -104,7 +104,7 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
     
-    // Task 7*. Controlled X gate with arbitrary target
+    // Task 7**. Controlled X gate with arbitrary target
     // Input: Two qubits (stored in an array of length 2) in an arbitrary
     //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
     // Goal:  Change the two-qubit state to α|00⟩ + β|01⟩ + δ|10⟩ + γ|11⟩ using only single-qubit gates and joint measurements.
