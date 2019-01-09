@@ -302,7 +302,7 @@ namespace Quantum.Kata.Measurements {
     
     
     // Alternate reference implementation for Task 1.12
-    operation TwoQubitStatePartTwo_Reference (qs : Qubit[]) : Int {
+    operation TwoQubitStatePartTwo_Alternate (qs : Qubit[]) : Int {
 
         // Observe that the unitary matrix A formed by the columns |S0⟩, ..., |S3⟩
         // is up to permutations matrices and diagonal +1/-1 matrices equal to the
