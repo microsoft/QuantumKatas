@@ -55,15 +55,15 @@ namespace Quantum.Kata.SuperdenseCoding {
     //      2) two classical bits, stored in an array.
     // Goal: Transform the input qubit to encode the two classical bits.
     operation EncodeMessageInQubit (qAlice : Qubit, message : Bool[]) : Unit {
-            // Hint: manipulate Alice's half of the entangled pair
-            // to change the joint state of the two qubits to one of the following four states
-            // based on the value of message:
-            // [0; 0]:    |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
-            // [0; 1]:    |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
-            // [1; 0]:    |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
-            // [1; 1]:    |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
+        // Hint: manipulate Alice's half of the entangled pair
+        // to change the joint state of the two qubits to one of the following four states
+        // based on the value of message:
+        // [0; 0]:    |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+        // [0; 1]:    |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+        // [1; 0]:    |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+        // [1; 1]:    |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
 
-            // ...
+        // ...
     }
     
     
