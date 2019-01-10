@@ -122,7 +122,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    // Task 1.7. f(x) = Σᵢ 𝑥ᵢ + (1 if prefix of x is equal to the given bit vector, and 0 otherwise) modulo 2
+    // Task 1.7. f(x) = Σᵢ xᵢ + (1 if prefix of x is equal to the given bit vector, and 0 otherwise) modulo 2
     // Inputs:
     //      1) N qubits in arbitrary state |x⟩ (input register)
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
