@@ -259,7 +259,36 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |S3⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     
-    // Helper function to implement diag(-1, 1, 1, 1)
+    operation TwoQubitStatePartTwo_Reference (qs : Qubit[]) : Int {
+        // Try this!
+        H(qs[1]);
+        
+        // Now, each of the four input states has been converted to a Bell
+        // state:
+        // |S0⟩ ↦ |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
+        // |S1⟩ ↦ |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
+        // |S2⟩ ↦ |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
+        // |S3⟩ ↦ |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
+        // We can refer now to task 1.10 (what follows is an alternate solution
+        // to 1.10, with some tweaks to reorder the output values).
+        
+        CNOT(qs[0], qs[1]);
+        H(qs[0]);
+
+        mutable m1 = 1;
+        if (M(qs[0]) == One) {
+            set m1 = 0;
+        }
+        
+        mutable m2 = 1;
+        if (M(qs[1]) == One) {
+            set m2 = 0;
+        }
+        
+        return m2 * 2 + m1;
+    }
+    
+    // Helper function to implement diag(-1, 1, 1, 1) for the alternate solution to 1.12
     operation ApplyDiag (qs : Qubit[]) : Unit {
         
         body (...) {
@@ -272,8 +301,8 @@ namespace Quantum.Kata.Measurements {
     }
     
     
-    // The actual reference implementation for Task 1.11
-    operation TwoQubitStatePartTwo_Reference (qs : Qubit[]) : Int {
+    // Alternate reference implementation for Task 1.12
+    operation TwoQubitStatePartTwo_Alternate (qs : Qubit[]) : Int {
 
         // Observe that the unitary matrix A formed by the columns |S0⟩, ..., |S3⟩
         // is up to permutations matrices and diagonal +1/-1 matrices equal to the
