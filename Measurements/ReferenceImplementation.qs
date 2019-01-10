@@ -288,7 +288,7 @@ namespace Quantum.Kata.Measurements {
         return m2 * 2 + m1;
     }
     
-    // Helper function to implement diag(-1, 1, 1, 1) for alternate solution
+    // Helper function to implement diag(-1, 1, 1, 1) for the alternate solution to 1.12
     operation ApplyDiag (qs : Qubit[]) : Unit {
         
         body (...) {
