@@ -18,7 +18,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Part I. Oracles
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. f(x) = 𝑥₀ ⊕ ... ⊕ xₙ₋₁ (parity of the number of bits set to 1)
+    // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (parity of the number of bits set to 1)
     operation Oracle_CountBits_Reference (x : Qubit[], y : Qubit) : Unit {
         
         body (...) {
