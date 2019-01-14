@@ -29,7 +29,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // In this section you will implement oracles defined by classical functions using the following rules:
-    //  - a function f(𝑥₀, …, 𝑥ₙ₋₁) with N bits of input x = (𝑥₀, …, 𝑥ₙ₋₁) and 1 bit of output y
+    //  - a function f(x₀, ..., xₙ₋₁) with N bits of input x = (x₀, ..., xₙ₋₁) and 1 bit of output y
     //    defines an oracle which acts on N input qubits and 1 output qubit.
     //  - the oracle effect on qubits in computational basis states is defined as follows:
     //    |x⟩ |y⟩ -> |x⟩ |y ⊕ f(x)⟩   (⊕ is addition modulo 2)
@@ -88,7 +88,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    // Task 1.5. f(x) = Σᵢ 𝑟ᵢ 𝑥ᵢ modulo 2 for a given bit vector r (scalar product function)
+    // Task 1.5. f(x) = Σᵢ rᵢ xᵢ modulo 2 for a given bit vector r (scalar product function)
     // Inputs:
     //      1) N qubits in arbitrary state |x⟩ (input register)
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
@@ -106,7 +106,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    // Task 1.6. f(x) = Σᵢ (𝑟ᵢ 𝑥ᵢ + (1 - 𝑟ᵢ)(1 - 𝑥ᵢ)) modulo 2 for a given bit vector r
+    // Task 1.6. f(x) = Σᵢ (rᵢ xᵢ + (1 - rᵢ)(1 - xᵢ)) modulo 2 for a given bit vector r
     // Inputs:
     //      1) N qubits in arbitrary state |x⟩ (input register)
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
@@ -122,7 +122,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    // Task 1.7. f(x) = Σᵢ 𝑥ᵢ + (1 if prefix of x is equal to the given bit vector, and 0 otherwise) modulo 2
+    // Task 1.7. f(x) = Σᵢ xᵢ + (1 if prefix of x is equal to the given bit vector, and 0 otherwise) modulo 2
     // Inputs:
     //      1) N qubits in arbitrary state |x⟩ (input register)
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
@@ -192,7 +192,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
     //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle is a scalar product function
-    // (can be represented as f(𝑥₀, …, 𝑥ₙ₋₁) = Σᵢ 𝑟ᵢ 𝑥ᵢ modulo 2 for some bit vector r = (𝑟₀, …, 𝑟ₙ₋₁)).
+    // (can be represented as f(x₀, ..., xₙ₋₁) = Σᵢ rᵢ xᵢ modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁)).
     // You have implemented the oracle implementing the scalar product function in task 1.5.
     // Output:
     //      A bit vector r reconstructed from the function
@@ -296,7 +296,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
     //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle can be represented as
-    // f(𝑥₀, …, 𝑥ₙ₋₁) = Σᵢ (𝑟ᵢ 𝑥ᵢ + (1 - 𝑟ᵢ)(1 - 𝑥ᵢ)) modulo 2 for some bit vector r = (𝑟₀, …, 𝑟ₙ₋₁).
+    // f(x₀, ..., xₙ₋₁) = Σᵢ (rᵢ xᵢ + (1 - rᵢ)(1 - rᵢ)) modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁).
     // You have implemented the oracle implementing this function in task 1.6.
     // Output:
     //      A bit vector r which generates the same oracle as the one you are given

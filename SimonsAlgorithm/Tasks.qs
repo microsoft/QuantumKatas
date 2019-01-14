@@ -24,7 +24,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Part I. Oracles
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. f(x) = 𝑥₀ ⊕ ... ⊕ xₙ₋₁ (i.e., the parity of a given bit string)
+    // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (i.e., the parity of a given bit string)
     // Inputs:
     //      1) N qubits in an arbitrary state |x⟩
     //      2) a qubit in an arbitrary state |y⟩
