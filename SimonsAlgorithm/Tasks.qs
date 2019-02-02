@@ -135,7 +135,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // the bit string s for it is [0, ..., 0, 1].
     //
     // Output:
-    //      Any bit string b such that Σᵢ cᵢ sᵢ = 0 modulo 2.
+    //      Any bit string b such that Σᵢ bᵢ sᵢ = 0 modulo 2.
     //
     // Note that the whole algorithm will reconstruct the bit string s itself, but the quantum part of the
     // algorithm will only find some vector orthogonal to the bit string s. The classical post-processing

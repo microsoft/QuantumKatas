@@ -117,7 +117,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
             ApplyToEach(H, x);
             
             // measure all qubits of the input register;
-            // the result of each measurement is converted to a Bool
+            // the result of each measurement is converted to an Int
             for (i in 0 .. N - 1) {
                 if (M(x[i]) == One) {
                     set j[i] = 1;
