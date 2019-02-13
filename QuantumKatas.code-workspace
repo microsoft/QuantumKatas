@@ -26,6 +26,10 @@
 			"path": "Measurements"
 		},
 		{
+			"path": "PhaseEstimation",
+			"name": "Phase Estimation"
+		},
+		{
 			"path": "QEC_BitFlipCode",
 			"name": "QEC: Bit-flip Code"
 		},

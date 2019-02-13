@@ -23,6 +23,8 @@ Currently covered topics are:
   This kata introduces Simon's algorithm.
 * **[Grover's algorithm](./GroversAlgorithm/)**.
   This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
+* **[Phase estimation](./PhaseEstimation/)**.
+  This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
 
