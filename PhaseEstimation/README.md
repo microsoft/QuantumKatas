@@ -6,6 +6,10 @@ Phase estimation is the task of estimating the eigenvalue of an eigenvector of a
 
 #### Theory
 
+Eigenvalues and eigenvectors:
+
+* [Wikipedia article](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors).
+
 Quantum phase estimation:
 
 * Wikipedia article on [quantum phase estimation](https://en.wikipedia.org/wiki/Quantum_phase_estimation_algorithm).
