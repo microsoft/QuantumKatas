@@ -8,45 +8,48 @@
 	"folders": [
 		{
 			"path": "BasicGates",
-			"name": "Basic Gates"
+			"name": "1. Basic Gates"
 		},
 		{
-			"path": "DeutschJozsaAlgorithm",
-			"name": "Deutsch–Jozsa Algorithm"
+			"path": "Superposition",
+			"name": "2. Superposition"
 		},
 		{
-			"path": "GroversAlgorithm",
-			"name": "Grover's Search Algorithm"
+			"path": "Measurements",
+			"name": "3. Measurements"
 		},
 		{
 			"path": "JointMeasurements",
-			"name": "Joint Measurements"
+			"name": "4. Joint Measurements"
 		},
 		{
-			"path": "Measurements"
-		},
-		{
-			"path": "PhaseEstimation",
-			"name": "Phase Estimation"
-		},
-		{
-			"path": "QEC_BitFlipCode",
-			"name": "QEC: Bit-flip Code"
-		},
-		{
-			"path": "SimonsAlgorithm",
-			"name": "Simon's Algorithm"
+			"path": "Teleportation",
+			"name": "5. Teleportation"	
 		},
 		{
 			"path": "SuperdenseCoding",
-			"name": "Superdense Coding"
+			"name": "6. Superdense Coding"
 		},
 		{
-			"path": "Superposition"
+			"path": "DeutschJozsaAlgorithm",
+			"name": "7. Deutsch–Jozsa Algorithm"
 		},
 		{
-			"path": "Teleportation"	
-		}
+			"path": "SimonsAlgorithm",
+			"name": "8. Simon's Algorithm"
+		},
+		{
+			"path": "GroversAlgorithm",
+			"name": "9. Grover's Search Algorithm"
+		},
+		{
+			"path": "PhaseEstimation",
+			"name": "10. Phase Estimation"
+		},
+		{
+			"path": "QEC_BitFlipCode",
+			"name": "11. QEC: Bit-flip Code"
+		},
 	],
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,
@@ -67,6 +70,8 @@
 			// NB: this will hide ALL C# files.
 			"**/*.cs": true,
 			"**/*.csproj": true,
+			// Hide JSON files which are part of the test harness
+			"**/*.json": true,
 
 			// Hide VS Code and VS2017 metadata.
 			"**/.vscode": true,
@@ -74,7 +79,8 @@
 
 			// Hide build artifacts.
 			"**/bin": true,
-			"**/obj": true
+			"**/obj": true,
+			"**/.vs": true
 		}
 	}
 }
