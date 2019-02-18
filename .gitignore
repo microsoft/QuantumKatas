@@ -24,6 +24,7 @@ TestResults/
 *.vspscc
 UpgradeLog.htm
 .vs
+.vscode/
 *.user
 
 # Random non-solution files
