@@ -16,4 +16,17 @@ namespace Quantum.Kata.QFT {
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Canon;
     
+    //////////////////////////////////////////////////////////////////
+    // Part I. Quantum Fourier Transform (QFT)
+    //////////////////////////////////////////////////////////////////
+
+    // Task 1.1 QFT
+    operation QFT_Reference (qs : Qubit[]) : Unit {
+        body(...) {
+            QFT(BigEndian(qs));
+        }
+
+        controlled adjoint auto;
+    }
+
 }

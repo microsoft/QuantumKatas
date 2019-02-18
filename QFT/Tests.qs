@@ -18,5 +18,15 @@ namespace Quantum.Kata.QFT {
 
     function AssertRegisterState(qubits : Qubit[], expected : Complex[], tolerance : Double)
             : Unit {}
+
+    operation T11_Test () : Unit {
+        using (qs = Qubit[4]) {
+            X(qs[0]);
+            let reg = qs[3 .. -1 .. 0];
+            QuantumFT(reg);
+            DumpMachine();
+            ResetAll(qs);
+        }
+    }
     
 }

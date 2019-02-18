@@ -14,4 +14,9 @@ namespace Quantum.Kata.QFT {
     // Welcome!
     //////////////////////////////////////////////////////////////////
     
+    // Task 1.1 QFT
+    operation QuantumFT (qs : Qubit[]) : Unit {
+        QFT_Reference(qs);
+    }
+
 }
