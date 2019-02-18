@@ -27,7 +27,7 @@ namespace Quantum.Kata.QFT
         /// This driver will run all Q# tests (operations named "...Test") 
         /// that belong to namespace Quantum.Week5.
         /// </summary>
-        [OperationDriver(TestNamespace = "Quantum.Week5")]
+        [OperationDriver(TestNamespace = "Quantum.Kata.QFT")]
         public void TestTarget(TestOperation op)
         {
             using (var sim = new QuantumSimulator())
