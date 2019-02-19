@@ -25,8 +25,8 @@ namespace Quantum.Kata.PhaseEstimation
     public class CounterSimulator : QuantumSimulator
     {
         private Dictionary<ICallable, int> _operationsCount = new Dictionary<ICallable, int>();
-        private static long _qubitsAllocated = 0;
-        private static long _maxQubitsAllocated = 0;
+        private long _qubitsAllocated = 0;
+        private long _maxQubitsAllocated = 0;
 
         #region Counting operations
         public CounterSimulator(
@@ -96,24 +96,29 @@ namespace Quantum.Kata.PhaseEstimation
         #region Counting allocated qubits
         new public class Allocate : Microsoft.Quantum.Simulation.Simulators.SimulatorBase.Allocate
         {
-            public Allocate(SimulatorBase m) : base(m) { }
+            CounterSimulator _sim;
+
+            public Allocate(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
 
             public override Qubit Apply()
             {
-                _qubitsAllocated++;
-                if (_qubitsAllocated > _maxQubitsAllocated)
+                _sim._qubitsAllocated++;
+                if (_sim._qubitsAllocated > _sim._maxQubitsAllocated)
                 {
-                    _maxQubitsAllocated = _qubitsAllocated;
+                    _sim._maxQubitsAllocated = _sim._qubitsAllocated;
                 }
                 return base.Apply();
             }
 
             public override QArray<Qubit> Apply(long count)
             {
-                _qubitsAllocated += count;
-                if (_qubitsAllocated > _maxQubitsAllocated)
+                _sim._qubitsAllocated += count;
+                if (_sim._qubitsAllocated > _sim._maxQubitsAllocated)
                 {
-                    _maxQubitsAllocated = _qubitsAllocated;
+                    _sim._maxQubitsAllocated = _sim._qubitsAllocated;
                 }
                 return base.Apply(count);
             }
@@ -121,41 +126,55 @@ namespace Quantum.Kata.PhaseEstimation
 
         new public class Release : Microsoft.Quantum.Simulation.Simulators.SimulatorBase.Release
         {
-            public Release(SimulatorBase m) : base(m) { }
+            CounterSimulator _sim;
+
+            public Release(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
 
             public override void Apply(Qubit q)
             {
-                _qubitsAllocated--;
+                _sim._qubitsAllocated--;
                 base.Apply(q);
             }
 
             public override void Apply(QArray<Qubit> qubits)
             {
-                _qubitsAllocated -= qubits.Length;
+                _sim._qubitsAllocated -= qubits.Length;
                 base.Apply(qubits);
             }
         }
 
         public class ResetQubitCountImpl : ResetQubitCount
         {
+            CounterSimulator _sim;
 
-            public ResetQubitCountImpl(CounterSimulator m) : base(m) { }
+            public ResetQubitCountImpl(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
 
             public override Func<QVoid, QVoid> Body => (__in) =>
             {
-                _qubitsAllocated = 0;
-                _maxQubitsAllocated = 0;
+                _sim._qubitsAllocated = 0;
+                _sim._maxQubitsAllocated = 0;
                 return QVoid.Instance;
             };
         }
 
         public class GetMaxQubitCountImpl : GetMaxQubitCount
         {
-            public GetMaxQubitCountImpl(CounterSimulator m) : base(m) { }
+            CounterSimulator _sim;
+
+            public GetMaxQubitCountImpl(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
 
             public override Func<QVoid, long> Body => (__in) =>
             {
-                return _maxQubitsAllocated;
+                return _sim._maxQubitsAllocated;
             };
         }
         #endregion
