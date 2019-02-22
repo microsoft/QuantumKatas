@@ -50,6 +50,10 @@
 			"path": "QEC_BitFlipCode",
 			"name": "11. QEC: Bit-flip Code"
 		},
+		{
+			"path": "UnitaryPatterns",
+			"name": "12*. Unitary Patterns"
+		},
 	],
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,

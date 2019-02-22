@@ -27,6 +27,8 @@ Currently covered topics are:
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
+* **[Unitary Patterns*](./UnitaryPatterns/)**.
+  This unusual kata offers tasks on implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
 Each kata is a separate project which includes:
 
