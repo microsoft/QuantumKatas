@@ -11,7 +11,7 @@ namespace Quantum.DumpUnitary
     {
         static void Main(string[] args)
         {
-            double eps = 1E-5;          // the square of the absolute value of the amplitude has to be less than or equal to eps^2 to be considered 0
+            double eps = 1E-5;          // the square of the absolute value of the amplitude has to be less than or equal to eps to be considered 0
 
             int N = 3;                  // the number of qubits on which the unitary acts
             using (var qsim = new QuantumSimulator())
@@ -35,10 +35,10 @@ namespace Quantum.DumpUnitary
                     string real = parts[1];
                     string complex = parts[2];
                     // write the number to the matrix as a string "(real, complex)"
-                    unitary[column, row] = $"({real}, {complex})";
+                    unitary[row, column] = $"({real}, {complex})";
                     // for a pattern, convert real and complex parts into doubles and add them up
                     double amplitudeSquare = Math.Pow(double.Parse(real), 2) + Math.Pow(double.Parse(complex), 2);
-                    unitaryPattern[row] += (amplitudeSquare > eps * eps) ? 'X' : '.';
+                    unitaryPattern[row] += (amplitudeSquare > eps) ? 'X' : '.';
                 }
                 // clean up the file with individual amplitudes
                 System.IO.File.Delete(fileName);
