@@ -75,7 +75,7 @@ namespace Quantum.Kata.BasicGates {
     operation AmplitudeChange_Reference (q : Qubit, alpha : Double) : Unit {
         
         body (...) {
-            Ry(2.0 * alpha, q);
+            Ry(alpha + alpha, q);
         }
         
         adjoint invert;
