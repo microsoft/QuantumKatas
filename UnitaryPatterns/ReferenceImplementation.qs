@@ -45,4 +45,28 @@ namespace Quantum.Kata.UnitaryPatterns {
         ApplyToEach(H, qs[1 .. Length(qs) - 1]);
         X(Head(qs));
     }
+    
+    
+    // Task 6. Anti-diagonal
+    operation Antidiagonal_Reference (qs : Qubit[]) : Unit {
+        ApplyToEach(X, qs);
+    }
+
+
+    // Task 7. 2x2 chessboard pattern
+    operation ChessPattern2x2_Reference (qs : Qubit[]) : Unit {
+        H(Head(qs));
+        for (i in 2 .. Length(qs) - 1) {
+            H(qs[i]);
+        }
+    }
+    
+
+    // Task 8. Two patterns
+    operation TwoPatterns_Reference (qs : Qubit[]) : Unit {
+        // bottom right quarter is obtained by applying Controlled AllNonZero
+        ApplyToEach(Controlled H([Tail(qs)], _), Most(qs));
+        // top left quarter is obtained by applying 0-controlled Antidiagonal
+        ApplyToEach((ControlledOnInt(0, X))([Tail(qs)], _), Most(qs));
+    }
 }

@@ -117,4 +117,53 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation OddChessPattern (qs : Qubit[]) : Unit {
         // ...
     }
+    
+    
+    // Task 6. Anti-diagonal
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       with non-zero elements on the anti-diagonal and zero elements everywhere else.
+    // Example: For N = 2, the matrix of the transformation should look as follows:
+    //          ...X
+    //          ..X.
+    //          .X..
+    //          X...
+    operation Antidiagonal (qs : Qubit[]) : Unit {
+        // ...
+    }
+
+
+    // Task 7. 2x2 chessboard pattern
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       in which zero and non-zero elements form a chessboard pattern with 2x2 squares,
+    //       with the top left square occupied by non-zero elements.
+    // Example: For N = 3, the matrix of the transformation should look as follows:
+    // XX..XX..
+    // XX..XX..
+    // ..XX..XX
+    // ..XX..XX
+    // XX..XX..
+    // XX..XX..
+    // ..XX..XX
+    // ..XX..XX
+    operation ChessPattern2x2 (qs : Qubit[]) : Unit {
+        // ...
+    }
+    
+
+    // Task 8. Two patterns
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       with all zero elements in the top right and bottom left quarters, 
+    //       an anti-diagonal pattern from task 1.6 in the top left quarter,
+    //       and an all-non-zero pattern from task 1.2 in the bottom right quarter.
+    // Example: For N = 2, the matrix of the transformation should look as follows:
+    //          .X..
+    //          X...
+    //          ..XX
+    //          ..XX
+    operation TwoPatterns (qs : Qubit[]) : Unit {
+        // ...
+    }
 }
