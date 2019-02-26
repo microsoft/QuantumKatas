@@ -296,7 +296,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
     //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle can be represented as
-    // f(x₀, ..., xₙ₋₁) = Σᵢ (rᵢ xᵢ + (1 - rᵢ)(1 - rᵢ)) modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁).
+    // f(x₀, ..., xₙ₋₁) = Σᵢ (rᵢ xᵢ + (1 - rᵢ)(1 - xᵢ)) modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁).
     // You have implemented the oracle implementing this function in task 1.6.
     // Output:
     //      A bit vector r which generates the same oracle as the one you are given
