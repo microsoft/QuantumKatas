@@ -333,6 +333,34 @@ namespace Quantum.Kata.Superposition {
         controlled distribute;
         controlled adjoint distribute;
     }
+
+    // Principle is the same as the reference above but without recursion
+    // Circuit for N=4: https://algassert.com/quirk#circuit={%22cols%22:[[1,1,1,%22~95cq%22],[1,1,%22~erlf%22,%22%E2%97%A6%22],[1,%22~809j%22,%22%E2%97%A6%22,%22%E2%97%A6%22],[%22X%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22]],%22gates%22:[{%22id%22:%22~809j%22,%22name%22:%22FS_2%22,%22matrix%22:%22{{%E2%88%9A%C2%BD,-%E2%88%9A%C2%BD},{%E2%88%9A%C2%BD,%E2%88%9A%C2%BD}}%22},{%22id%22:%22~erlf%22,%22name%22:%22FS_3%22,%22matrix%22:%22{{%E2%88%9A%E2%85%94,-%E2%88%9A%E2%85%93},{%E2%88%9A%E2%85%93,%E2%88%9A%E2%85%94}}%22},{%22id%22:%22~95cq%22,%22name%22:%22FS_4%22,%22matrix%22:%22{{%E2%88%9A%C2%BE,-%C2%BD},{%C2%BD,%E2%88%9A%C2%BE}}%22}]}
+    operation WState_Arbitrary_Iterative (qs : Qubit[]) : Unit {
+        let N = Length(qs);
+        FracSuper(N, qs[0]);
+        for (i in 1 .. N - 1) {
+            (ControlledOnBitString(new Bool[i], FracSuper))(qs[0..i-1], (N-i, qs[i]));
+        }
+    }
+
+    // For q=|0> generate superposition on q of form sqrt((x-1) / x) |0⟩ + sqrt(1/x) |1⟩,
+    // with x = denomintaor.
+    operation FracSuper(denominator : Int, q : Qubit) : Unit {
+        body (...) {
+            if (denominator ==  1) {
+                X(q);
+            } else {
+                let denom = ToDouble(denominator);
+                let num = denom - 1.0;
+                let theta = 2.0 * ArcCos(Sqrt(num / denom));
+                Ry(theta, q);
+            }
+        }
+        adjoint invert;
+        controlled distribute;
+        controlled adjoint distribute;
+    }
     
     
     // solution based on generation for 2^k and post-selection using measurements
