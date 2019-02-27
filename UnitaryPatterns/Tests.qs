@@ -137,6 +137,55 @@ namespace Quantum.Kata.UnitaryPatterns {
             AssertOperationMatrixMatchesPattern(n, OddChessPattern, OddChessPattern_Pattern);
         }
     }
+    
+    
+    // ------------------------------------------------------
+    function Antidiagonal_Pattern (size : Int, row : Int, col : Int) : Bool {
+        return row == (size - 1) - col;
+    }
+    
+    
+    operation T06_Antidiagonal_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, Antidiagonal, Antidiagonal_Pattern);
+        }
+    }
+    
+    
+    // ------------------------------------------------------
+    function ChessPattern2x2_Pattern (size : Int, row : Int, col : Int) : Bool {
+        return (row / 2) % 2 == (col / 2) % 2;
+    }
+    
+    
+    operation T07_ChessPattern2x2_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, ChessPattern2x2, ChessPattern2x2_Pattern);
+        }
+    }
+    
+    
+    // ------------------------------------------------------
+    function TwoPatterns_Pattern (size : Int, row : Int, col : Int) : Bool {
+        // top right and bottom left quarters are all 0
+        let s2 = size / 2;
+        if (row / s2 != col / s2) {
+            return false;
+        }
+        if (row / s2 == 0) {
+            // top left quarter is an anti-diagonal
+            return row % s2 + col % s2 == s2 - 1;
+        }
+        // bottom right quarter is all 1
+        return true;
+    }
+    
+    
+    operation T08_TwoPatterns_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, TwoPatterns, TwoPatterns_Pattern);
+        }
+    }
 
 
     // ------------------------------------------------------
