@@ -12,9 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 
-using Xunit;
-
-namespace Quantum.Kata.PhaseEstimation
+namespace Quantum.Kata.UnitaryPatterns
 {
     /// <summary>
     ///     This custom quantum simulator keeps track of the number of times 
@@ -30,9 +28,9 @@ namespace Quantum.Kata.PhaseEstimation
 
         #region Counting operations
         public CounterSimulator(
-            bool throwOnReleasingQubitsNotInZeroState = true, 
-            uint? randomNumberGeneratorSeed = null, 
-            bool disableBorrowing = false) : 
+            bool throwOnReleasingQubitsNotInZeroState = true,
+            uint? randomNumberGeneratorSeed = null,
+            bool disableBorrowing = false) :
             base(throwOnReleasingQubitsNotInZeroState, randomNumberGeneratorSeed, disableBorrowing)
         {
             this.OnOperationStart += CountOperationCalls;
@@ -84,10 +82,9 @@ namespace Quantum.Kata.PhaseEstimation
                 var oracle = __in;
 
                 var op = oracle as ICallable;
-                Assert.NotNull(op);
 
                 var actual = _sim._operationsCount.ContainsKey(op) ? _sim._operationsCount[op] : 0;
-                
+
                 return actual;
             };
         }
