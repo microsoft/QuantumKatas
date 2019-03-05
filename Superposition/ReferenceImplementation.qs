@@ -333,6 +333,36 @@ namespace Quantum.Kata.Superposition {
         controlled distribute;
         controlled adjoint distribute;
     }
+
+
+    // Iterative solution (equivalent to the WState_Arbitrary_Reference, but with the recursion unrolled)
+    // Circuit for N=4: https://algassert.com/quirk#circuit={%22cols%22:[[1,1,1,%22~95cq%22],[1,1,%22~erlf%22,%22%E2%97%A6%22],[1,%22~809j%22,%22%E2%97%A6%22,%22%E2%97%A6%22],[%22X%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22]],%22gates%22:[{%22id%22:%22~809j%22,%22name%22:%22FS_2%22,%22matrix%22:%22{{%E2%88%9A%C2%BD,-%E2%88%9A%C2%BD},{%E2%88%9A%C2%BD,%E2%88%9A%C2%BD}}%22},{%22id%22:%22~erlf%22,%22name%22:%22FS_3%22,%22matrix%22:%22{{%E2%88%9A%E2%85%94,-%E2%88%9A%E2%85%93},{%E2%88%9A%E2%85%93,%E2%88%9A%E2%85%94}}%22},{%22id%22:%22~95cq%22,%22name%22:%22FS_4%22,%22matrix%22:%22{{%E2%88%9A%C2%BE,-%C2%BD},{%C2%BD,%E2%88%9A%C2%BE}}%22}]}
+    operation WState_Arbitrary_Iterative (qs : Qubit[]) : Unit {
+        let N = Length(qs);
+        FractionSuperposition(N, qs[0]);
+        for (i in 1 .. N - 1) {
+            (ControlledOnInt(0, FractionSuperposition))(qs[0..i-1], (N-i, qs[i]));
+        }
+    }
+    
+    // Given a qubit in |0⟩ state and a denominator N,
+    // transform the qubit to state sqrt((N-1) / N) |0⟩ + sqrt(1/N) |1⟩.
+    operation FractionSuperposition(denominator : Int, q : Qubit) : Unit {
+        body (...) {
+            if (denominator == 1) {
+                X(q);
+            } else {
+                // represent the target state as cos(theta) * |0⟩ + sin(theta) * |1⟩, as in task 1.3
+                let denom = ToDouble(denominator);
+                let num = denom - 1.0;
+                let theta = ArcCos(Sqrt(num / denom));
+                Ry(2.0 * theta, q);
+            }
+        }
+        adjoint invert;
+        controlled distribute;
+        controlled adjoint distribute;
+    }
     
     
     // solution based on generation for 2^k and post-selection using measurements
