@@ -129,7 +129,15 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 10. Superposition of |0...0⟩ and given bit string
+    // Task 10. |00⟩ + |01⟩ + |10⟩ state
+    // Input: 2 qubits in |00⟩ state.
+    // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
+    operation ThreeStates_TwoQubits (qs : Qubit[]) : Unit {
+        // ...
+    }
+    
+    
+    // Task 11. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -148,11 +156,12 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 11. Superposition of two bit strings
+    // Task 12. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
     // Goal: create an equal superposition of two basis states given by the bit strings.
+    //
     // Bit values false and true correspond to |0⟩ and |1⟩ states.
     // Example: for bit strings [false, true, false] and [false, false, true]
     // the qubit state required is (|010⟩ + |001⟩) / sqrt(2).
@@ -163,25 +172,43 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 12**. W state on 2^k qubits
-    // Input: N = 2^k qubits in |0...0⟩ state.
+    // Task 13*. Superposition of four bit strings
+    // Inputs:
+    //      1) N qubits in |0...0⟩ state
+    //      2) four bit string represented as Bool[][] bits
+    //         bits is an array of size 4 x N which describes the bit strings as follows:
+    //         bits[i] describes the i-th bit string and has N elements.
+    //         All four bit strings will be distinct.
+    //
+    // Goal: create an equal superposition of the four basis states given by the bit strings.
+    //
+    // Example: for N = 2 and bits = [[false, true], [true, false], [false, false], [true, true]]
+    //          the state you need to prepare is (|01⟩ + |10⟩ + |00⟩ + |11⟩) / 2.
+    operation FourBitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
+        // Hint: remember that you can allocate extra qubits.
+
+        // ...
+    }
+    
+    
+    // Task 14**. W state on 2ᵏ qubits
+    // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
     // Example: for N = 4, W state is (|1000⟩ + |0100⟩ + |0010⟩ + |0001⟩) / 2.
     operation WState_PowerOfTwo (qs : Qubit[]) : Unit {
-            // Hint: you can use Controlled modifier to perform arbitrary controlled gates.
+        // Hint: you can use Controlled modifier to perform arbitrary controlled gates.
 
-            // ...
+        // ...
     }
     
     
-    // Task 13**. W state on arbitrary number of qubits
+    // Task 15**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
     // Example: for N = 3, W state is (|100⟩ + |010⟩ + |001⟩) / sqrt(3).
     operation WState_Arbitrary (qs : Qubit[]) : Unit {
-            // ...
+        // ...
     }
-    
 }

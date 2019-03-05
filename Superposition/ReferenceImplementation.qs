@@ -178,7 +178,46 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 10. Superposition of |0...0⟩ and given bit string
+    // ------------------------------------------------------
+    // Task 10. |00⟩ + |01⟩ + |10⟩ state
+    // Input: 2 qubits in |00⟩ state.
+    // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
+    operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit {
+        
+        body (...) {
+            // Follow Niel's answer at https://quantumcomputing.stackexchange.com/a/2313/
+            
+            // Rotate first qubit to (sqrt(2) |0⟩ + |1⟩) / sqrt(3) (task 1.4 from BasicGates kata)
+            let theta = ArcSin(1.0 / Sqrt(3.0));
+            Ry(2.0 * theta, qs[0]);
+            
+            // Split the state sqrt(2) |0⟩ ⊗ |0⟩ into |00⟩ + |01⟩
+            (ControlledOnInt(0, H))([qs[0]], qs[1]);
+        }
+        
+        adjoint auto;
+    }
+
+    // Alternative solution, based on post-selection
+    operation ThreeStates_TwoQubits_Postselection (qs : Qubit[]) : Unit {
+        using (ancilla = Qubit()) {
+            repeat {
+                // Create |00⟩ + |01⟩ + |10⟩ + |11⟩ state
+                ApplyToEach(H, qs);
+                // Create (|00⟩ + |01⟩ + |10⟩) ⊗ |0⟩ + |11⟩ ⊗ |1⟩ 
+                Controlled X(qs, ancilla);
+                let res = MResetZ(ancilla);
+            }
+            until (res == Zero)
+            fixup {
+                ResetAll(qs);
+            }
+        }
+    }
+
+
+    // ------------------------------------------------------
+    // Task 11. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -208,7 +247,8 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 11. Superposition of two bit strings
+    // ------------------------------------------------------
+    // Task 12. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -262,8 +302,55 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 12. W state on 2^k qubits
-    // Input: N = 2^k qubits in |0...0⟩ state.
+    // ------------------------------------------------------
+    // Task 13*. Superposition of four bit strings
+    // Inputs:
+    //      1) N qubits in |0...0⟩ state
+    //      2) four bit string represented as Bool[][] bits
+    //         bits is an array of size 4 x N which describes the bit strings as follows:
+    //         bits[i] describes the i-th bit string and has N elements;
+    //         bit values false and true correspond to |0⟩ and |1⟩ states.
+    //
+    // Goal: create an equal superposition of the four basis states given by the bit strings.
+    //
+    // Example: for N = 2 and bits = [[false, true], [true, false], [false, false], [true, true]]
+    //          the state you need to prepare is (|01⟩ + |10⟩ + |00⟩ + |11⟩) / 2.
+    operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit {
+        body (...) {
+            let N = Length(qs);
+            
+            using (anc = Qubit[2]) {
+                // Put two ancillas into equal superposition of 2-qubit basis states
+                ApplyToEachA(H, anc);
+                
+                // Set up the right pattern on the main qubits with control on ancillas
+                for (i in 0 .. 3) {
+                    for (j in 0 .. N - 1) {
+                        if ((bits[i])[j]) {
+                            (ControlledOnInt(i, X))(anc, qs[j]);
+                        }
+                    }
+                }
+                
+                // Uncompute the ancillas, using patterns on main qubits as control
+                for (i in 0 .. 3) {
+                    if (i % 2 == 1) {
+                        (ControlledOnBitString(bits[i], X))(qs, anc[0]);
+                    }
+                    if (i / 2 == 1) {
+                        (ControlledOnBitString(bits[i], X))(qs, anc[1]);
+                    }
+                }
+            }
+        }
+        
+        adjoint auto;
+    }
+
+
+    // ------------------------------------------------------
+    // Task 14. W state on 2ᵏ qubits
+    // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
     // Example: for N = 4, W state is (|1000⟩ + |0100⟩ + |0010⟩ + |0001⟩) / 2.
@@ -300,7 +387,8 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // Task 13. W state on arbitrary number of qubits
+    // ------------------------------------------------------
+    // Task 15**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -365,7 +453,7 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    // solution based on generation for 2^k and post-selection using measurements
+    // solution based on generation for 2ᵏ and post-selection using measurements
     operation WState_Arbitrary_Postselect (qs : Qubit[]) : Unit {
         let N = Length(qs);
         
