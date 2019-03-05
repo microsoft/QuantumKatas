@@ -198,7 +198,7 @@ namespace Quantum.Kata.Superposition {
                 set bits[i] = BoolArrFromPositiveInt(numbers[i], N);
             }
             
-            AssertEqualOnZeroState(N, FourBitstringsSuperposition(_, bits), FourBitstringsSuperposition_Reference(_, bits));
+            AssertEqualOnZeroState(N, FourBitstringSuperposition(_, bits), FourBitstringSuperposition_Reference(_, bits));
         }
     }
     
