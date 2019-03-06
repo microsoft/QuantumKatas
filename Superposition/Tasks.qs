@@ -182,11 +182,11 @@ namespace Quantum.Kata.Superposition {
     //
     // Goal: create an equal superposition of the four basis states given by the bit strings.
     //
-    // Example: for N = 2 and bits = [[false, true], [true, false], [false, false], [true, true]]
-    //          the state you need to prepare is (|01⟩ + |10⟩ + |00⟩ + |11⟩) / 2.
+    // Example: for N = 3 and bits = [[false, true, false], [true, false, false], [false, false, true], [true, true, false]]
+    //          the state you need to prepare is (|010⟩ + |100⟩ + |001⟩ + |110⟩) / 2.
     operation FourBitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         // Hint: remember that you can allocate extra qubits.
-
+        
         // ...
     }
     

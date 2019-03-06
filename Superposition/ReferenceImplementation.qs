@@ -312,9 +312,6 @@ namespace Quantum.Kata.Superposition {
     //         bit values false and true correspond to |0⟩ and |1⟩ states.
     //
     // Goal: create an equal superposition of the four basis states given by the bit strings.
-    //
-    // Example: for N = 2 and bits = [[false, true], [true, false], [false, false], [true, true]]
-    //          the state you need to prepare is (|01⟩ + |10⟩ + |00⟩ + |11⟩) / 2.
     operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit {
         body (...) {
             let N = Length(qs);
