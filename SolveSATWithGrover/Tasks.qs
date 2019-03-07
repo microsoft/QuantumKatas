@@ -220,7 +220,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      1) the number of qubits N,
     //      2) a marking oracle which implements a boolean expression, similar to the oracles from section 1.
     // Output:
-    //      An array of N boolean values which satisfy the expression.
+    //      An array of N boolean values which satisfy the expression implemented by the oracle
+    //      (i.e., any basis state marked by the oracle).
     operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Bool[] {
         // ...
         return new Bool[N];
