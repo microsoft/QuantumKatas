@@ -72,16 +72,38 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 3. Quarters
+    // Task 3. Block diagonal matrix
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       which has 2x2 blocks of non-zero elements on the main diagonal and zero elements everywhere else.
+    // Example: For N = 3, the matrix of the transformation should look as follows:
+    //          XX......
+    //          XX......
+    //          ..XX....
+    //          ..XX....
+    //          ....XX..
+    //          ....XX..
+    //          ......XX
+    //          ......XX
+    operation BlockDiagonal (qs : Qubit[]) : Unit {
+        // ...
+    }
+
+
+    // Task 4. Quarters
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with non-zero elements in top left and bottom right quarters
     //       and zero elements everywhere else.
-    // Example: For N = 2, the matrix of the transformation should look as follows:
-    //          XX..
-    //          XX..
-    //          ..XX
-    //          ..XX
+    // Example: For N = 3, the matrix of the transformation should look as follows:
+    //          XXXX....
+    //          XXXX....
+    //          XXXX....
+    //          XXXX....
+    //          ....XXXX
+    //          ....XXXX
+    //          ....XXXX
+    //          ....XXXX
     operation Quarters (qs : Qubit[]) : Unit {
         // Hint: represent this matrix as a tensor product of a 2x2 diagonal matrix and a larger matrix with all non-zero elements.
 
@@ -89,7 +111,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 4. Even chessboard pattern
+    // Task 5. Even chessboard pattern
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with non-zero elements in positions where row and column indices have the same parity
@@ -104,7 +126,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 5. Odd chessboard pattern
+    // Task 6. Odd chessboard pattern
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with non-zero elements in positions where row and column indices have different parity
@@ -119,7 +141,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 6. Anti-diagonal
+    // Task 7. Anti-diagonal
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with non-zero elements on the anti-diagonal and zero elements everywhere else.
@@ -133,26 +155,26 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
 
 
-    // Task 7. 2x2 chessboard pattern
+    // Task 8. 2x2 chessboard pattern
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       in which zero and non-zero elements form a chessboard pattern with 2x2 squares,
     //       with the top left square occupied by non-zero elements.
     // Example: For N = 3, the matrix of the transformation should look as follows:
-    // XX..XX..
-    // XX..XX..
-    // ..XX..XX
-    // ..XX..XX
-    // XX..XX..
-    // XX..XX..
-    // ..XX..XX
-    // ..XX..XX
+    //          XX..XX..
+    //          XX..XX..
+    //          ..XX..XX
+    //          ..XX..XX
+    //          XX..XX..
+    //          XX..XX..
+    //          ..XX..XX
+    //          ..XX..XX
     operation ChessPattern2x2 (qs : Qubit[]) : Unit {
         // ...
     }
     
 
-    // Task 8. Two patterns
+    // Task 9. Two patterns
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with all zero elements in the top right and bottom left quarters, 
@@ -164,6 +186,69 @@ namespace Quantum.Kata.UnitaryPatterns {
     //          ..XX
     //          ..XX
     operation TwoPatterns (qs : Qubit[]) : Unit {
+        // ...
+    }
+
+
+    // Task 10. Increasing blocks
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix defined recursively:
+    //     * for N = 1 the matrix has non-zero elements on the main diagonal and zero elements everywhere else,
+    //     * for larger N the matrix has all zero elements in the top right and bottom left quarters,
+    //                                   the matrix for N-1 in the top left quarter,
+    //                                   and all non-zero elements in the bottom right quarter.
+    // Example: For N = 3, the matrix of the transformation should look as follows:
+    //          X.......
+    //          .X......
+    //          ..XX....
+    //          ..XX....
+    //          ....XXXX
+    //          ....XXXX
+    //          ....XXXX
+    //          ....XXXX
+    operation IncreasingBlocks (qs : Qubit[]) : Unit {
+        // ...
+    }
+
+
+    // Task 11. X-Wing fighter
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       with non-zero elements on the main diagonal and the anti-diagonal
+    //       and zero elements everywhere else.
+    // Example: For N = 3, the matrix should look as follows:
+    //          X......X
+    //          .X....X.
+    //          ..X..X..
+    //          ...XX...
+    //          ...XX...
+    //          ..X..X..
+    //          .X....X.
+    //          X......X
+    operation XWing_Fighter (qs : Qubit[]) : Unit {
+        // ...
+    }
+    
+
+    // Task 12. Rhombus
+    // Input: N qubits in an arbitrary state.
+    // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
+    //       with non-zero elements forming a rhombus of width 1 with sides parallel to main diagonals.
+    // Example: For N = 2, the matrix of the transformation should look as follows:
+    //          .XX.
+    //          X..X
+    //          X..X
+    //          .XX.
+    // For N = 3, the matrix should look as follows:
+    //          ...XX...
+    //          ..X..X..
+    //          .X....X.
+    //          X......X
+    //          X......X
+    //          .X....X.
+    //          ..X..X..
+    //          ...XX...
+    operation Rhombus (qs : Qubit[]) : Unit {
         // ...
     }
 }
