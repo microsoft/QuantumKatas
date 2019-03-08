@@ -43,16 +43,20 @@
 			"name": "9. Grover's Search Algorithm"
 		},
 		{
+			"path": "SolveSATWithGrover",
+			"name": "10. Solving SAT problems using Grover's algorithm"
+		},
+		{
 			"path": "PhaseEstimation",
-			"name": "10. Phase Estimation"
+			"name": "11. Phase Estimation"
 		},
 		{
 			"path": "QEC_BitFlipCode",
-			"name": "11. QEC: Bit-flip Code"
+			"name": "12. QEC: Bit-flip Code"
 		},
 		{
 			"path": "UnitaryPatterns",
-			"name": "12*. Unitary Patterns"
+			"name": "13*. Unitary Patterns"
 		},
 	],
 	"settings": {
