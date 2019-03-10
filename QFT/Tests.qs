@@ -19,13 +19,155 @@ namespace Quantum.Kata.QFT {
     function AssertRegisterState(qubits : Qubit[], expected : Complex[], tolerance : Double)
             : Unit {}
 
+    function Pow2(p : Int) : Int {
+        return Round(PowD(2.0, ToDouble(p)));
+    }
+
     operation T11_Test () : Unit {
-        using (qs = Qubit[4]) {
-            X(qs[0]);
-            let reg = qs[3 .. -1 .. 0];
-            QuantumFT(reg);
-            DumpMachine();
-            ResetAll(qs);
+        using (qs = Qubit[2]) {
+            for (k in 1 .. 10) {
+                for (control in 0 .. 1) {
+                    if (control == 1) { X(qs[0]); }
+                    H(qs[1]);
+                    Controlled Rotation([qs[0]], (qs[1], k));
+                    Adjoint Controlled Rotation_Reference([qs[0]], (qs[1], k));
+                    AssertQubitState((Complex(1.0 / Sqrt(2.0), 0.0), Complex(1.0 / Sqrt(2.0), 0.0)), qs[1], 1e-5);
+                    ResetAll(qs);
+                }
+            }
+        }
+    }
+
+    operation T12_Test () : Unit {
+        let n = 3;
+        using (qs = Qubit[n]) {
+            for (j in 0 .. Pow2(n) - 1) {
+                mutable coeffs = new Double[Pow2(n)];
+                set coeffs[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                QuantumFT(qs);
+                InverseQFT_Reference(qs);
+                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                ResetAll(qs);
+            }
+        }
+    }
+
+    operation T13_Test () : Unit {
+        let n = 3;
+        using (qs = Qubit[n]) {
+            for (j in 0 .. Pow2(n) - 1) {
+                mutable coeffs = new Double[Pow2(n)];
+                set coeffs[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                QuantumFT_Reference(qs);
+                InverseQFT(qs);
+                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                ResetAll(qs);
+            }
+        }
+    }
+
+    operation T21_Test () : Unit {
+        let n = 3;
+        using (qs = Qubit[n]) {
+            for (j in 0 .. Pow2(n) - 1) {
+                mutable coeffs = new Double[Pow2(n)];
+                set coeffs[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                PrepareRegisterA(qs);
+                InverseQFT_Reference(qs);
+                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                ResetAll(qs);
+            }
+        }
+    }
+
+    operation T22_Test () : Unit {
+        let n = 3;
+        using ((a, b) = (Qubit[n], Qubit[n])) {
+            for (i in 0 .. Pow2(n) - 1) {
+                for (j in 0 .. Pow2(n) - 1) {
+                    mutable coeffs_a = new Double[Pow2(n)];
+                    mutable coeffs_b = new Double[Pow2(n)];
+                    set coeffs_a[i] = 1.0;
+                    set coeffs_b[j] = 1.0;
+                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                    PrepareRegisterA_Reference(a);
+                    AddRegisterB(a, b);
+                    InverseRegisterA_Reference(a);
+                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                    ResetAll(a);
+                    ResetAll(b);
+                }
+            }
+        }
+    }
+
+    operation T23_Test () : Unit {
+        let n = 3;
+        using ((a, b) = (Qubit[n], Qubit[n])) {
+            for (i in 0 .. Pow2(n) - 1) {
+                for (j in 0 .. Pow2(n) - 1) {
+                    mutable coeffs_a = new Double[Pow2(n)];
+                    mutable coeffs_b = new Double[Pow2(n)];
+                    set coeffs_a[i] = 1.0;
+                    set coeffs_b[j] = 1.0;
+                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                    PrepareRegisterA_Reference(a);
+                    AddRegisterB_Reference(a, b);
+                    InverseRegisterA(a);
+                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                    ResetAll(a);
+                    ResetAll(b);
+                }
+            }
+        }
+    }
+
+    operation T24_Test () : Unit {
+        let n = 3;
+        using ((a, b) = (Qubit[n], Qubit[n])) {
+            for (i in 0 .. Pow2(n) - 1) {
+                for (j in 0 .. Pow2(n) - 1) {
+                    mutable coeffs_a = new Double[Pow2(n)];
+                    mutable coeffs_b = new Double[Pow2(n)];
+                    set coeffs_a[i] = 1.0;
+                    set coeffs_b[j] = 1.0;
+                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                    QFTAddition(a, b);
+                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                    ResetAll(a);
+                    ResetAll(b);
+                }
+            }
+        }
+    }
+
+    operation T25_Test () : Unit {
+        let n = 3;
+        using ((a, b) = (Qubit[n], Qubit[n])) {
+            for (i in 0 .. Pow2(n) - 1) {
+                for (j in 0 .. Pow2(n) - 1) {
+                    mutable coeffs_a = new Double[Pow2(n)];
+                    mutable coeffs_b = new Double[Pow2(n)];
+                    set coeffs_a[i] = 1.0;
+                    set coeffs_b[j] = 1.0;
+                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                    QFTSubtraction(a, b);
+                    AssertProbIntBE(i - j < 0 ? i - j + Pow2(n) | i - j, 1.0, BigEndian(a), 1e-5);
+                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                    ResetAll(a);
+                    ResetAll(b);
+                }
+            }
         }
     }
     

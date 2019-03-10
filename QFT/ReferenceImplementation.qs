@@ -15,18 +15,107 @@ namespace Quantum.Kata.QFT {
     open Microsoft.Quantum.Extensions.Testing;
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Canon;
-    
-    //////////////////////////////////////////////////////////////////
-    // Part I. Quantum Fourier Transform (QFT)
-    //////////////////////////////////////////////////////////////////
 
-    // Task 1.1 QFT
-    operation QFT_Reference (qs : Qubit[]) : Unit {
+    // Task 1.1 Rotation Gate
+    operation Rotation_Reference (q : Qubit, k : Int) : Unit {
         body(...) {
-            QFT(BigEndian(qs));
+            R1Frac(2, k, q);
         }
 
-        controlled adjoint auto;
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+    
+    // Task 1.2 QFT
+    operation QuantumFT_Reference (qs : Qubit[]) : Unit {
+        body(...) {
+            let n = Length(qs);
+            for (i in 0 .. n - 1) {
+                H(qs[i]);
+                for (j in i + 1 .. n - 1) {
+                    Controlled Rotation_Reference([qs[j]], (qs[i], j - i + 1));
+                }
+            }
+            SwapReverseRegister(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 1.3 Inverse QFT
+    operation InverseQFT_Reference (qs : Qubit[]) : Unit {
+        body(...) {
+            Adjoint QuantumFT_Reference(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.1 Prepare Register |a⟩
+    operation PrepareRegisterA_Reference (qs : Qubit[]) : Unit {
+        body(...) {
+            QuantumFT_Reference(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.2 Rotation from Register |b⟩
+    operation AddRegisterB_Reference (a : Qubit[], b : Qubit[]) : Unit {
+        body(...) {
+            let n = Length(a);
+            for (i in 0 .. n - 1) {
+                for (j in n - 1 - i .. n - 1) {
+                    Controlled Rotation_Reference([b[j]], (a[i], j - (n - 1 - i) + 1));
+                }
+            }
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.3 Inverse Register |a⟩
+    operation InverseRegisterA_Reference (qs : Qubit[]) : Unit {
+        body(...) {
+            Adjoint PrepareRegisterA_Reference(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.4 Complete QFT Addition
+    operation QFTAddition_Reference (a : Qubit[], b : Qubit[]) : Unit {
+        body(...) {
+            PrepareRegisterA_Reference(a);
+            AddRegisterB_Reference(a, b);
+            InverseRegisterA_Reference(a);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.5 Complete QFT Subtraction
+    operation QFTSubtraction_Reference (a : Qubit[], b : Qubit[]) : Unit {
+        body(...) {
+            Adjoint QFTAddition_Reference(a, b);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
     }
 
 }
