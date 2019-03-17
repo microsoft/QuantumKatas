@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Canon" Version="0.4.1901.3104" />
-    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.4.1901.3104" />
-    <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.4.1901.3104" />
+    <PackageReference Include="Microsoft.Quantum.Canon" Version="0.5.1902.2802" />
+    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.5.1902.2802" />
+    <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.5.1902.2802" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />

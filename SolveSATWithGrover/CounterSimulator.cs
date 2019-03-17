@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 
@@ -94,7 +95,7 @@ namespace Quantum.Kata.GroversAlgorithm
         #endregion
 
         #region Counting allocated qubits
-        new public class Allocate : Microsoft.Quantum.Simulation.Simulators.SimulatorBase.Allocate
+        new public class Allocate : SimulatorBase.Allocate
         {
             CounterSimulator _sim;
 
@@ -124,7 +125,7 @@ namespace Quantum.Kata.GroversAlgorithm
             }
         }
 
-        new public class Release : Microsoft.Quantum.Simulation.Simulators.SimulatorBase.Release
+        new public class Release : SimulatorBase.Release
         {
             CounterSimulator _sim;
 
