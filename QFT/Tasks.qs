@@ -72,7 +72,9 @@ namespace Quantum.Kata.QFT {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1 Prepare Register |a⟩
-    // Input: a quantum register with n qubits
+    // Input: a quantum register with n qubits, representing the first number we
+    // are trying to add.
+    // Goal: For each k-th qubit in qs, add a phase of e^{0.qs[n]qs[n-1]...qs[0]} (in binary) on the one state
     operation PrepareRegisterA (qs : Qubit[]) : Unit {
         body(...) {
             QuantumFT_Reference(qs);
@@ -84,6 +86,9 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.2 Rotation from Register |b⟩
+    // Input: 2 quantum registers with n qubits in Big Endian. a is the first number we try to add
+    // prepared by Task 2.1, and the second is the raw state of the second number in addition.
+    // Goal: For each k-th qubit in a, add a phase of e^{b[n]b[n - 1] ... qs[0]} on the one state.
     operation AddRegisterB (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             let n = Length(a);
@@ -100,6 +105,8 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.3 Inverse Register |a⟩
+    // Input: The prepared state of first number in QFT Addition by Task 2.1
+    // Goal: Revert the state of qs to binary representation of a before Task 2.1
     operation InverseRegisterA (qs : Qubit[]) : Unit {
         body(...) {
             Adjoint PrepareRegisterA(qs);
@@ -111,6 +118,10 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.4 Complete QFT Addition
+    // Input: 2 n-qubit quantum register numbers a and b, in big endian.
+    // Goal: Change b to the binary representation of a + b, in big endian,
+    // without using any extra qubibt and state of register a should remain
+    // the same after the opperation/
     operation QFTAddition (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             PrepareRegisterA(a);
@@ -124,6 +135,10 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.5 Complete QFT Subtraction
+    // Input: 2 n-qubit quantum register numbers a and b, in big endian.
+    // Goal: Change b to the binary representation of b - a, in big endian,
+    // without using any extra qubibt and state of register a should remain
+    // the same after the opperation/
     operation QFTSubtraction (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             Adjoint QFTAddition(a, b);
