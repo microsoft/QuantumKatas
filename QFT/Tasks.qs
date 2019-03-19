@@ -19,6 +19,8 @@ namespace Quantum.Kata.QFT {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1 Rotation Gate
+    // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩ and an integer k.
+    // Goal:  Change the state of the qubit to α |0⟩ + β * e^{2πi / 2^k} |1⟩.
     operation Rotation (q : Qubit, k : Int) : Unit {
         body(...) {
             R1Frac(2, k, q);
@@ -30,6 +32,11 @@ namespace Quantum.Kata.QFT {
     }
     
     // Task 1.2 QFT
+    // Input: A quantum register in big endian format.
+    // Goal: Run QFT on the input register.
+    // Though you might be able to do this with 1 library call, we recommned
+    // implementing QFT yourself for learning purposes. Hint: the rotation
+    // gate you implemented in Task 1.1 might help.
     operation QuantumFT (qs : Qubit[]) : Unit {
         body(...) {
             let n = Length(qs);
@@ -48,6 +55,8 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 1.3 Inverse QFT
+    // Input: A quantum register in big endian format. 
+    // Goal: Run inverse QFT on the input register.
     operation InverseQFT (qs : Qubit[]) : Unit {
         body(...) {
             Adjoint QuantumFT(qs);
@@ -63,6 +72,7 @@ namespace Quantum.Kata.QFT {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1 Prepare Register |a⟩
+    // Input: a quantum register with n qubits
     operation PrepareRegisterA (qs : Qubit[]) : Unit {
         body(...) {
             QuantumFT_Reference(qs);
