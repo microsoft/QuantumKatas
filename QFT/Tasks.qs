@@ -80,7 +80,7 @@ namespace Quantum.Kata.QFT {
     }
 
     //////////////////////////////////////////////////////////////////
-    // Part II. QFT Addition
+    // Part II. QFT Addition & Multiplication
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1 Prepare Register |a⟩
@@ -164,13 +164,16 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.6 Complete QFT Multiplication
-    // Input: two multiplier registers and an initially zero result register.
-    // Goal: Perform |a⟩|b⟩|0⟩->|a⟩|b⟩|a * b⟩
+    // Input: two multiplier registers and an initially zero result register. The
+    // result register has sum of the sizes of mulitplier registers.
+    // Goal: Perform |a⟩|b⟩|0⟩ → |a⟩|b⟩|a * b⟩
     operation QFTMultiplication (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
         body(...) {
+            PrepareRegisterA(c);
             for (i in 0 .. Length(b) - 1) {
-                Controlled QFTAddition([b[Length(b) - 1 - i]], (c[0 .. Length(c) - 1 - i], a));
+                Controlled AddRegisterB([b[Length(b) - 1 - i]], (c[i .. Length(c) - 1], a));
             }
+            InverseRegisterA(c);
         }
 
         adjoint auto;
