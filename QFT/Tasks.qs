@@ -14,8 +14,20 @@ namespace Quantum.Kata.QFT {
     // Welcome!
     //////////////////////////////////////////////////////////////////
 
+    // The "QFT (Quantum Fourier Transform)" quantum kata is a series of
+    // exercises designed to teach you the basics of Quantum Fourier Transform.
+    // It covers the following topics:
+    //  - Basic Quantum Fourier Transform,
+    //  - Ancillary Qubit Free Quantum Addition,
+    //  - Approximate Quantum Fourier Transform
+
+    // Each task is wrapped in one operation preceded by the description of the task.
+    // Each task (except tasks in which you have to write a test) has a unit test associated with it,
+    // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
+    // with some Q# code to make the failing test pass.
+
     //////////////////////////////////////////////////////////////////
-    // Part I. Quantum Fourier Estimation (QFT)
+    // Part I. Quantum Fourier Transform (QFT)
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1 Rotation Gate
@@ -74,10 +86,10 @@ namespace Quantum.Kata.QFT {
     // Task 2.1 Prepare Register |a⟩
     // Input: a quantum register with n qubits, representing the first number we
     // are trying to add.
-    // Goal: For each k-th qubit in qs, add a phase of e^{0.qs[n]qs[n-1]...qs[0]} (in binary) on the one state
-    operation PrepareRegisterA (qs : Qubit[]) : Unit {
+    // Goal: For each k-th qubit in a, prepare it into (|0⟩ + e^{0.a[k]a[k-1]...a[0]} |1⟩) / sqrt(2).
+    operation PrepareRegisterA (a : Qubit[]) : Unit {
         body(...) {
-            QuantumFT_Reference(qs);
+            QuantumFT_Reference(a);
         }
 
         adjoint auto;
@@ -88,7 +100,7 @@ namespace Quantum.Kata.QFT {
     // Task 2.2 Rotation from Register |b⟩
     // Input: 2 quantum registers with n qubits in Big Endian. a is the first number we try to add
     // prepared by Task 2.1, and the second is the raw state of the second number in addition.
-    // Goal: For each k-th qubit in a, add a phase of e^{b[n]b[n - 1] ... qs[0]} on the one state.
+    // Goal: For each k-th qubit in a, rotate it into (|0⟩ + e^{0.a[k]a[k-1]...a[0] + 0.b[k]b[k-1]...b[0]} |1⟩) / sqrt(2).
     operation AddRegisterB (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             let n = Length(a);
@@ -105,11 +117,11 @@ namespace Quantum.Kata.QFT {
     }
 
     // Task 2.3 Inverse Register |a⟩
-    // Input: The prepared state of first number in QFT Addition by Task 2.1
-    // Goal: Revert the state of qs to binary representation of a before Task 2.1
-    operation InverseRegisterA (qs : Qubit[]) : Unit {
+    // Input: The resulting state of by Task 2.2
+    // Goal: Retrieve the addition result by inverse QFT
+    operation InverseRegisterA (a : Qubit[]) : Unit {
         body(...) {
-            Adjoint PrepareRegisterA(qs);
+            Adjoint PrepareRegisterA(a);
         }
 
         adjoint auto;
@@ -119,9 +131,9 @@ namespace Quantum.Kata.QFT {
 
     // Task 2.4 Complete QFT Addition
     // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change b to the binary representation of a + b, in big endian,
-    // without using any extra qubibt and state of register a should remain
-    // the same after the opperation/
+    // Goal: Change a to the binary representation of (a + b) mod 2, in big endian,
+    // without using any extra qubibt and state of register b should remain
+    // the same after the opperation
     operation QFTAddition (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             PrepareRegisterA(a);
@@ -136,9 +148,9 @@ namespace Quantum.Kata.QFT {
 
     // Task 2.5 Complete QFT Subtraction
     // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change b to the binary representation of b - a, in big endian,
-    // without using any extra qubibt and state of register a should remain
-    // the same after the opperation/
+    // Goal: Change a to the binary representation of (a - b) mod 2, in big endian,
+    // without using any extra qubibt and state of register b should remain
+    // the same after the opperation
     operation QFTSubtraction (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             Adjoint QFTAddition(a, b);
@@ -154,6 +166,8 @@ namespace Quantum.Kata.QFT {
     //////////////////////////////////////////////////////////////////
 
     // Task 3.1 AQFT
+    // Input: t is the threshold of rotation, qs is a quantum register in big endian format.
+    // Goal: Perform ordinary QFT but prune any rotation e^{2πi / 2^k} with k > t.
     operation AQFT (t : Int, qs : Qubit[]) : Unit {
         body(...) {
             let n = Length(qs);
