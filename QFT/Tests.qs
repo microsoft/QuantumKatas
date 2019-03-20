@@ -23,6 +23,15 @@ namespace Quantum.Kata.QFT {
         return Round(PowD(2.0, ToDouble(p)));
     }
 
+    operation RandomIntPow2_(maxBits : Int) : Int {
+        mutable num = 0;
+        repeat {
+            set num = RandomIntPow2(maxBits);
+        } until(num >= 0 && num < Pow2(maxBits))
+        fixup {}
+        return num;
+    }
+
     operation T11_Test () : Unit {
         using (qs = Qubit[2]) {
             for (k in 1 .. 10) {
@@ -39,9 +48,11 @@ namespace Quantum.Kata.QFT {
     }
 
     operation T12_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using (qs = Qubit[n]) {
-            for (j in 0 .. Pow2(n) - 1) {
+            for (_ in 1 .. time) {
+                let j = RandomIntPow2_(n);
                 mutable coeffs = new Double[Pow2(n)];
                 set coeffs[j] = 1.0;
                 (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
@@ -54,9 +65,11 @@ namespace Quantum.Kata.QFT {
     }
 
     operation T13_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using (qs = Qubit[n]) {
-            for (j in 0 .. Pow2(n) - 1) {
+            for (_ in 1 .. time) {
+                let j = RandomIntPow2_(n);
                 mutable coeffs = new Double[Pow2(n)];
                 set coeffs[j] = 1.0;
                 (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
@@ -69,9 +82,11 @@ namespace Quantum.Kata.QFT {
     }
 
     operation T21_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using (qs = Qubit[n]) {
-            for (j in 0 .. Pow2(n) - 1) {
+            for (_ in 1 .. time) {
+                let j = RandomIntPow2_(n);
                 mutable coeffs = new Double[Pow2(n)];
                 set coeffs[j] = 1.0;
                 (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
@@ -84,89 +99,93 @@ namespace Quantum.Kata.QFT {
     }
 
     operation T22_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (i in 0 .. Pow2(n) - 1) {
-                for (j in 0 .. Pow2(n) - 1) {
-                    mutable coeffs_a = new Double[Pow2(n)];
-                    mutable coeffs_b = new Double[Pow2(n)];
-                    set coeffs_a[i] = 1.0;
-                    set coeffs_b[j] = 1.0;
-                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
-                    PrepareRegisterA_Reference(a);
-                    AddRegisterB(a, b);
-                    InverseRegisterA_Reference(a);
-                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
-                    ResetAll(a);
-                    ResetAll(b);
-                }
+            for (_ in 1 .. time) {
+                let i = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n);
+                mutable coeffs_a = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n)];
+                set coeffs_a[i] = 1.0;
+                set coeffs_b[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                PrepareRegisterA_Reference(a);
+                AddRegisterB(a, b);
+                InverseRegisterA_Reference(a);
+                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                ResetAll(a);
+                ResetAll(b);
             }
         }
     }
 
     operation T23_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (i in 0 .. Pow2(n) - 1) {
-                for (j in 0 .. Pow2(n) - 1) {
-                    mutable coeffs_a = new Double[Pow2(n)];
-                    mutable coeffs_b = new Double[Pow2(n)];
-                    set coeffs_a[i] = 1.0;
-                    set coeffs_b[j] = 1.0;
-                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
-                    PrepareRegisterA_Reference(a);
-                    AddRegisterB_Reference(a, b);
-                    InverseRegisterA(a);
-                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
-                    ResetAll(a);
-                    ResetAll(b);
-                }
+            for (_ in 1 .. time) {
+                let i = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n);
+                mutable coeffs_a = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n)];
+                set coeffs_a[i] = 1.0;
+                set coeffs_b[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                PrepareRegisterA_Reference(a);
+                AddRegisterB_Reference(a, b);
+                InverseRegisterA(a);
+                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                ResetAll(a);
+                ResetAll(b);
             }
         }
     }
 
     operation T24_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (i in 0 .. Pow2(n) - 1) {
-                for (j in 0 .. Pow2(n) - 1) {
-                    mutable coeffs_a = new Double[Pow2(n)];
-                    mutable coeffs_b = new Double[Pow2(n)];
-                    set coeffs_a[i] = 1.0;
-                    set coeffs_b[j] = 1.0;
-                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
-                    QFTAddition(a, b);
-                    AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
-                    ResetAll(a);
-                    ResetAll(b);
-                }
+            for (_ in 1 .. time) {
+                let i = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n);
+                mutable coeffs_a = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n)];
+                set coeffs_a[i] = 1.0;
+                set coeffs_b[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                QFTAddition(a, b);
+                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
+                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                ResetAll(a);
+                ResetAll(b);
             }
         }
     }
 
     operation T25_Test () : Unit {
-        let n = 3;
+        let n = 8;
+        let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (i in 0 .. Pow2(n) - 1) {
-                for (j in 0 .. Pow2(n) - 1) {
-                    mutable coeffs_a = new Double[Pow2(n)];
-                    mutable coeffs_b = new Double[Pow2(n)];
-                    set coeffs_a[i] = 1.0;
-                    set coeffs_b[j] = 1.0;
-                    (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                    (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
-                    QFTSubtraction(a, b);
-                    AssertProbIntBE(i - j < 0 ? i - j + Pow2(n) | i - j, 1.0, BigEndian(a), 1e-5);
-                    AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
-                    ResetAll(a);
-                    ResetAll(b);
-                }
+            for (_ in 1 .. time) {
+                let i = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n);
+                mutable coeffs_a = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n)];
+                set coeffs_a[i] = 1.0;
+                set coeffs_b[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                QFTSubtraction(a, b);
+                AssertProbIntBE(i - j < 0 ? i - j + Pow2(n) | i - j, 1.0, BigEndian(a), 1e-5);
+                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                ResetAll(a);
+                ResetAll(b);
             }
         }
     }
