@@ -118,4 +118,22 @@ namespace Quantum.Kata.QFT {
         adjoint controlled auto;
     }
 
+    // Task 3.1 AQFT
+    operation AQFT_Reference (t : Int, qs : Qubit[]) : Unit {
+        body(...) {
+            let n = Length(qs);
+            for (i in 0 .. n - 1) {
+                for (j in i - 1 .. -1 .. MaxI(0, i - t + 1)) {
+                    Controlled Rotation_Reference([qs[i]], (qs[j], i - j + 1));
+                }
+                H(qs[i]);
+            }
+            SwapReverseRegister(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
 }
