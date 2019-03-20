@@ -189,5 +189,22 @@ namespace Quantum.Kata.QFT {
             }
         }
     }
+
+    operation T31_Test () : Unit {
+        let n = 8;
+        let time = 10;
+        using (qs = Qubit[n]) {
+            for (_ in 1 .. time) {
+                let j = RandomIntPow2_(n);
+                mutable coeffs = new Double[Pow2(n)];
+                set coeffs[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                AQFT(3, qs);
+                Adjoint AQFT_Reference(3, qs);
+                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                ResetAll(qs);
+            }
+        }
+    }
     
 }
