@@ -101,12 +101,12 @@ namespace Quantum.Kata.QFT {
     operation T22_Test () : Unit {
         let n = 8;
         let time = 10;
-        using ((a, b) = (Qubit[n], Qubit[n])) {
+        using ((a, b) = (Qubit[n], Qubit[n / 2])) {
             for (_ in 1 .. time) {
                 let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n / 2);
                 mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n / 2)];
                 set coeffs_a[i] = 1.0;
                 set coeffs_b[j] = 1.0;
                 (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
@@ -186,6 +186,30 @@ namespace Quantum.Kata.QFT {
                 AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
                 ResetAll(a);
                 ResetAll(b);
+            }
+        }
+    }
+
+    operation T26_Test () : Unit {
+        let n = 4;
+        let time = 10;
+        using ((a, b, c) = (Qubit[n], Qubit[n], Qubit[2 * n])) {
+            for (_ in 1 .. time) {
+                let i = RandomIntPow2_(n);
+                let j = RandomIntPow2_(n);
+                mutable coeffs_a = new Double[Pow2(n)];
+                mutable coeffs_b = new Double[Pow2(n)];
+                set coeffs_a[i] = 1.0;
+                set coeffs_b[j] = 1.0;
+                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
+                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                QFTMultiplication(a, b, c);
+                AssertProbIntBE(i * j, 1.0, BigEndian(c), 1e-5);
+                AssertProbIntBE(i, 1.0, BigEndian(a), 1e-5);
+                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                ResetAll(a);
+                ResetAll(b);
+                ResetAll(c);
             }
         }
     }

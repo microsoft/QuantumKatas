@@ -86,7 +86,7 @@ namespace Quantum.Kata.QFT {
     // Task 2.1 Prepare Register |a⟩
     // Input: a quantum register with n qubits, representing the first number we
     // are trying to add.
-    // Goal: For each k-th qubit in a, prepare it into (|0⟩ + e^{0.a[k]a[k-1]...a[0]} |1⟩) / sqrt(2).
+    // Goal: For each k-th qubit in a, prepare it into (|0⟩ + e^{2πi0.a[0]a[1]...a[k]} |1⟩) / sqrt(2).
     operation PrepareRegisterA (a : Qubit[]) : Unit {
         body(...) {
             QuantumFT_Reference(a);
@@ -100,13 +100,15 @@ namespace Quantum.Kata.QFT {
     // Task 2.2 Rotation from Register |b⟩
     // Input: 2 quantum registers with n qubits in Big Endian. a is the first number we try to add
     // prepared by Task 2.1, and the second is the raw state of the second number in addition.
-    // Goal: For each k-th qubit in a, rotate it into (|0⟩ + e^{0.a[k]a[k-1]...a[0] + 0.b[k]b[k-1]...b[0]} |1⟩) / sqrt(2).
+    // Note that register |b⟩ is guaranteed to have size less than or equal to size of |a⟩.
+    // Goal: For each k-th qubit in a, rotate it into (|0⟩ + e^{2πi(0.a[0]a[1]...a[k] + 0.b[0]b[1]...b[k])} |1⟩) / sqrt(2).
     operation AddRegisterB (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             let n = Length(a);
+            let m = Length(b);
             for (i in 0 .. n - 1) {
-                for (j in n - 1 - i .. n - 1) {
-                    Controlled Rotation_Reference([b[j]], (a[i], j - (n - 1 - i) + 1));
+                for (j in MaxI(0, m - 1 - i) .. m - 1) {
+                    Controlled Rotation_Reference([b[j]], (a[i], j - (m - 1 - i) + 1));
                 }
             }
         }
@@ -131,7 +133,7 @@ namespace Quantum.Kata.QFT {
 
     // Task 2.4 Complete QFT Addition
     // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change a to the binary representation of (a + b) mod 2, in big endian,
+    // Goal: Change a to the binary representation of (a + b) mod 2^n, in big endian,
     // without using any extra qubibt and state of register b should remain
     // the same after the opperation
     operation QFTAddition (a : Qubit[], b : Qubit[]) : Unit {
@@ -148,12 +150,27 @@ namespace Quantum.Kata.QFT {
 
     // Task 2.5 Complete QFT Subtraction
     // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change a to the binary representation of (a - b) mod 2, in big endian,
-    // without using any extra qubibt and state of register b should remain
+    // Goal: Change a to the binary representation of (a - b) mod 2^n, in big endian,
+    // without using any extra qubit and state of register b should remain
     // the same after the opperation
     operation QFTSubtraction (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             Adjoint QFTAddition(a, b);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 2.6 Complete QFT Multiplication
+    // Input: two multiplier registers and an initially zero result register.
+    // Goal: Perform |a⟩|b⟩|0⟩->|a⟩|b⟩|a * b⟩
+    operation QFTMultiplication (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
+        body(...) {
+            for (i in 0 .. Length(b) - 1) {
+                Controlled QFTAddition([b[Length(b) - 1 - i]], (c[0 .. Length(c) - 1 - i], a));
+            }
         }
 
         adjoint auto;
