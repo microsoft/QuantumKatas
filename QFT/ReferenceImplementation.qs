@@ -71,9 +71,10 @@ namespace Quantum.Kata.QFT {
     operation AddRegisterB_Reference (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             let n = Length(a);
+            let m = Length(b);
             for (i in 0 .. n - 1) {
-                for (j in n - 1 - i .. n - 1) {
-                    Controlled Rotation_Reference([b[j]], (a[i], j - (n - 1 - i) + 1));
+                for (j in MaxI(0, m - 1 - i) .. m - 1) {
+                    Controlled Rotation_Reference([b[j]], (a[i], j - (m - 1 - i) + 1));
                 }
             }
         }
@@ -111,6 +112,21 @@ namespace Quantum.Kata.QFT {
     operation QFTSubtraction_Reference (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
             Adjoint QFTAddition_Reference(a, b);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+    
+    // Task 2.6 Complete QFT Multiplication
+    operation QFTMultiplication_Reference (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
+        body(...) {
+            PrepareRegisterA_Reference(c);
+            for (i in 0 .. Length(b) - 1) {
+                Controlled AddRegisterB_Reference([b[Length(b) - 1 - i]], (c[i .. Length(c) - 1], a));
+            }
+            InverseRegisterA_Reference(c);
         }
 
         adjoint auto;

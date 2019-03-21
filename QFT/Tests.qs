@@ -15,12 +15,13 @@ namespace Quantum.Kata.QFT {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Extensions.Testing;
     open Microsoft.Quantum.Extensions.Diagnostics;
+    open Microsoft.Quantum.Extensions.Bitwise;
 
     function AssertRegisterState(qubits : Qubit[], expected : Complex[], tolerance : Double)
             : Unit {}
 
     function Pow2(p : Int) : Int {
-        return Round(PowD(2.0, ToDouble(p)));
+        return 1 <<< p;
     }
 
     operation RandomIntPow2_(maxBits : Int) : Int {
@@ -30,6 +31,27 @@ namespace Quantum.Kata.QFT {
         } until(num >= 0 && num < Pow2(maxBits))
         fixup {}
         return num;
+    }
+
+    operation RandomProb() : Double {
+        return ToDouble(RandomIntPow2(4)) / ToDouble(Pow2(4) - 1);
+    }
+
+    operation PrepareRandomState(qs : Qubit[]) : (Int, Int, Double) {
+        let n = Length(qs);
+        let i1 = RandomIntPow2_(n - 1) * 2;
+        let i2 = RandomIntPow2_(n - 1) * 2 + 1;
+        let ip = RandomProb();
+        mutable coeffs = new Double[Pow2(n)];
+        set coeffs[i1] = Sqrt(ip);
+        set coeffs[i2] = Sqrt(1.0 - ip);
+        (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+        return (i1, i2, ip);
+    }
+
+    operation AssertState(qs : Qubit[], (i1 : Int, i2 : Int, ip : Double)) : Unit {
+        AssertProbIntBE(i1, ip, BigEndian(qs), 1e-5);
+        AssertProbIntBE(i2, 1.0 - ip, BigEndian(qs), 1e-5);
     }
 
     operation T11_Test () : Unit {
@@ -52,13 +74,10 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using (qs = Qubit[n]) {
             for (_ in 1 .. time) {
-                let j = RandomIntPow2_(n);
-                mutable coeffs = new Double[Pow2(n)];
-                set coeffs[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                let s = PrepareRandomState(qs);
                 QuantumFT(qs);
                 InverseQFT_Reference(qs);
-                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                AssertState(qs, s);
                 ResetAll(qs);
             }
         }
@@ -69,13 +88,10 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using (qs = Qubit[n]) {
             for (_ in 1 .. time) {
-                let j = RandomIntPow2_(n);
-                mutable coeffs = new Double[Pow2(n)];
-                set coeffs[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                let s = PrepareRandomState(qs);
                 QuantumFT_Reference(qs);
                 InverseQFT(qs);
-                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                AssertState(qs, s);
                 ResetAll(qs);
             }
         }
@@ -86,13 +102,10 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using (qs = Qubit[n]) {
             for (_ in 1 .. time) {
-                let j = RandomIntPow2_(n);
-                mutable coeffs = new Double[Pow2(n)];
-                set coeffs[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                let s = PrepareRandomState(qs);
                 PrepareRegisterA(qs);
                 InverseQFT_Reference(qs);
-                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                AssertState(qs, s);
                 ResetAll(qs);
             }
         }
@@ -103,19 +116,14 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n / 2])) {
             for (_ in 1 .. time) {
-                let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n / 2);
-                mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n / 2)];
-                set coeffs_a[i] = 1.0;
-                set coeffs_b[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
                 PrepareRegisterA_Reference(a);
                 AddRegisterB(a, b);
                 InverseRegisterA_Reference(a);
-                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                Adjoint QFTAddition_Reference(a, b);
+                AssertState(a, s1);
+                AssertState(b, s2);
                 ResetAll(a);
                 ResetAll(b);
             }
@@ -127,19 +135,14 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
             for (_ in 1 .. time) {
-                let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n);
-                mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n)];
-                set coeffs_a[i] = 1.0;
-                set coeffs_b[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
                 PrepareRegisterA_Reference(a);
                 AddRegisterB_Reference(a, b);
                 InverseRegisterA(a);
-                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                Adjoint QFTAddition_Reference(a, b);
+                AssertState(a, s1);
+                AssertState(b, s2);
                 ResetAll(a);
                 ResetAll(b);
             }
@@ -151,17 +154,12 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
             for (_ in 1 .. time) {
-                let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n);
-                mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n)];
-                set coeffs_a[i] = 1.0;
-                set coeffs_b[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
                 QFTAddition(a, b);
-                AssertProbIntBE((i + j) % Pow2(n), 1.0, BigEndian(a), 1e-5);
-                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                Adjoint QFTAddition_Reference(a, b);
+                AssertState(a, s1);
+                AssertState(b, s2);
                 ResetAll(a);
                 ResetAll(b);
             }
@@ -173,17 +171,12 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using ((a, b) = (Qubit[n], Qubit[n])) {
             for (_ in 1 .. time) {
-                let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n);
-                mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n)];
-                set coeffs_a[i] = 1.0;
-                set coeffs_b[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
                 QFTSubtraction(a, b);
-                AssertProbIntBE(i - j < 0 ? i - j + Pow2(n) | i - j, 1.0, BigEndian(a), 1e-5);
-                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                QFTAddition_Reference(a, b);
+                AssertState(a, s1);
+                AssertState(b, s2);
                 ResetAll(a);
                 ResetAll(b);
             }
@@ -195,18 +188,13 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using ((a, b, c) = (Qubit[n], Qubit[n], Qubit[2 * n])) {
             for (_ in 1 .. time) {
-                let i = RandomIntPow2_(n);
-                let j = RandomIntPow2_(n);
-                mutable coeffs_a = new Double[Pow2(n)];
-                mutable coeffs_b = new Double[Pow2(n)];
-                set coeffs_a[i] = 1.0;
-                set coeffs_b[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs_a))(BigEndian(a));
-                (StatePreparationPositiveCoefficients(coeffs_b))(BigEndian(b));
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
                 QFTMultiplication(a, b, c);
-                AssertProbIntBE(i * j, 1.0, BigEndian(c), 1e-5);
-                AssertProbIntBE(i, 1.0, BigEndian(a), 1e-5);
-                AssertProbIntBE(j, 1.0, BigEndian(b), 1e-5);
+                Adjoint QFTMultiplication(a, b, c);
+                AssertProbIntBE(0, 1.0, BigEndian(c), 1e-5);
+                AssertState(a, s1);
+                AssertState(b, s2);
                 ResetAll(a);
                 ResetAll(b);
                 ResetAll(c);
@@ -219,13 +207,10 @@ namespace Quantum.Kata.QFT {
         let time = 10;
         using (qs = Qubit[n]) {
             for (_ in 1 .. time) {
-                let j = RandomIntPow2_(n);
-                mutable coeffs = new Double[Pow2(n)];
-                set coeffs[j] = 1.0;
-                (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
+                let s = PrepareRandomState(qs);
                 AQFT(3, qs);
                 Adjoint AQFT_Reference(3, qs);
-                AssertProbIntBE(j, 1.0, BigEndian(qs), 1e-5);
+                AssertState(qs, s);
                 ResetAll(qs);
             }
         }
