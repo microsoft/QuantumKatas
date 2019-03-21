@@ -1,0 +1,1 @@
+A kata for the GHZ game.
