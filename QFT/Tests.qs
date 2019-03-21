@@ -215,5 +215,47 @@ namespace Quantum.Kata.QFT {
             }
         }
     }
+
+    operation T41_Test () : Unit {
+        let n = 5;
+        let time = 3;
+        using ((a, b) = (Qubit[n], Qubit[n])) {
+            for (_ in 1 .. time) {
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
+                let mul = 17;
+                let modulus = 31;
+                PowerOfa(mul, modulus, a, b);
+                Adjoint PowerOfa_Reference(mul, modulus, a, b);
+                AssertState(a, s1);
+                AssertState(b, s2);
+                ResetAll(a);
+                ResetAll(b);
+            }
+        }
+    }
+
+    operation T42_Test () : Unit {
+        let n = 3;
+        let time = 3;
+        using ((a, b, c) = (Qubit[n], Qubit[n], Qubit[n])) {
+            for (_ in 1 .. time) {
+                let s1 = PrepareRandomState(a);
+                let s2 = PrepareRandomState(b);
+                let s3 = PrepareRandomState(c);
+                let bb = 4;
+                let aa = 2;
+                let modulus = 5;
+                DLOracle(aa, bb, modulus, a, b, c);
+                Adjoint DLOracle_Reference(aa, bb, modulus, a, b, c);
+                AssertState(a, s1);
+                AssertState(b, s2);
+                AssertState(c, s3);
+                ResetAll(a);
+                ResetAll(b);
+                ResetAll(c);
+            }
+        }
+    }
     
 }

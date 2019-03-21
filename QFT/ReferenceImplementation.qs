@@ -122,7 +122,7 @@ namespace Quantum.Kata.QFT {
     // Task 2.6 Complete QFT Multiplication
     operation QFTMultiplication_Reference (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
         body(...) {
-            PrepareRegisterA_Reference(c);
+            ApplyToEachCA(H, c);
             for (i in 0 .. Length(b) - 1) {
                 Controlled AddRegisterB_Reference([b[Length(b) - 1 - i]], (c[i .. Length(c) - 1], a));
             }
@@ -145,6 +145,50 @@ namespace Quantum.Kata.QFT {
                 H(qs[i]);
             }
             SwapReverseRegister(qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 4.1 Power |x⟩|y⟩ → |x⟩|a^x · y mod N⟩
+    operation PowerOfa_Reference (a : Int, N : Int, x : Qubit[], y : Qubit[]) : Unit {
+        body(...) {
+            let y_LE = BigEndianToLittleEndian(BigEndian(y));
+            let oracle = ModularMultiplyByConstantLE(a, N, _);
+            for (p in 0 .. Length(x) - 1) {
+                Controlled (OperationPowCA(oracle, 1 <<< p))([x[Length(x) - 1 - p]], y_LE);
+            }
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 4.2 Oracle U|x1⟩|x2⟩|y⟩ → |x1⟩|x2⟩|y ⊕ f(x1,x2)⟩ where f(x1,x2)=b^x1*a^x2 mod N
+    operation OracleFunc (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], qs : Qubit[]) : Unit {
+        body(...) {
+            X(qs[Length(qs) - 1]);
+            PowerOfa(b, N, x1, qs);
+            PowerOfa(a, N, x2, qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    operation DLOracle_Reference (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], y : Qubit[]) : Unit {
+        body(...) {
+            using (qs = Qubit[Length(y)]) {
+                OracleFunc(a, b, N, x1, x2, qs);
+                for (i in 0 .. Length(qs) - 1) {
+                    CNOT(qs[i], y[i]);
+                }
+                Adjoint OracleFunc(a, b, N, x1, x2, qs);
+            }
         }
 
         adjoint auto;

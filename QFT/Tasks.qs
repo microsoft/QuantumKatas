@@ -205,4 +205,75 @@ namespace Quantum.Kata.QFT {
         adjoint controlled auto;
     }
 
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Discrete logarithm
+    //////////////////////////////////////////////////////////////////
+
+    // Task 4.1 Power |x⟩|y⟩ → |x⟩|a^x · y mod N⟩
+    // Input: integers a and N, registers x and y.
+    // Goal: perform the desired operation.
+    operation PowerOfa (a : Int, N : Int, x : Qubit[], y : Qubit[]) : Unit {
+        body(...) {
+            let y_LE = BigEndianToLittleEndian(BigEndian(y));
+            let oracle = ModularMultiplyByConstantLE(a, N, _);
+            for (p in 0 .. Length(x) - 1) {
+                Controlled (OperationPowCA(oracle, 1 <<< p))([x[Length(x) - 1 - p]], y_LE);
+            }
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    // Task 4.2 Oracle U|x1⟩|x2⟩|y⟩ → |x1⟩|x2⟩|y ⊕ f(x1,x2)⟩ where f(x1,x2)=b^x1*a^x2 mod N
+    // Input: integers a, b, and N, registers x1, x2, and qs.
+    // Goal: perform the desired operation.
+    operation Func (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], qs : Qubit[]) : Unit {
+        body(...) {
+            X(qs[Length(qs) - 1]);
+            PowerOfa(b, N, x1, qs);
+            PowerOfa(a, N, x2, qs);
+        }
+
+        adjoint auto;
+        controlled auto;
+        adjoint controlled auto;
+    }
+
+    operation DLOracle (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], y : Qubit[]) : Unit {
+        using (qs = Qubit[Length(y)]) {
+            Func(a, b, N, x1, x2, qs);
+            for (i in 0 .. Length(qs) - 1) {
+                CNOT(qs[i], y[i]);
+            }
+            Adjoint Func(a, b, N, x1, x2, qs);
+        }
+    }
+
+    // Discrete logarithm Algorithm
+    // Input: integers a, b, N, r
+    // Goal: compute the discrete logarithm log_a(b)
+    operation DiscreteLogarithm (a : Int, b : Int, N : Int, r : Int) : Int {
+        mutable r1 = 0;
+        mutable r2 = 0;
+        let t = BitSize(N) * 3 + 1;
+        using ((x1, x2, y) = (Qubit[t], Qubit[t], Qubit[t])) {
+            ApplyToEach(H, x1);
+            ApplyToEach(H, x2);
+            DLOracle(a, b, N, x1, x2, y);
+            InverseQFT(x1);
+            InverseQFT(x2);
+            set r1 = MeasureIntegerBE(BigEndian(x1));
+            set r2 = MeasureIntegerBE(BigEndian(x2));
+            ResetAll(x1);
+            ResetAll(x2);
+            ResetAll(y);
+        }
+        let (sl, l) = (ContinuedFractionConvergent(Fraction(r1, r2), N))!;
+        let l_inv = InverseMod(l, r);
+        let s = sl * l_inv;
+        return s;
+    }
+
 }
