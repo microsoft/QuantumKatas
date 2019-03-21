@@ -36,7 +36,7 @@ namespace Quantum.Kata.QFT {
     // Goal:  Change the state of the qubit to α |0⟩ + β * e^{2πi / 2^k} |1⟩.
     operation Rotation (q : Qubit, k : Int) : Unit {
         body(...) {
-            R1Frac(2, k, q);
+            // ...
         }
 
         adjoint auto;
@@ -52,14 +52,7 @@ namespace Quantum.Kata.QFT {
     // gate you implemented in Task 1.1 might help.
     operation QuantumFT (qs : Qubit[]) : Unit {
         body(...) {
-            let n = Length(qs);
-            for (i in 0 .. n - 1) {
-                H(qs[i]);
-                for (j in i + 1 .. n - 1) {
-                    Controlled Rotation([qs[j]], (qs[i], j - i + 1));
-                }
-            }
-            SwapReverseRegister(qs);
+            // ...
         }
 
         adjoint auto;
@@ -72,7 +65,7 @@ namespace Quantum.Kata.QFT {
     // Goal: Run inverse QFT on the input register.
     operation InverseQFT (qs : Qubit[]) : Unit {
         body(...) {
-            Adjoint QuantumFT(qs);
+            // ...
         }
 
         adjoint auto;
@@ -90,7 +83,7 @@ namespace Quantum.Kata.QFT {
     // Goal: For each k-th qubit in a, prepare it into (|0⟩ + e^{2πi0.a[0]a[1]...a[k]} |1⟩) / sqrt(2).
     operation PrepareRegisterA (a : Qubit[]) : Unit {
         body(...) {
-            QuantumFT_Reference(a);
+            // ...
         }
 
         adjoint auto;
@@ -105,13 +98,7 @@ namespace Quantum.Kata.QFT {
     // Goal: For each k-th qubit in a, rotate it into (|0⟩ + e^{2πi(0.a[0]a[1]...a[k] + 0.b[0]b[1]...b[k])} |1⟩) / sqrt(2).
     operation AddRegisterB (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
-            let n = Length(a);
-            let m = Length(b);
-            for (i in 0 .. n - 1) {
-                for (j in MaxI(0, m - 1 - i) .. m - 1) {
-                    Controlled Rotation_Reference([b[j]], (a[i], j - (m - 1 - i) + 1));
-                }
-            }
+            // ...
         }
 
         adjoint auto;
@@ -124,7 +111,7 @@ namespace Quantum.Kata.QFT {
     // Goal: Retrieve the addition result by inverse QFT
     operation InverseRegisterA (a : Qubit[]) : Unit {
         body(...) {
-            Adjoint PrepareRegisterA(a);
+            // ...
         }
 
         adjoint auto;
@@ -139,9 +126,7 @@ namespace Quantum.Kata.QFT {
     // the same after the opperation
     operation QFTAddition (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
-            PrepareRegisterA(a);
-            AddRegisterB(a, b);
-            InverseRegisterA(a);
+            // ...
         }
 
         adjoint auto;
@@ -156,7 +141,7 @@ namespace Quantum.Kata.QFT {
     // the same after the opperation
     operation QFTSubtraction (a : Qubit[], b : Qubit[]) : Unit {
         body(...) {
-            Adjoint QFTAddition(a, b);
+            // ...
         }
 
         adjoint auto;
@@ -170,11 +155,7 @@ namespace Quantum.Kata.QFT {
     // Goal: Perform |a⟩|b⟩|0⟩ → |a⟩|b⟩|a * b⟩
     operation QFTMultiplication (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
         body(...) {
-            PrepareRegisterA(c);
-            for (i in 0 .. Length(b) - 1) {
-                Controlled AddRegisterB([b[Length(b) - 1 - i]], (c[i .. Length(c) - 1], a));
-            }
-            InverseRegisterA(c);
+            // ...
         }
 
         adjoint auto;
@@ -191,14 +172,7 @@ namespace Quantum.Kata.QFT {
     // Goal: Perform ordinary QFT but prune any rotation e^{2πi / 2^k} with k > t.
     operation AQFT (t : Int, qs : Qubit[]) : Unit {
         body(...) {
-            let n = Length(qs);
-            for (i in 0 .. n - 1) {
-                for (j in i - 1 .. -1 .. MaxI(0, i - t + 1)) {
-                    Controlled Rotation([qs[i]], (qs[j], i - j + 1));
-                }
-                H(qs[i]);
-            }
-            SwapReverseRegister(qs);
+            // ...
         }
 
         adjoint auto;
@@ -215,11 +189,7 @@ namespace Quantum.Kata.QFT {
     // Goal: perform the desired operation.
     operation PowerOfa (a : Int, N : Int, x : Qubit[], y : Qubit[]) : Unit {
         body(...) {
-            let y_LE = BigEndianToLittleEndian(BigEndian(y));
-            let oracle = ModularMultiplyByConstantLE(a, N, _);
-            for (p in 0 .. Length(x) - 1) {
-                Controlled (OperationPowCA(oracle, 1 <<< p))([x[Length(x) - 1 - p]], y_LE);
-            }
+            // ...
         }
 
         adjoint auto;
@@ -230,26 +200,8 @@ namespace Quantum.Kata.QFT {
     // Task 4.2 Oracle U|x1⟩|x2⟩|y⟩ → |x1⟩|x2⟩|y ⊕ f(x1,x2)⟩ where f(x1,x2)=b^x1*a^x2 mod N
     // Input: integers a, b, and N, registers x1, x2, and qs.
     // Goal: perform the desired operation.
-    operation Func (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], qs : Qubit[]) : Unit {
-        body(...) {
-            X(qs[Length(qs) - 1]);
-            PowerOfa(b, N, x1, qs);
-            PowerOfa(a, N, x2, qs);
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
     operation DLOracle (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], y : Qubit[]) : Unit {
-        using (qs = Qubit[Length(y)]) {
-            Func(a, b, N, x1, x2, qs);
-            for (i in 0 .. Length(qs) - 1) {
-                CNOT(qs[i], y[i]);
-            }
-            Adjoint Func(a, b, N, x1, x2, qs);
-        }
+        // ...
     }
 
     // Discrete logarithm Algorithm
