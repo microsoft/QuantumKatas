@@ -171,8 +171,8 @@ namespace Quantum.Kata.QFT {
     operation OracleFunc (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], qs : Qubit[]) : Unit {
         body(...) {
             X(qs[Length(qs) - 1]);
-            PowerOfa(b, N, x1, qs);
-            PowerOfa(a, N, x2, qs);
+            PowerOfa_Reference(b, N, x1, qs);
+            PowerOfa_Reference(a, N, x2, qs);
         }
 
         adjoint auto;

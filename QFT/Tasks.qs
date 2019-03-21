@@ -19,7 +19,8 @@ namespace Quantum.Kata.QFT {
     // It covers the following topics:
     //  - Basic Quantum Fourier Transform,
     //  - Ancillary Qubit Free Quantum Addition,
-    //  - Approximate Quantum Fourier Transform
+    //  - Approximate Quantum Fourier Transform,
+    //  - Discrete Logarithm
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
