@@ -28,32 +28,38 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 3. Quarters
+    // Task 3. Block diagonal matrix
+    operation BlockDiagonal_Reference (qs : Qubit[]) : Unit {
+        H(Head(qs));
+    }
+
+
+    // Task 4. Quarters
     operation Quarters_Reference (qs : Qubit[]) : Unit {
         ApplyToEach(H, Most(qs));
     }
     
     
-    // Task 4. Even chessboard pattern
+    // Task 5. Even chessboard pattern
     operation EvenChessPattern_Reference (qs : Qubit[]) : Unit {
         ApplyToEach(H, qs[1 .. Length(qs) - 1]);
     }
     
     
-    // Task 5. Odd chessboard pattern
+    // Task 6. Odd chessboard pattern
     operation OddChessPattern_Reference (qs : Qubit[]) : Unit {
         ApplyToEach(H, qs[1 .. Length(qs) - 1]);
         X(Head(qs));
     }
     
     
-    // Task 6. Anti-diagonal
+    // Task 7. Anti-diagonal
     operation Antidiagonal_Reference (qs : Qubit[]) : Unit {
         ApplyToEach(X, qs);
     }
 
 
-    // Task 7. 2x2 chessboard pattern
+    // Task 8. 2x2 chessboard pattern
     operation ChessPattern2x2_Reference (qs : Qubit[]) : Unit {
         H(Head(qs));
         for (i in 2 .. Length(qs) - 1) {
@@ -62,11 +68,44 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
 
-    // Task 8. Two patterns
+    // Task 9. Two patterns
     operation TwoPatterns_Reference (qs : Qubit[]) : Unit {
         // bottom right quarter is obtained by applying Controlled AllNonZero
         ApplyToEach(Controlled H([Tail(qs)], _), Most(qs));
         // top left quarter is obtained by applying 0-controlled Antidiagonal
         ApplyToEach((ControlledOnInt(0, X))([Tail(qs)], _), Most(qs));
+    }
+    
+    
+    // Task 10. Increasing blocks
+    operation IncreasingBlocks_Reference (qs : Qubit[]) : Unit {
+        body (...) {
+            let N = Length(qs);
+            // for N = 1, we need an identity
+            if (N > 1) {
+                // do the bottom-right quarter
+                ApplyToEachCA(Controlled H([Tail(qs)], _), Most(qs));
+                // do the top-left quarter by calling the same operation recursively
+                (ControlledOnInt(0, IncreasingBlocks_Reference))([Tail(qs)], Most(qs));
+            }
+        }
+        adjoint auto;
+        controlled auto;
+        controlled adjoint auto;
+    }
+
+
+    // Task 11. X-Wing fighter
+    operation XWing_Fighter_Reference (qs : Qubit[]) : Unit {
+        ApplyToEach(CNOT(qs[0], _), qs[1 .. Length(qs) - 1]);
+        H(qs[0]);
+        ApplyToEach(CNOT(qs[0], _), qs[1 .. Length(qs) - 1]);
+    }
+    
+
+    // Task 12. Rhombus
+    operation Rhombus_Reference (qs : Qubit[]) : Unit {
+        XWing_Fighter_Reference(qs);
+        X(Tail(qs));
     }
 }

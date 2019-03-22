@@ -25,6 +25,8 @@ namespace Quantum.Kata.UnitaryPatterns {
         let size = 1 <<< N;
         
         //Message($"Testing on {N} qubits");
+
+        // ε is the threshold for probability, which is absolute value squared; the absolute value is bounded by √ε.
         let ε = 0.000001;
         
         using (qs = Qubit[N]) {
@@ -92,6 +94,19 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     
     // ------------------------------------------------------
+    function BlockDiagonal_Pattern (size : Int, row : Int, col : Int) : Bool {
+        return row / 2 == col / 2;
+    }
+    
+    
+    operation T03_BlockDiagonal_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, BlockDiagonal, BlockDiagonal_Pattern);
+        }
+    }
+    
+    
+    // ------------------------------------------------------
     function Quarters_Pattern (size : Int, row : Int, col : Int) : Bool {
         // The indices are little-endian, with qubit 0 corresponding to the least significant bit
         // and qubits 1..N-1 corresponding to most significant bits.
@@ -100,7 +115,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T03_Quarters_Test () : Unit {
+    operation T04_Quarters_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Quarters, Quarters_Pattern);
         }
@@ -116,7 +131,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T04_EvenChessPattern_Test () : Unit {
+    operation T05_EvenChessPattern_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, EvenChessPattern, EvenChessPattern_Pattern);
         }
@@ -132,7 +147,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T05_OddChessPattern_Test () : Unit {
+    operation T06_OddChessPattern_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, OddChessPattern, OddChessPattern_Pattern);
         }
@@ -145,7 +160,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T06_Antidiagonal_Test () : Unit {
+    operation T07_Antidiagonal_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Antidiagonal, Antidiagonal_Pattern);
         }
@@ -158,7 +173,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T07_ChessPattern2x2_Test () : Unit {
+    operation T08_ChessPattern2x2_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, ChessPattern2x2, ChessPattern2x2_Pattern);
         }
@@ -181,9 +196,63 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    operation T08_TwoPatterns_Test () : Unit {
+    operation T09_TwoPatterns_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, TwoPatterns, TwoPatterns_Pattern);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    function IncreasingBlocks_Pattern (size : Int, row : Int, col : Int) : Bool {
+        // top right and bottom left quarters are all 0
+        let s2 = size / 2;
+        if (row / s2 != col / s2) {
+            return false;
+        }
+        if (row / s2 == 0) {
+            // top left quarter is the same pattern for s2, except for the start of the recursion
+            if (s2 == 1) {
+                return true;
+            }
+            return IncreasingBlocks_Pattern(s2, row, col);
+        }
+        // bottom right quarter is all 1
+        return true;
+    }
+    
+    
+    operation T10_IncreasingBlocks_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, IncreasingBlocks, IncreasingBlocks_Pattern);
+        }
+    }
+    
+    
+    // ------------------------------------------------------
+    function XWing_Fighter_Pattern (size : Int, row : Int, col : Int) : Bool {
+        return row == col || row == (size - 1) - col;
+    }
+    
+    
+    operation T11_XWing_Fighter_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, XWing_Fighter, XWing_Fighter_Pattern);
+        }
+    }
+    
+
+    // ------------------------------------------------------
+    function Rhombus_Pattern (size : Int, row : Int, col : Int) : Bool {
+        let s2 = size / 2;
+        return row / s2 == col / s2 && row % s2 + col % s2 == s2 - 1 || 
+               row / s2 != col / s2 && row % s2 == col % s2;
+    }
+    
+    
+    operation T12_Rhombus_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, Rhombus, Rhombus_Pattern);
         }
     }
 
