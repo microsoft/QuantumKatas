@@ -206,26 +206,68 @@ namespace Quantum.Kata.QFT {
 
     // Discrete logarithm Algorithm
     // Input: integers a, b, N, r
-    // Goal: compute the discrete logarithm log_a(b)
+    // Goal: compute the discrete logarithm log_a(b), returns -1 on failure cases
     operation DiscreteLogarithm (a : Int, b : Int, N : Int, r : Int) : Int {
-        mutable r1 = 0;
-        mutable r2 = 0;
-        let t = BitSize(N) * 3 + 1;
+        mutable appr_slmodr = 0;
+        mutable appr_l = 0;
+        let t = BitSize(N) * 2 + 1;
         using ((x1, x2, y) = (Qubit[t], Qubit[t], Qubit[t])) {
             ApplyToEach(H, x1);
             ApplyToEach(H, x2);
             DLOracle(a, b, N, x1, x2, y);
             InverseQFT(x1);
             InverseQFT(x2);
-            set r1 = MeasureIntegerBE(BigEndian(x1));
-            set r2 = MeasureIntegerBE(BigEndian(x2));
+            set appr_slmodr = MeasureIntegerBE(BigEndian(x1));
+            set appr_l = MeasureIntegerBE(BigEndian(x2));
             ResetAll(x1);
             ResetAll(x2);
             ResetAll(y);
         }
-        let (sl, l) = (ContinuedFractionConvergent(Fraction(r1, r2), N))!;
+        let (slmodr, _) = (ContinuedFractionConvergent(Fraction(appr_slmodr, t), N))!;
+        let (l, _) = (ContinuedFractionConvergent(Fraction(appr_l, t), N))!;
+        if (GCD(l, r) != 1) {
+            Message($"Algorithm failed due to measure l={l}, no coprime to r={r}");
+            return -1;
+        }
         let l_inv = InverseMod(l, r);
-        let s = sl * l_inv;
+        let s = slmodr * l_inv % r;
+        return s;
+    }
+
+    // Discrete logarithm designed for product of distinct Fermat primes
+    // so that simulation runtime is tolerable on a personal computer, 
+    // we only allow N to be 5 or 15 because when N=17 the program may not finish
+    // realistically
+    // This function is for demonstration of how Shor's algorithm works, it takes
+    // advantage of the fact that 𝜑(N) is a power of 2, and with some modification
+    // from the algorihtm, we can use fewer qubits to demonstrate a working version
+    // of Shor's algorithm
+    operation DiscreteLogarithmSpecial (a : Int, b : Int, N : Int, r : Int) : Int {
+        mutable appr_slmodr = 0;
+        mutable appr_l = 0;
+        mutable slmodr = 0;
+        mutable l = 0;
+        let t = BitSize(N);
+        using ((x1, x2, y) = (Qubit[t], Qubit[t], Qubit[t])) {
+            ApplyToEach(H, x1);
+            ApplyToEach(H, x2);
+            DLOracle_Reference(a, b, N, x1, x2, y);
+            InverseQFT_Reference(x1);
+            InverseQFT_Reference(x2);
+            set appr_slmodr = MeasureIntegerBE(BigEndian(x1));
+            set slmodr = appr_slmodr / 2;
+            set appr_l = MeasureIntegerBE(BigEndian(x2));
+            set l = appr_l / 2;
+            ResetAll(x1);
+            ResetAll(x2);
+            ResetAll(y);
+        }
+        if (GCD(l, r) != 1) {
+            Message($"Algorithm failed due to measure l={l}, no coprime to r={r}");
+            return -1;
+        }
+        let l_inv = InverseMod(l, r);
+        let s = slmodr * l_inv % r;
         return s;
     }
 

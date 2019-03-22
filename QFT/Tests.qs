@@ -257,5 +257,34 @@ namespace Quantum.Kata.QFT {
             }
         }
     }
+
+    operation DiscreteLogSpecial_N5_Test () : Unit {
+        let N = 5; // group (Z/5Z)*
+        let a = 2; // 2 is a generator of group (Z/5Z)*
+        let b = 3; // 2^3 = 3 in (Z/5Z)*, so log_2(3)=3
+        let r = 4; // 𝜑(N)=𝜑(5)=4
+        mutable result = 0;
+        let answer = 3;
+        Message($"Running Shor's Algorithm on N={N}, generator a={a}, element b={b}");
+        repeat {
+            set result = DiscreteLogarithm(a, b, N, r);
+        } until (result == answer) fixup {}
+        Message($"log_{a}({b})={result} in group (Z/{N}Z)*");
+    }
+
+    // due to larger number of qubits, this test may take a while
+    operation DiscreteLogSpecial_N15_Test () : Unit {
+        let N = 15; // ambient group (Z/5Z)*
+        let a = 7; // ⟨7⟩ generates subgroup {1, 4, 7, 13} in (Z/15Z)*
+        let b = 13; // 7^3 = 13 in (Z/15Z)*, so log_7(13)=3
+        let r = 4; // size of subgroup ⟨7⟩ is 4
+        mutable result = 0;
+        let answer = 3;
+        Message($"Running Shor's Algorithm on N={N}, generator a={a}, element b={b}");
+        repeat {
+            set result = DiscreteLogarithm(a, b, N, r);
+        } until (result == answer) fixup {}
+        Message($"log_{a}({b})={result} in group (Z/{N}Z)*");
+    }
     
 }
