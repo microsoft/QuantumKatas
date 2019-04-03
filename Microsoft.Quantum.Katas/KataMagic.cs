@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.IQSharp.Common;
+using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 
@@ -38,10 +39,13 @@ namespace Microsoft.Quantum.Katas
             var name = args[0];
             var code = args[1];
 
-            var op = Compile(code, channel);
-            if (op == null) { return ExecuteStatus.Error.ToExecutionResult(); }
+            var kata = FindKata(name);
+            if (kata == null) throw new InvalidOperationException($"Invalid test name: {name}");
 
-            return Simulate(name, op, channel)
+            var userAnswer = Compile(code, channel);
+            if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
+
+            return Simulate(kata, userAnswer, channel)
                 ? "x成功 (success)!".ToExecutionResult()
                 : ExecuteStatus.Error.ToExecutionResult();
         }
@@ -81,26 +85,24 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
-        public virtual bool Simulate(string kataName, OperationInfo userAnswer, IChannel channel)
+        public virtual bool Simulate(OperationInfo kata, OperationInfo userAnswer, IChannel channel)
         {
-            var test = FindKata(kataName);
-            if (test == null) throw new InvalidOperationException($"Invalid test name: {kataName}");
-
-            var rawTask = FindRawAnswer(test, userAnswer);
-            if (rawTask == null) throw new InvalidOperationException($"Invalid task: {userAnswer.FullName}");
+            var rawAnswer = FindRawAnswer(kata, userAnswer);
+            if (rawAnswer == null) throw new InvalidOperationException($"Invalid task: {userAnswer.FullName}");
 
             try
             {
-                using (var qsim = new QuantumSimulator())
-                {
-                    qsim.DisableLogToConsole();
-                    qsim.Register(rawTask.RoslynType, userAnswer.RoslynType, typeof(ICallable));
-                    qsim.OnLog += channel.Stdout;
+                var qsim = CreateSimulator();
 
-                    var value = test.RunAsync(qsim, null).Result;
+                qsim.DisableLogToConsole();
+                qsim.Register(rawAnswer.RoslynType, userAnswer.RoslynType, typeof(ICallable));
+                qsim.OnLog += channel.Stdout;
 
-                    return true;
-                }
+                var value = kata.RunAsync(qsim, null).Result;
+
+                if (qsim is IDisposable dis) { dis.Dispose(); }
+
+                return true;
             }
             catch (AggregateException agg)
             {
@@ -116,8 +118,12 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
-public virtual OperationInfo FindKata(string kataName) => 
-            Resolver.Resolve(kataName);
+        public virtual SimulatorBase CreateSimulator() =>
+            new QuantumSimulator();
+
+
+        public virtual OperationInfo FindKata(string kataName) =>
+                    Resolver.Resolve(kataName);
 
         public virtual OperationInfo FindRawAnswer(OperationInfo kata, OperationInfo userAnswer) =>
             Resolver.Resolve($"{kata.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
