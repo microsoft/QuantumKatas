@@ -46,7 +46,7 @@ namespace Microsoft.Quantum.Katas
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
 
             return Simulate(kata, userAnswer, channel)
-                ? "x成功 (success)!".ToExecutionResult()
+                ? "成功 (success)!".ToExecutionResult()
                 : ExecuteStatus.Error.ToExecutionResult();
         }
 
