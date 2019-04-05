@@ -12,6 +12,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Extensions.Testing;
+
+    open Quantum.Kata.Utils;
     
     
     // ------------------------------------------------------
@@ -181,15 +183,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
     }
     
-    
-    // ------------------------------------------------------
-    function AssertOracleCallsCount<'T> (count : Int, oracle : 'T) : Unit { }
-    
-    
-    // ------------------------------------------------------
-    function ResetOracleCallsCount () : Unit { }
-    
-    
     // ------------------------------------------------------
     function AssertIntArrayEqual (actual : Int[], expected : Int[], message : String) : Unit {
         
@@ -226,7 +219,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
         let oracle = Oracle_ProductFunction_Reference(_, _, r);
         AssertIntArrayEqual(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
-        AssertOracleCallsCount(1, oracle);
+
+        let nu = GetOracleCallsCount(oracle);
+        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
     }
     
     
@@ -250,7 +245,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertDJAlgorithmWorks (oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
         AssertBoolEqual(DJ_Algorithm(4, oracle), expected, msg);
-        AssertOracleCallsCount(1, oracle);
+        
+        let nu = GetOracleCallsCount(oracle);
+        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
     }
     
     
@@ -278,7 +275,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let res = Noname_Algorithm(Length(r), givenOracle);
         
         // check that the oracle was called once (later it will be called again by test harness)
-        AssertOracleCallsCount(1, givenOracle);
+        let nu = GetOracleCallsCount(givenOracle);
+        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
         
         // check that the oracle obtained from r
         // is equivalent to the oracle obtained from return value

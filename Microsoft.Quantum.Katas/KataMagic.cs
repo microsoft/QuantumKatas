@@ -13,6 +13,9 @@ namespace Microsoft.Quantum.Katas
 {
     public class KataMagic : MagicSymbol
     {
+        /// <summary>
+        /// IQ# Magic that enables executing Kata's on Jupyter.
+        /// </summary>
         public KataMagic(IOperationResolver resolver, ISnippets snippets)
         {
             this.Name = $"%kata";
@@ -24,23 +27,35 @@ namespace Microsoft.Quantum.Katas
             this.Snippets = snippets;
         }
 
-        internal IOperationResolver Resolver { get; }
+        /// <summary>
+        /// The Resolver let's us find compiled Q# operations from the workspace
+        /// </summary>
+        protected IOperationResolver Resolver { get; }
 
-        internal ISnippets Snippets { get; }
+        /// <summary>
+        /// The list of user-defined Q# code snippets from the notebook.
+        /// </summary>
+        protected ISnippets Snippets { get; }
 
+        /// <summary>
+        /// What this Magic does when triggered. It will:
+        /// - find the Kata to execute based n the Kata name,
+        /// - compile the code after found after the name as the user's answer.
+        /// - run (simulate) the kata.
+        /// </summary>
         public virtual ExecutionResult Run(string input, IChannel channel)
         {
             channel = channel.WithNewLines();
 
+            // Expect exactly two arguments, the name of the Kata and the user's answer (code).
             var args = input?.Split(new char[] { ' ', '\n', '\t' }, 2);
-
             if (args == null || args.Length != 2) throw new InvalidOperationException("Invalid parameters. Usage: `%kata Test \"q# operation\"`");
 
             var name = args[0];
             var code = args[1];
 
             var kata = FindKata(name);
-            if (kata == null) throw new InvalidOperationException($"Invalid test name: {name}");
+            if (kata == null) throw new InvalidOperationException($"Invalid kata name: {name}");
 
             var userAnswer = Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
@@ -50,6 +65,10 @@ namespace Microsoft.Quantum.Katas
                 : ExecuteStatus.Error.ToExecutionResult();
         }
 
+        /// <summary>
+        /// Compiles the given code. Checks there is only one operation defined in the code,
+        /// and returns its corresponding OperationInfo
+        /// </summary>
         public virtual OperationInfo Compile(string code, IChannel channel)
         {
             try
@@ -85,6 +104,12 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
+        /// <summary>
+        /// Executes the given kata using the provided `userAnswer` as the actual answer.
+        /// To do this, it finds another operation with the same name but in the Kata's namespace
+        /// (by calling `FindRawAnswer`) and replace its implementation with the userAnswer
+        /// in the simulator.
+        /// </summary>
         public virtual bool Simulate(OperationInfo kata, OperationInfo userAnswer, IChannel channel)
         {
             var rawAnswer = FindRawAnswer(kata, userAnswer);
@@ -118,13 +143,23 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
+        /// <summary>
+        /// Creates the instance of the QuantumSimulator to use to run the Kata.
+        /// </summary>
         public virtual SimulatorBase CreateSimulator() =>
-            new QuantumSimulator();
+            new CounterSimulator();
 
-
+        /// <summary>
+        /// Returns the OperationInfo for the Kata to run.
+        /// </summary>
         public virtual OperationInfo FindKata(string kataName) =>
-                    Resolver.Resolve(kataName);
+             Resolver.Resolve(kataName);
 
+        /// <summary>
+        /// Returns the original shell for the Kata's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
+        /// Kata's namespace
+        /// </summary>
         public virtual OperationInfo FindRawAnswer(OperationInfo kata, OperationInfo userAnswer) =>
             Resolver.Resolve($"{kata.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
     }

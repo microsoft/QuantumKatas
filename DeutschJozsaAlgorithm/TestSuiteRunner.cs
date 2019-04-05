@@ -9,7 +9,9 @@
 
 using System.Diagnostics;
 
+using Microsoft.Quantum.Katas;
 using Microsoft.Quantum.Simulation.XUnit;
+
 using Xunit.Abstractions;
 
 
@@ -31,7 +33,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm
         [OperationDriver(TestNamespace = "Quantum.Kata.DeutschJozsaAlgorithm")]
         public void TestTarget(TestOperation op)
         {
-            using (var sim = new OracleCounterSimulator())
+            using (var sim = new CounterSimulator())
             {
                 // OnLog defines action(s) performed when Q# test calls function Message
                 sim.OnLog += (msg) => { output.WriteLine(msg); };
