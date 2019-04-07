@@ -16,7 +16,25 @@ namespace Quantum.Kata.CHSHGame {
     open Microsoft.Quantum.Primitive;
 
 
-    // Task 1. Entangled pair
+    // Task 1. Win condition
+    function WonCHSHGame_Reference (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
+        return (x && y) == (a != b);
+    }
+
+
+    // Task 2. Alice's classical strategy
+    function AliceClassical_Reference (x : Bool) : Bool {
+        return false;
+    }
+
+
+    // Task 3. Bob's classical strategy
+    function BobClassical_Reference (y : Bool) : Bool {
+        return false;
+    }
+
+
+    // Task 4. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
         body (...) {
             // The easiest way to create an entangled pair is to start with
@@ -39,7 +57,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 2. Measure Alice's qubit
+    // Task 5. Measure Alice's qubit
     operation MeasureAliceQubit_Reference (bit : Bool, qubit : Qubit) : Result {
         if (bit) {
             // Measure in sign basis if bit is 1
@@ -51,7 +69,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 3. Rotate Bob's qubit
+    // Task 6. Rotate Bob's qubit
     operation RotateBobQubit_Reference (clockwise : Bool, qubit : Qubit) : Unit {
         if (clockwise) {
             Ry(-2.0 * PI() / 8.0, qubit);
@@ -61,14 +79,14 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 4. Measure Bob's qubit
+    // Task 7. Measure Bob's qubit
     operation MeasureBobQubit_Reference (bit : Bool, qubit : Qubit) : Result {
         RotateBobQubit_Reference(not bit, qubit);
         return M(qubit);
     }
 
 
-    // Task 5. Play the CHSH game
+    // Task 8. Play the CHSH game
     operation PlayQuantumStrategy_Reference (aliceBit : Bool,
                                              bobBit : Bool,
                                              aliceMeasuresFirst : Bool) : Bool {
