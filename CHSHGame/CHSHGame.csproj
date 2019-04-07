@@ -4,7 +4,6 @@
     <PlatformTarget>x64</PlatformTarget>
     <IsPackable>false</IsPackable>
     <RootNamespace>Quantum.Kata.CHSHGame</RootNamespace>
-    <StartupObject>Quantum.Kata.CHSHGame.Driver</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
