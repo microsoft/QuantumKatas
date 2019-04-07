@@ -58,8 +58,8 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 5. Alice's quantum strategy
     // Input: The classical bit Alice was given, and Alice's entangled qubit.
-    // Goal:  Measure Alice's qubit in the Z basis if her bit is 0 or the X basis if her bit is 1
-    //        return the result.
+    // Goal:  Measure Alice's qubit in the Z basis if her bit is 0, or the X basis if her bit is 1,
+    //        and return the result.
     operation AliceQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
         return false;
@@ -76,8 +76,8 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 7. Bob's quantum strategy
     // Input: The classical bit Bob was given, and Bob's entangled qubit.
-    // Goal:  Measure Bob's qubit in the π/8 basis if his bit is 0 or the -π/8 basis if his bit is
-    //        1 and return the result.
+    // Goal:  Measure Bob's qubit in the π/8 basis if his bit is 0, or the -π/8 basis if his bit is
+    //        1, and return the result.
     operation BobQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
         return false;
