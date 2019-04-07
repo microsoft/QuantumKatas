@@ -20,7 +20,7 @@ namespace Quantum.Kata.CHSHGame {
             let bits = BoolArrFromPositiveInt(i, 4);
             AssertBoolEqual(
                 WonCHSHGame(bits[0], bits[1], bits[2], bits[3]),
-                (bits[0] && bits[1]) == (bits[2] != bits[3]),
+                (bits[0] and bits[1]) == (bits[2] != bits[3]),
                 $"Win condition is wrong for X = {bits[0]}, Y = {bits[1]}, A = {bits[2]}, " +
                  "B = {bits[3]}");
         }
@@ -120,7 +120,7 @@ namespace Quantum.Kata.CHSHGame {
             let a = RandomInt(2) == 1 ? true | false;
             let b = RandomInt(2) == 1 ? true | false;
             let aliceFirst = RandomInt(2) == 1 ? true | false;
-            if (PlayQuantumStrategy(a, b, aliceFirst) == (a && b)) {
+            if (PlayQuantumStrategy(a, b, aliceFirst) == (a and b)) {
                 set wins = wins + 1;
             }
         }

@@ -18,7 +18,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 1. Win condition
     function WonCHSHGame_Reference (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
-        return (x && y) == (a != b);
+        return (x and y) == (a != b);
     }
 
 
