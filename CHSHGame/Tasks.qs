@@ -17,7 +17,7 @@ namespace Quantum.Kata.CHSHGame {
     // Goal:  Return true if Alice and Bob won the CHSH game; that is, if X·Y = A ⊕ B.
     function WonCHSHGame (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
         // ...
-        return false;
+        fail "Task 1.1 not implemented yet";
     }
 
 
@@ -27,7 +27,7 @@ namespace Quantum.Kata.CHSHGame {
     //        winning the CHSH game.
     function AliceClassical (x : Bool) : Bool {
         // ...
-        return false;
+        fail "Task 1.2 not implemented yet";
     }
 
 
@@ -37,7 +37,7 @@ namespace Quantum.Kata.CHSHGame {
     //        winning the CHSH game.
     function BobClassical (y : Bool) : Bool {
         // ...
-        return true;
+        fail "Task 1.3 not implemented yet";
     }
 
 
@@ -55,6 +55,7 @@ namespace Quantum.Kata.CHSHGame {
         AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // ...
+        fail "Task 2.1 not implemented yet";
     }
 
 
@@ -64,7 +65,7 @@ namespace Quantum.Kata.CHSHGame {
     //        and return the result.
     operation AliceQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        return false;
+        fail "Task 2.2 not implemented yet";
     }
 
 
@@ -73,6 +74,7 @@ namespace Quantum.Kata.CHSHGame {
     // Goal:  Rotate Bob's qubit π/8 radians around the Y axis either clockwise or counterclockwise.
     operation RotateBobQubit (clockwise : Bool, qubit : Qubit) : Unit {
         // ...
+        fail "Task 2.3 not implemented yet";
     }
 
 
@@ -82,7 +84,7 @@ namespace Quantum.Kata.CHSHGame {
     //        1, and return the result.
     operation BobQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        return false;
+        fail "Task 2.4 not implemented yet";
     }
 
 
@@ -90,11 +92,11 @@ namespace Quantum.Kata.CHSHGame {
     // Input: Operations that return Alice and Bob's output bits (A and B) based on their quantum
     //        strategies and given their respective entangled qubits. Alice and Bob have already
     //        been told what their starting bits are.
-    // Goal: Return Alice and Bob's output bits (A, B).
+    // Goal:  Return Alice and Bob's output bits (A, B).
     operation PlayQuantumCHSH (askAlice : (Qubit => Bool), askBob : (Qubit => Bool))
             : (Bool, Bool) {
         // ...
-        return (false, false);
+        fail "Task 2.5 not implemented yet";
     }
 
 }
