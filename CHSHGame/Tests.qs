@@ -22,7 +22,7 @@ namespace Quantum.Kata.CHSHGame {
                 WonCHSHGame(bits[0], bits[1], bits[2], bits[3]),
                 (bits[0] and bits[1]) == (bits[2] != bits[3]),
                 $"Win condition is wrong for X = {bits[0]}, Y = {bits[1]}, A = {bits[2]}, " +
-                 "B = {bits[3]}");
+                $"B = {bits[3]}");
         }
     }
 
