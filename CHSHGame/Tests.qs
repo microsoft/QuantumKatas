@@ -15,7 +15,7 @@ namespace Quantum.Kata.CHSHGame {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Extensions.Testing;
 
-    operation T1_WonCHSHGame_Test () : Unit {
+    operation T11_WonCHSHGame_Test () : Unit {
         for (i in 0..1 <<< 4 - 1) {
             let bits = BoolArrFromPositiveInt(i, 4);
             AssertBoolEqual(
@@ -26,7 +26,7 @@ namespace Quantum.Kata.CHSHGame {
         }
     }
 
-    operation T2_T3_Classical_Test () : Unit {
+    operation T12_T13_Classical_Test () : Unit {
         for (i in 0..1 <<< 2 - 1) {
             let bits = BoolArrFromPositiveInt(i, 2);
             AssertBoolEqual(AliceClassical(bits[0]), BobClassical(bits[1]),
@@ -48,12 +48,12 @@ namespace Quantum.Kata.CHSHGame {
         }
     }
 
-    operation T4_CreateEntangledPair_Test () : Unit {
+    operation T21_CreateEntangledPair_Test () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, CreateEntangledPair, CreateEntangledPair_Reference);
     }
 
-    operation T5_AliceQuantum_Test () : Unit {
+    operation T22_AliceQuantum_Test () : Unit {
         using (q = Qubit()) {
             AssertBoolEqual(AliceQuantum(false, q), false, "|0> not measured as false");
             AssertQubit(Zero, q);
@@ -86,14 +86,14 @@ namespace Quantum.Kata.CHSHGame {
         adjoint auto;
     }
 
-    operation T6_RotateBobQubit_Test () : Unit {
+    operation T23_RotateBobQubit_Test () : Unit {
         AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(true, _), _),
                                         QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _), 1);
         AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(false, _), _),
                                         QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _), 1);
     }
 
-    operation T7_BobQuantum_Test () : Unit {
+    operation T24_BobQuantum_Test () : Unit {
         using (q = Qubit()) {
             RotateBobQubit_Reference(false, q);
             AssertBoolEqual(BobQuantum(false, q), false, "π/8 from |0> not measured as false");
@@ -115,7 +115,7 @@ namespace Quantum.Kata.CHSHGame {
         }
     }
 
-    operation T8_PlayQuantumCHSH_Test () : Unit {
+    operation T25_PlayQuantumCHSH_Test () : Unit {
         mutable wins = 0;
         for (i in 1..10000) {
             let x = RandomInt(2) == 1 ? true | false;

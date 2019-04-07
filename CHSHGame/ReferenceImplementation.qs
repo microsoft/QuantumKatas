@@ -16,25 +16,34 @@ namespace Quantum.Kata.CHSHGame {
     open Microsoft.Quantum.Primitive;
 
 
-    // Task 1. Win condition
+
+    //////////////////////////////////////////////////////////////////
+    // Part I. Classical CHSH
+    //////////////////////////////////////////////////////////////////
+
+    // Task 1.1. Win condition
     function WonCHSHGame_Reference (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
         return (x and y) == (a != b);
     }
 
 
-    // Task 2. Alice's classical strategy
+    // Task 1.2. Alice's classical strategy
     function AliceClassical_Reference (x : Bool) : Bool {
         return false;
     }
 
 
-    // Task 3. Bob's classical strategy
+    // Task 1.3. Bob's classical strategy
     function BobClassical_Reference (y : Bool) : Bool {
         return false;
     }
 
 
-    // Task 4. Entangled pair
+    //////////////////////////////////////////////////////////////////
+    // Part II. Quantum CHSH
+    //////////////////////////////////////////////////////////////////
+
+    // Task 2.1. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
         body (...) {
             // The easiest way to create an entangled pair is to start with
@@ -57,7 +66,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 5. Alice's quantum strategy
+    // Task 2.2. Alice's quantum strategy
     operation AliceQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         if (bit) {
             // Measure in sign basis if bit is 1
@@ -69,7 +78,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 6. Rotate Bob's qubit
+    // Task 2.3. Rotate Bob's qubit
     operation RotateBobQubit_Reference (clockwise : Bool, qubit : Qubit) : Unit {
         if (clockwise) {
             Ry(-2.0 * PI() / 8.0, qubit);
@@ -79,14 +88,14 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 7. Bob's quantum strategy
+    // Task 2.4. Bob's quantum strategy
     operation BobQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         RotateBobQubit_Reference(not bit, qubit);
         return BoolFromResult(M(qubit));
     }
 
 
-    // Task 8. Play the CHSH game
+    // Task 2.5. Play the CHSH game
     operation PlayQuantumCHSH_Reference (askAlice : (Qubit => Bool),
                                          askBob : (Qubit => Bool)) : (Bool, Bool) {
         mutable aliceResult = false;
