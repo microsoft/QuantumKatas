@@ -57,14 +57,14 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 5. Measure Alice's qubit
-    operation MeasureAliceQubit_Reference (bit : Bool, qubit : Qubit) : Result {
+    // Task 5. Alice's quantum strategy
+    operation AliceQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         if (bit) {
             // Measure in sign basis if bit is 1
-            return Measure([PauliX], [qubit]);
+            return BoolFromResult(Measure([PauliX], [qubit]));
         } else {
             // Measure in computational basis if bit is 0
-            return Measure([PauliZ], [qubit]);
+            return BoolFromResult(Measure([PauliZ], [qubit]));
         }
     }
 
@@ -79,36 +79,30 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 7. Measure Bob's qubit
-    operation MeasureBobQubit_Reference (bit : Bool, qubit : Qubit) : Result {
+    // Task 7. Bob's quantum strategy
+    operation BobQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         RotateBobQubit_Reference(not bit, qubit);
-        return M(qubit);
+        return BoolFromResult(M(qubit));
     }
 
 
     // Task 8. Play the CHSH game
-    operation PlayQuantumStrategy_Reference (aliceBit : Bool,
-                                             bobBit : Bool,
-                                             aliceMeasuresFirst : Bool) : Bool {
-        mutable aliceResult = Zero;
-        mutable bobResult = Zero;
+    operation PlayQuantumCHSH_Reference (askAlice : (Qubit => Bool),
+                                         askBob : (Qubit => Bool)) : (Bool, Bool) {
+        mutable aliceResult = false;
+        mutable bobResult = false;
 
         using ((aliceQubit, bobQubit) = (Qubit(), Qubit())) {
             CreateEntangledPair_Reference([aliceQubit, bobQubit]);
 
-            if (aliceMeasuresFirst) {
-                set aliceResult = MeasureAliceQubit_Reference(aliceBit, aliceQubit);
-                set bobResult = MeasureBobQubit_Reference(bobBit, bobQubit);
-            } else {
-                set bobResult = MeasureBobQubit_Reference(bobBit, bobQubit);
-                set aliceResult = MeasureAliceQubit_Reference(aliceBit, aliceQubit);
-            }
+            set aliceResult = askAlice(aliceQubit);
+            set bobResult = askBob(bobQubit);
 
             Reset(aliceQubit);
             Reset(bobQubit);
         }
 
-        return BoolFromResult(aliceResult) != BoolFromResult(bobResult);
+        return (aliceResult, bobResult);
     }
 
 }

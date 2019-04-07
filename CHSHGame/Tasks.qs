@@ -56,12 +56,13 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 5. Measure Alice's qubit
+    // Task 5. Alice's quantum strategy
     // Input: The classical bit Alice was given, and Alice's entangled qubit.
-    // Goal:  Measure Alice's qubit in the Z basis if her bit is 0 or the X basis if her bit is 1.
-    operation MeasureAliceQubit (bit : Bool, qubit : Qubit) : Result {
+    // Goal:  Measure Alice's qubit in the Z basis if her bit is 0 or the X basis if her bit is 1
+    //        return the result.
+    operation AliceQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        return Zero;
+        return false;
     }
 
 
@@ -73,22 +74,25 @@ namespace Quantum.Kata.CHSHGame {
     }
 
 
-    // Task 7. Measure Bob's qubit
-    // Input: The classical bit Bob was given, and Alice's entangled qubit.
+    // Task 7. Bob's quantum strategy
+    // Input: The classical bit Bob was given, and Bob's entangled qubit.
     // Goal:  Measure Bob's qubit in the π/8 basis if his bit is 0 or the -π/8 basis if his bit is
-    //        1.
-    operation MeasureBobQubit (bit : Bool, qubit : Qubit) : Result {
+    //        1 and return the result.
+    operation BobQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        return Zero;
+        return false;
     }
 
 
     // Task 8. Play the CHSH game using the quantum strategy
-    // Input: Alice and Bob's X and Y bits and whether Alice should measure first.
-    // Goal: Return A XOR B.
-    operation PlayQuantumStrategy (aliceBit : Bool, bobBit : Bool, aliceMeasuresFirst : Bool) : Bool {
+    // Input: Operations that return Alice and Bob's output bits (A and B) based on their quantum
+    //        strategies and given their respective entangled qubits. Alice and Bob have already
+    //        been told what their starting bits are.
+    // Goal: Return Alice and Bob's output bits (A, B).
+    operation PlayQuantumCHSH (askAlice : (Qubit => Bool), askBob : (Qubit => Bool))
+            : (Bool, Bool) {
         // ...
-        return false != false;
+        return (false, false);
     }
 
 }

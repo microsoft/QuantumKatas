@@ -34,7 +34,8 @@ namespace Quantum.Kata.CHSHGame {
         }
     }
 
-    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
+                                      refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
@@ -52,23 +53,23 @@ namespace Quantum.Kata.CHSHGame {
         AssertEqualOnZeroState(2, CreateEntangledPair, CreateEntangledPair_Reference);
     }
 
-    operation T5_MeasureAliceQubit_Test () : Unit {
+    operation T5_AliceQuantum_Test () : Unit {
         using (q = Qubit()) {
-            AssertResultEqual(MeasureAliceQubit(false, q), Zero, "|0> not measured as Zero");
+            AssertBoolEqual(AliceQuantum(false, q), false, "|0> not measured as false");
             AssertQubit(Zero, q);
 
             X(q);
-            AssertResultEqual(MeasureAliceQubit(false, q), One, "|1> not measured as One");
+            AssertBoolEqual(AliceQuantum(false, q), true, "|1> not measured as true");
             AssertQubit(One, q);
 
             H(q);
-            AssertResultEqual(MeasureAliceQubit(true, q), One, "|-> is not measured as One");
+            AssertBoolEqual(AliceQuantum(true, q), true, "|-> is not measured as true");
             H(q);
             AssertQubit(One, q);
 
             X(q);
             H(q);
-            AssertResultEqual(MeasureAliceQubit(true, q), Zero, "|+> is not measured as Zero");
+            AssertBoolEqual(AliceQuantum(true, q), false, "|+> is not measured as false");
             H(q);
             AssertQubit(Zero, q);
         }
@@ -92,35 +93,35 @@ namespace Quantum.Kata.CHSHGame {
                                         QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _), 1);
     }
 
-    operation T7_MeasureBobQubit_Test () : Unit {
+    operation T7_BobQuantum_Test () : Unit {
         using (q = Qubit()) {
             RotateBobQubit_Reference(false, q);
-            AssertResultEqual(MeasureBobQubit(false, q), Zero, "π/8 from |0> not measured as Zero");
+            AssertBoolEqual(BobQuantum(false, q), false, "π/8 from |0> not measured as false");
             AssertQubit(Zero, q);
 
             X(q);
             RotateBobQubit_Reference(false, q);
-            AssertResultEqual(MeasureBobQubit(false, q), One, "π/8 from |1> not measured as One");
+            AssertBoolEqual(BobQuantum(false, q), true, "π/8 from |1> not measured as true");
             AssertQubit(One, q);
 
             RotateBobQubit_Reference(true, q);
-            AssertResultEqual(MeasureBobQubit(true, q), One, "-π/8 from |1> not measured as One");
+            AssertBoolEqual(BobQuantum(true, q), true, "-π/8 from |1> not measured as true");
             AssertQubit(One, q);
 
             X(q);
             RotateBobQubit_Reference(true, q);
-            AssertResultEqual(MeasureBobQubit(true, q), Zero, "-π/8 from |0> not measured as Zero");
+            AssertBoolEqual(BobQuantum(true, q), false, "-π/8 from |0> not measured as false");
             AssertQubit(Zero, q);
         }
     }
 
-    operation T8_PlayQuantumStrategy_Test () : Unit {
+    operation T8_PlayQuantumCHSH_Test () : Unit {
         mutable wins = 0;
         for (i in 1..10000) {
-            let a = RandomInt(2) == 1 ? true | false;
-            let b = RandomInt(2) == 1 ? true | false;
-            let aliceFirst = RandomInt(2) == 1 ? true | false;
-            if (PlayQuantumStrategy(a, b, aliceFirst) == (a and b)) {
+            let x = RandomInt(2) == 1 ? true | false;
+            let y = RandomInt(2) == 1 ? true | false;
+            let (a, b) = PlayQuantumCHSH(AliceQuantum(x, _), BobQuantum(y, _));
+            if ((x and y) == (a != b)) {
                 set wins = wins + 1;
             }
         }
