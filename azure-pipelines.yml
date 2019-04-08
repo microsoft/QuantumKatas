@@ -10,5 +10,4 @@ variables:
   KatasRootFolder: $(System.DefaultWorkingDirectory)
 
 steps:
-  steps:
-  - template: Build/step-build-katas.yml
+- template: Build/step-build-katas.yml
