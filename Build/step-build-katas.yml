@@ -1,0 +1,15 @@
+# Steps needed to build Katas...
+
+steps:
+- task: PowerShell@2
+  displayName: 'Validate Unicode in Katas files.'
+  inputs:
+    targetType: filePath
+    filePath: './scripts/validate-unicode.ps1'
+    workingDirectory: $(KatasRootFolder)
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: $(KatasRootFolder)/**/*.sln

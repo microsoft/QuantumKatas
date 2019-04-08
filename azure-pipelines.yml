@@ -7,17 +7,8 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  KatasRootFolder: $(System.DefaultWorkingDirectory)
 
 steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: 'scripts/validate-unicode.ps1'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: build
-    projects: '**/*.sln'
+  steps:
+  - template: Build/step-build-katas.yml
