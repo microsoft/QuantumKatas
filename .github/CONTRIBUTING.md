@@ -57,7 +57,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Style Guide
 
-* We try to adhere to [the general Q# Style Guide](https://github.com/Microsoft/Quantum/blob/master/Docs/style-guide.md) in our Q# code. 
+* We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/quantum/contributing/style-guide) in our Q# code. 
 * We also try to maintain a uniform style across the katas and most importantly within each kata. 
   If you're adding a new task to an existing kata, it should be styled the same way as the rest of its tasks. 
   If you're creating a new kata, model it after the style of the existing katas. 
