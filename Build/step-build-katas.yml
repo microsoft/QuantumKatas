@@ -10,6 +10,7 @@ steps:
 
 
 - task: DotNetCoreCLI@2
+  displayName: 'Building all Katas projects.'
   inputs:
     command: build
     projects: $(KatasRootFolder)/**/*.sln
