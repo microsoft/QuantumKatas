@@ -14,3 +14,4 @@ steps:
   inputs:
     command: build
     projects: $(KatasRootFolder)/**/*.sln
+    arguments: '-v n'
