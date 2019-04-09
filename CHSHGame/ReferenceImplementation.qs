@@ -22,18 +22,17 @@ namespace Quantum.Kata.CHSHGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 1.1. Win condition
-    function WonCHSHGame_Reference (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
+    function WinCondition_Reference (x : Bool, y : Bool, a : Bool, b : Bool) : Bool {
         return (x and y) == (a != b);
     }
 
 
-    // Task 1.2. Alice's classical strategy
+    // Task 1.2. Alice and Bob's classical strategy
+    // (Both players should return the same value, regardless of input)
     function AliceClassical_Reference (x : Bool) : Bool {
         return false;
     }
 
-
-    // Task 1.3. Bob's classical strategy
     function BobClassical_Reference (y : Bool) : Bool {
         return false;
     }
@@ -46,20 +45,8 @@ namespace Quantum.Kata.CHSHGame {
     // Task 2.1. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
         body (...) {
-            // The easiest way to create an entangled pair is to start with
-            // applying a Hadamard transformation to one of the qubits:
             H(qs[0]);
-
-            // This has left us in state:
-            // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
-
-            // Now, if we flip the second qubit conditioned on the state
-            // of the first one, we get that the states of the two qubits will always match.
             CNOT(qs[0], qs[1]);
-            // So we ended up in the state:
-            // (|00⟩ + |11⟩) / sqrt(2)
-            //
-            // Which is the required Bell pair |Φ⁺⟩
         }
 
         adjoint invert;
