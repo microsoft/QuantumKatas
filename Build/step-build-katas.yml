@@ -14,4 +14,7 @@ steps:
   inputs:
     command: build
     projects: $(KatasRootFolder)/**/*.sln
-    arguments: '-v n'
+    arguments:  >
+      -c $(BuildConfiguration) 
+      -v n
+      /p:Version=$(Assembly.Version)
