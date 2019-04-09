@@ -5,7 +5,7 @@ steps:
   displayName: 'Validate Unicode in Katas files.'
   inputs:
     targetType: filePath
-    filePath: './scripts/validate-unicode.ps1'
+    filePath: '$(KatasRootFolder)/scripts/validate-unicode.ps1'
     workingDirectory: $(KatasRootFolder)
 
 
