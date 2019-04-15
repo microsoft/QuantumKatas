@@ -105,22 +105,17 @@ namespace Quantum.Kata.GHZGame {
         return false;
     }
 
-    // This method is here to show how the game is run. You should not modify it, though
-    // if you have ideas for new ways to solve the game, just keep in mind that Alice,
-    // Bob, and Charlie should never communicate during the game.
-    operation PlayQuantumGHZ(input : Bool[]) : Bool[] {
-        mutable res = new Bool[3];
-        using (qs = Qubit[3]) {
-            CreateEntangledTriple(qs);
-
-            set res[0] = QuantumStrategy(input[0], qs[0]);
-            set res[1] = QuantumStrategy(input[1], qs[1]);
-            set res[2] = QuantumStrategy(input[2], qs[2]);
-
-            ResetAll(qs);
-        }
-
-        return res;
+    // Task 2.3. Play the GHZ game using the quantum strategy
+    // Input: Operations that return Alice, Bob and Charlie's output bits (a, b and c) based on
+    //        their quantum strategies and given their respective qubits from the entangled triple. 
+    //        The players have already been told what their starting bits (r, s and t) are.
+    // Goal:  Return Alice, Bob and Charlie's output bits (a, b and c).
+    //
+    // Note that this task uses QuantumStrategy which you've implemented in task 2.2.
+    operation PlayQuantumGHZ (askAlice : (Qubit => Bool),
+                              askBob : (Qubit => Bool),
+                              askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
+        return (false, false, false);
     }
 
 }

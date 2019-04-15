@@ -64,4 +64,25 @@ namespace Quantum.Kata.GHZGame {
         return BoolFromResult(M(qubit));
     }
 
+    // Task 2.3. Play the GHZ game using the quantum strategy
+    operation PlayQuantumGHZ_Reference (askAlice : (Qubit => Bool),
+                                        askBob : (Qubit => Bool),
+                                        askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
+        mutable a = false;
+        mutable b = false;
+        mutable c = false;
+
+        using (qs = Qubit[3]) {
+            CreateEntangledTriple_Reference(qs);
+
+            set a = askAlice(qs[0]);
+            set b = askBob(qs[1]);
+            set c = askCharlie(qs[2]);
+
+            ResetAll(qs);
+        }
+
+        return (a, b, c);
+    }
+
 }

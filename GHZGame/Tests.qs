@@ -32,8 +32,8 @@ namespace Quantum.Kata.GHZGame {
                 AssertBoolEqual(
                     WinCondition(r, s, t, abc[0], abc[1], abc[2]),
                     WinCondition_Reference(r, s, t, abc[0], abc[1], abc[2]),
-                    $"Win condition is wrong for r = {r}, s = {s}, t = {t}, a = {abc[0]}, " +
-                    $"b = {abc[1]}, c = {abc[2]}");
+                    $"Win condition is wrong for r={r}, s={s}, t={t}, a={abc[0]}, b={abc[1]}, " +
+                    $"c={abc[2]}");
             }
         }
     }
@@ -52,7 +52,6 @@ namespace Quantum.Kata.GHZGame {
         }
         let rate = ToDouble(wins) / 10000.0;
         AssertAlmostEqualTol(rate, 0.5, 0.02);
-        Message($"Classical Random: {rate}");
     }
 
 
@@ -69,7 +68,6 @@ namespace Quantum.Kata.GHZGame {
         }
         let rate = ToDouble(wins) / 10000.0;
         AssertAlmostEqualTol(rate, 0.75, 0.02);
-        Message($"Classical Optimal: {rate}");
     }
 
 
@@ -93,21 +91,16 @@ namespace Quantum.Kata.GHZGame {
 
 
     // ------------------------------------------------------
-    operation QuantumWinsAllTest() : Unit {
-        let inputs = RefereeBits();
-
-        // Run many times, since a wrong strategy could nondeterministically win.
+    operation T23_PlayQuantumGHZ_Test () : Unit {
         for (i in 0..10000) {
-            let (r, s, t) = inputs[RandomInt(Length(inputs))];
-            let res = PlayQuantumGHZ([r, s, t]);
-            if (not WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
-                Message($"input was ({r}, {s}, {t})");
-                Message($"output was {res}");
-                Message($"iteration was {i}");
-                fail "Alice and bob lost.";
-            }
+            let (r, s, t) = (RefereeBits())[RandomInt(Length(RefereeBits()))];
+            let (a, b, c) = PlayQuantumGHZ(QuantumStrategy(r, _),
+                                           QuantumStrategy(s, _),
+                                           QuantumStrategy(t, _));
+            AssertBoolEqual(WinCondition_Reference(r, s, t, a, b, c),
+                            true,
+                            $"Quantum strategy lost with r={r}, s={s}, t={t}, a={a}, b={b}, c={c}");
         }
-        Message($"Quantum Optimal: 1");
     }
 
 }
