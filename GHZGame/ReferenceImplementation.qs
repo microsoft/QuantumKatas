@@ -40,10 +40,8 @@ namespace Quantum.Kata.GHZGame {
     // Part II. Quantum GHZ
     //////////////////////////////////////////////////////////////////
 
-    // Given qubits in the state |000> in big-endian format, prepare the state:
-    // (1/2)(|000> - |110> - |101> - |011>)
-    // This is sometimes known as the GHZ state.
-    operation PrepareEntangledSuperPosition_Reference(qs : Qubit[]) : Unit {
+    // Task 2.1. Entangled triple
+    operation CreateEntangledTriple_Reference (qs : Qubit[]) : Unit {
         body (...) {
             X(qs[0]);
             X(qs[1]);

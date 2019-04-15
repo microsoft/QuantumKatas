@@ -87,8 +87,8 @@ namespace Quantum.Kata.GHZGame {
         }
     }
 
-    operation StatePreparationTest() : Unit {
-        AssertEqualOnZeroState(3, PrepareEntangledSuperPosition, PrepareEntangledSuperPosition_Reference);
+    operation T21_CreateEntangledTriple_Test () : Unit {
+        AssertEqualOnZeroState(3, CreateEntangledTriple, CreateEntangledTriple_Reference);
     }
 
 

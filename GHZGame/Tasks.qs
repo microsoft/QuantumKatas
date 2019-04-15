@@ -81,11 +81,15 @@ namespace Quantum.Kata.GHZGame {
     // Part II. Quantum GHZ
     //////////////////////////////////////////////////////////////////
 
-    // Given qubits in the state |000> in big-endian format, prepare the state:
-    // (1/2)(|000> - |110> - |101> - |011>)
-    // This is sometimes known as the GHZ state.
-    operation PrepareEntangledSuperPosition(qs : Qubit[]) : Unit {
-        // Your code here
+    // In the quantum version of the game, the players still can not
+    // communicate during the game, but they are allowed to share 
+    // qubits from a Bell pair before the start of the game.
+
+    // Task 2.1. Entangled triple
+    // Input: An array of three qubits in the |000⟩ state.
+    // Goal: Create the entangled state |ψ⟩ = (|000⟩ - |011⟩ - |101⟩ - |110⟩) / 2 on these qubits.
+    operation CreateEntangledTriple (qs : Qubit[]) : Unit {
+        // ...
     }
 
     // You are Alice.
@@ -105,7 +109,7 @@ namespace Quantum.Kata.GHZGame {
     operation PlayQuantumGHZ(input : Bool[]) : Bool[] {
         mutable res = new Bool[3];
         using (qs = Qubit[3]) {
-            PrepareEntangledSuperPosition(qs);
+            CreateEntangledTriple(qs);
 
             set res[0] = QuantumStrategy(input[0], qs[0]);
             set res[1] = QuantumStrategy(input[1], qs[1]);
