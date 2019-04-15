@@ -24,15 +24,14 @@ namespace Quantum.Kata.GHZGame {
         return (r or s or t) == XOR(XOR(a, b), c);
     }
 
-    // Implement a strategy which randomly chooses outputs.
-    operation ClassicalRandomStrategy_Reference(input : Bool) : Bool {
+    // Task 1.2. Random classical strategy
+    operation RandomClassical_Reference (input : Bool) : Bool {
         return RandomInt(2) == 1;
     }
 
-    // Implement a strategy which wins 75% of the time and
-    // does not use quantum logic.
-    operation ClassicalOptimalStrategy_Reference(input : Bool) : Bool {
-        // Really advanced tactics here... I'm talking earth shattering stuff
+    // Task 1.3. Best classical strategy
+    operation BestClassical_Reference (input : Bool) : Bool {
+        // Really advanced tactics here... I'm talking earth-shattering stuff.
         return true;
     }
 

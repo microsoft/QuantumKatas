@@ -36,26 +36,35 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.1. Win condition
     // Input:
-    //     1) Alice, Bob and Charlie's starting bits (r, s and t),
+    //     1) Alice, Bob and Charlie's input bits (r, s and t),
     //     2) Alice, Bob and Charlie's output bits (a, b and c).
     // Output:
-    //     True if Alice, Bob and Charlie won the GHZ game, that is, if
-    //     r ∨ s ∨ t = a ⊕ b ⊕ c, and false otherwise.
+    //     True if Alice, Bob and Charlie won the GHZ game, that is, if r ∨ s ∨ t = a ⊕ b ⊕ c, and
+    //     false otherwise.
     function WinCondition (r : Bool, s : Bool, t : Bool, a : Bool, b : Bool, c : Bool) : Bool {
         // ...
         return false;
     }
 
-    // Implement a strategy which randomly chooses outputs.
-    operation ClassicalRandomStrategy(input : Bool) : Bool {
-        // Stub code -- change to your implementation.
+    // Task 1.2. Random classical strategy
+    // Input: One of the input bits (r, s or t).
+    // Output:
+    //     A random bit that Alice, Bob or Charlie will output (a, b or c). All players will use the
+    //     same strategy.
+    // This strategy will win about 50% of the time.
+    operation RandomClassical (input : Bool) : Bool {
+        // ...
         return false;
     }
 
-    // Implement a strategy which wins 75% of the time and
-    // does not use quantum logic.
-    operation ClassicalOptimalStrategy(input : Bool) : Bool {
-        // Stub code -- change to your implementation.
+    // Task 1.3. Best classical strategy
+    // Input: One of the input bits (r, s or t).
+    // Output:
+    //     A bit that Alice, Bob or Charlie will output (a, b or c) which will maximize their chance
+    //     of winning. All players will use the same strategy.
+    // The best classical strategy should win about 75% of the time.
+    operation BestClassical (input : Bool) : Bool {
+        // ...
         return false;
     }
 

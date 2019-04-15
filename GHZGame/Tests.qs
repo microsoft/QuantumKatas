@@ -40,12 +40,12 @@ namespace Quantum.Kata.GHZGame {
 
 
     // ------------------------------------------------------
-    operation ClassicalRandomDataTest() : Unit {
+    operation T12_RandomClassical_Test () : Unit {
         mutable wins = 0;
         for (i in 0..10000) {
             let selected = RandomInt(4);
             let (r, s, t) = (RefereeBits())[selected];
-            let res = PlayClassicalGHZ(ClassicalRandomStrategy, [r, s, t]);
+            let res = PlayClassicalGHZ(RandomClassical, [r, s, t]);
             if (WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
                 set wins = wins + 1;
             }
@@ -57,12 +57,12 @@ namespace Quantum.Kata.GHZGame {
 
 
     // ------------------------------------------------------
-    operation ClassicalOptimalTest() : Unit {
+    operation T13_BestClassical_Test () : Unit {
         let inputs = RefereeBits();
         mutable wins = 0;
         for (i in 0..10000) {
             let (r, s, t) = inputs[RandomInt(Length(inputs))];
-            let res = PlayClassicalGHZ(ClassicalOptimalStrategy, [r, s, t]);
+            let res = PlayClassicalGHZ(BestClassical, [r, s, t]);
             if (WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
                     set wins = wins + 1;
             }
