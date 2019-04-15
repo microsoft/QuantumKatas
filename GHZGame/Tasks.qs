@@ -45,8 +45,9 @@ namespace Quantum.Kata.GHZGame {
     // What will you do to ensure a victory in this game?
     // That is to say, assuming the other players do the same strategy as you,
     // Answer correctly such that you have a XOR b XOR c == r OR s OR t
-    operation QuantumStrategy(input : Bool, qMe : Qubit) : Unit {
+    operation QuantumStrategy(input : Bool, qMe : Qubit) : Bool {
         // Your code here
+        return false;
     }
 
     // This method is here to show how the game is run. You should not modify it, though
@@ -57,13 +58,9 @@ namespace Quantum.Kata.GHZGame {
         using (qs = Qubit[3]) {
             PrepareEntangledSuperPosition(qs);
 
-            QuantumStrategy(input[0], qs[0]);
-            QuantumStrategy(input[1], qs[1]);
-            QuantumStrategy(input[2], qs[2]);
-
-            set res[0] = M(qs[0]) == One;
-            set res[1] = M(qs[1]) == One;
-            set res[2] = M(qs[2]) == One;
+            set res[0] = QuantumStrategy(input[0], qs[0]);
+            set res[1] = QuantumStrategy(input[1], qs[1]);
+            set res[2] = QuantumStrategy(input[2], qs[2]);
 
             ResetAll(qs);
         }

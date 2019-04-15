@@ -16,6 +16,16 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Extensions.Testing;
     open Microsoft.Quantum.Extensions.Diagnostics;
 
+    // These are the possible inputs by the referee in the GHZ game.
+    function GeneratePossibleInputs() : Bool[][] {
+        mutable res = new Bool[][4];
+        set res[0] = [false, false, false];
+        set res[1] = [true, true, false];
+        set res[2] = [false, true, true];
+        set res[3] = [true, false, true];
+        return res;
+    }
+
     operation QuantumWinsAllTest() : Unit {
         let inputs = GeneratePossibleInputs();
 
@@ -98,20 +108,6 @@ namespace Quantum.Kata.GHZGame {
 
         return (XOR(XOR(result[0], result[1]), result[2]) ==
             (input[0] || input[1] || input[2]));
-    }
-
-
-    // ------------------------------------------------------
-    // These are the possible inputs by the referee in the 
-    // GHZ game.
-    function GeneratePossibleInputs() : Bool[][] {
-        mutable res = new Bool[][4];
-        set res[0] = [false, false, false];
-        set res[1] = [true, true, false];
-        set res[2] = [false, true, true];
-        set res[3] = [true, false, true];
-
-        return res;
     }
 
 }

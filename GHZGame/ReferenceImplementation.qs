@@ -51,10 +51,11 @@ namespace Quantum.Kata.GHZGame {
     // What will you do to ensure a victory in this game?
     // That is to say, assuming the other players do the same strategy as you,
     // Answer correctly such that you have a XOR b XOR c == r OR s OR t
-    operation QuantumStrategy_Reference(input : Bool, qMe : Qubit) : Unit {
+    operation QuantumStrategy_Reference(input : Bool, qMe : Qubit) : Bool {
         if (input) {
             H(qMe);
         }
+        return BoolFromResult(M(qMe));
     }
 
 }
