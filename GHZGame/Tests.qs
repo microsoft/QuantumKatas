@@ -102,12 +102,11 @@ namespace Quantum.Kata.GHZGame {
     // Performs the verification step of the game. Returns true iff
     // the solution satisfied the constraints.
     function VerifyResult(input : Bool[], result : Bool[]) : Bool {
-        if (Length(input) != 3 || Length(result) != 3) {
+        if (Length(input) != 3 or Length(result) != 3) {
             return false;
         }
 
-        return (XOR(XOR(result[0], result[1]), result[2]) ==
-            (input[0] || input[1] || input[2]));
+        return XOR(XOR(result[0], result[1]), result[2]) == (input[0] or input[1] or input[2]);
     }
 
 }
