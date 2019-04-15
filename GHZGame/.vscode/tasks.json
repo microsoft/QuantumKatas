@@ -20,8 +20,7 @@
             "label": "test",
             "command": "dotnet",
             "args": [
-                "test",
-                "--logger:console;verbosity=detailed"
+                "test"
             ],
             "type": "process",
             "group": "test",

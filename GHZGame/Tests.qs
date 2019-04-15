@@ -16,8 +16,6 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Extensions.Testing;
     open Microsoft.Quantum.Extensions.Diagnostics;
 
-    // TODO: real tests
-
     operation QuantumWinsAllTest() : Unit {
         let inputs = GeneratePossibleInputs();
 
@@ -35,6 +33,8 @@ namespace Quantum.Kata.GHZGame {
         Message($"Quantum Optimal: 1");
     }
 
+
+    // ------------------------------------------------------
     operation ClassicalOptimalTest() : Unit {
         let inputs = GeneratePossibleInputs();
         mutable wins = 0;
@@ -50,6 +50,8 @@ namespace Quantum.Kata.GHZGame {
         Message($"Classical Optimal: {rate}");
     }
 
+
+    // ------------------------------------------------------
     operation ClassicalRandomDataTest() : Unit {
         mutable wins = 0;
         let possible = GeneratePossibleInputs();
@@ -66,10 +68,27 @@ namespace Quantum.Kata.GHZGame {
         Message($"Classical Random: {rate}");
     }
 
-    operation StatePreparationTest() : Unit {
-        AssertOperationsEqualInPlaceCompBasis(PrepareEntangledSuperPosition, PrepareEntangledSuperPosition_Reference, 3);
+
+    // ------------------------------------------------------
+    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+        using (qs = Qubit[N]) {
+            // apply operation that needs to be tested
+            taskImpl(qs);
+            
+            // apply adjoint reference operation and check that the result is |0^N⟩
+            Adjoint refImpl(qs);
+            
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
     }
 
+    operation StatePreparationTest() : Unit {
+        AssertEqualOnZeroState(3, PrepareEntangledSuperPosition, PrepareEntangledSuperPosition_Reference);
+    }
+
+
+    // ------------------------------------------------------
     // Performs the verification step of the game. Returns true iff
     // the solution satisfied the constraints.
     function VerifyResult(input : Bool[], result : Bool[]) : Bool {
@@ -81,6 +100,8 @@ namespace Quantum.Kata.GHZGame {
             (input[0] || input[1] || input[2]));
     }
 
+
+    // ------------------------------------------------------
     // These are the possible inputs by the referee in the 
     // GHZ game.
     function GeneratePossibleInputs() : Bool[][] {
