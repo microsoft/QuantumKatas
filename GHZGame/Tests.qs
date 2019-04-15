@@ -16,34 +16,37 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Extensions.Testing;
     open Microsoft.Quantum.Extensions.Diagnostics;
 
-    // These are the possible inputs by the referee in the GHZ game.
-    function GeneratePossibleInputs() : Bool[][] {
-        mutable res = new Bool[][4];
-        set res[0] = [false, false, false];
-        set res[1] = [true, true, false];
-        set res[2] = [false, true, true];
-        set res[3] = [true, false, true];
-        return res;
+    // All possible starting bits (r, s and t) that the referee can give
+    // to Alice, Bob and Charlie.
+    function RefereeBits () : (Bool, Bool, Bool)[] {
+        return [(false, false, false),
+                (true, true, false),
+                (false, true, true),
+                (true, false, true)];
     }
 
-    // Performs the verification step of the game. Returns true iff
-    // the solution satisfied the constraints.
-    function VerifyResult(input : Bool[], result : Bool[]) : Bool {
-        if (Length(input) != 3 or Length(result) != 3) {
-            return false;
+    operation T11_WinCondition_Test () : Unit {
+        for ((r, s, t) in RefereeBits()) {
+            for (i in 0..1 <<< 3 - 1) {
+                let abc = BoolArrFromPositiveInt(i, 3);
+                AssertBoolEqual(
+                    WinCondition(r, s, t, abc[0], abc[1], abc[2]),
+                    WinCondition_Reference(r, s, t, abc[0], abc[1], abc[2]),
+                    $"Win condition is wrong for r = {r}, s = {s}, t = {t}, a = {abc[0]}, " +
+                    $"b = {abc[1]}, c = {abc[2]}");
+            }
         }
-
-        return XOR(XOR(result[0], result[1]), result[2]) == (input[0] or input[1] or input[2]);
     }
 
+
+    // ------------------------------------------------------
     operation ClassicalRandomDataTest() : Unit {
         mutable wins = 0;
-        let possible = GeneratePossibleInputs();
         for (i in 0..10000) {
             let selected = RandomInt(4);
-            let input = possible[selected];
-            let res = PlayClassicalGHZ(ClassicalRandomStrategy, input);
-            if (VerifyResult(input, res)) {
+            let (r, s, t) = (RefereeBits())[selected];
+            let res = PlayClassicalGHZ(ClassicalRandomStrategy, [r, s, t]);
+            if (WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
                 set wins = wins + 1;
             }
         }
@@ -55,12 +58,12 @@ namespace Quantum.Kata.GHZGame {
 
     // ------------------------------------------------------
     operation ClassicalOptimalTest() : Unit {
-        let inputs = GeneratePossibleInputs();
+        let inputs = RefereeBits();
         mutable wins = 0;
         for (i in 0..10000) {
-            let input = inputs[RandomInt(Length(inputs))];
-            let res = PlayClassicalGHZ(ClassicalOptimalStrategy, input);
-            if (VerifyResult(input, res)) {
+            let (r, s, t) = inputs[RandomInt(Length(inputs))];
+            let res = PlayClassicalGHZ(ClassicalOptimalStrategy, [r, s, t]);
+            if (WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
                     set wins = wins + 1;
             }
         }
@@ -91,14 +94,14 @@ namespace Quantum.Kata.GHZGame {
 
     // ------------------------------------------------------
     operation QuantumWinsAllTest() : Unit {
-        let inputs = GeneratePossibleInputs();
+        let inputs = RefereeBits();
 
         // Run many times, since a wrong strategy could nondeterministically win.
         for (i in 0..10000) {
-            let input = inputs[RandomInt(Length(inputs))];
-            let res = PlayQuantumGHZ(input);
-            if (not VerifyResult(input, res)) {
-                Message($"input was {input}");
+            let (r, s, t) = inputs[RandomInt(Length(inputs))];
+            let res = PlayQuantumGHZ([r, s, t]);
+            if (not WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
+                Message($"input was ({r}, {s}, {t})");
                 Message($"output was {res}");
                 Message($"iteration was {i}");
                 fail "Alice and bob lost.";

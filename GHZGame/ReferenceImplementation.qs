@@ -15,6 +15,15 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Primitive;
 
 
+    //////////////////////////////////////////////////////////////////
+    // Part I. Classical GHZ
+    //////////////////////////////////////////////////////////////////
+
+    // Task 1.1. Win condition
+    function WinCondition_Reference (r : Bool, s : Bool, t : Bool, a : Bool, b : Bool, c : Bool) : Bool {
+        return (r or s or t) == XOR(XOR(a, b), c);
+    }
+
     // Implement a strategy which randomly chooses outputs.
     operation ClassicalRandomStrategy_Reference(input : Bool) : Bool {
         return RandomInt(2) == 1;
@@ -26,6 +35,11 @@ namespace Quantum.Kata.GHZGame {
         // Really advanced tactics here... I'm talking earth shattering stuff
         return true;
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Quantum GHZ
+    //////////////////////////////////////////////////////////////////
 
     // Given qubits in the state |000> in big-endian format, prepare the state:
     // (1/2)(|000> - |110> - |101> - |011>)

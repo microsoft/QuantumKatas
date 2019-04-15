@@ -15,12 +15,12 @@ namespace Quantum.Kata.GHZGame {
     // The "GHZ Game" quantum kata is a series of exercises designed
     // to get you familiar with the GHZ game.
 
-    // In it three players (Alice, Bob, and Charlie) try to win the
+    // In it three players (Alice, Bob and Charlie) try to win the
     // following game:
 
-    // Each of them is given a bit (a, b, and c respectively), and
-    // they have to return new bits (r, s, and t respectively) so
-    // that a ⊕ b ⊕ c = r ∨ s ∨ t. The trick is, they cannot
+    // Each of them is given a bit (r, s and t respectively), and
+    // they have to return new bits (a, b and c respectively) so
+    // that  r ∨ s ∨ t = a ⊕ b ⊕ c. The trick is, they cannot
     // communicate during the game.
 
     // Each task is wrapped in one operation preceded by the
@@ -33,6 +33,18 @@ namespace Quantum.Kata.GHZGame {
     //////////////////////////////////////////////////////////////////
     // Part I. Classical GHZ
     //////////////////////////////////////////////////////////////////
+
+    // Task 1.1. Win condition
+    // Input:
+    //     1) Alice, Bob and Charlie's starting bits (r, s and t),
+    //     2) Alice, Bob and Charlie's output bits (a, b and c).
+    // Output:
+    //     True if Alice, Bob and Charlie won the GHZ game, that is, if
+    //     r ∨ s ∨ t = a ⊕ b ⊕ c, and false otherwise.
+    function WinCondition (r : Bool, s : Bool, t : Bool, a : Bool, b : Bool, c : Bool) : Bool {
+        // ...
+        return false;
+    }
 
     // Implement a strategy which randomly chooses outputs.
     operation ClassicalRandomStrategy(input : Bool) : Bool {
