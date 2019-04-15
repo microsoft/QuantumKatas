@@ -115,6 +115,7 @@ namespace Quantum.Kata.GHZGame {
     operation PlayQuantumGHZ (askAlice : (Qubit => Bool),
                               askBob : (Qubit => Bool),
                               askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
+        // ...
         return (false, false, false);
     }
 
