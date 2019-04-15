@@ -47,23 +47,23 @@ namespace Quantum.Kata.GHZGame {
     }
 
     // Task 1.2. Random classical strategy
-    // Input: One of the input bits (r, s or t).
+    // Input: One of the input bits for Alice, Bob or Charlie (r, s or t).
     // Output:
     //     A random bit that Alice, Bob or Charlie will output (a, b or c). All players will use the
     //     same strategy.
     // This strategy will win about 50% of the time.
-    operation RandomClassical (input : Bool) : Bool {
+    operation RandomClassicalStrategy (input : Bool) : Bool {
         // ...
         return false;
     }
 
     // Task 1.3. Best classical strategy
-    // Input: One of the input bits (r, s or t).
+    // Input: One of the input bits for Alice, Bob or Charlie (r, s or t).
     // Output:
     //     A bit that Alice, Bob or Charlie will output (a, b or c) which will maximize their chance
     //     of winning. All players will use the same strategy.
     // The best classical strategy should win about 75% of the time.
-    operation BestClassical (input : Bool) : Bool {
+    operation BestClassicalStrategy (input : Bool) : Bool {
         // ...
         return false;
     }
@@ -83,7 +83,7 @@ namespace Quantum.Kata.GHZGame {
 
     // In the quantum version of the game, the players still can not
     // communicate during the game, but they are allowed to share 
-    // qubits from a Bell pair before the start of the game.
+    // qubits from an entangled triple before the start of the game.
 
     // Task 2.1. Entangled triple
     // Input: An array of three qubits in the |000⟩ state.
@@ -92,14 +92,16 @@ namespace Quantum.Kata.GHZGame {
         // ...
     }
 
-    // You are Alice.
-    // You have one of three qubits which form the superposition (1/2)(|000> - |110> - |101> - |011>).
-    // You know that the other two players will do the same strategy as you.
-    // What will you do to ensure a victory in this game?
-    // That is to say, assuming the other players do the same strategy as you,
-    // Answer correctly such that you have a XOR b XOR c == r OR s OR t
-    operation QuantumStrategy(input : Bool, qMe : Qubit) : Bool {
-        // Your code here
+    // Task 2.2. Quantum strategy
+    // Inputs:
+    //     1) One of the input bits for Alice, Bob or Charlie (r, s or t),
+    //     2) The entangled qubit for the player whose input bit you were given.
+    // Goal:
+    //     Use the entangled qubit to decide which bit to output to maximize the players' chance of
+    //     winning. All players will use the same strategy.
+    // The best quantum strategy can win every time.
+    operation QuantumStrategy (input : Bool, qubit : Qubit) : Bool {
+        // ...
         return false;
     }
 

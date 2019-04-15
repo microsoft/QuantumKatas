@@ -25,12 +25,12 @@ namespace Quantum.Kata.GHZGame {
     }
 
     // Task 1.2. Random classical strategy
-    operation RandomClassical_Reference (input : Bool) : Bool {
+    operation RandomClassicalStrategy_Reference (input : Bool) : Bool {
         return RandomInt(2) == 1;
     }
 
     // Task 1.3. Best classical strategy
-    operation BestClassical_Reference (input : Bool) : Bool {
+    operation BestClassicalStrategy_Reference (input : Bool) : Bool {
         // Really advanced tactics here... I'm talking earth-shattering stuff.
         return true;
     }
@@ -56,17 +56,12 @@ namespace Quantum.Kata.GHZGame {
         adjoint auto;
     }
 
-    // You are Alice.
-    // You have one of three qubits which form the superposition (1/2)(|000> - |110> - |101> - |011>).
-    // You know that the other two players will do the same strategy as you.
-    // What will you do to ensure a victory in this game?
-    // That is to say, assuming the other players do the same strategy as you,
-    // Answer correctly such that you have a XOR b XOR c == r OR s OR t
-    operation QuantumStrategy_Reference(input : Bool, qMe : Qubit) : Bool {
+    // Task 2.2. Quantum strategy
+    operation QuantumStrategy_Reference (input : Bool, qubit : Qubit) : Bool {
         if (input) {
-            H(qMe);
+            H(qubit);
         }
-        return BoolFromResult(M(qMe));
+        return BoolFromResult(M(qubit));
     }
 
 }
