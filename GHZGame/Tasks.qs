@@ -8,16 +8,31 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Extensions.Diagnostics;
 
-    ///////////////////////////////////////////////////////////////////////
-    //                                                                   //
-    //  GHZ Game Kata                                                    //
-    //                                                                   //
-    ///////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    // Welcome!
+    //////////////////////////////////////////////////////////////////
 
-    // TODO
-    // Sources:
-    // https://staff.fnwi.uva.nl/m.walter/physics491/lecture1.pdf
-    // https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/20.pdf
+    // The "GHZ Game" quantum kata is a series of exercises designed
+    // to get you familiar with the GHZ game.
+
+    // In it three players (Alice, Bob, and Charlie) try to win the
+    // following game:
+
+    // Each of them is given a bit (a, b, and c respectively), and
+    // they have to return new bits (r, s, and t respectively) so
+    // that a ⊕ b ⊕ c = r ∨ s ∨ t. The trick is, they cannot
+    // communicate during the game.
+
+    // Each task is wrapped in one operation preceded by the
+    // description of the task. Each task has a unit test associated
+    // with it, which initially fails. Your goal is to fill in the
+    // blank (marked with // ... comment) with some Q# code to make
+    // the failing test pass.
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part I. Classical GHZ
+    //////////////////////////////////////////////////////////////////
 
     // Implement a strategy which randomly chooses outputs.
     operation ClassicalRandomStrategy(input : Bool) : Bool {
@@ -31,6 +46,19 @@ namespace Quantum.Kata.GHZGame {
         // Stub code -- change to your implementation.
         return false;
     }
+
+    operation PlayClassicalGHZ(strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
+        mutable results = new Bool[Length(inputs)];
+        for (i in 0..Length(inputs) - 1) {
+            set results[i] = strategy(inputs[i]);
+        }
+        return results;
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Quantum GHZ
+    //////////////////////////////////////////////////////////////////
 
     // Given qubits in the state |000> in big-endian format, prepare the state:
     // (1/2)(|000> - |110> - |101> - |011>)
@@ -68,13 +96,4 @@ namespace Quantum.Kata.GHZGame {
         return res;
     }
 
-    // See comment on above operation.
-    operation PlayClassicalGHZ(strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
-        mutable results = new Bool[Length(inputs)];
-        for (i in 0..Length(inputs) - 1) {
-            set results[i] = strategy(inputs[i]);
-        }
-        return results;
-    }
-    
 }
