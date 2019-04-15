@@ -25,7 +25,7 @@ namespace Quantum.Kata.GHZGame
 
         /// <summary>
         /// This driver will run all Q# tests (operations named "...Test")
-        /// that belong to namespace Quantum.Kata.CHSHGame.
+        /// that belong to namespace Quantum.Kata.GHZGame.
         /// </summary>
         [OperationDriver(TestNamespace = "Quantum.Kata.GHZGame")]
         public void TestTarget(TestOperation op)
