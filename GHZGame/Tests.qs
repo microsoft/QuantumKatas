@@ -26,21 +26,30 @@ namespace Quantum.Kata.GHZGame {
         return res;
     }
 
-    operation QuantumWinsAllTest() : Unit {
-        let inputs = GeneratePossibleInputs();
+    // Performs the verification step of the game. Returns true iff
+    // the solution satisfied the constraints.
+    function VerifyResult(input : Bool[], result : Bool[]) : Bool {
+        if (Length(input) != 3 or Length(result) != 3) {
+            return false;
+        }
 
-        // Run many times, since a wrong strategy could nondeterministically win.
+        return XOR(XOR(result[0], result[1]), result[2]) == (input[0] or input[1] or input[2]);
+    }
+
+    operation ClassicalRandomDataTest() : Unit {
+        mutable wins = 0;
+        let possible = GeneratePossibleInputs();
         for (i in 0..10000) {
-            let input = inputs[RandomInt(Length(inputs))];
-            let res = PlayQuantumGHZ(input);
-            if (not VerifyResult(input, res)) {
-                Message($"input was {input}");
-                Message($"output was {res}");
-                Message($"iteration was {i}");
-                fail "Alice and bob lost.";
+            let selected = RandomInt(4);
+            let input = possible[selected];
+            let res = PlayClassicalGHZ(ClassicalRandomStrategy, input);
+            if (VerifyResult(input, res)) {
+                set wins = wins + 1;
             }
         }
-        Message($"Quantum Optimal: 1");
+        let rate = ToDouble(wins) / 10000.0;
+        AssertAlmostEqualTol(rate, 0.5, 0.02);
+        Message($"Classical Random: {rate}");
     }
 
 
@@ -58,24 +67,6 @@ namespace Quantum.Kata.GHZGame {
         let rate = ToDouble(wins) / 10000.0;
         AssertAlmostEqualTol(rate, 0.75, 0.02);
         Message($"Classical Optimal: {rate}");
-    }
-
-
-    // ------------------------------------------------------
-    operation ClassicalRandomDataTest() : Unit {
-        mutable wins = 0;
-        let possible = GeneratePossibleInputs();
-        for (i in 0..10000) {
-            let selected = RandomInt(4);
-            let input = possible[selected];
-            let res = PlayClassicalGHZ(ClassicalRandomStrategy, input);
-            if (VerifyResult(input, res)) {
-                set wins = wins + 1;
-            }
-        }
-        let rate = ToDouble(wins) / 10000.0;
-        AssertAlmostEqualTol(rate, 0.5, 0.02);
-        Message($"Classical Random: {rate}");
     }
 
 
@@ -99,14 +90,21 @@ namespace Quantum.Kata.GHZGame {
 
 
     // ------------------------------------------------------
-    // Performs the verification step of the game. Returns true iff
-    // the solution satisfied the constraints.
-    function VerifyResult(input : Bool[], result : Bool[]) : Bool {
-        if (Length(input) != 3 or Length(result) != 3) {
-            return false;
-        }
+    operation QuantumWinsAllTest() : Unit {
+        let inputs = GeneratePossibleInputs();
 
-        return XOR(XOR(result[0], result[1]), result[2]) == (input[0] or input[1] or input[2]);
+        // Run many times, since a wrong strategy could nondeterministically win.
+        for (i in 0..10000) {
+            let input = inputs[RandomInt(Length(inputs))];
+            let res = PlayQuantumGHZ(input);
+            if (not VerifyResult(input, res)) {
+                Message($"input was {input}");
+                Message($"output was {res}");
+                Message($"iteration was {i}");
+                fail "Alice and bob lost.";
+            }
+        }
+        Message($"Quantum Optimal: 1");
     }
 
 }
