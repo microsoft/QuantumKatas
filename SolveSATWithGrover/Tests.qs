@@ -69,7 +69,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // ------------------------------------------------------
     function And (args : Bool[]) : Bool {
-        return args[0] && args[1];
+        return args[0] and args[1];
     }
 
     operation T11_Oracle_And_Test () : Unit {
@@ -83,7 +83,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // ------------------------------------------------------
     function Or (args : Bool[]) : Bool {
-        return args[0] || args[1];
+        return args[0] or args[1];
     }
 
     operation T12_Oracle_Or_Test () : Unit {

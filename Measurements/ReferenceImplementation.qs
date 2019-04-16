@@ -119,7 +119,7 @@ namespace Quantum.Kata.Measurements {
         
         mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
                 set firstDiff = i;
             }
         }
@@ -185,7 +185,7 @@ namespace Quantum.Kata.Measurements {
             }
         }
         
-        if (countOnes > 1 && countOnes < Length(qs)) {
+        if (countOnes > 1 and countOnes < Length(qs)) {
             fail $"Impossible to get {countOnes} Ones when measuring W state or GHZ state on {N} qubits";
         }
         if (countOnes == 1) {
