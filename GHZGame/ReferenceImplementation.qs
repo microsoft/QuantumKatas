@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -24,15 +24,27 @@ namespace Quantum.Kata.GHZGame {
         return (r or s or t) == XOR(XOR(a, b), c);
     }
 
+
     // Task 1.2. Random classical strategy
     operation RandomClassicalStrategy_Reference (input : Bool) : Bool {
         return RandomInt(2) == 1;
     }
 
+
     // Task 1.3. Best classical strategy
     operation BestClassicalStrategy_Reference (input : Bool) : Bool {
         // Really advanced tactics here... I'm talking earth-shattering stuff.
         return true;
+    }
+
+
+    // Task 1.4. Referee classical GHZ game
+    operation PlayClassicalGHZ_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
+        mutable results = new Bool[Length(inputs)];
+        for (i in 0..Length(inputs) - 1) {
+            set results[i] = strategy(inputs[i]);
+        }
+        return results;
     }
 
 
@@ -48,13 +60,18 @@ namespace Quantum.Kata.GHZGame {
 
             H(qs[0]);
             H(qs[1]);
+            // At this point we have (|000⟩ - |010⟩ - |100⟩ + |110⟩) / 2
 
+            // Flip the sign of the last term
             Controlled Z([qs[0]], qs[1]);
+
+            // Flip the state of the last qubit for the two middle terms
             (ControlledOnBitString([false, true], X))([qs[0], qs[1]], qs[2]);
             (ControlledOnBitString([true, false], X))([qs[0], qs[1]], qs[2]);
         }
         adjoint auto;
     }
+
 
     // Task 2.2. Quantum strategy
     operation QuantumStrategy_Reference (input : Bool, qubit : Qubit) : Bool {
@@ -64,13 +81,12 @@ namespace Quantum.Kata.GHZGame {
         return BoolFromResult(M(qubit));
     }
 
+
     // Task 2.3. Play the GHZ game using the quantum strategy
     operation PlayQuantumGHZ_Reference (askAlice : (Qubit => Bool),
                                         askBob : (Qubit => Bool),
                                         askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
-        mutable a = false;
-        mutable b = false;
-        mutable c = false;
+        mutable (a, b, c) = (false, false, false);
 
         using (qs = Qubit[3]) {
             CreateEntangledTriple_Reference(qs);
