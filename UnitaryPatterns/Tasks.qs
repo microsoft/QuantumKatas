@@ -271,8 +271,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     // X......X
     // .X....X.
     // ..X..X..
-    operation TIE_Fighter (qs : Qubit[]) : Unit {
-        // ...
+    operation TIE_Fighter (qs : Qubit[]) : Unit {        
+		// ...
     }
     
     
@@ -288,8 +288,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     // ..X..X..
     // XX....XX
     // XX....XX
-    operation Creeper (qs : Qubit[]) : Unit {        
-        // ...
+    operation Creeper (qs : Qubit[]) : Unit {        		
+		// ...
     }
     
     
@@ -312,8 +312,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     // ....XXXX
     // .....XXX
     // ......XX
-    operation Hessenberg_Matrix (qs : Qubit[]) : Unit {
-        // ...
+    operation Hessenberg_Matrix (qs : Qubit[]) : Unit {        
+		// ...
     }
     
 }
