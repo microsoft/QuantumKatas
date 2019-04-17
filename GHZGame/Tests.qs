@@ -12,28 +12,25 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Extensions.Diagnostics;
 
     // All possible starting bits (r, s and t) that the referee can give
     // to Alice, Bob and Charlie.
-    function RefereeBits () : (Bool, Bool, Bool)[] {
-        return [(false, false, false),
-                (true, true, false),
-                (false, true, true),
-                (true, false, true)];
+    function RefereeBits () : Bool[][] {
+        return [[false, false, false],
+                [true, true, false],
+                [false, true, true],
+                [true, false, true]];
     }
 
     operation T11_WinCondition_Test () : Unit {
-        for ((r, s, t) in RefereeBits()) {
+        for (rst in RefereeBits()) {
             for (i in 0..1 <<< 3 - 1) {
                 let abc = BoolArrFromPositiveInt(i, 3);
                 AssertBoolEqual(
-                    WinCondition(r, s, t, abc[0], abc[1], abc[2]),
-                    WinCondition_Reference(r, s, t, abc[0], abc[1], abc[2]),
-                    $"Win condition is wrong for r={r}, s={s}, t={t}, a={abc[0]}, b={abc[1]}, " +
-                    $"c={abc[2]}");
+                    WinCondition(rst, abc),
+                    WinCondition_Reference(rst, abc),
+                    $"Win condition is wrong for rst={rst}, abc={abc}");
             }
         }
     }
@@ -44,13 +41,13 @@ namespace Quantum.Kata.GHZGame {
         let inputs = RefereeBits();
         mutable wins = 0;
         for (i in 0..N - 1) {
-            let (r, s, t) = inputs[RandomInt(Length(inputs))];
-            let res = PlayClassicalGHZ_Reference(BestClassicalStrategy, [r, s, t]);
-            if (WinCondition_Reference(r, s, t, res[0], res[1], res[2])) {
+            let rst = inputs[RandomInt(Length(inputs))];
+            let abc = PlayClassicalGHZ_Reference(strategy, rst);
+            if (WinCondition_Reference(rst, abc)) {
                 set wins = wins + 1;
             }
         }
-        return ToDouble(wins) / ToDouble(wins);
+        return ToDouble(wins) / ToDouble(N);
     }
 
     operation T12_RandomClassical_Test () : Unit {
@@ -73,11 +70,11 @@ namespace Quantum.Kata.GHZGame {
     operation T14_PlayClassicalGHZ_Test () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
-        for ((r, s, t) in inputs) {
+        for (rst in inputs) {
             for (mode in 0..3) {
-                let result = PlayClassicalGHZ(TestStrategy(_, mode), [r, s, t]);
-                let expected = PlayClassicalGHZ_Reference(TestStrategy(_, mode), [r, s, t]);
-                AssertBoolArrayEqual(result, expected, $"Unexpected result for r={r}, s={s}, t={t}");
+                let result = PlayClassicalGHZ(TestStrategy(_, mode), rst);
+                let expected = PlayClassicalGHZ_Reference(TestStrategy(_, mode), rst);
+                AssertBoolArrayEqual(result, expected, $"Unexpected result for rst={rst}");
             }
         }
     }
@@ -129,13 +126,11 @@ namespace Quantum.Kata.GHZGame {
     // ------------------------------------------------------
     operation T23_PlayQuantumGHZ_Test () : Unit {
         for (i in 0..1000) {
-            let (r, s, t) = (RefereeBits())[RandomInt(Length(RefereeBits()))];
-            let (a, b, c) = PlayQuantumGHZ(QuantumStrategy(r, _),
-                                           QuantumStrategy(s, _),
-                                           QuantumStrategy(t, _));
-            AssertBoolEqual(WinCondition_Reference(r, s, t, a, b, c),
-                            true,
-                            $"Quantum strategy lost with r={r}, s={s}, t={t}, a={a}, b={b}, c={c}");
+            let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
+            let strategies = [QuantumStrategy(rst[0], _), QuantumStrategy(rst[1], _), QuantumStrategy(rst[2], _)];
+            let abc = PlayQuantumGHZ(strategies);
+            AssertBoolEqual(WinCondition_Reference(rst, abc), true,
+                            $"Quantum strategy lost: for rst={rst} the players returned abc={abc}");
         }
     }
 

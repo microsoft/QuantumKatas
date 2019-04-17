@@ -20,8 +20,8 @@ namespace Quantum.Kata.GHZGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 1.1. Win condition
-    function WinCondition_Reference (r : Bool, s : Bool, t : Bool, a : Bool, b : Bool, c : Bool) : Bool {
-        return (r or s or t) == XOR(XOR(a, b), c);
+    function WinCondition_Reference (rst : Bool[], abc : Bool[]) : Bool {
+        return (rst[0] or rst[1] or rst[2]) == XOR(XOR(abc[0], abc[1]), abc[2]);
     }
 
 
@@ -83,22 +83,20 @@ namespace Quantum.Kata.GHZGame {
 
 
     // Task 2.3. Play the GHZ game using the quantum strategy
-    operation PlayQuantumGHZ_Reference (askAlice : (Qubit => Bool),
-                                        askBob : (Qubit => Bool),
-                                        askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
-        mutable (a, b, c) = (false, false, false);
+    operation PlayQuantumGHZ_Reference (strategies : (Qubit => Bool)[]) : Bool[] {
+        mutable abc = new Bool[3];
 
         using (qs = Qubit[3]) {
             CreateEntangledTriple_Reference(qs);
 
-            set a = askAlice(qs[0]);
-            set b = askBob(qs[1]);
-            set c = askCharlie(qs[2]);
+            for (i in 0..2) {
+                set abc[i] = strategies[i](qs[i]);
+            }
 
             ResetAll(qs);
         }
 
-        return (a, b, c);
+        return abc;
     }
 
 }

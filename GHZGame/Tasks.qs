@@ -37,13 +37,13 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.1. Win condition
     // Input:
-    //     1) Alice, Bob and Charlie's input bits (r, s and t),
-    //     2) Alice, Bob and Charlie's output bits (a, b and c).
+    //     1) Alice, Bob and Charlie's input bits (r, s and t), stored as an array of length 3,
+    //     2) Alice, Bob and Charlie's output bits (a, b and c), stored as an array of length 3.
     // The input bits will have zero or two bits set to true.
     // Output:
     //     True if Alice, Bob and Charlie won the GHZ game, that is, if r ∨ s ∨ t = a ⊕ b ⊕ c,
     //     and false otherwise.
-    function WinCondition (r : Bool, s : Bool, t : Bool, a : Bool, b : Bool, c : Bool) : Bool {
+    function WinCondition (rst : Bool[], abc : Bool[]) : Bool {
         // ...
         fail "Task 1.1 not implemented yet";
     }
@@ -117,12 +117,10 @@ namespace Quantum.Kata.GHZGame {
     // Input: Operations that return Alice, Bob and Charlie's output bits (a, b and c) based on
     //        their quantum strategies and given their respective qubits from the entangled triple. 
     //        The players have already been told what their starting bits (r, s and t) are.
-    // Goal:  Return a tuple of Alice, Bob and Charlie's output bits (a, b and c).
+    // Goal:  Return an array of players' output bits (a, b and c).
     //
     // Note that this task uses QuantumStrategy which you've implemented in task 2.2.
-    operation PlayQuantumGHZ (askAlice   : (Qubit => Bool),
-                              askBob     : (Qubit => Bool),
-                              askCharlie : (Qubit => Bool)) : (Bool, Bool, Bool) {
+    operation PlayQuantumGHZ (strategies : (Qubit => Bool)[]) : Bool[] {
         // ...
         fail "Task 2.3 not implemented yet";
     }
