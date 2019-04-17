@@ -257,16 +257,14 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
 
 
-
-
     // ------------------------------------------------------
     function TIE_Fighter_Pattern (size : Int, row : Int, col : Int) : Bool {
         let s2 = size / 2;
-        return row / s2 == 0  &&  col / s2 == 0  &&  row % s2 + col % s2 == s2 - 2 || 
-               row / s2 == 0  &&  col / s2 == 1  &&  col % s2 - row % s2 == 1 || 
-               row / s2 == 1  &&  col / s2 == 0  &&  row % s2 - col % s2 == 1 || 
-               row / s2 == 1  &&  col / s2 == 1  &&  row % s2 + col % s2 == s2 || 
-               (row == s2 - 1 || row == s2) && (col == s2 - 1 || col == s2);
+        return row / s2 == 0  and  col / s2 == 0  and  row % s2 + col % s2 == s2 - 2 or 
+               row / s2 == 0  and  col / s2 == 1  and  col % s2 - row % s2 == 1 or 
+               row / s2 == 1  and  col / s2 == 0  and  row % s2 - col % s2 == 1 or 
+               row / s2 == 1  and  col / s2 == 1  and  row % s2 + col % s2 == s2 or 
+               (row == s2 - 1 or row == s2) and (col == s2 - 1 or col == s2);
     }
     
 
