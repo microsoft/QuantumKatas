@@ -51,15 +51,15 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let m1 = Measure([PauliZ, PauliZ], register[0 .. 1]);
         let m2 = Measure([PauliZ, PauliZ], register[1 .. 2]);
         
-        if (m1 == One && m2 == Zero) {
+        if (m1 == One and m2 == Zero) {
             return 1;
         }
         
-        if (m1 == One && m2 == One) {
+        if (m1 == One and m2 == One) {
             return 2;
         }
         
-        if (m1 == Zero && m2 == One) {
+        if (m1 == Zero and m2 == One) {
             return 3;
         }
         
