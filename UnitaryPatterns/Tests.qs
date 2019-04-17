@@ -231,7 +231,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     // ------------------------------------------------------
     function XWing_Fighter_Pattern (size : Int, row : Int, col : Int) : Bool {
-        return row == col || row == (size - 1) - col;
+        return row == col or row == (size - 1) - col;
     }
     
     
@@ -245,8 +245,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     // ------------------------------------------------------
     function Rhombus_Pattern (size : Int, row : Int, col : Int) : Bool {
         let s2 = size / 2;
-        return row / s2 == col / s2 && row % s2 + col % s2 == s2 - 1 || 
-               row / s2 != col / s2 && row % s2 == col % s2;
+        return row / s2 == col / s2 and row % s2 + col % s2 == s2 - 1 or 
+               row / s2 != col / s2 and row % s2 == col % s2;
     }
     
     
