@@ -56,3 +56,5 @@ USER ${NB_USER}
 RUN dotnet build BasicGates
 RUN jupyter nbconvert BasicGates/BasicGates.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build DeutschJozsaAlgorithm
+RUN jupyter nbconvert DeutschJozsaAlgorithm/DeutschJozsaAlgorithm.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
