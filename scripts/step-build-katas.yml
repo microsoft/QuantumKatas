@@ -13,7 +13,7 @@ steps:
   displayName: 'Building all Katas projects.'
   inputs:
     command: build
-    projects: $(KatasRootFolder)/**/*.sln;-$(KatasRootFolder)/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.sln
+    projects: $(KatasRootFolder)/**/*.sln
     arguments:  >
       -c $(BuildConfiguration) 
       -v n
