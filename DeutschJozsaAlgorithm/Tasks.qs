@@ -70,7 +70,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Kth_Qubit (x : Qubit[], y : Qubit, k : Int) : Unit {
         // The following line enforces the constraints on the value of k that you are given.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertBoolEqual(0 <= k && k < Length(x), true, "k should be between 0 and N-1, inclusive");
+        AssertBoolEqual(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
 
         // ...
     }
@@ -135,7 +135,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         let P = Length(prefix);
-        AssertBoolEqual(1 <= P && P <= Length(x), true, "P should be between 1 and N, inclusive");
+        AssertBoolEqual(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
 
         // Hint: the first part of the function is the same as in task 1.4
 

@@ -23,6 +23,9 @@ namespace Microsoft.Quantum.Katas
         private long _maxQubitsAllocated = 0;
 
         #region Counting operations
+        /// <param name="throwOnReleasingQubitsNotInZeroState">If set to true, the exception is thrown when trying to release qubits not in zero state.</param>
+        /// <param name="randomNumberGeneratorSeed">Seed for the random number generator used by a simulator for measurement outcomes and Primitives.Random operation.</param>
+        /// <param name="disableBorrowing">If true, Borrowing qubits will be disabled, and a new qubit will be allocated instead every time borrowing is requested. Performance may improve.</param>
         public CounterSimulator(
             bool throwOnReleasingQubitsNotInZeroState = true, 
             uint? randomNumberGeneratorSeed = null, 
