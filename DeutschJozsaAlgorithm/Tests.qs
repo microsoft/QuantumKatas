@@ -308,5 +308,5 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // and a couple of random ones
         AssertNonameAlgorithmWorks([1, 1, 1, 0, 0]);
         AssertNonameAlgorithmWorks([1, 0, 1, 0, 1, 0]);
-    }   
+    }
 }

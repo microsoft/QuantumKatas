@@ -3,11 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////
 // This file contains some Q# intrinsic operations
-// needed for the validation of some Kata's answers.
+// needed for the validation of some Katas' answers.
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.Utils {
-
     
     /// # Summary
     /// Returns how many times a given oracle is executed.

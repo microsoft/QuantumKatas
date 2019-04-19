@@ -10,8 +10,8 @@
     <Description>Microsoft's Quantum Katas support.</Description>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageReleaseNotes>See: https://docs.microsoft.com/en-us/quantum/relnotes/</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/Microsoft/QuantumLibraries/raw/master/LICENSE.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Microsoft/QuantumLibraries/tree/master/Chemistry</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Microsoft/QuantumKatas/raw/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/master/Microsoft.Quantum.Katas</PackageProjectUrl>
     <PackageIconUrl>https://secure.gravatar.com/avatar/bd1f02955b2853ba0a3b1cdc2434e8ec.png</PackageIconUrl>
     <PackageTags>Quantum Q# Qsharp</PackageTags>
   </PropertyGroup>

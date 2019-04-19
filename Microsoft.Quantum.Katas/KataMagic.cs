@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Linq;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
-using Microsoft.Quantum.Simulation.Simulators;
 
 namespace Microsoft.Quantum.Katas
 {
     public class KataMagic : MagicSymbol
     {
         /// <summary>
-        /// IQ# Magic that enables executing Kata's on Jupyter.
+        /// IQ# Magic that enables executing the Katas on Jupyter.
         /// </summary>
         public KataMagic(IOperationResolver resolver, ISnippets snippets)
         {
@@ -39,7 +39,7 @@ namespace Microsoft.Quantum.Katas
 
         /// <summary>
         /// What this Magic does when triggered. It will:
-        /// - find the Kata to execute based n the Kata name,
+        /// - find the Kata to execute based on the Kata name,
         /// - compile the code after found after the name as the user's answer.
         /// - run (simulate) the kata.
         /// </summary>
@@ -49,13 +49,13 @@ namespace Microsoft.Quantum.Katas
 
             // Expect exactly two arguments, the name of the Kata and the user's answer (code).
             var args = input?.Split(new char[] { ' ', '\n', '\t' }, 2);
-            if (args == null || args.Length != 2) throw new InvalidOperationException("Invalid parameters. Usage: `%kata Test \"q# operation\"`");
+            if (args == null || args.Length != 2) throw new InvalidOperationException("Invalid parameters. Usage: `%kata Test \"Q# operation\"`");
 
             var name = args[0];
             var code = args[1];
 
             var kata = FindKata(name);
-            if (kata == null) throw new InvalidOperationException($"Invalid kata name: {name}");
+            if (kata == null) throw new InvalidOperationException($"Invalid test name: {name}");
 
             var userAnswer = Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
@@ -87,7 +87,7 @@ namespace Microsoft.Quantum.Katas
 
                 if (opsNames.Length > 1)
                 {
-                    channel.Stdout("Expecting only one Q# operation in code. Using first");
+                    channel.Stdout("Expecting only one Q# operation in code. Using the first one");
                 }
 
                 return Resolver.Resolve(opsNames.First());
@@ -131,20 +131,21 @@ namespace Microsoft.Quantum.Katas
             }
             catch (AggregateException agg)
             {
-                channel.Stderr($"try again!");
                 foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
+                channel.Stderr($"Try again!");
                 return false;
             }
             catch (Exception e)
             {
-                channel.Stderr($"try again!");
                 channel.Stderr(e.Message);
+                channel.Stderr($"Try again!");
                 return false;
             }
         }
 
         /// <summary>
-        /// Creates the instance of the QuantumSimulator to use to run the Kata.
+        /// Creates the instance of the simulator to use to run the Kata 
+        /// (for now always CounterSimulator from the same package).
         /// </summary>
         public virtual SimulatorBase CreateSimulator() =>
             new CounterSimulator();

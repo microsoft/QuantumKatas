@@ -1,12 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-//////////////////////////////////////////////////////////////////////
-// This file contains parts of the testing harness. 
-// You should not modify anything in this file.
-// The tasks themselves can be found in Tasks.qs file.
-//////////////////////////////////////////////////////////////////////
-
 using System;
 using System.Collections.Generic;
 
@@ -19,10 +13,8 @@ using Quantum.Kata.Utils;
 namespace Microsoft.Quantum.Katas
 {
     /// <summary>
-    ///     This custom quantum simulator keeps track of the number of times 
-    ///     each operation is executed, by providing a custom native operation: 
-    ///     `AssertOracleCallsCount` which asserts the number of times
-    ///     the given oracle (operation) has been called.
+    ///     This custom quantum simulator keeps track of the number of times each operation is executed
+    ///     and the maximum number of qubits allocated at any point during program execution.
     /// </summary>
     public class CounterSimulator : QuantumSimulator
     {
@@ -55,7 +47,9 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
-        // Custom Native operation to reset the oracle counts back to 0.
+        /// <summary>
+        /// Custom Native operation to reset the oracle counts back to 0.
+        /// </summary>
         public class ResetOracleCallsImpl : ResetOracleCallsCount
         {
             CounterSimulator _sim;
@@ -72,6 +66,9 @@ namespace Microsoft.Quantum.Katas
             };
         }
 
+        /// <summary>
+        /// Custom Native operation to get the number of operation calls.
+        /// </summary>
         public class GetOracleCallsImpl<T> : GetOracleCallsCount<T>
         {
             CounterSimulator _sim;
@@ -86,7 +83,8 @@ namespace Microsoft.Quantum.Katas
                 var oracle = __in;
 
                 var op = oracle as ICallable;
-                if (op == null) throw new InvalidOperationException($"Excepted an operation as oracle argument, got: {oracle}");
+                if (op == null) 
+                    throw new InvalidOperationException($"Expected an operation as the argument, got: {oracle}");
 
                 var actual = _sim._operationsCount.ContainsKey(op) ? _sim._operationsCount[op] : 0;
                 
@@ -96,6 +94,9 @@ namespace Microsoft.Quantum.Katas
         #endregion
 
         #region Counting allocated qubits
+        /// <summary>
+        /// Custom operation to update the number of allocated qubits upon qubit allocation.
+        /// </summary>
         new public class Allocate : SimulatorBase.Allocate
         {
             CounterSimulator _sim;
@@ -126,6 +127,9 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
+        /// <summary>
+        /// Custom operation to update the number of allocated qubits upon qubit release.
+        /// </summary>
         new public class Release : SimulatorBase.Release
         {
             CounterSimulator _sim;
@@ -148,6 +152,9 @@ namespace Microsoft.Quantum.Katas
             }
         }
 
+        /// <summary>
+        /// Custom operation to reset the numbers of allocated qubits.
+        /// </summary>
         public class ResetQubitCountImpl : ResetQubitCount
         {
             CounterSimulator _sim;
@@ -165,6 +172,9 @@ namespace Microsoft.Quantum.Katas
             };
         }
 
+        /// <summary>
+        /// Custom operation to get the maximal number of allocated qubits.
+        /// </summary>
         public class GetMaxQubitCountImpl : GetMaxQubitCount
         {
             CounterSimulator _sim;
