@@ -464,7 +464,7 @@ namespace Quantum.Kata.Measurements {
                 let ans = testImpl(qs[0]);
                 
                 // check that the answer is actually in allowed range
-                if (ans < -1 || ans > 1) {
+                if (ans < -1 or ans > 1) {
                     fail $"state {state} led to invalid response {ans}.";
                 }
                 
@@ -473,16 +473,16 @@ namespace Quantum.Kata.Measurements {
                     set nInconc = nInconc + 1;
                 }
                 
-                if (ans == 0 && state == 0) {
+                if (ans == 0 and state == 0) {
                     set nConclOne = nConclOne + 1;
                 }
                 
-                if (ans == 1 && state == 1) {
+                if (ans == 1 and state == 1) {
                     set nConclPlus = nConclPlus + 1;
                 }
                 
                 // check if upon conclusive result the answer is actually correct
-                if (ans == 0 && state == 1 || ans == 1 && state == 0) {
+                if (ans == 0 and state == 1 or ans == 1 and state == 0) {
                     fail $"state {state} led to incorrect conclusive response {ans}.";
                 }
                 
