@@ -105,7 +105,7 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Executes the given kata using the provided `userAnswer` as the actual answer.
+        /// Executes the given kata using the provided <c>userAnswer</c> as the actual answer.
         /// To do this, it finds another operation with the same name but in the Kata's namespace
         /// (by calling `FindRawAnswer`) and replace its implementation with the userAnswer
         /// in the simulator.
