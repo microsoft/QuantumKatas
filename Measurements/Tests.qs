@@ -392,6 +392,32 @@ namespace Quantum.Kata.Measurements {
     }
     
     
+    // ------------------------------------------------------
+    
+    operation StatePrep_ThreeQubitMeasurement (qs : Qubit[], state : Int) : Unit {
+        
+        body (...) {
+            WState_Arbitrary_Reference(qs);
+            
+            if (state == 0) {
+                // prep 1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ )
+                R1(2.0 * PI() / 3.0, qs[1]);
+                R1(4.0 * PI() / 3.0, qs[2]);
+            } else {
+                //  prep 1/sqrt(3) ( |100⟩ + ω² |010⟩ + ω |001⟩ )
+                R1(4.0 * PI() / 3.0, qs[1]);
+                R1(2.0 * PI() / 3.0, qs[2]);
+            }
+        }
+        
+        adjoint invert;
+    }
+    
+    operation T113_ThreeQubitMeasurement_Test () : Unit {
+        DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement);
+    }
+    
+
     //////////////////////////////////////////////////////////////////
     operation StatePrep_IsQubitZeroOrPlus (q : Qubit, state : Int) : Unit {
         
@@ -514,4 +540,65 @@ namespace Quantum.Kata.Measurements {
         USD_DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, 0.1, StatePrep_IsQubitZeroOrPlus, IsQubitPlusZeroOrInconclusiveSimpleUSD);
     }
     
+	
+    // ------------------------------------------------------
+    operation StatePrep_IsQubitNotInABC (q : Qubit, state : Int) : Unit {
+        let alpha = (2.0 * PI()) / 3.0;
+        H(q);
+        
+        if (state == 0) {
+            // convert |0⟩ to 1/sqrt(2) (|0⟩ + |1⟩)
+        }
+        elif (state == 1) {
+            // convert |0⟩ to 1/sqrt(2) (|0⟩ + ω |1⟩), where ω = exp(2iπ/3)
+            R1(alpha, q);
+        }
+        else {
+            // convert |0⟩ to 1/sqrt(2) (|0⟩ + ω² |1⟩), where ω = exp(2iπ/3)
+            R1(2.0 * alpha, q);
+        }
+    }
+    
+    
+    // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
+    // with Int return. Framework tests instances of the Peres/Wootters game. In this game, one of three
+    // "trine" states is presented and the algorithm must answer with a label that does not correspond
+    // to one of the label of the input state.
+    operation ABC_DistinguishStates_MultiQubit_Threshold (Nqubit : Int, Nstate : Int, statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Int)) : Unit {
+        
+        let nTotal = 1000;
+        
+        using (qs = Qubit[Nqubit]) {
+            
+            for (i in 1 .. nTotal) {
+                // get a random integer to define the state of the qubits
+                let state = RandomInt(Nstate);
+                
+                // do state prep: convert |0⟩ to outcome with return equal to state
+                statePrep(qs[0], state);
+                
+                // get the solution's answer and verify that it's a match
+                let ans = testImpl(qs[0]);
+                
+                // check that the value of ans is 0, 1 or 2
+                if (ans < 0 || ans > 2) {
+                    fail "You can not return any value other than 0, 1 or 2.";
+                }
+                
+                // check if upon conclusive result the answer is actually correct
+                if (ans == state) {
+                    fail $"State {state} led to incorrect conclusive response {ans}.";
+                }
+                
+                // we're not checking the state of the qubit after the operation
+                ResetAll(qs);
+            }
+        }
+    }
+    
+    operation T202_IsQubitNotInABC_Test () : Unit {
+        ABC_DistinguishStates_MultiQubit_Threshold(1, 3, StatePrep_IsQubitNotInABC, IsQubitNotInABC);
+    }
+    
+
 }
