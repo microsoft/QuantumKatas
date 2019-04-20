@@ -477,7 +477,7 @@ namespace Quantum.Kata.Measurements {
         return output;
     }
 
-	// Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
+    // Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
     //           (a.k.a. the Peres/Wootters game)
     // Input: a qubit which is guaranteed to be in one of the three states with equal probability:
     //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),

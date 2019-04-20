@@ -540,7 +540,7 @@ namespace Quantum.Kata.Measurements {
         USD_DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, 0.1, StatePrep_IsQubitZeroOrPlus, IsQubitPlusZeroOrInconclusiveSimpleUSD);
     }
     
-	
+    
     // ------------------------------------------------------
     operation StatePrep_IsQubitNotInABC (q : Qubit, state : Int) : Unit {
         let alpha = (2.0 * PI()) / 3.0;
