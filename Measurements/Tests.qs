@@ -581,7 +581,7 @@ namespace Quantum.Kata.Measurements {
                 let ans = testImpl(qs[0]);
                 
                 // check that the value of ans is 0, 1 or 2
-                if (ans < 0 || ans > 2) {
+                if (ans < 0 or ans > 2) {
                     fail "You can not return any value other than 0, 1 or 2.";
                 }
                 
@@ -596,9 +596,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
     
-    operation T202_IsQubitNotInABC_Test () : Unit {
+    operation T203_IsQubitNotInABC_Test () : Unit {
         ABC_DistinguishStates_MultiQubit_Threshold(1, 3, StatePrep_IsQubitNotInABC, IsQubitNotInABC);
     }
-    
-
 }

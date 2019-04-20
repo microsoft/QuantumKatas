@@ -358,7 +358,9 @@ namespace Quantum.Kata.Measurements {
             set result = MResetZ(anc) == One ? 0 | 1;
         }
         
-        // now fix up the state so that it is identical to the input state
+        // Fix up the state so that it is identical to the input state
+        // (this is not required if the state of the qubits after the operation does not matter)
+
         // Apply state prep of 1/sqrt(3) ( |100⟩ + |010⟩ + |001⟩ )
         WState_Arbitrary_Reference(qs);
         
@@ -371,6 +373,21 @@ namespace Quantum.Kata.Measurements {
         // finally, we return the result
         return result;
     }
+
+
+    // An alternative solution to task 1.13, using a simpler measurement
+    operation ThreeQubitMeasurement_SimpleMeasurement (qs : Qubit[]) : Int {
+        // map the first state to 000 state and the second one to something orthogonal to it
+        // (as described in reference solution)
+        R1(-2.0 * PI() / 3.0, qs[1]);
+        R1(-4.0 * PI() / 3.0, qs[2]);
+        Adjoint WState_Arbitrary_Reference(qs);
+
+        // measure all qubits: if all of them are 0, we have the first state,
+        // if at least one of them is 1, we have the second state
+        return MeasureInteger(LittleEndian(qs)) == 0 ? 0 | 1;
+    }
+
     
 
     //////////////////////////////////////////////////////////////////
@@ -477,6 +494,7 @@ namespace Quantum.Kata.Measurements {
         return output;
     }
 
+
     // Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
     //           (a.k.a. the Peres/Wootters game)
     // Input: a qubit which is guaranteed to be in one of the three states with equal probability:
@@ -524,13 +542,13 @@ namespace Quantum.Kata.Measurements {
             let res1 = M(q);
             
             // dispatch on the cases
-            if (res0 == Zero && res1 == Zero) {
+            if (res0 == Zero and res1 == Zero) {
                 set output = 0;
             }
-            elif (res0 == One && res1 == Zero) {
+            elif (res0 == One and res1 == Zero) {
                 set output = 1;
             }
-            elif (res0 == Zero && res1 == One) {
+            elif (res0 == Zero and res1 == One) {
                 set output = 2;
             }
             else {

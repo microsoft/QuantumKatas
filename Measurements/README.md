@@ -10,6 +10,9 @@ Variations of quantum state discrimination tasks are covered in the paper ["Quan
   for further information and hints about how to implement the unambiguous measurements required for this task. 
 * Task 2.3 is the so-called Wootters/Peres game. See the following three references for more information and in particular
   the book [3, p. 287] for a nice description of the optimal POVM. 
+
   [1] A. Holevo, “Information-theoretical aspects of quantum measurement,” Problems of Information Transmission, vol. 9, no. 2, pp. 110–118 (1973)
+
   [2] A. Peres and W. K. Wootters, “Optimal detection of quantum information,” Phys. Rev. Lett., vol. 66, pp. 1119-1122, Mar. 1991.
+
   [3] A. Peres, “Quantum Theory: Concepts and Methods,” Kluwer Academic Publishers, 2002.

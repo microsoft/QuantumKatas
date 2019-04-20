@@ -214,7 +214,7 @@ namespace Quantum.Kata.Measurements {
     //        1/sqrt(3) ( |100⟩ + ω² |010⟩ + ω |001⟩ ).
     // Output: 0 if qubits were in the first superposition,
     //         1 if they were in the second superposition.
-    // The state of the qubits at the end of the operation should be the same as the starting state.
+    // The state of the qubits at the end of the operation does not matter.
     operation ThreeQubitMeasurement (qs : Qubit[]) : Int {
         // ...
         return -1;
@@ -264,17 +264,17 @@ namespace Quantum.Kata.Measurements {
 
     
     // Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
-    //           (a.k.a. the Peres/Wootters game)
+    //             (a.k.a. the Peres/Wootters game)
     // Input: a qubit which is guaranteed to be in one of the three states with equal probability:
     //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),
     //        |B⟩ = 1/sqrt(2) (|0⟩ + ω |1⟩),
-    //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩).
+    //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩),
     //	      where ω = exp(2iπ/3) denotes a primitive, complex 3rd root of unity.
     // Output: 1 or 2 if qubit was in the |A⟩ state,
     //         0 or 2 if qubit was in the |B⟩ state,
     //         0 or 1 if qubit was in the |C⟩ state.
     // The state of the qubit at the end of the operation does not matter.
-    // Note: in this task you have to succeed with probability 1, i.e., your are never allowed
+    // Note: in this task you have to succeed with probability 1, i.e., you are never allowed
     //       to give an incorrect answer.
     operation IsQubitNotInABC (q : Qubit) : Int {
         // ...
