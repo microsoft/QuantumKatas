@@ -18,8 +18,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Jupyter.Core" Version="1.1.13141" />
-    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.5.1904.1302" />
     <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.5.1904.1302" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="all" />
+    <BuildOutputInPackage Include="..\Common\bin\$(Configuration)\netstandard2.0\Microsoft.Quantum.Katas.Common.dll" />
   </ItemGroup>
   
 </Project>
