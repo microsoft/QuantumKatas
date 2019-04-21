@@ -14,6 +14,35 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Primitive;
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part I. Classical CHSH
+    //////////////////////////////////////////////////////////////////
+
+    // Task 1.1. Validate Alice and Bob's moves
+    function ValidAliceMove_Reference (cells : Int[]) : Bool {
+        return ForAll(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 0;
+    }
+
+    function ValidBobMove_Reference (cells : Int[]) : Bool {
+        return ForAll(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 1;
+    }
+
+    function IsPlusOrMinusOne (input : Int) : Bool {
+        return input == 1 or input == -1;
+    }
+
+    function CountMinusSignsFolder (count : Int, input : Int) : Int {
+        return input < 0 ? count + 1 | count;
+    }
+
+
+    // Task 1.2. Win condition
+    function WinCondition_Reference (alice : Int[], row : Int, bob : Int[], column : Int) : Bool {
+        return ValidAliceMove_Reference(alice) and ValidBobMove_Reference(bob) and alice[column] == bob[row];
+    }
+
+
     // Come up with some classical strategy which wins about
     // 66% of the time. You can assume bob will use BobStrategyClassical,
     // and should implement them together. You must abide by alice's placement rules.

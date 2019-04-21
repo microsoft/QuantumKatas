@@ -15,6 +15,66 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Extensions.Convert;
 
+    operation T11_ValidMove_Test () : Unit {
+        // Try all moves with +1 and -1.
+        for (i in 0..1 <<< 3 - 1) {
+            let cells = Map(SignFromBool, BoolArrFromPositiveInt(i, 3));
+            AssertBoolEqual(
+                ValidAliceMove(cells),
+                ValidAliceMove_Reference(cells),
+                $"Valid Alice move is wrong for {cells}");
+            AssertBoolEqual(
+                ValidBobMove(cells),
+                ValidBobMove_Reference(cells),
+                $"Valid Bob move is wrong for {cells}");
+        }
+
+        // Moves with numbers other than +1 and -1 should be rejected.
+        let cellsOutOfRange = [1, -2, 10];
+        AssertBoolEqual(
+            ValidAliceMove(cellsOutOfRange),
+            false,
+            $"Valid Alice move is wrong for {cellsOutOfRange}");
+        AssertBoolEqual(
+            ValidBobMove(cellsOutOfRange),
+            false,
+            $"Valid Bob move is wrong for {cellsOutOfRange}");
+    }
+
+    function SignFromBool (input : Bool) : Int {
+        return input ? 1 | -1;
+    }
+
+
+    // ------------------------------------------------------
+    operation T12_WinCondition_Test () : Unit {
+        // Try all moves with +1 and -1.
+        for (i in 0..1 <<< 3 - 1) {
+            for (j in 0..1 <<< 3 - 1) {
+                for (row in 0..2) {
+                    for (column in 0..2) {
+                        let alice = Map(SignFromBool, BoolArrFromPositiveInt(i, 3));
+                        let bob = Map(SignFromBool, BoolArrFromPositiveInt(j, 3));
+
+                        AssertBoolEqual(
+                            WinCondition(alice, row, bob, column),
+                            WinCondition_Reference(alice, row, bob, column),
+                            $"Win condition is wrong for Alice={alice}, row={row}, Bob={bob}, column={column}");
+                    }
+                }
+            }
+        }
+
+        // Moves with numbers other than +1 and -1 should be rejected.
+        let aliceOutOfRange = [-1, -1, 7];
+        let bobInRange = [-1, 1, 1];
+        AssertBoolEqual(
+            WinCondition(aliceOutOfRange, 0, bobInRange, 0),
+            false,
+            $"Win condition is wrong for Alice={aliceOutOfRange}, row=0, Bob={bobInRange}, column=0");
+    }
+
+
     // Tests that with the quantum strategy, alice and bob always win.
     operation MerminQuantum_Test () : Unit {
         mutable result = true;
@@ -28,7 +88,7 @@ namespace Quantum.Kata.MagicSquareGame {
                 CreateAliceAndBobQubits(qs[0..1], qs[2..3]);
                 set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
                 set bobMoves = PlayAsBob(col, qs[2], qs[3]);
-                if (not verify(row, col, aliceMoves, bobMoves, true)) {
+                if (not WinCondition_Reference(aliceMoves, row, bobMoves, col)) {
                     fail "Alice and bob did not play correctly.";
                 }
                 ResetAll(qs);
@@ -49,7 +109,8 @@ namespace Quantum.Kata.MagicSquareGame {
             let col = RandomInt(3);
             let (aMoves, bMoves) = gameRunnerClassicalSuboptimal(row, col);
 
-            assertPlacement(aMoves, bMoves);
+            AssertBoolEqual(ValidAliceMove_Reference(aMoves), true, "Alice's move is invalid");
+            AssertBoolEqual(ValidBobMove_Reference(bMoves), true, "Bob's move is invalid");
         }
     }
 
@@ -60,7 +121,8 @@ namespace Quantum.Kata.MagicSquareGame {
             let col = RandomInt(3);
             let (aMoves, bMoves) = gameRunnerClassicalOptimal(row, col);
 
-            assertPlacement(aMoves, bMoves);
+            AssertBoolEqual(ValidAliceMove_Reference(aMoves), true, "Alice's move is invalid");
+            AssertBoolEqual(ValidBobMove_Reference(bMoves), true, "Bob's move is invalid");
         }
     }
 
@@ -71,7 +133,7 @@ namespace Quantum.Kata.MagicSquareGame {
             let row = RandomInt(3);
             let col = RandomInt(3);
             let (aMoves, bMoves) = gameRunnerClassicalSuboptimal(row, col);
-            if (verify(row, col, aMoves, bMoves, false)) {
+            if (WinCondition_Reference(aMoves, row, bMoves, col)) {
                 set wins = wins + 1;
             }
         }
@@ -88,7 +150,7 @@ namespace Quantum.Kata.MagicSquareGame {
             let row = RandomInt(3);
             let col = RandomInt(3);
             let (aMoves, bMoves) = gameRunnerClassicalOptimal(row, col);
-            if (verify(row, col, aMoves, bMoves, false)) {
+            if (WinCondition_Reference(aMoves, row, bMoves, col)) {
                 set wins = wins + 1;
             }
         }
@@ -109,7 +171,7 @@ namespace Quantum.Kata.MagicSquareGame {
             CreateAliceAndBobQubits(qs[0..1], qs[2..3]);
             set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
             set bobMoves = PlayAsBob(col, qs[2], qs[3]);
-            let victorious = verify(row, col, aliceMoves, bobMoves, true);
+            let victorious = WinCondition_Reference(aliceMoves, row, bobMoves, col);
             ResetAll(qs);
         }
         return (aliceMoves, bobMoves);
@@ -121,83 +183,6 @@ namespace Quantum.Kata.MagicSquareGame {
 
     operation gameRunnerClassicalSuboptimal (row : Int, col : Int) : (Int[], Int[]) {
         return (AliceStrategyClassical(row), BobStrategyClassical(col));
-    }
-
-    function verify(row : Int, col : Int, aliceMoves : Int[], bobMoves : Int[], print : Bool) : Bool {
-        
-        mutable aliceMinuses = 0;
-        // check alice has even number of minuses
-        for (i in 0..2) {
-            if (aliceMoves[i] == -1) {
-                set aliceMinuses = aliceMinuses + 1;
-            }
-        }
-        if (aliceMinuses % 2 != 0) {
-            if (print) {
-                Message("Alice violated number of minuses placed.");
-                Message($"Alice's row: {row}");
-                Message($"Alice's moves: {aliceMoves}");
-                Message($"Bob's col: {col}");
-                Message($"Bob's moves: {bobMoves}");
-            }
-            return false;
-        }
-
-        mutable bobMinuses = 0;
-        // check bob has odd number minuses
-        for (i in 0..2) {
-            if (bobMoves[i] == -1) {
-                set bobMinuses = bobMinuses + 1;
-            }
-        }
-        if (bobMinuses % 2 == 0) {
-            if (print) {
-                Message("Bob violated number of minuses placed.");
-                Message($"Alice's row: {row}");
-                Message($"Alice's moves: {aliceMoves}");
-                Message($"Bob's col: {col}");
-                Message($"Bob's moves: {bobMoves}");
-            }
-            return false;
-        }
-
-        // check that alice's bth result and bob's ath result are equal
-        if (aliceMoves[col] != bobMoves[row]) {
-            if (print) {
-                Message("Shared tile was not equal.");
-                Message($"Alice's row: {row}");
-                Message($"Alice's moves: {aliceMoves}");
-                Message($"Bob's col: {col}");
-                Message($"Bob's moves: {bobMoves}");
-            }
-            return false;
-        }
-
-        return true;
-    }
-
-    operation assertPlacement(aMoves : Int[], bMoves : Int[]) : Unit {
-        mutable aliceMinuses = 0;
-        // check alice has even number of minuses
-        for (j in 0..2) {
-            if (aMoves[j] == -1) {
-                set aliceMinuses = aliceMinuses + 1;
-            }
-        }
-        if (aliceMinuses % 2 != 0) {
-            fail "Alice did not place an even number of -1 elements.";
-        }
-
-        mutable bobMinuses = 0;
-        // check alice has even number of minuses
-        for (j in 0..2) {
-            if (bMoves[j] == -1) {
-                set bobMinuses = bobMinuses + 1;
-            }
-        }
-        if (bobMinuses % 2 != 1) {
-            fail "Bob did not place an odd number of -1 elements.";
-        }
     }
 
 }

@@ -28,6 +28,41 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part I. Classical Magic Square
     //////////////////////////////////////////////////////////////////
 
+    // Task 1.1. Validate Alice and Bob's moves
+    // In this task you have to implement two functions, one for Alice's move and one for Bob's.
+    // Note that they are covered by one test, so you have to implement both before attemping the test.
+
+    // Input: The signs Alice chose for each cell in her row in an array of length 3.
+    // Output: True if Alice's move is valid (that is, if every cell is either +1 or -1 and it has
+    //         an even number of minus signs) and false otherwise.
+    operation ValidAliceMove (cells : Int[]) : Bool {
+        // ...
+        fail "Validating Alice's move in task 1.1 not implemented yet";
+    }
+
+    // Input: The signs Bob chose for each cell in his row in an array of length 3.
+    // Output: True if Bob's move is valid (that is, if every cell is either +1 or -1 and it has
+    //         an odd number of minus signs) and false otherwise.
+    operation ValidBobMove (cells : Int[]) : Bool {
+        // ...
+        fail "Validating Bob's move in task 1.1 not implemented yet";
+    }
+
+
+    // Task 1.2. Win condition
+    // Input:
+    //     1) Alice and Bob's moves in arrays of length 3,
+    //     2) The row and column Alice and Bob were assigned from 0 to 2.
+    // Output:
+    //     True if Alice and Bob won the magic square game (that is, if both Alice and Bob's moves
+    //     are valid and they chose the same sign in the cell that intersects Alice's row and Bob's
+    //     column) and false otherwise.
+    function WinCondition (alice : Int[], row : Int, bob : Int[], column : Int) : Bool {
+        // ...
+        fail "Task 1.2 not implemented yet";
+    }
+
+
     // Task 1.1
     // Come up with some classical strategy which wins about
     // 66% of the time. You can assume bob will use BobStrategyClassical,
