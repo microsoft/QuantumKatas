@@ -101,19 +101,6 @@ namespace Quantum.Kata.MagicSquareGame {
         fixup{}
     }
 
-    // Tests that alice and bob obey their placement rules always.
-    operation ClassicalSuboptimalPlacement_Test() : Unit {
-        let runs = 1000;
-        for (i in 0..runs) {
-            let row = RandomInt(3);
-            let col = RandomInt(3);
-            let (aMoves, bMoves) = gameRunnerClassicalSuboptimal(row, col);
-
-            AssertBoolEqual(ValidAliceMove_Reference(aMoves), true, "Alice's move is invalid");
-            AssertBoolEqual(ValidBobMove_Reference(bMoves), true, "Bob's move is invalid");
-        }
-    }
-
     operation ClassicalOptimalPlacement_Test() : Unit {
         let runs = 1000;
         for (i in 0..runs) {
@@ -124,23 +111,6 @@ namespace Quantum.Kata.MagicSquareGame {
             AssertBoolEqual(ValidAliceMove_Reference(aMoves), true, "Alice's move is invalid");
             AssertBoolEqual(ValidBobMove_Reference(bMoves), true, "Bob's move is invalid");
         }
-    }
-
-    operation ClassicalSuboptimalWinRate_Test() : Unit {
-        mutable wins = 0;
-        mutable runs = 5000;
-        for (i in 0..runs) {
-            let row = RandomInt(3);
-            let col = RandomInt(3);
-            let (aMoves, bMoves) = gameRunnerClassicalSuboptimal(row, col);
-            if (WinCondition_Reference(aMoves, row, bMoves, col)) {
-                set wins = wins + 1;
-            }
-        }
-
-        let rate = ToDouble(wins) / ToDouble(runs);
-        Message($"Classical nonoptimal win rate was: {rate}");
-        AssertAlmostEqualTol(rate, 0.66666, 0.05);
     }
 
     operation ClassicalOptimalWinRate_Test() : Unit {
@@ -179,10 +149,6 @@ namespace Quantum.Kata.MagicSquareGame {
 
     operation gameRunnerClassicalOptimal (row : Int, col : Int) : (Int[], Int[]) {
         return (AliceStrategyOptimalClassical(row), BobStrategyOptimalClassical(col));
-    }
-
-    operation gameRunnerClassicalSuboptimal (row : Int, col : Int) : (Int[], Int[]) {
-        return (AliceStrategyClassical(row), BobStrategyClassical(col));
     }
 
 }

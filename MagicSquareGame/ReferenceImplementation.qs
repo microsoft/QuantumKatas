@@ -44,22 +44,6 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // Come up with some classical strategy which wins about
-    // 66% of the time. You can assume bob will use BobStrategyClassical,
-    // and should implement them together. You must abide by alice's placement rules.
-    operation AliceStrategyClassical_Reference(row : Int) : Int[] {
-        // With this arrangement, they will lose if column 1 is selected, and win otherwise.
-        return [1, 1, 1];
-    }
-
-    // Come up with some classical strategy which wins about
-    // 66 % of the time. You can assume alice will use AliceStrategyClassical,
-    // and should implement them together. You must abide by bob's placement rules.
-    operation BobStrategyClassical_Reference(col : Int) : Int[] {
-        // With this arrangement, they will lose if column 1 is selected, and win otherwise.
-        return [-1, 1, 1];
-    }
-
-    // Come up with some classical strategy which wins about
     // 85 % of the time. You can assume bob will use BobStrategyOptimalClassical,
     // and should implement them together. You must abide by alice's placement rules.
     operation AliceStrategyOptimalClassical_Reference(row : Int) : Int[] {
