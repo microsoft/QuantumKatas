@@ -130,47 +130,36 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    operation MeasureObservable_Reference(  q0 : Qubit, 
-                                            q1 : Qubit, 
-                                            Observable : (Qubit[] => Unit : Controlled)) : Int {
-        // Alternatively, one could use the MeasureWithScratch library
-        // operation. This would require you to only use Pauli type gates,
-        // which would require some adaptation to be able to use something
-        // similar to MinusX.
-        mutable result = -99;
-        using (ancilla = Qubit()) {
-            H(ancilla);
-            Controlled Observable([ancilla], [q0, q1]);
-            H(ancilla);
-            let aliceState = M(ancilla);
-            if (aliceState == One) {
-                set result = -1;
-            } else {
-                set result = 1;
-            }
-            Reset(ancilla);
+    // Task 2.3. Measure an operator
+    operation MeasureOperator_Reference (op : (Qubit[] => Unit : Controlled), target : Qubit[]) : Result {
+        mutable result = Zero;
+        using (q = Qubit()) {
+            H(q);
+            Controlled op([q], target);
+            H(q);
+            set result = M(q);
+            Reset(q);
         }
         return result;
     }
+
 
     operation PlayAsAlice_Reference(row : Int, q0 : Qubit, q1 : Qubit) : Int[] {
-        mutable result = new Int[3];
-
-        for (i in 0..2) {
-            set result[i] = MeasureObservable_Reference(q0, q1, MagicSquareObservable_Reference(row, i));
+        mutable cells = new Int[3];
+        for (column in 0..2) {
+            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), [q0, q1]);
+            set cells[column] = IsResultZero(result) ? 1 | -1;
         }
-
-        return result;
+        return cells;
     }
 
-    operation PlayAsBob_Reference(col : Int, q0 : Qubit, q1 : Qubit) : Int[] {
-        mutable result = new Int[3];
-
-        for (i in 0..2) {
-            set result[i] = MeasureObservable_Reference(q0, q1, MagicSquareObservable_Reference(i, col));
+    operation PlayAsBob_Reference(column : Int, q0 : Qubit, q1 : Qubit) : Int[] {
+        mutable cells = new Int[3];
+        for (row in 0..2) {
+            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), [q0, q1]);
+            set cells[row] = IsResultZero(result) ? 1 | -1;
         }
-
-        return result;
+        return cells;
     }
 
 }

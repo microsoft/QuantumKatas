@@ -124,18 +124,16 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    // Task 6.
-    // Given two qubits interpreted as an input vector |psi>,
-    // Measure the operator provided Observable operator on |psi>.
-    // Note that as a side effect, this should project |psi> onto
-    // an eigenstate of Observable.
-    // You should be using an ancilla qubit.
-    operation MeasureObservable(q0 : Qubit, 
-                                q1 : Qubit, 
-                                Observable : (Qubit[] => Unit : Controlled)) : Int {
-        // This is here only to make the code compile. You should replace it with your logic.
-        return -1;
+    // Task 2.3. Measure an operator
+    // Input:
+    //     1) An operator to measure,
+    //     2) A qubit register to measure the operator on.
+    // Output: The result of measuring the operator on the target register.
+    operation MeasureOperator (op : (Qubit[] => Unit : Controlled), target : Qubit[]) : Result {
+        // ...
+        fail "Task 2.3 not implemented yet";
     }
+
 
     // Task 7.1
     // Finally, with the logic we've implemented so far, the last step is
@@ -159,6 +157,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
         return result;
     }
+
 
     // Task 7.2
     // You may assume that alice's q0 is entangled with bob's q0,

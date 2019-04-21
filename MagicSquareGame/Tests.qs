@@ -180,6 +180,10 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
+    // ------------------------------------------------------
+    // TODO: Add test for task 2.3 (measure an operator).
+
+
     // Tests that with the quantum strategy, alice and bob always win.
     operation MerminQuantum_Test () : Unit {
         mutable result = true;
