@@ -76,19 +76,26 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
-    operation T13_ClassicalStrategy_Test() : Unit {
+    operation RunTrials (n : Int, moves : ((Int, Int) => (Int[], Int[]))) : Int {
         mutable wins = 0;
-        for (i in 1..1000) {
+        for (i in 1..n) {
             let row = RandomInt(3);
             let column = RandomInt(3);
-            let alice = AliceClassical(row);
-            let bob = BobClassical(column);
+            let (alice, bob) = moves(row, column);
             if (WinCondition_Reference(alice, row, bob, column)) {
                 set wins = wins + 1;
             }
         }
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+        return wins;
+    }
 
+    operation ClassicalRunner (row : Int, column : Int) : (Int[], Int[]) {
+        return (AliceClassical(row), BobClassical(column));
+    }
+
+    operation T13_ClassicalStrategy_Test() : Unit {
+        let wins = RunTrials(1000, ClassicalRunner);
+        Message($"Win rate {ToDouble(wins) / 1000.}");
         AssertBoolEqual(wins >= 850, true,
                         "Alice and Bob's classical strategy is not optimal");
     }
@@ -185,18 +192,15 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
-    operation T24_QuantumStrategy_Test () : Unit {
-        mutable wins = 0;
-        for (i in 1..1000) {
-            let row = RandomInt(3);
-            let column = RandomInt(3);
-            let (alice, bob) = PlayQuantumMagicSquare_Reference(AliceQuantum(row, _), BobQuantum(column, _));
-            if (WinCondition_Reference(alice, row, bob, column)) {
-                set wins = wins + 1;
-            }
-        }
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+    operation QuantumRunner (referee : (((Qubit[] => Int[]), (Qubit[] => Int[])) => (Int[], Int[])),
+                             row : Int,
+                             column : Int) : (Int[], Int[]) {
+        return referee(AliceQuantum(row, _), BobQuantum(column, _));
+    }
 
+    operation T24_QuantumStrategy_Test () : Unit {
+        let wins = RunTrials(1000, QuantumRunner(PlayQuantumMagicSquare_Reference, _, _));
+        Message($"Win rate {ToDouble(wins) / 1000.}");
         AssertBoolEqual(wins == 1000, true,
                         "Alice and Bob's quantum strategy is not optimal");
     }
@@ -204,17 +208,8 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     operation T24_PlayQuantumMagicSquare_Test () : Unit {
-        mutable wins = 0;
-        for (i in 1..1000) {
-            let row = RandomInt(3);
-            let column = RandomInt(3);
-            let (alice, bob) = PlayQuantumMagicSquare(AliceQuantum(row, _), BobQuantum(column, _));
-            if (WinCondition_Reference(alice, row, bob, column)) {
-                set wins = wins + 1;
-            }
-        }
+        let wins = RunTrials(1000, QuantumRunner(PlayQuantumMagicSquare, _, _));
         Message($"Win rate {ToDouble(wins) / 1000.}");
-
         AssertBoolEqual(wins == 1000, true,
                         "Alice and Bob's quantum strategy is not optimal");
     }
