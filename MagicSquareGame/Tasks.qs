@@ -147,6 +147,8 @@ namespace Quantum.Kata.MagicSquareGame {
     //     The signs Alice will place in her row (as an array of length 3) to maximize their
     //     chance of winning.
     operation AliceQuantum (row : Int, qs : Qubit[]) : Int[] {
+        // Hint: Use MagicSquareObservable and MeasureOperator from tasks 2.2 and 2.3.
+
         // ...
         fail "Alice's strategy in task 2.4 not implemented yet";
     }
@@ -158,6 +160,8 @@ namespace Quantum.Kata.MagicSquareGame {
     //     The signs Bob will place in his row (as an array of length 3) to maximize their
     //     chance of winning.
     operation BobQuantum (column : Int, qs : Qubit[]) : Int[] {
+        // Hint: Use MagicSquareObservable and MeasureOperator from tasks 2.2 and 2.3.
+
         // ...
         fail "Bob's strategy in task 2.4 not implemented yet";
     }
@@ -172,6 +176,8 @@ namespace Quantum.Kata.MagicSquareGame {
     // Note that this task uses strategies AliceQuantum and BobQuantum 
     // which you've implemented in task 2.4.
     operation PlayQuantumMagicSquare (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
+        // Hint: Use CreateEntangledState from task 2.1.
+
         // ...
         fail "Task 2.5 not implemented yet";
     }
