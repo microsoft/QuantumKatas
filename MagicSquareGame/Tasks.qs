@@ -176,4 +176,30 @@ namespace Quantum.Kata.MagicSquareGame {
         fail "Task 2.5 not implemented yet";
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Experimenting with the Magic Square
+    //////////////////////////////////////////////////////////////////
+
+    // Task 3.1. Testing magic square strategies
+    // Goal:
+    //    Use your classical and quantum magic square strategies from tasks 1.3, 2.4 and 2.5 to
+    //    verify their probabilities of winning. Can you make the classical strategy lose?
+    operation MagicSquare_Test () : Unit {
+        // Hint: You will need to use partial application to use your quantum strategies from task
+        // 2.4 with PlayQuantumMagicSquare from task 2.5.
+
+        // Hint: Use AssertBoolEqual along with the your WinCondition function from task 1.2 to
+        // assert that Alice and Bob won the game.
+
+        // Hint: Use the DrawMagicSquare function in Tests.qs to see what the magic square looks
+        // like after Alice and Bob make their moves.
+
+        // MagicSquare_Test appears in the list of unit tests for the solution; run it to verify
+        // your code.
+
+        // ...
+        fail "Task 3.1 not implemented yet";
+    }
+
 }

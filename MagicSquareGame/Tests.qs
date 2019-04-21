@@ -214,4 +214,26 @@ namespace Quantum.Kata.MagicSquareGame {
                         "Alice and Bob's quantum strategy is not optimal");
     }
 
+
+    // ------------------------------------------------------
+    function DrawMagicSquare (alice : Int[], row : Int, bob : Int[], column : Int) : Unit {
+        for (i in 0..2) {
+            mutable line = new String[3];
+            for (j in 0..2) {
+                if (i == row and j == column and alice[j] != bob[i]) {
+                    set line[j] = "±";
+                } elif (i == row) {
+                    set line[j] = alice[j] == 1 ? "+" | (alice[j] == -1 ? "-" | "?");
+                } elif (j == column) {
+                    set line[j] = bob[i] == 1 ? "+" | (bob[i] == -1 ? "-" | "?");
+                } else {
+                    set line[j] = " ";
+                }
+            }
+            Message("-------");
+            Message($"|{line[0]}|{line[1]}|{line[2]}|");
+        }
+        Message("-------");
+    }
+
 }
