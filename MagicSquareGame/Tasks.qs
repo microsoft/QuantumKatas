@@ -162,4 +162,18 @@ namespace Quantum.Kata.MagicSquareGame {
         fail "Bob's strategy in task 2.4 not implemented yet";
     }
 
+
+    // Task 2.5. Play the magic square game using the quantum strategy
+    // Input: Operations that return Alice and Bob's moves based on their quantum
+    //        strategies and given their respective qubits from the entangled state.
+    //        Alice and Bob have already been told their row and column.
+    // Goal:  Return Alice and Bob's moves.
+    //
+    // Note that this task uses strategies AliceQuantum and BobQuantum 
+    // which you've implemented in task 2.4.
+    operation PlayQuantumMagicSquare (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
+        // ...
+        fail "Task 2.5 not implemented yet";
+    }
+
 }

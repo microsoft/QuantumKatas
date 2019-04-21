@@ -190,14 +190,27 @@ namespace Quantum.Kata.MagicSquareGame {
         for (i in 1..1000) {
             let row = RandomInt(3);
             let column = RandomInt(3);
-            using (qs = Qubit[4]) {
-                CreateEntangledState_Reference(qs);
-                let alice = AliceQuantum(row, qs[0..1]);
-                let bob = BobQuantum(column, qs[2..3]);
-                if (WinCondition_Reference(alice, row, bob, column)) {
-                    set wins = wins + 1;
-                }
-                ResetAll(qs);
+            let (alice, bob) = PlayQuantumMagicSquare_Reference(AliceQuantum(row, _), BobQuantum(column, _));
+            if (WinCondition_Reference(alice, row, bob, column)) {
+                set wins = wins + 1;
+            }
+        }
+        Message($"Win rate {ToDouble(wins) / 1000.}");
+
+        AssertBoolEqual(wins == 1000, true,
+                        "Alice and Bob's quantum strategy is not optimal");
+    }
+
+
+    // ------------------------------------------------------
+    operation T24_PlayQuantumMagicSquare_Test () : Unit {
+        mutable wins = 0;
+        for (i in 1..1000) {
+            let row = RandomInt(3);
+            let column = RandomInt(3);
+            let (alice, bob) = PlayQuantumMagicSquare(AliceQuantum(row, _), BobQuantum(column, _));
+            if (WinCondition_Reference(alice, row, bob, column)) {
+                set wins = wins + 1;
             }
         }
         Message($"Win rate {ToDouble(wins) / 1000.}");

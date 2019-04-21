@@ -163,4 +163,18 @@ namespace Quantum.Kata.MagicSquareGame {
         return cells;
     }
 
+
+    // Task 2.5. Play the magic square game using the quantum strategy
+    operation PlayQuantumMagicSquare_Reference (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
+        mutable alice = new Int[3];
+        mutable bob = new Int[3];
+        using (qs = Qubit[4]) {
+            CreateEntangledState_Reference(qs);
+            set alice = askAlice(qs[0..1]);
+            set bob = askBob(qs[2..3]);
+            ResetAll(qs);
+        }
+        return (alice, bob);
+    }
+
 }
