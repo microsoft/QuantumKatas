@@ -188,7 +188,26 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
-    // TODO: Add test for task 2.3 (measure an operator).
+    operation T23_MeasureOperator_Test () : Unit {
+        using (qs = Qubit[2]) {
+            for (row in 0..2) {
+                for (column in 0..2) {
+                    // Use the reference implementation to project the register into an eigenstate.
+                    let op = MagicSquareObservable_Reference(row, column);
+                    let result = MeasureOperator_Reference(op, qs);
+
+                    // Make sure the task implementation gets the same result. If the
+                    // implementation is wrong, this could be non-deterministic, but hopefully it
+                    // will fail on at least one of the nine operators.
+                    AssertResultEqual(
+                        MeasureOperator(op, qs),
+                        result,
+                        "Operator measurement result is different than the reference result");
+                }
+            }
+            ResetAll(qs);
+        }
+    }
 
 
     // ------------------------------------------------------
