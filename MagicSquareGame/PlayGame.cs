@@ -4,28 +4,8 @@ using System;
 
 namespace Quantum.Kata.MagicSquareGame {
     class PlayGame {
-        static void Main(string[] args) {
-                var (row, col) = GetInputs();
+        static void Main(string[] args) {}
 
-                if (row > 2 || col > 2 || row < 0 || col < 0) {
-                    Console.WriteLine("Invalid indices.");
-                    return;
-                }
-        }
-
-        static (int, int) GetInputs() {
-            string[] tokens;
-            int row, col;
-
-            Console.WriteLine("Welcome the the Mirman Magic Square game.");
-            Console.Write("From a 3x3 grid, choose a 0-indexed " +
-            "row and column for Alice and Bob to be assigned. ");
-            tokens = Console.ReadLine().Split();
-            row = int.Parse(tokens[0]);
-            col = int.Parse(tokens[1]);
-
-            return (row, col);
-        }
         static (int[], int[]) ConvertArrays(long[] aliceL, long[] bobL) {
             var alice = new int[3];
             var bob = new int[3];
@@ -60,15 +40,6 @@ namespace Quantum.Kata.MagicSquareGame {
                     Console.WriteLine("|{0}|{1}|{2}|", grid[i/2,0],
                     grid[i/2,1], grid[i/2,2]);
                 }
-            }
-        }
-
-        static void PlayQuantum(int row, int col) {
-            using (var qsim = new QuantumSimulator()) {
-                var (aliceQ, bobQ) = gameRunnerQuantum.Run(qsim, row, col).Result;
-                var (alice, bob) = ConvertArrays(aliceQ.ToArray(), bobQ.ToArray());
-
-                DrawGrid(row, alice, col, bob);
             }
         }
     }

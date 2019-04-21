@@ -144,19 +144,20 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    operation PlayAsAlice_Reference(row : Int, q0 : Qubit, q1 : Qubit) : Int[] {
+    // Task 2.4. Alice and Bob's quantum strategy
+    operation AliceQuantum_Reference(row : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (column in 0..2) {
-            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), [q0, q1]);
+            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
             set cells[column] = IsResultZero(result) ? 1 | -1;
         }
         return cells;
     }
 
-    operation PlayAsBob_Reference(column : Int, q0 : Qubit, q1 : Qubit) : Int[] {
+    operation BobQuantum_Reference(column : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (row in 0..2) {
-            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), [q0, q1]);
+            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
             set cells[row] = IsResultZero(result) ? 1 | -1;
         }
         return cells;

@@ -184,43 +184,26 @@ namespace Quantum.Kata.MagicSquareGame {
     // TODO: Add test for task 2.3 (measure an operator).
 
 
-    // Tests that with the quantum strategy, alice and bob always win.
-    operation MerminQuantum_Test () : Unit {
-        mutable result = true;
-        mutable iters = 0;
-        repeat {
-            mutable aliceMoves = new Int[3];
-            mutable bobMoves = new Int[3];
+    // ------------------------------------------------------
+    operation T24_QuantumStrategy_Test () : Unit {
+        mutable wins = 0;
+        for (i in 1..1000) {
             let row = RandomInt(3);
-            let col = RandomInt(3);
+            let column = RandomInt(3);
             using (qs = Qubit[4]) {
-                CreateEntangledState(qs);
-                set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
-                set bobMoves = PlayAsBob(col, qs[2], qs[3]);
-                if (not WinCondition_Reference(aliceMoves, row, bobMoves, col)) {
-                    fail "Alice and bob did not play correctly.";
+                CreateEntangledState_Reference(qs);
+                let alice = AliceQuantum(row, qs[0..1]);
+                let bob = BobQuantum(column, qs[2..3]);
+                if (WinCondition_Reference(alice, row, bob, column)) {
+                    set wins = wins + 1;
                 }
                 ResetAll(qs);
             }
-            set iters = iters + 1;
-            if (iters > 1000) {
-                set result = false;
-            }
-        } until (not result)
-        fixup{}
-    }
-
-    operation gameRunnerQuantum (row : Int, col : Int) : (Int[], Int[]) {
-        mutable aliceMoves = new Int[3];
-        mutable bobMoves = new Int[3];
-        using (qs = Qubit[4]) {
-            CreateEntangledState(qs);
-            set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
-            set bobMoves = PlayAsBob(col, qs[2], qs[3]);
-            let victorious = WinCondition_Reference(aliceMoves, row, bobMoves, col);
-            ResetAll(qs);
         }
-        return (aliceMoves, bobMoves);
+        Message($"Win rate {ToDouble(wins) / 1000.}");
+
+        AssertBoolEqual(wins == 1000, true,
+                        "Alice and Bob's quantum strategy is not optimal");
     }
 
 }

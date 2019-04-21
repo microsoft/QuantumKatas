@@ -135,49 +135,31 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    // Task 7.1
-    // Finally, with the logic we've implemented so far, the last step is
-    // to put in the logic for the players to choose their moves.
-    // You may assume that alice's q0 is entangled with bob's q0,
-    // and that alice's q1 is entangled with bob's q1, and that
-    // bob does the logic in PlayAsBob.
-    // Return the length 3 list of moves alice makes, where the first index
-    // is closest to the left of the 3x3 grid.
-    // Remember alice is subject to the following constraints:
-    // - MUST return an even number of -1 elements
-    // - MUST return and odd number of 1 elements
-    // - MUST return 3 moves.
-    // You win if alice and bob place the same element in their shared square.
-    // This strategy should ALWAYS win.
-    operation PlayAsAlice(row : Int, q0 : Qubit, q1 : Qubit) : Int[] {
-        mutable result = new Int[3];
+    // Task 2.4. Alice and Bob's quantum strategy
+    // In this task you have to implement two functions, one for Alice's quantum strategy and one for Bob's.
+    // Note that they are covered by one test, so you have to implement both before attemping the test.
+    // The best quantum strategy can win every time.
 
-        // Your code goes here
-        // Hint: Most of the logic for this should be implemented in previous methods.
-
-        return result;
+    // Input:
+    //     1) Alice's row,
+    //     2) Alice's half of the entangled qubits as an array of length 2.
+    // Output:
+    //     The signs Alice will place in her row (as an array of length 3) to maximize their
+    //     chance of winning.
+    operation AliceQuantum (row : Int, qs : Qubit[]) : Int[] {
+        // ...
+        fail "Alice's strategy in task 2.4 not implemented yet";
     }
 
-
-    // Task 7.2
-    // You may assume that alice's q0 is entangled with bob's q0,
-    // and that alice's q1 is entangled with bob's q1, and that
-    // alice does the logic in PlayAsAlice.
-    // Return the length 3 list of moves bob makes, where the first index
-    // is closest to the top of the 3x3 grid.
-    // Remember bob is subject to the following constraints:
-    // - MUST return an odd number of -1 elements
-    // - MUST return an even number of 1 elements
-    // - MUST return 3 moves.
-    // You win if alice and bob place the same element in their shared square.
-    // This strategy should ALWAYS win.
-    operation PlayAsBob(col : Int, q0 : Qubit, q1 : Qubit) : Int[] {
-        mutable result = new Int[3];
-
-        // Your code goes here
-        // Hint: Most of the logic for this should be implemented in previous methods.
-
-        return result;
+    // Input:
+    //     1) Bob's column,
+    //     2) Bob's half of the entangled qubits as an array of length 2.
+    // Output:
+    //     The signs Bob will place in his row (as an array of length 3) to maximize their
+    //     chance of winning.
+    operation BobQuantum (column : Int, qs : Qubit[]) : Int[] {
+        // ...
+        fail "Bob's strategy in task 2.4 not implemented yet";
     }
 
 }
