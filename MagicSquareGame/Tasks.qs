@@ -35,7 +35,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // Input: The signs Alice chose for each cell in her row in an array of length 3.
     // Output: True if Alice's move is valid (that is, if every cell is either +1 or -1 and it has
     //         an even number of minus signs) and false otherwise.
-    operation ValidAliceMove (cells : Int[]) : Bool {
+    function ValidAliceMove (cells : Int[]) : Bool {
         // ...
         fail "Validating Alice's move in task 1.1 not implemented yet";
     }
@@ -43,7 +43,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // Input: The signs Bob chose for each cell in his row in an array of length 3.
     // Output: True if Bob's move is valid (that is, if every cell is either +1 or -1 and it has
     //         an odd number of minus signs) and false otherwise.
-    operation ValidBobMove (cells : Int[]) : Bool {
+    function ValidBobMove (cells : Int[]) : Bool {
         // ...
         fail "Validating Bob's move in task 1.1 not implemented yet";
     }
@@ -63,22 +63,27 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    // Task 2.1
-    // Come up with some classical strategy which wins about
-    // 88% of the time. You can assume bob will use BobStrategyOptimalClassical,
-    // and should implement them together. You must abide by alice's placement rules.
-    operation AliceStrategyOptimalClassical(row : Int) : Int[] {
-        // This is here only to make the code compile. You should replace it with your logic.
-        return [0, 0, 0];
+    // Task 1.3. Alice and Bob's classical strategy
+    // In this task you have to implement two functions, one for Alice's classical strategy and one for Bob's.
+    // Note that they are covered by one test, so you have to implement both before attemping the test.
+    // The best classical strategy should win about 8/9 of the time.
+
+    // Input: Alice's row.
+    // Output:
+    //     The signs Alice will place in her row (as an array of length 3) to maximize their
+    //     chance of winning.
+    function AliceClassical (row : Int) : Int[] {
+        // ...
+        fail "Alice's strategy in task 1.3 not implemented yet";
     }
 
-    // Task 2.2
-    // Come up with some classical strategy which wins about
-    // 88% of the time. You can assume alice will use AliceStrategyOptimalClassical,
-    // and should implement them together. You must abide by bob's placement rules.
-    operation BobStrategyOptimalClassical(col : Int) : Int[] {
-        // This is here only to make the code compile. You should replace it with your logic.
-        return [0, 0, 0];
+    // Input: Bob's row.
+    // Output:
+    //     The signs Bob will place in his row (as an array of length 3) to maximize their
+    //     chance of winning.
+    function BobClassical (column : Int) : Int[] {
+        // ...
+        fail "Bob's strategy in task 1.3 not implemented yet";
     }
 
 

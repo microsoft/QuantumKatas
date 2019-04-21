@@ -43,36 +43,33 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    // Come up with some classical strategy which wins about
-    // 85 % of the time. You can assume bob will use BobStrategyOptimalClassical,
-    // and should implement them together. You must abide by alice's placement rules.
-    operation AliceStrategyOptimalClassical_Reference(row : Int) : Int[] {
-        // this is one of many possible square layouts.
-        // The key is that there is only one row, column combination such
-        // that alice and bob can't come up with an answer.
-        // Here, row 3 and column 3 cannot win.
-        if (row == 0) {
-            return [1, 1, 1];
-        } elif (row == 1) {
-            return [1, -1, -1];
-        } else {
-            return [-1, 1, -1];
-        }
+    // Task 1.3. Alice and Bob's classical strategy
+    // Alice and Bob decide on a magic square to use before the game starts, and will always place
+    // the same sign in a given row and column. However, it's not possible to make a magic square
+    // that is self-consistent while still following the rules of the game. Alice and Bob will
+    // always have different signs in at least one cell, so they can only win at most 8/9 of the
+    // time.
+    //
+    // Here we use only one possible magic square; other squares that yield the same win rate are
+    // also possible.
+    function AliceClassical_Reference (row : Int) : Int[] {
+        let rows = [[1, 1, 1],
+                    [1, -1, -1],
+                    [-1, 1, -1]];
+        return rows[row];
     }
 
-    // Come up with some classical strategy which wins about
-    // 85% of the time. You can assume alice will use AliceStrategyOptimalClassical,
-    // and should implement them together. You must abide by bob's placement rules.
-    operation BobStrategyOptimalClassical_Reference(col : Int) : Int[] {
-        // See Alice's strategy for explanation.
-        if (col == 0) {
-            return [1, 1, -1];
-        } elif (col == 1) {
-            return [1, -1, 1];
-        } else {
-            return [1, -1, 1];
-        }
+    function BobClassical_Reference (column : Int) : Int[] {
+        let columns = [[1, 1, -1],
+                       [1, -1, 1],
+                       [1, -1, 1]];
+        return columns[column];
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Quantum Magic Square
+    //////////////////////////////////////////////////////////////////
 
     // Task 1. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {

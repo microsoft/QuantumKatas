@@ -75,6 +75,25 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
+    // ------------------------------------------------------
+    operation T13_ClassicalStrategy_Test() : Unit {
+        mutable wins = 0;
+        for (i in 1..1000) {
+            let row = RandomInt(3);
+            let column = RandomInt(3);
+            let alice = AliceClassical(row);
+            let bob = BobClassical(column);
+            if (WinCondition_Reference(alice, row, bob, column)) {
+                set wins = wins + 1;
+            }
+        }
+        Message($"Win rate {ToDouble(wins) / 1000.}");
+
+        AssertBoolEqual(wins >= 850, true,
+                        "Alice and Bob's classical strategy is not optimal");
+    }
+
+
     // Tests that with the quantum strategy, alice and bob always win.
     operation MerminQuantum_Test () : Unit {
         mutable result = true;
@@ -101,35 +120,6 @@ namespace Quantum.Kata.MagicSquareGame {
         fixup{}
     }
 
-    operation ClassicalOptimalPlacement_Test() : Unit {
-        let runs = 1000;
-        for (i in 0..runs) {
-            let row = RandomInt(3);
-            let col = RandomInt(3);
-            let (aMoves, bMoves) = gameRunnerClassicalOptimal(row, col);
-
-            AssertBoolEqual(ValidAliceMove_Reference(aMoves), true, "Alice's move is invalid");
-            AssertBoolEqual(ValidBobMove_Reference(bMoves), true, "Bob's move is invalid");
-        }
-    }
-
-    operation ClassicalOptimalWinRate_Test() : Unit {
-        mutable wins = 0;
-        mutable runs = 5000;
-        for (i in 0..runs) {
-            let row = RandomInt(3);
-            let col = RandomInt(3);
-            let (aMoves, bMoves) = gameRunnerClassicalOptimal(row, col);
-            if (WinCondition_Reference(aMoves, row, bMoves, col)) {
-                set wins = wins + 1;
-            }
-        }
-
-        let rate = ToDouble(wins) / ToDouble(runs);
-        Message($"Classical optimal win rate was: {rate}");
-        AssertAlmostEqualTol(rate, 0.85, 0.05);
-    }
-
     operation StatePrepTest() : Unit {
         AssertOperationsEqualInPlaceCompBasis(CreateEntangledPair, CreateEntangledPair_Reference, 2);
     }
@@ -145,10 +135,6 @@ namespace Quantum.Kata.MagicSquareGame {
             ResetAll(qs);
         }
         return (aliceMoves, bobMoves);
-    }
-
-    operation gameRunnerClassicalOptimal (row : Int, col : Int) : (Int[], Int[]) {
-        return (AliceStrategyOptimalClassical(row), BobStrategyOptimalClassical(col));
     }
 
 }

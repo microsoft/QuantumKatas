@@ -5,43 +5,26 @@ using System;
 namespace Quantum.Kata.MagicSquareGame {
     class PlayGame {
         static void Main(string[] args) {
-                var (choice, row, col) = GetInputs();
+                var (row, col) = GetInputs();
 
                 if (row > 2 || col > 2 || row < 0 || col < 0) {
                     Console.WriteLine("Invalid indices.");
                     return;
                 }
-
-                switch (choice) {
-                case "q":
-                    PlayQuantum(row, col);
-                    break;
-                case "c":
-                    PlayClassical(row, col);
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice.");
-                    break;
-                }
         }
 
-        static (string, int, int) GetInputs() {
-            string choice;
+        static (int, int) GetInputs() {
             string[] tokens;
             int row, col;
 
             Console.WriteLine("Welcome the the Mirman Magic Square game.");
-            Console.Write("Which strategy would you like to try? " +
-            "(q)uantum, (c)lassical: ");
-            choice = Console.ReadLine();
-
             Console.Write("From a 3x3 grid, choose a 0-indexed " +
             "row and column for Alice and Bob to be assigned. ");
             tokens = Console.ReadLine().Split();
             row = int.Parse(tokens[0]);
             col = int.Parse(tokens[1]);
 
-            return (choice, row, col);
+            return (row, col);
         }
         static (int[], int[]) ConvertArrays(long[] aliceL, long[] bobL) {
             var alice = new int[3];
@@ -83,15 +66,6 @@ namespace Quantum.Kata.MagicSquareGame {
         static void PlayQuantum(int row, int col) {
             using (var qsim = new QuantumSimulator()) {
                 var (aliceQ, bobQ) = gameRunnerQuantum.Run(qsim, row, col).Result;
-                var (alice, bob) = ConvertArrays(aliceQ.ToArray(), bobQ.ToArray());
-
-                DrawGrid(row, alice, col, bob);
-            }
-        }
-
-        static void PlayClassical(int row, int col) {
-            using (var qsim = new QuantumSimulator()) {
-                var (aliceQ, bobQ) = gameRunnerClassicalOptimal.Run(qsim, row, col).Result;
                 var (alice, bob) = ConvertArrays(aliceQ.ToArray(), bobQ.ToArray());
 
                 DrawGrid(row, alice, col, bob);
