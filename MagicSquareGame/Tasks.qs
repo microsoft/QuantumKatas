@@ -95,23 +95,17 @@ namespace Quantum.Kata.MagicSquareGame {
     // communicate during the game, but they are allowed to share 
     // qubits from two entangled pairs before the start of the game.
 
-    // Task 3
-    // Given a length 2 array of qubits in state |00>,
-    // change them to be in state (1/sqrt(2))(|00> + |11>).
-    operation CreateEntangledPair (qs : Qubit[]) : Unit {
-        body (...) {
-            
-        }
-
-        adjoint invert;
+    // Task 2.1. Entangled state
+    // Input: Two arrays of two qubits each in the |00⟩ state.
+    // Goal:
+    //     Create the entangled state
+    //     |ϕ⟩ = ((|+⟩₀ ⊗ |+⟩₂ + |-⟩₀ ⊗ |-⟩₂) / sqrt(2)) ⊗ ((|+⟩₁ ⊗ |+⟩₃ + |-⟩₁ ⊗ |-⟩₃) / sqrt(2))
+    //     where |ψ⟩₀ and |ψ⟩₁ are Alice's qubits and |ψ⟩₂ and |ψ⟩₃ are Bob's qubits.
+    operation CreateEntangledState (qs : Qubit[]) : Unit {
+        // ...
+        fail "Task 2.1 not implemented yet";
     }
 
-
-    // Task 4. Two entangled pairs shared between Alice and Bob
-    operation CreateAliceAndBobQubits (aliceQubits : Qubit[], bobQubits : Qubit[])
-            : Unit {
-        
-    }
 
     // Task 5. Create the observable corresponding to a specific square.
     // It will help you to make a helper operation which applies the operation

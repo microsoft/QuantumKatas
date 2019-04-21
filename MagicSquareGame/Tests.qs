@@ -94,6 +94,26 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
+    // ------------------------------------------------------
+    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
+                                      refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+        using (qs = Qubit[N]) {
+            // apply operation that needs to be tested
+            taskImpl(qs);
+            
+            // apply adjoint reference operation and check that the result is |0^N⟩
+            Adjoint refImpl(qs);
+            
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
+    }
+
+    operation T21_CreateEntangledState_Test () : Unit {
+        AssertEqualOnZeroState(4, CreateEntangledState, CreateEntangledState_Reference);
+    }
+
+
     // Tests that with the quantum strategy, alice and bob always win.
     operation MerminQuantum_Test () : Unit {
         mutable result = true;
@@ -104,7 +124,7 @@ namespace Quantum.Kata.MagicSquareGame {
             let row = RandomInt(3);
             let col = RandomInt(3);
             using (qs = Qubit[4]) {
-                CreateAliceAndBobQubits(qs[0..1], qs[2..3]);
+                CreateEntangledState(qs);
                 set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
                 set bobMoves = PlayAsBob(col, qs[2], qs[3]);
                 if (not WinCondition_Reference(aliceMoves, row, bobMoves, col)) {
@@ -120,15 +140,11 @@ namespace Quantum.Kata.MagicSquareGame {
         fixup{}
     }
 
-    operation StatePrepTest() : Unit {
-        AssertOperationsEqualInPlaceCompBasis(CreateEntangledPair, CreateEntangledPair_Reference, 2);
-    }
-
     operation gameRunnerQuantum (row : Int, col : Int) : (Int[], Int[]) {
         mutable aliceMoves = new Int[3];
         mutable bobMoves = new Int[3];
         using (qs = Qubit[4]) {
-            CreateAliceAndBobQubits(qs[0..1], qs[2..3]);
+            CreateEntangledState(qs);
             set aliceMoves = PlayAsAlice(row, qs[0], qs[1]);
             set bobMoves = PlayAsBob(col, qs[2], qs[3]);
             let victorious = WinCondition_Reference(aliceMoves, row, bobMoves, col);

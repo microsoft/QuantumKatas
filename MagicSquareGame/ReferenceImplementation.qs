@@ -71,35 +71,16 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part II. Quantum Magic Square
     //////////////////////////////////////////////////////////////////
 
-    // Task 1. Entangled pair
-    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
+    // Task 2.1. Entangled state
+    operation CreateEntangledState_Reference (qs : Qubit[]) : Unit {
         body (...) {
-            // The easiest way to create an entangled pair is to start with
-            // applying a Hadamard transformation to one of the qubits:
-            H(qs[0]);
-
-            // This has left us in state:
-            // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
-
-            // Now, if we flip the second qubit conditioned on the state
-            // of the first one, we get that the states of the two qubits will always match.
-            CNOT(qs[0], qs[1]);
-            // So we ended up in the state:
-            // (|00⟩ + |11⟩) / sqrt(2)
-            //
-            // Which is the required Bell pair |Φ⁺⟩
+            // The desired state is equivalent to two Bell pairs split between Alice and Bob.
+            for (i in 0..Length(qs) / 2 - 1) {
+                H(qs[i]);
+                CNOT(qs[i], qs[i + 2]);
+            }
         }
-
-        adjoint invert;
-    }
-
-
-    // Task 2. Two entangled pairs shared between Alice and Bob
-    operation CreateAliceAndBobQubits_Reference (aliceQubits : Qubit[], bobQubits : Qubit[])
-            : Unit {
-        // This is simply creating two pairs of entanglements.
-        CreateEntangledPair_Reference([aliceQubits[0], bobQubits[0]]);
-        CreateEntangledPair_Reference([aliceQubits[1], bobQubits[1]]);
+        adjoint auto;
     }
 
     // Task 3. Create the observable corresponding to a specific square
