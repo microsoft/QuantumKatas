@@ -119,10 +119,6 @@ namespace Quantum.Kata.MagicSquareGame {
         return (AliceStrategyOptimalClassical(row), BobStrategyOptimalClassical(col));
     }
 
-    operation gameRunnerClassicalRandom (row : Int, col : Int) : (Int[], Int[]) {
-        return (AliceStrategyClassicalRandom_Reference(row), BobStrategyClassicalRandom_Reference(col));
-    }
-
     operation gameRunnerClassicalSuboptimal (row : Int, col : Int) : (Int[], Int[]) {
         return (AliceStrategyClassical(row), BobStrategyClassical(col));
     }

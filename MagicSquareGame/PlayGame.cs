@@ -19,9 +19,6 @@ namespace Quantum.Kata.MagicSquareGame {
                 case "c":
                     PlayClassical(row, col);
                     break;
-                case "r":
-                    PlayRandom(row, col);
-                    break;
                 default:
                     Console.WriteLine("Invalid choice.");
                     break;
@@ -35,7 +32,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
             Console.WriteLine("Welcome the the Mirman Magic Square game.");
             Console.Write("Which strategy would you like to try? " +
-            "(q)uantum optimal, (c)lassical optimal, classical (r)andom): ");
+            "(q)uantum, (c)lassical: ");
             choice = Console.ReadLine();
 
             Console.Write("From a 3x3 grid, choose a 0-indexed " +
@@ -95,15 +92,6 @@ namespace Quantum.Kata.MagicSquareGame {
         static void PlayClassical(int row, int col) {
             using (var qsim = new QuantumSimulator()) {
                 var (aliceQ, bobQ) = gameRunnerClassicalOptimal.Run(qsim, row, col).Result;
-                var (alice, bob) = ConvertArrays(aliceQ.ToArray(), bobQ.ToArray());
-
-                DrawGrid(row, alice, col, bob);
-            }
-        }
-
-        static void PlayRandom(int row, int col) {
-            using (var qsim = new QuantumSimulator()) {
-                var (aliceQ, bobQ) = gameRunnerClassicalRandom.Run(qsim, row, col).Result;
                 var (alice, bob) = ConvertArrays(aliceQ.ToArray(), bobQ.ToArray());
 
                 DrawGrid(row, alice, col, bob);
