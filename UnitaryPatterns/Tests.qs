@@ -231,7 +231,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     // ------------------------------------------------------
     function XWing_Fighter_Pattern (size : Int, row : Int, col : Int) : Bool {
-        return row == col || row == (size - 1) - col;
+        return row == col or row == (size - 1) - col;
     }
     
     
@@ -245,14 +245,66 @@ namespace Quantum.Kata.UnitaryPatterns {
     // ------------------------------------------------------
     function Rhombus_Pattern (size : Int, row : Int, col : Int) : Bool {
         let s2 = size / 2;
-        return row / s2 == col / s2 && row % s2 + col % s2 == s2 - 1 || 
-               row / s2 != col / s2 && row % s2 == col % s2;
+        return row / s2 == col / s2 and row % s2 + col % s2 == s2 - 1 or 
+               row / s2 != col / s2 and row % s2 == col % s2;
     }
     
     
     operation T12_Rhombus_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Rhombus, Rhombus_Pattern);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    function TIE_Fighter_Pattern (size : Int, row : Int, col : Int) : Bool {
+        let s2 = size / 2;
+        return row / s2 == 0  and  col / s2 == 0  and  row % s2 + col % s2 == s2 - 2 or 
+               row / s2 == 0  and  col / s2 == 1  and  col % s2 - row % s2 == 1 or 
+               row / s2 == 1  and  col / s2 == 0  and  row % s2 - col % s2 == 1 or 
+               row / s2 == 1  and  col / s2 == 1  and  row % s2 + col % s2 == s2 or 
+               (row == s2 - 1 or row == s2) and (col == s2 - 1 or col == s2);
+    }
+    
+
+    operation T13_TIE_Fighter_Test () : Unit {
+        for (n in 2 .. 5) {
+            AssertOperationMatrixMatchesPattern(n, TIE_Fighter, TIE_Fighter_Pattern);
+        }
+    }
+    
+    
+    // ------------------------------------------------------
+    function Creeper_Pattern (size : Int, row : Int, col : Int) : Bool {
+        let A = [ [ true, true, false, false, false, false, true, true], 
+                  [ true, true, false, false, false, false, true, true], 
+                  [ false, false, false, true, true, false, false, false], 
+                  [ false, false, false, true, true, false, false, false], 
+                  [ false, false, true, false, false, true, false, false], 
+                  [ false, false, true, false, false, true, false, false], 
+                  [ true, true, false, false, false, false, true, true], 
+                  [ true, true, false, false, false, false, true, true] ];
+        if (size != 8) {
+            return false;
+        }
+        return A[row][col]; 		
+    }
+    
+
+    operation T14_Creeper_Test () : Unit {
+        AssertOperationMatrixMatchesPattern(3, Creeper, Creeper_Pattern);
+    }
+    
+    // ------------------------------------------------------
+    function Hessenberg_Matrix_Pattern (size : Int, row : Int, col : Int) : Bool {
+        return (row - 1) <= col;
+    }
+    
+
+    operation T15_Hessenberg_Matrix_Test () : Unit {
+        for (n in 2 .. 4) {
+            AssertOperationMatrixMatchesPattern(n, Hessenberg_Matrix, Hessenberg_Matrix_Pattern);
         }
     }
 
