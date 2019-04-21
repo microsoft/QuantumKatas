@@ -107,13 +107,22 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
-    // Task 5. Create the observable corresponding to a specific square.
-    // It will help you to make a helper operation which applies the operation
-    // in that square, and return a partial application of that operation.
-    operation CreateSquareObservable (row : Int, column : Int) : (Qubit[] => Unit : Controlled) {
-        // This is here only to make the code compile. You should replace it with your logic.
-        return ApplyToEachC(I, _);
+    // Task 2.2. Magic square observables
+    // Input: A row and column corresponding to a cell in a magic square.
+    // Output:
+    //     The observable operator from the given row and column of a magic square that satisfies
+    //     these properties:
+    //
+    //     1) The observables in each row and column mutually commute,
+    //     2) The product of observables in each row is I,
+    //     3) The product of observables in each column is -I.
+    function MagicSquareObservable (row : Int, column : Int) : (Qubit[] => Unit : Adjoint, Controlled) {
+        // Hint: Remember that you can define auxiliary operations.
+
+        // ...
+        fail "Task 2.2 not implemented yet";
     }
+
 
     // Task 6.
     // Given two qubits interpreted as an input vector |psi>,

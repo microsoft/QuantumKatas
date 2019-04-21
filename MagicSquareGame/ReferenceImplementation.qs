@@ -83,10 +83,52 @@ namespace Quantum.Kata.MagicSquareGame {
         adjoint auto;
     }
 
-    // Task 3. Create the observable corresponding to a specific square
-    operation CreateSquareObservable_Reference (row : Int, column : Int) : (Qubit[] => Unit : Controlled) {
-        return SquareObservable_Reference(row, column, _);
+
+    // Task 2.2. Magic square observables
+    function MagicSquareObservable_Reference (row : Int, column : Int) : (Qubit[] => Unit : Adjoint, Controlled) {
+        return MagicSquareObservableImpl_Reference(row, column, _);
     }
+
+    operation MagicSquareObservableImpl_Reference (row : Int, column : Int, qs : Qubit[]) : Unit {
+        body (...) {
+            if (row == 0 and column == 0) {
+                ApplyToEachCA(X, qs);
+            } elif (row == 0 and column == 1) {
+                X(qs[0]);
+            } elif (row == 0 and column == 2) {
+                X(qs[1]);
+            } elif (row == 1 and column == 0) {
+                ApplyToEachCA(Y, qs);
+            } elif (row == 1 and column == 1) {
+                MinusX(qs[0]);
+                Z(qs[1]);
+            } elif (row == 1 and column == 2) {
+                Z(qs[0]);
+                MinusX(qs[1]);
+            } elif (row == 2 and column == 0) {
+                ApplyToEachCA(Z, qs);
+            } elif (row == 2 and column == 1) {
+                Z(qs[1]);
+            } elif (row == 2 and column == 2) {
+                Z(qs[0]);
+            }
+        }
+        adjoint auto;
+        controlled auto;
+        controlled adjoint auto;
+    }
+
+    operation MinusX(q : Qubit) : Unit {
+        body (...) {
+            Z(q);
+            X(q);
+            Z(q);
+        }
+        adjoint auto;
+        controlled auto;
+        controlled adjoint auto;
+    }
+
 
     operation MeasureObservable_Reference(  q0 : Qubit, 
                                             q1 : Qubit, 
@@ -111,44 +153,11 @@ namespace Quantum.Kata.MagicSquareGame {
         return result;
     }
 
-    operation SquareObservable_Reference (row : Int, column : Int, qubits : Qubit[]) : Unit {
-        body (...) {
-            if (row == 0 && column == 0) {
-                ApplyToEachCA(X, qubits);
-            } elif (row == 0 && column == 1) {
-                X(qubits[0]);
-                // I
-            } elif (row == 0 && column == 2) {
-                // I
-                X(qubits[1]);
-            } elif (row == 1 && column == 0) {
-                ApplyToEachCA(Y, qubits);
-            } elif (row == 1 && column == 1) {
-                MinusX(qubits[0]);
-                Z(qubits[1]);
-            } elif (row == 1 && column == 2) {
-                Z(qubits[0]);
-                MinusX(qubits[1]);
-            } elif (row == 2 && column == 0) {
-                ApplyToEachCA(Z, qubits);
-            } elif (row == 2 && column == 1) {
-                // I
-                Z(qubits[1]);
-            } elif (row == 2 && column == 2) {
-                Z(qubits[0]);
-                // I
-            }
-        }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
-    }
-
     operation PlayAsAlice_Reference(row : Int, q0 : Qubit, q1 : Qubit) : Int[] {
         mutable result = new Int[3];
 
         for (i in 0..2) {
-            set result[i] = MeasureObservable_Reference(q0, q1, SquareObservable_Reference(row, i, _));
+            set result[i] = MeasureObservable_Reference(q0, q1, MagicSquareObservable_Reference(row, i));
         }
 
         return result;
@@ -158,26 +167,10 @@ namespace Quantum.Kata.MagicSquareGame {
         mutable result = new Int[3];
 
         for (i in 0..2) {
-            set result[i] = MeasureObservable_Reference(q0, q1, CreateSquareObservable_Reference(i, col));
+            set result[i] = MeasureObservable_Reference(q0, q1, MagicSquareObservable_Reference(i, col));
         }
 
         return result;
-    }
-
-
-    /// Helpers
-
-    operation MinusX(q : Qubit) : Unit {
-        body(...) {
-            X(q);
-            Z(q);
-            X(q);
-            Z(q);
-            X(q);
-        }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
     }
 
 }

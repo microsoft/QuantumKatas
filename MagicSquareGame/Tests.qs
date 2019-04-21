@@ -114,6 +114,72 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
 
+    // ------------------------------------------------------
+    operation ProductCA (operators : (Qubit[] => Unit : Adjoint, Controlled)[], qs : Qubit[]) : Unit {
+        body (...) {
+            for (op in operators) {
+                op(qs);
+            }
+        }
+        adjoint auto;
+        controlled auto;
+        controlled adjoint auto;
+    }
+
+    operation MinusI (q : Qubit) : Unit {
+        body (...) {
+            Z(q);
+            X(q);
+            Z(q);
+            X(q);
+        }
+        adjoint auto;
+        controlled auto;
+        controlled adjoint auto;
+    }
+
+    function Pairs<'T> (array : 'T[]) : ('T, 'T)[] {
+        let length = Factorial(Length(array)) / (2 * Factorial(Length(array) - 2));
+        mutable pairs = new ('T, 'T)[length];
+        mutable i = 0;
+        for (j in 0..Length(array) - 1) {
+            for (k in j + 1..Length(array) - 1) {
+                set pairs[i] = (array[j], array[k]);
+                set i = i + 1;
+            }
+        }
+        return pairs;
+    }
+
+    function Factorial (n : Int) : Int {
+        if (n < 1) {
+            return 1;
+        } else {
+            return n * Factorial(n - 1);
+        }
+    }
+
+    operation AssertOperationsMutuallyCommute (operations : (Qubit[] => Unit : Adjoint, Controlled)[]) : Unit {
+        for ((a, b) in Pairs(operations)) {
+            AssertOperationsEqualReferenced(ProductCA([a, b], _), ProductCA([b, a], _), 2);
+        }
+    }
+
+    operation T22_MagicSquareObservable_Test () : Unit {
+        for (row in 0..2) {
+            let observables = Map(MagicSquareObservable(row, _), IntArrayFromRange(0..2));
+            AssertOperationsEqualReferenced(ProductCA(observables, _), ApplyToEachA(I, _), 2);
+            AssertOperationsMutuallyCommute(observables);
+        }
+        for (column in 0..2) {
+            let observables = Map(MagicSquareObservable(_, column), IntArrayFromRange(0..2));
+            // TODO: This can't actually tell the difference between I and -I?
+            AssertOperationsEqualReferenced(ProductCA(observables, _), ApplyToEachA(MinusI, _), 2);
+            AssertOperationsMutuallyCommute(observables);
+        }
+    }
+
+
     // Tests that with the quantum strategy, alice and bob always win.
     operation MerminQuantum_Test () : Unit {
         mutable result = true;
