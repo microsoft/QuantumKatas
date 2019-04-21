@@ -7,15 +7,26 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Primitive;
 
+    //////////////////////////////////////////////////////////////////
+    // Welcome!
+    //////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////////
-    //                                                                   //
-    //  Mermin-Peres Magic Square Game Kata                              //
-    //                                                                   //
-    ///////////////////////////////////////////////////////////////////////
+    // The "Magic Square Game" quantum kata is a series of exercises
+    // designed to get you familiar with the Mermin-Peres magic square
+    // game.
 
-    // Resources for your reference which may be helpful for solving this:
-    // http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf
+    // TODO: Add description of the game.
+
+    // Each task is wrapped in one operation preceded by the
+    // description of the task. Each task has a unit test associated
+    // with it, which initially fails. Your goal is to fill in the
+    // blank (marked with // ... comment) with some Q# code to make
+    // the failing test pass.
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part I. Classical Magic Square
+    //////////////////////////////////////////////////////////////////
 
     // Task 1.1
     // Come up with some classical strategy which wins about
@@ -53,10 +64,14 @@ namespace Quantum.Kata.MagicSquareGame {
         return [0, 0, 0];
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO: Place a summary here briefing the user on the context of the strategy they'll be using to
-    // solve mermin-peres quantumly, so that all the below methods don't just sound like nonsense.
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Quantum Magic Square
+    //////////////////////////////////////////////////////////////////
+
+    // In the quantum version of the game, the players still can not
+    // communicate during the game, but they are allowed to share 
+    // qubits from two entangled pairs before the start of the game.
 
     // Task 3
     // Given a length 2 array of qubits in state |00>,
@@ -140,4 +155,5 @@ namespace Quantum.Kata.MagicSquareGame {
 
         return result;
     }
+
 }

@@ -8,3 +8,5 @@ play as the "adversary" who chooses the row and column for Alice and Bob. You
 can also choose which strategy Alice and Bob use. Experiment with the different
 strategies and see how often you can make Alice and Bob lose! It can be run with
 the `dotnet run` command.
+
+http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf
