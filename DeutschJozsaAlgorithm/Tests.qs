@@ -221,7 +221,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertIntArrayEqual(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
 
         let nu = GetOracleCallsCount(oracle);
-        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
+        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -243,11 +243,11 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
-    operation AssertDJAlgorithmWorks (oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
-        AssertBoolEqual(DJ_Algorithm(4, oracle), expected, msg);
+    operation AssertDJAlgorithmWorks (N : Int, oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
+        AssertBoolEqual(DJ_Algorithm(N, oracle), expected, msg);
         
         let nu = GetOracleCallsCount(oracle);
-        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
+        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -257,14 +257,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // test DJ the way we suggest the learner to test it:
         // apply the algorithm to reference oracles and check that the output is as expected
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_Zero_Reference), true, "f(x) = 0 not identified as constant");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_One_Reference), true, "f(x) = 1 not identified as constant");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_Kth_Qubit_Reference(_, _, 1)), false, "f(x) = x_k not identified as balanced");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_OddNumberOfOnes_Reference), false, "f(x) = sum of x_i not identified as balanced");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_ProductFunction_Reference(_, _, [1, 0, 1, 1])), false, "f(x) = sum of r_i x_i not identified as balanced");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_ProductWithNegationFunction_Reference(_, _, [1, 0, 1, 1])), false, "f(x) = sum of r_i x_i + (1 - r_i)(1 - x_i) not identified as balanced");
-        AssertBoolEqual(DJ_Algorithm(4, Oracle_HammingWithPrefix_Reference(_, _, [0, 1])), false, "f(x) = sum of x_i + 1 if prefix equals given not identified as balanced");
-        AssertBoolEqual(DJ_Algorithm(3, Oracle_MajorityFunction_Reference), false, "f(x) = majority function not identified as balanced");
+        AssertDJAlgorithmWorks(4, Oracle_Zero_Reference,
+                               true,  "f(x) = 0 not identified as constant");
+        AssertDJAlgorithmWorks(4, Oracle_One_Reference, 
+                               true,  "f(x) = 1 not identified as constant");
+        AssertDJAlgorithmWorks(4, Oracle_Kth_Qubit_Reference(_, _, 1), 
+                               false, "f(x) = x_k not identified as balanced");
+        AssertDJAlgorithmWorks(4, Oracle_OddNumberOfOnes_Reference, 
+                               false, "f(x) = sum of x_i not identified as balanced");
+        AssertDJAlgorithmWorks(4, Oracle_ProductFunction_Reference(_, _, [1, 0, 1, 1]), 
+                               false, "f(x) = sum of r_i x_i not identified as balanced");
+        AssertDJAlgorithmWorks(4, Oracle_ProductWithNegationFunction_Reference(_, _, [1, 0, 1, 1]), 
+                               false, "f(x) = sum of r_i x_i + (1 - r_i)(1 - x_i) not identified as balanced");
+        AssertDJAlgorithmWorks(4, Oracle_HammingWithPrefix_Reference(_, _, [0, 1]), 
+                               false, "f(x) = sum of x_i + 1 if prefix equals given not identified as balanced");
+        AssertDJAlgorithmWorks(3, Oracle_MajorityFunction_Reference, 
+                               false, "f(x) = majority function not identified as balanced");
     }
     
     
@@ -276,7 +284,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // check that the oracle was called once (later it will be called again by test harness)
         let nu = GetOracleCallsCount(givenOracle);
-        AssertIntEqual(nu, 1, $"You are allowed to call the oracle exactly once, and you called it {nu} times");
+        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
         
         // check that the oracle obtained from r
         // is equivalent to the oracle obtained from return value
@@ -286,7 +294,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    operation CallNonameAlgoOnInt (n : Int, bits : Int) : Unit {
+    operation AssertNonameAlgorithmWorksOnInt (n : Int, bits : Int) : Unit {
         let r = IntArrFromPositiveInt(n, bits);
         AssertNonameAlgorithmWorks(r);
     }
@@ -301,7 +309,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         for (bits in 1 .. 4) {
             
             for (n in 0 .. 2 ^ bits - 1) {
-                CallNonameAlgoOnInt(n, bits);
+                AssertNonameAlgorithmWorksOnInt(n, bits);
             }
         }
         
