@@ -10,19 +10,22 @@ namespace Quantum.Kata.Utils {
     
     /// # Summary
     /// Returns how many times a given oracle is executed.
-    function GetOracleCallsCount<'T> (oracle : 'T) : Int { body intrinsic; }
+    /// # Input
+    /// ## oracle
+    /// The operation whose call count is being requested.
+    operation GetOracleCallsCount<'T> (oracle : 'T) : Int { body intrinsic; }
     
     /// # Summary
     /// Resets the variable that tracks how many times an oracle
     /// is executed back to 0.
-    function ResetOracleCallsCount () : Unit { body intrinsic; }
+    operation ResetOracleCallsCount () : Unit { body intrinsic; }
 
     /// # Summary
     /// Returns the max number of qubits allocated at any given point by the simulator.
-    function GetMaxQubitCount () : Int { body intrinsic; }
+    operation GetMaxQubitCount () : Int { body intrinsic; }
 
     /// # Summary
     /// Resets the variable that tracks the max number of qubits
     /// allocated at any given point by the simulator.
-    function ResetQubitCount () : Unit { body intrinsic; }
+    operation ResetQubitCount () : Unit { body intrinsic; }
 }
