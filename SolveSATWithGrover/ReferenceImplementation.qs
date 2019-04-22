@@ -281,6 +281,13 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // Task 2.2. Universal implementation of Grover's algorithm
     operation GroversAlgorithm_Reference (N : Int, oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Bool[] {
+        // In this task you don't know the optimal number of iterations upfront, 
+        // so it makes sense to try different numbers of iterations.
+        // This way, even if you don't hit the "correct" number of iterations on one of your tries,
+        // you'll eventually get a high enough success probability.
+
+        // This solution tries numbers of iterations that are powers of 2;
+        // this is not the only valid solution, since a lot of sequences will eventually yield the answer.
         mutable answer = new Bool[N];
         using ((register, output) = (Qubit[N], Qubit())) {
             mutable correct = false;
@@ -296,9 +303,12 @@ namespace Quantum.Kata.GroversAlgorithm {
                     set answer = BoolArrFromResultArr(res);
                 }
                 ResetAll(register);
-            } until (correct) 
+            } until (correct or iter > 100)  // the fail-safe to avoid going into an infinite loop
             fixup {
                 set iter = iter * 2;
+            }
+            if (not correct) {
+                fail "Failed to find an answer";
             }
         }
         Message($"{answer}");
