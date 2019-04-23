@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Canon" Version="0.5.1903.2902" />
+    <PackageReference Include="Microsoft.Quantum.Standard" Version="0.5.1903.2902" />
     <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.5.1903.2902" />
     <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.5.1903.2902" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
