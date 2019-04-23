@@ -9,9 +9,9 @@
 
 namespace Quantum.Kata.SuperdenseCoding {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
     
     
     // ------------------------------------------------------

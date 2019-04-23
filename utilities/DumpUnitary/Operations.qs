@@ -3,9 +3,10 @@
 
 namespace Quantum.DumpUnitary
 {
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Diagnostics;
+    open Microsoft.Quantum.Diagnostics;
+
     
     operation DumpUnitaryToFiles (N : Int, unitary : (Qubit[] => Unit)) : Unit {
         let size = 1 <<< N;

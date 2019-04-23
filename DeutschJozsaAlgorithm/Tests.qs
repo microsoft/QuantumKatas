@@ -9,9 +9,9 @@
 
 namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
 
     open Quantum.Kata.Utils;
     

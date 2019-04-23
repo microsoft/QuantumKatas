@@ -10,11 +10,11 @@
 
 namespace Quantum.Kata.PhaseEstimation {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
