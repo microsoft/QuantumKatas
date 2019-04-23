@@ -191,9 +191,9 @@ namespace Quantum.Kata.GroversAlgorithm {
                     let (index, isTrue) = clause[varIndex];
                     // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
                     let qt = queryRegister[index];
-                    set qubits[varIndex] = queryRegister[index];
+                    set qubits w/= varIndex <- queryRegister[index];
                     // If the negation of the variable is present in the formula, mark the qubit as needing a flip
-                    set flip[varIndex] = not isTrue;
+                    set flip w/= varIndex <- not isTrue;
                 }
 
                 // Actually calculate the clause (flip the necessary qubits, call OR oracle, flip them back)
@@ -298,7 +298,7 @@ namespace Quantum.Kata.GroversAlgorithm {
                 ResetAll(register);
             } until (correct) 
             fixup {
-                set iter = iter * 2;
+                set iter *= 2;
             }
         }
         Message($"{answer}");

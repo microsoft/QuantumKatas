@@ -39,18 +39,16 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Helper operation that runs superdense coding protocol using two building blocks
     // specified as first two parameters.
     operation ComposeProtocol (encodeOp : ((Qubit, Bool[]) => Unit), decodeOp : ((Qubit, Qubit) => Bool[]), message : Bool[]) : Bool[] {
-        mutable result = new Bool[2];
         
         using (qs = Qubit[2]) {
             CreateEntangledPair_Reference(qs);
             encodeOp(qs[0], message);
-            set result = decodeOp(qs[1], qs[0]);
+            let result = decodeOp(qs[1], qs[0]);
             
             // Make sure that we return qubits back in 0 state.
             ResetAll(qs);
+			return result;
         }
-        
-        return result;
     }
     
     
@@ -58,12 +56,10 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Helper operation that runs superdense coding protocol (specified by protocolOp)
     // on all possible input values and verifies that decoding result matches the inputs
     operation TestProtocol (protocolOp : (Bool[] => Bool[])) : Unit {
-        mutable data = new Bool[2];
         
         // Loop over the 4 possible combinations of two bits
         for (n in 0 .. 3) {
-            set data[0] = 1 == n / 2;
-            set data[1] = 1 == n % 2;
+			let data = [1 == n / 2, 1 == n % 2];
             
             for (iter in 1 .. 100) {
                 let result = protocolOp(data);

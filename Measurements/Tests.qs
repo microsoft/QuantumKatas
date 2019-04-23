@@ -37,7 +37,7 @@ namespace Quantum.Kata.Measurements {
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs[0]);
                 if (ans == (state == 1)) {
-                    set nOk = nOk + 1;
+                    set nOk += 1;
                 }
                 
                 // we're not checking the state of the qubit after the operation
@@ -150,7 +150,7 @@ namespace Quantum.Kata.Measurements {
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs);
                 if (ans == state) {
-                    set nOk = nOk + 1;
+                    set nOk += 1;
                 }
                 
                 // we're not checking the state of the qubit after the operation
@@ -421,7 +421,7 @@ namespace Quantum.Kata.Measurements {
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs[0]);
                 if (ans == (state == 0)) {
-                    set nOk = nOk + 1;
+                    set nOk += 1;
                 }
                 
                 // we're not checking the state of the qubit after the operation
@@ -470,15 +470,15 @@ namespace Quantum.Kata.Measurements {
                 
                 // keep track of the number of inconclusive answers given
                 if (ans == -1) {
-                    set nInconc = nInconc + 1;
+                    set nInconc += 1;
                 }
                 
                 if (ans == 0 && state == 0) {
-                    set nConclOne = nConclOne + 1;
+                    set nConclOne += 1;
                 }
                 
                 if (ans == 1 && state == 1) {
-                    set nConclPlus = nConclPlus + 1;
+                    set nConclPlus += 1;
                 }
                 
                 // check if upon conclusive result the answer is actually correct

@@ -153,13 +153,15 @@ namespace Quantum.Kata.GroversAlgorithm {
         let nVar = RandomInt(5) + 3;
         let nClause = RandomInt(2 * nVar) + 1;
         mutable problem = new (Int, Bool)[][nClause];
+
         for (j in 0..nClause-1) {
             mutable nVarInClause = is2SAT ? 2 | (RandomInt(4) + 1);
             if (nVarInClause > nVar) {
                 set nVarInClause = nVar;
             }
-            set problem[j] = new (Int, Bool)[nVarInClause];
-            mutable usedVariables = new Bool[nVar];
+            
+			mutable problemRow = new (Int, Bool)[nVarInClause];
+			mutable usedVariables = new Bool[nVar];
             // Make sure variables in each clause are distinct
             for (k in 0..nVarInClause-1) {
                 mutable nextInd = -1;
@@ -167,9 +169,10 @@ namespace Quantum.Kata.GroversAlgorithm {
                     set nextInd = RandomInt(nVar);
                 } until (not usedVariables[nextInd])
                 fixup {}
-                set problem[j][k] = (nextInd, RandomInt(2) > 0);
-                set usedVariables[nextInd] = true;
+                set problemRow w/= k <- (nextInd, RandomInt(2) > 0);
+                set usedVariables w/= nextInd <- true;
             }
+            set problem w/= j <- problemRow;
         }
         return (nVar, problem);
     }

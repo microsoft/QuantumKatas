@@ -151,7 +151,7 @@ namespace Quantum.Kata.Measurements {
         
         for (i in 0 .. Length(qs) - 1) {
             if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+                set countOnes += 1;
             }
         }
         
@@ -181,7 +181,7 @@ namespace Quantum.Kata.Measurements {
         
         for (i in 0 .. N - 1) {
             if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+                set countOnes += 1;
             }
         }
         

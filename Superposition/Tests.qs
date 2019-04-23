@@ -182,7 +182,7 @@ namespace Quantum.Kata.Superposition {
             repeat {
                 mutable ok = true;
                 for (i in 0 .. 3) {
-                    set numbers[i] = RandomInt(1 <<< N);
+                    set numbers w/= i <- RandomInt(1 <<< N);
                     for (j in 0 .. i - 1) {
                         if (numbers[i] == numbers[j]) {
                             set ok = false;
@@ -195,7 +195,7 @@ namespace Quantum.Kata.Superposition {
             
             // convert numbers to bit strings
             for (i in 0 .. 3) {
-                set bits[i] = BoolArrFromPositiveInt(numbers[i], N);
+                set bits w/= i <- BoolArrFromPositiveInt(numbers[i], N);
             }
             
             AssertEqualOnZeroState(N, FourBitstringSuperposition(_, bits), FourBitstringSuperposition_Reference(_, bits));

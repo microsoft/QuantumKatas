@@ -138,16 +138,16 @@ namespace Quantum.Kata.PhaseEstimation {
 
             mutable iter = 0;
             repeat {
-                set iter = iter + 1;
+                set iter += 1;
 
                 H(control);
                 (Controlled U)([control], eigenstate);
                 H(control);
 
                 if (MResetZ(control) == Zero) {
-                    set nZero = nZero + 1;
+                    set nZero += 1;
                 } else {
-                    set nOne = nOne + 1;
+                    set nOne += 1;
                 }
 
                 // repeat the loop until we get both Zero and One measurement outcomes

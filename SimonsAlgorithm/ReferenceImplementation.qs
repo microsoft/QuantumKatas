@@ -120,7 +120,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
             // the result of each measurement is converted to an Int
             for (i in 0 .. N - 1) {
                 if (M(x[i]) == One) {
-                    set j[i] = 1;
+                    set j w/= i <- 1;
                 }
             }
             

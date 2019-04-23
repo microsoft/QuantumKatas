@@ -463,7 +463,7 @@ namespace Quantum.Kata.Superposition {
             mutable P = 1;
             for (i in 1 .. 6) {
                 if (P < N) {
-                    set P = P * 2;
+                    set P *= 2;
                 }
             }
             

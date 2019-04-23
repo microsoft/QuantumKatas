@@ -102,7 +102,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // the mask with all 0's corresponds to Oracle_Zero
         for (i in 0 .. L - 1) {
-            set r[i] = 0;
+            set r w/= i <- 0;
         }
         
         for (i in 2 .. L) {
@@ -111,9 +111,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // the mask with only the K-th element set to 1 corresponds to Oracle_Kth_Qubit
         for (i in 0 .. L - 1) {
-            set r[i] = 1;
+            set r w/= i <- 1;
             AssertTwoOraclesAreEqual(L .. L, Oracle_ProductFunction(_, _, r), Oracle_Kth_Qubit_Reference(_, _, i));
-            set r[i] = 0;
+            set r w/= i <- 0;
         }
         
         set r = [1, 0, 1, 0, 1, 0];
@@ -207,7 +207,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         for (i in 0 .. bits - 1) {
             if (rbool[i]) {
-                set r[i] = 1;
+                set r w/= i <- 1;
             }
         }
         

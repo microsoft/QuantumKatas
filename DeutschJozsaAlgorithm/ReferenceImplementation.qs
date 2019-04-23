@@ -271,7 +271,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             // the result of each measurement is converted to an Int
             for (i in 0 .. N - 1) {
                 if (M(x[i]) != Zero) {
-                    set r[i] = 1;
+                    set r w/= i <- 1;
                 }
             }
             
@@ -360,7 +360,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             let m = M(y);
             if (m == One) {
                 // adjust parity of bit vector r
-                set r[0] = 1;
+                set r w/= 0 <- 1;
             }
             
             // before releasing the qubits make sure they are all in |0⟩ state

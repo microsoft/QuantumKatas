@@ -63,17 +63,16 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 1.5. Prepare the message specified and send it (Alice's task)
     operation PrepareAndSendMessage_Reference (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool) {
-        mutable classicalBits = (false, false);
         using (qs = Qubit[1]) {
             if (state) {
                 X(qs[0]);
             }
             
             PrepareQubit(basis, qs[0]);
-            set classicalBits = SendMessage_Reference(qAlice, qs[0]);
+            let classicalBits = SendMessage_Reference(qAlice, qs[0]);
             Reset(qs[0]);
+			return classicalBits;
         }
-        return classicalBits;
     }
     
     

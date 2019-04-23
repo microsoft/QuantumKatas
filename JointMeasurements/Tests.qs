@@ -36,7 +36,7 @@ namespace Quantum.Kata.JointMeasurements {
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs);
                 if (ans == state) {
-                    set nOk = nOk + 1;
+                    set nOk += 1;
                 }
                 
                 if (preserveState) {
