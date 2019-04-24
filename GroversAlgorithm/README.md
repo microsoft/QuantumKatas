@@ -16,4 +16,4 @@ It solves the problem of finding an input to a black box (oracle) that produces 
 
 #### Q# materials
 
-* Q# Samples repository has an [implementation of Grover's search](https://github.com/Microsoft/Quantum/tree/master/Samples/DatabaseSearch).
+* Q# Samples repository has an [implementation of Grover's search](https://github.com/Microsoft/Quantum/tree/master/Samples/src/DatabaseSearch).
