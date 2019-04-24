@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.IQSharp.Common;
@@ -16,7 +17,7 @@ namespace Microsoft.Quantum.Katas
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
         /// </summary>
-        public KataMagic(IOperationResolver resolver, ISnippets snippets)
+        public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger)
         {
             this.Name = $"%kata";
             this.Documentation = new Documentation() { Summary = "Executes a single kata.", Full = "## Executes a single kata.\n##Usage: \n%kata Test \"q# operation\"" };
@@ -25,6 +26,7 @@ namespace Microsoft.Quantum.Katas
 
             this.Resolver = resolver;
             this.Snippets = snippets;
+            this.Logger = logger;
         }
 
         /// <summary>
@@ -36,6 +38,8 @@ namespace Microsoft.Quantum.Katas
         /// The list of user-defined Q# code snippets from the notebook.
         /// </summary>
         protected ISnippets Snippets { get; }
+
+        protected ILogger<KataMagic> Logger { get; }
 
         /// <summary>
         /// What this Magic does when triggered. It will:
@@ -49,19 +53,27 @@ namespace Microsoft.Quantum.Katas
 
             // Expect exactly two arguments, the name of the Kata and the user's answer (code).
             var args = input?.Split(new char[] { ' ', '\n', '\t' }, 2);
-            if (args == null || args.Length != 2) throw new InvalidOperationException("Invalid parameters. Usage: `%kata Test \"Q# operation\"`");
+            if (args == null || args.Length != 2)
+            {
+                channel.Stderr("Invalid parameters. Usage: `%kata Test \"Q# operation\"`");
+                return ExecuteStatus.Error.ToExecutionResult();
+            }
 
             var name = args[0];
             var code = args[1];
 
             var kata = FindKata(name);
-            if (kata == null) throw new InvalidOperationException($"Invalid test name: {name}");
+            if (kata == null)
+            {
+                channel.Stderr($"Invalid test name: {name}");
+                return ExecuteStatus.Error.ToExecutionResult();
+            }
 
             var userAnswer = Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
 
             return Simulate(kata, userAnswer, channel)
-                ? "成功 (success)!".ToExecutionResult()
+                ? "Success!".ToExecutionResult()
                 : ExecuteStatus.Error.ToExecutionResult();
         }
 
@@ -99,6 +111,7 @@ namespace Microsoft.Quantum.Katas
             }
             catch (Exception e)
             {
+                Logger?.LogWarning(e, "Unexpected error.");
                 channel.Stderr(e.Message);
                 return null;
             }
@@ -113,7 +126,11 @@ namespace Microsoft.Quantum.Katas
         public virtual bool Simulate(OperationInfo kata, OperationInfo userAnswer, IChannel channel)
         {
             var rawAnswer = FindRawAnswer(kata, userAnswer);
-            if (rawAnswer == null) throw new InvalidOperationException($"Invalid task: {userAnswer.FullName}");
+            if (rawAnswer == null)
+            {
+                channel.Stderr($"Invalid task: {userAnswer.FullName}");
+                return false;
+            }
 
             try
             {
