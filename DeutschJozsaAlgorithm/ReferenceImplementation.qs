@@ -61,7 +61,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Kth_Qubit_Reference (x : Qubit[], y : Qubit, k : Int) : Unit {
         
         body (...) {
-            AssertBoolEqual(0 <= k && k < Length(x), true, "k should be between 0 and N-1, inclusive");
+            AssertBoolEqual(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
             CNOT(x[k], y);
         }
         
@@ -160,7 +160,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             // The following line enforces the constraint on the input arrays.
             // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
             let P = Length(prefix);
-            AssertBoolEqual(1 <= P && P <= Length(x), true, "P should be between 1 and N, inclusive");
+            AssertBoolEqual(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
             
             // Hint: the first part of the function is the same as in task 1.4
             for (i in 0 .. Length(x) - 1) {
@@ -317,7 +317,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let r = BV_Algorithm_Reference(N, Uf);
         
         for (i in 0 .. N - 1) {
-            set isConstantFunction = isConstantFunction && r[i] == 0;
+            set isConstantFunction = isConstantFunction and r[i] == 0;
         }
         
         return isConstantFunction;
