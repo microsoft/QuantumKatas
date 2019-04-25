@@ -15,7 +15,8 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Extensions.Math;
     open Microsoft.Quantum.Extensions.Testing;
     
-    
+    open Quantum.Kata.Utils;
+
     //////////////////////////////////////////////////////////////////
     
     // "Framework" operation for testing single-qubit tasks for distinguishing states of one qubit
@@ -135,7 +136,11 @@ namespace Quantum.Kata.Measurements {
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
-    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int) => Unit), testImpl : (Qubit[] => Int)) : Unit {
+    operation DistinguishStates_MultiQubit (Nqubit : Int, 
+                                            Nstate : Int, 
+                                            statePrep : ((Qubit[], Int) => Unit), 
+                                            testImpl : (Qubit[] => Int), 
+                                            measurementsPerRun : Int) : Unit {
         let nTotal = 100;
         mutable nOk = 0;
         
@@ -147,10 +152,18 @@ namespace Quantum.Kata.Measurements {
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state);
                 
+                if (measurementsPerRun > 0) {
+                    ResetOracleCallsCount();
+                }
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs);
                 if (ans == state) {
                     set nOk = nOk + 1;
+                }
+                // if we have a max number of measurements per solution run specified, check that it is not exceeded
+                if (measurementsPerRun > 0) {
+                    let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+                    AssertBoolEqual(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
                 }
                 
                 // we're not checking the state of the qubit after the operation
@@ -173,7 +186,7 @@ namespace Quantum.Kata.Measurements {
     
     
     operation T105_ZeroZeroOrOneOne_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne, 0);
     }
     
     
@@ -193,7 +206,7 @@ namespace Quantum.Kata.Measurements {
     
     
     operation T106_BasisStateMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement, 0);
     }
     
     
@@ -216,30 +229,16 @@ namespace Quantum.Kata.Measurements {
     }
     
     
+    operation CheckTwoBitstringsMeasurement (b1 : Bool[], b2 : Bool[]) : Unit {
+        DistinguishStates_MultiQubit(Length(b1), 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2), 1);
+    }
+
+
     operation T107_TwoBitstringsMeasurement_Test () : Unit {
-        for (i in 1 .. 1) {
-            let b1 = [false, true];
-            let b2 = [true, false];
-            DistinguishStates_MultiQubit(2, 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2));
-        }
-        
-        for (i in 1 .. 1) {
-            let b1 = [true, true, false];
-            let b2 = [false, true, true];
-            DistinguishStates_MultiQubit(3, 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2));
-        }
-        
-        for (i in 1 .. 1) {
-            let b1 = [false, true, true, false];
-            let b2 = [false, true, true, true];
-            DistinguishStates_MultiQubit(4, 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2));
-        }
-        
-        for (i in 1 .. 1) {
-            let b1 = [true, false, false, false];
-            let b2 = [true, false, true, true];
-            DistinguishStates_MultiQubit(4, 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2));
-        }
+        CheckTwoBitstringsMeasurement([false, true], [true, false]);
+        CheckTwoBitstringsMeasurement([true, true, false], [false, true, true]);
+        CheckTwoBitstringsMeasurement([false, true, true, false], [false, true, true, true]);
+        CheckTwoBitstringsMeasurement([true, false, false, false], [true, false, true, true]);
     }
     
     
@@ -284,7 +283,7 @@ namespace Quantum.Kata.Measurements {
     operation T108_AllZerosOrWState_Test () : Unit {
         
         for (i in 2 .. 6) {
-            DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState);
+            DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState, 0);
         }
     }
     
@@ -317,7 +316,7 @@ namespace Quantum.Kata.Measurements {
     
     operation T109_GHZOrWState_Test () : Unit {
         for (i in 2 .. 6) {
-            DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState);
+            DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState, 0);
         }
     }
     
@@ -343,7 +342,7 @@ namespace Quantum.Kata.Measurements {
     
     
     operation T110_BellState_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState, 0);
     }
     
     
@@ -357,6 +356,11 @@ namespace Quantum.Kata.Measurements {
         StatePrep_BasisStateMeasurement(qs, state);
         H(qs[0]);
         H(qs[1]);
+    }
+    
+    
+    operation T111_TwoQubitState_Test () : Unit {
+        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState, 0);
     }
     
     
@@ -382,13 +386,8 @@ namespace Quantum.Kata.Measurements {
     }
     
     
-    operation T111_TwoQubitState_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState);
-    }
-    
-    
     operation T112_TwoQubitStatePartTwo_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo, 0);
     }
     
     
@@ -414,11 +413,14 @@ namespace Quantum.Kata.Measurements {
     }
     
     operation T113_ThreeQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement);
+        DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement, 0);
     }
     
 
     //////////////////////////////////////////////////////////////////
+    // Part II*. Discriminating Nonorthogonal States
+    //////////////////////////////////////////////////////////////////
+    
     operation StatePrep_IsQubitZeroOrPlus (q : Qubit, state : Int) : Unit {
         
         if (state == 0) {
@@ -461,6 +463,12 @@ namespace Quantum.Kata.Measurements {
     }
     
     
+    operation T201_IsQubitZeroOrPlus_Test () : Unit {
+        DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, StatePrep_IsQubitZeroOrPlus, IsQubitPlusOrZero);
+    }
+    
+    
+    // ------------------------------------------------------
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return. Framework tests against a threshold parameter for the fraction of runs that must succeed.
     // Framework tests in the USD scenario, i.e., it is allowed to respond "inconclusive" (with some probability)
@@ -528,11 +536,6 @@ namespace Quantum.Kata.Measurements {
         if (ToDouble(nConclPlus) < thresholdConcl * ToDouble(nTotal)) {
             fail $"Only {nConclPlus} test runs out of {nTotal} returned conclusive |+> which does not meet the required threshold of at least {thresholdConcl * 100.0}%.";
         }
-    }
-    
-    
-    operation T201_IsQubitZeroOrPlus_Test () : Unit {
-        DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, StatePrep_IsQubitZeroOrPlus, IsQubitPlusOrZero);
     }
     
     
