@@ -65,8 +65,8 @@ namespace Quantum.Kata.Measurements {
     
     
     // Task 1.5. |00⟩ or |11⟩ ?
-    // Input: two qubits (stored in an array or length 2) which are guaranteed to be in |00⟩ or |11⟩ state.
-    // Output: 0 if the qubits were in |00⟩ state,
+    // Input: two qubits (stored in an array of length 2) which are guaranteed to be in either the  |00⟩ or the |11⟩ state.
+    // Output: 0 if the qubits were in the |00⟩ state,
     //         1 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne_Reference (qs : Qubit[]) : Int {
@@ -86,8 +86,8 @@ namespace Quantum.Kata.Measurements {
     operation BasisStateMeasurement_Reference (qs : Qubit[]) : Int {
         // Measurement on the first qubit gives the higher bit of the answer, on the second - the lower.
         // You can also use library function MeasureIntegerBE to get the same result.
-        mutable m1 = M(qs[0]) == Zero ? 0 | 1;
-        mutable m2 = M(qs[1]) == Zero ? 0 | 1;
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m1 * 2 + m2;
     }
     
@@ -195,8 +195,8 @@ namespace Quantum.Kata.Measurements {
         H(qs[1]);
 
         // these changes brought the state back to one of the 2-qubit basis states from task 1.6 (but in different order)
-        mutable m1 = M(qs[0]) == Zero ? 0 | 1;
-        mutable m2 = M(qs[1]) == Zero ? 0 | 1;
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let  m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
     
@@ -250,8 +250,8 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[0], qs[1]);
         H(qs[0]);
 
-        mutable m1 = M(qs[0]) == One ? 0 | 1;
-        mutable m2 = M(qs[1]) == One ? 0 | 1;
+        let m1 = M(qs[0]) == One ? 0 | 1;
+        let m2 = M(qs[1]) == One ? 0 | 1;
         return m2 * 2 + m1;
     }
     

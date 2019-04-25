@@ -81,8 +81,8 @@ namespace Quantum.Kata.Measurements {
     
     
     // Task 1.5. |00⟩ or |11⟩ ?
-    // Input: two qubits (stored in an array or length 2) which are guaranteed to be in |00⟩ or |11⟩ state.
-    // Output: 0 if the qubits were in |00⟩ state,
+    // Input: two qubits (stored in an array of length 2) which are guaranteed to be in either the |00⟩ or the |11⟩ state.
+    // Output: 0 if the qubits were in the |00⟩ state,
     //         1 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne (qs : Qubit[]) : Int {
@@ -252,7 +252,7 @@ namespace Quantum.Kata.Measurements {
     //         -1 if you can't decide, i.e., an "inconclusive" result.
     // Your solution:
     //  - should never give 0 or 1 answer incorrectly (i.e., identify |0⟩ as 1 or |+⟩ as 0).
-    //  - is allowed to give inconclusive (-1) answer in at most 80% of the cases.
+    //  - may give an inconclusive (-1) answer in at most 80% of the cases.
     //  - must correctly identify |0⟩ state as 0 in at least 10% of the cases.
     //  - must correctly identify |+⟩ state as 1 in at least 10% of the cases.
     //
