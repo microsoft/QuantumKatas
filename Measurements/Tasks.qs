@@ -13,7 +13,7 @@ namespace Quantum.Kata.Measurements {
     // Welcome!
     //////////////////////////////////////////////////////////////////
     
-    // "Measurements" quantum kata is a series of exercises designed
+    // The "Measurements" quantum kata is a series of exercises designed
     // to get you familiar with programming in Q#.
     // It covers the following topics:
     //  - using single-qubit measurements,
@@ -31,7 +31,7 @@ namespace Quantum.Kata.Measurements {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. |0⟩ or |1⟩ ?
-    // Input: a qubit which is guaranteed to be in |0⟩ or |1⟩ state.
+    // Input: a qubit which is guaranteed to be in either the |0⟩ or the |1⟩ state.
     // Output: true if the qubit was in the |1⟩ state, or false if it was in the |0⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitOne (q : Qubit) : Bool {
@@ -56,9 +56,9 @@ namespace Quantum.Kata.Measurements {
     
     
     // Task 1.3. |+⟩ or |-⟩ ?
-    // Input: a qubit which is guaranteed to be in |+⟩ or |-⟩ state
+    // Input: a qubit which is guaranteed to be in either the |+⟩ or the |-⟩ state
     //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
-    // Output: true if the qubit was in |+⟩ state, or false if it was in |-⟩ state.
+    // Output: true if the qubit was in the |+⟩ state, or false if it was in the |-⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitPlus (q : Qubit) : Bool {
         // ...
@@ -69,12 +69,12 @@ namespace Quantum.Kata.Measurements {
     // Task 1.4. |A⟩ or |B⟩ ?
     // Inputs:
     //      1) angle α, in radians, represented as a Double
-    //      2) a qubit which is guaranteed to be in |A⟩ or |B⟩ state
+    //      2) a qubit which is guaranteed to be in either the |A⟩ or the |B⟩ state, where
     //         |A⟩ =   cos α |0⟩ + sin α |1⟩,
     //         |B⟩ = - sin α |0⟩ + cos α |1⟩.
-    // Output: true if the qubit was in |A⟩ state, or false if it was in |B⟩ state.
+    // Output: true if the qubit was in the |A⟩ state, or false if it was in the |B⟩ state.
     // The state of the qubit at the end of the operation does not matter.
-    operation IsQubitA (α : Double, q : Qubit) : Bool {
+    operation IsQubitA (alpha : Double, q : Qubit) : Bool {
         // ...
         return false;
     }
@@ -130,10 +130,10 @@ namespace Quantum.Kata.Measurements {
     
     // Task 1.8. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
-    //        either in |0...0⟩ state
-    //        or in W state (https://en.wikipedia.org/wiki/W_state).
-    // Output: 0 if the qubits were in |0...0⟩ state,
-    //         1 if they were in W state.
+    //        either in the |0...0⟩ state
+    //        or in the W state (https://en.wikipedia.org/wiki/W_state).
+    // Output: 0 if the qubits were in the |0...0⟩ state,
+    //         1 if they were in the W state.
     // The state of the qubits at the end of the operation does not matter.
     operation AllZerosOrWState (qs : Qubit[]) : Int {
         // ...
@@ -234,8 +234,8 @@ namespace Quantum.Kata.Measurements {
     
     // Task 2.1*. |0⟩ or |+⟩ ?
     //           (quantum hypothesis testing or state discrimination with minimum error)
-    // Input: a qubit which is guaranteed to be in |0⟩ or |+⟩ state with equal probability.
-    // Output: true if qubit was in |0⟩ state, or false if it was in |+⟩ state.
+    // Input: a qubit which is guaranteed to be in either the |0⟩ or the |+⟩ state with equal probability.
+    // Output: true if qubit was in the |0⟩ state, or false if it was in the |+⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     // Note: in this task you have to get accuracy of at least 80%.
     operation IsQubitPlusOrZero (q : Qubit) : Bool {
@@ -246,9 +246,9 @@ namespace Quantum.Kata.Measurements {
     
     // Task 2.2**. |0⟩, |+⟩ or inconclusive?
     //             (unambiguous state discrimination)
-    // Input: a qubit which is guaranteed to be in |0⟩ or |+⟩ state with equal probability.
-    // Output: 0 if qubit was in |0⟩ state,
-    //         1 if it was in |+⟩ state,
+    // Input: a qubit which is guaranteed to be in either the |0⟩ or the |+⟩ state with equal probability.
+    // Output: 0 if qubit was in the |0⟩ state,
+    //         1 if it was in the |+⟩ state,
     //         -1 if you can't decide, i.e., an "inconclusive" result.
     // Your solution:
     //  - should never give 0 or 1 answer incorrectly (i.e., identify |0⟩ as 1 or |+⟩ as 0).
