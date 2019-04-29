@@ -11,7 +11,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Welcome!
     //////////////////////////////////////////////////////////////////
     
-    // "Deutsch-Jozsa algorithm" quantum kata is a series of exercises designed
+    // The "Deutsch-Jozsa algorithm" quantum kata is a series of exercises designed
     // to get you familiar with programming in Q#.
     // It covers the following topics:
     //  - writing oracles (quantum operations which implement certain classical functions),
@@ -70,7 +70,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Kth_Qubit (x : Qubit[], y : Qubit, k : Int) : Unit {
         // The following line enforces the constraints on the value of k that you are given.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertBoolEqual(0 <= k && k < Length(x), true, "k should be between 0 and N-1, inclusive");
+        AssertBoolEqual(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
 
         // ...
     }
@@ -135,7 +135,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         let P = Length(prefix);
-        AssertBoolEqual(1 <= P && P <= Length(x), true, "P should be between 1 and N, inclusive");
+        AssertBoolEqual(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
 
         // Hint: the first part of the function is the same as in task 1.4
 
@@ -190,7 +190,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
-    //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
+    //         x is an N-qubit input register, y is a 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle is a scalar product function
     // (can be represented as f(x₀, ..., xₙ₋₁) = Σᵢ rᵢ xᵢ modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁)).
     // You have implemented the oracle implementing the scalar product function in task 1.5.
@@ -202,7 +202,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Quantum computing allows to perform this task in just one call to the oracle; try to implement this algorithm.
     operation BV_Algorithm (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
         
-        // Declare a Bool array in which the result will be stored;
+        // Declare an Int array in which the result will be stored;
         // the array has to be mutable to allow updating its elements.
         mutable r = new Int[N];
         
@@ -243,7 +243,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
-    //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
+    //         x is an N-qubit input register, y is a 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle is either
     // constant (returns 0 on all inputs or 1 on all inputs) or
     // balanced (returns 0 on exactly one half of the input domain and 1 on the other half).
@@ -260,10 +260,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // this variable has to be mutable to allow updating it.
         mutable isConstantFunction = true;
         
-        // Hint: even though Deutsch-Jozsa algorithm operates on a wider class of functions
+        // Hint: Even though Deutsch-Jozsa algorithm operates on a wider class of functions
         // than Bernstein-Vazirani (i.e. functions which can not be represented as a scalar product, such as f(x) = 1),
         // it can be expressed as running Bernstein-Vazirani algorithm
-        // and then post-processing the return value classically
+        // and then post-processing the return value classically.
         
         // ...
 
@@ -294,7 +294,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
-    //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
+    //         x is an N-qubit input register, y is a 1-qubit answer register, and f is a Boolean function
     // You are guaranteed that the function f implemented by the oracle can be represented as
     // f(x₀, ..., xₙ₋₁) = Σᵢ (rᵢ xᵢ + (1 - rᵢ)(1 - xᵢ)) modulo 2 for some bit vector r = (r₀, ..., rₙ₋₁).
     // You have implemented the oracle implementing this function in task 1.6.
@@ -305,7 +305,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Hint: The bit vector r does not need to be the same as the one used by the oracle,
         // it just needs to produce equivalent results.
         
-        // Declare a Bool array in which the result will be stored;
+        // Declare an Int array in which the result will be stored;
         // the array has to be mutable to allow updating its elements.
         mutable r = new Int[N];
         

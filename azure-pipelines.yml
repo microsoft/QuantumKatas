@@ -2,22 +2,17 @@
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+name: $(Build.Major).$(Build.Minor).$(BuildId)
+variables:
+  Build.Major: 1
+  Build.Minor: 0
+  Build.Patch: $(Build.BuildId)
+  Build.Configuration: 'Release'
+  Assembly.Version: $(Build.BuildNumber)
+  KatasRootFolder: $(System.DefaultWorkingDirectory)
 
 pool:
   vmImage: 'VS2017-Win2016'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
 steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: 'scripts/validate-unicode.ps1'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: build
-    projects: '**/*.sln'
+- template: scripts/step-build-katas.yml
