@@ -223,7 +223,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      An array of N boolean values which satisfy the expression implemented by the oracle
     //      (i.e., any basis state marked by the oracle).
     // 
-    // Note that the similar task in GroversAlgorithm kata required you to implement Grover's algorithm
+    // Note that the similar task in the GroversAlgorithm kata required you to implement Grover's algorithm
     // in a way that would be robust to accidental failures, but you knew the optimal number of iterations
     // (the number that minimizes the probability of such failure). 
     // In this task you also need to make your implementation robust to not knowing the optimal number of iterations.
