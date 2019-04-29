@@ -78,7 +78,7 @@ The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](http
 
 ## Running the Katas Locally <a name="kata-locally" /> ##
 
-To use the Quantum Katas locally, you'll first need to install the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and for Linux.
+To use the Quantum Katas locally, you'll first need to install the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
 Please see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/) if you do not already have the Quantum Development Kit installed.
 
 A quick reference sheet for Q# programming language is available [here](./quickref/qsharp-quick-reference.pdf).
