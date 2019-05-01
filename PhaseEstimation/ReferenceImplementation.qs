@@ -152,7 +152,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
                 // repeat the loop until we get both Zero and One measurement outcomes
                 // or until we're reasonably certain that we won't get a different outcome
-            } until (iter == 10 || nZero > 0 && nOne > 0)
+            } until (iter == 10 or nZero > 0 and nOne > 0)
             fixup {}
 
             Reset(eigenstate);

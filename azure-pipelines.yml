@@ -15,4 +15,4 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 steps:
-- template: Build/step-build-katas.yml
+- template: scripts/step-build-katas.yml

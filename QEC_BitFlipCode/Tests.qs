@@ -52,7 +52,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     function FindFirstDiff_Reference (bits1 : Int[], bits2 : Int[]) : Int {
         mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
                 set firstDiff = i;
             }
         }

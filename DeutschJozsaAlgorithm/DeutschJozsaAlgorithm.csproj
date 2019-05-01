@@ -6,10 +6,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="..\Microsoft.Quantum.Katas\CounterSimulator.cs" Link="CounterSimulator.cs" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Standard" Version="0.5.1904.304" />
     <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.5.1904.304" />
     <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.5.1904.304" />
@@ -21,5 +17,9 @@
 
   <ItemGroup>
     <None Include="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\utilities\Common\Common.csproj" />
   </ItemGroup>
 </Project>

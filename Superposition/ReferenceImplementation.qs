@@ -262,7 +262,7 @@ namespace Quantum.Kata.Superposition {
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
         mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
                 set firstDiff = i;
             }
         }
@@ -482,7 +482,7 @@ namespace Quantum.Kata.Superposition {
                         // measure ancilla qubits; if all of the results are Zero, we get the right state on main qubits
                         mutable allZeros = true;
                         for (i in 0 .. (P - N) - 1) {
-                            set allZeros = allZeros && IsResultZero(M(anc[i]));
+                            set allZeros = allZeros and IsResultZero(M(anc[i]));
                         }
                     }
                     until (allZeros)
