@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.Superposition {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Intrinsic;
@@ -198,8 +199,8 @@ namespace Quantum.Kata.Superposition {
     operation ZeroAndBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[]) : Unit
 	is Adj {
         
-        AssertIntEqual(Length(bits), Length(qs), "Arrays should have the same length");
-        AssertBoolEqual(bits[0], true, "First bit of the input bit string should be set to true");
+        EqualityFactI(Length(bits), Length(qs), "Arrays should have the same length");
+        EqualityFactB(bits[0], true, "First bit of the input bit string should be set to true");
             
         // Hadamard first qubit
         H(qs[0]);

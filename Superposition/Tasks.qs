@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.Superposition {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -69,7 +70,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectors_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // ...
     }
@@ -81,7 +82,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectorsWithPhases_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // Hint: Is this state separable?
         // ...
@@ -149,8 +150,8 @@ namespace Quantum.Kata.Superposition {
     operation ZeroAndBitstringSuperposition (qs : Qubit[], bits : Bool[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(bits), Length(qs), "Arrays should have the same length");
-        AssertBoolEqual(bits[0], true, "First bit of the input bit string should be set to true");
+        EqualityFactI(Length(bits), Length(qs), "Arrays should have the same length");
+        EqualityFactB(bits[0], true, "First bit of the input bit string should be set to true");
 
         // ...
     }
