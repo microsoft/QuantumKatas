@@ -65,7 +65,7 @@ namespace Quantum.Kata.SuperdenseCoding {
                 let result = protocolOp(data);
                 
                 // Now test if the bits were transfered correctly.
-                AssertBoolArrayEqual(result, data, $"The message {data} was transfered incorrectly as {result}");
+                AllEqualityFactB(result, data, $"The message {data} was transfered incorrectly as {result}");
             }
         }
     }

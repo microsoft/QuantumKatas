@@ -94,7 +94,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             let res = MeasureParity(register);
             
             // check that the returned parity is correct
-            AssertBoolEqual(res == Zero, parity == 0, $"Failed on {stateStr}.");
+            EqualityFactB(res == Zero, parity == 0, $"Failed on {stateStr}.");
             
             // check that the state has not been modified
             Adjoint statePrep(register);
@@ -188,11 +188,11 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             for (i in 0 .. 36) {
                 let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 StatePrep_WithError(register, alpha, false);
-                AssertResultEqual(DetectErrorOnLeftQubit(register), Zero, "Failed on a state without X error.");
+                EqualityFactR(DetectErrorOnLeftQubit(register), Zero, "Failed on a state without X error.");
                 Adjoint StatePrep_WithError(register, alpha, false);
                 AssertAllZero(register);
                 StatePrep_WithError(register, alpha, true);
-                AssertResultEqual(DetectErrorOnLeftQubit(register), One, "Failed on a state with X error.");
+                EqualityFactR(DetectErrorOnLeftQubit(register), One, "Failed on a state with X error.");
                 Adjoint StatePrep_WithError(register, alpha, true);
                 AssertAllZero(register);
             }
@@ -283,7 +283,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
                 statePrep(Head(register));
                 Encode_Reference(register);
                 ApplyPauli(errors[idxError], register);
-                AssertIntEqual(DetectErrorOnAnyQubit(register), idxError, $"Failed on state with {errorStr}.");
+                EqualityFactI(DetectErrorOnAnyQubit(register), idxError, $"Failed on state with {errorStr}.");
                 ApplyPauli(errors[idxError], register);
                 Adjoint Encode_Reference(register);
                 Adjoint statePrep(Head(register));

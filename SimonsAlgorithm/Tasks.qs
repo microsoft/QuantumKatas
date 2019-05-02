@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.SimonsAlgorithm {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
@@ -59,7 +60,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(A), "Arrays x and A should have the same length");
+        EqualityFactI(Length(x), Length(A), "Arrays x and A should have the same length");
             
         // ...
     }
@@ -80,8 +81,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         // The following lines enforce the constraints on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(A[0]), "Arrays x and A[0] should have the same length");
-        AssertIntEqual(Length(y), Length(A), "Arrays y and A should have the same length");
+        EqualityFactI(Length(x), Length(A[0]), "Arrays x and A[0] should have the same length");
+        EqualityFactI(Length(y), Length(A), "Arrays y and A should have the same length");
             
         // ...
     }

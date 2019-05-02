@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.SuperdenseCoding {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
@@ -42,7 +43,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     operation CreateEntangledPair (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // ...
     }
