@@ -115,7 +115,7 @@ namespace Microsoft.Quantum.Katas
                 return base.Apply();
             }
 
-            public override QArray<Qubit> Apply(long count)
+            public override IQArray<Qubit> Apply(long count)
             {
                 _sim._qubitsAllocated += count;
                 if (_sim._qubitsAllocated > _sim._maxQubitsAllocated)
@@ -141,7 +141,7 @@ namespace Microsoft.Quantum.Katas
                 base.Apply(q);
             }
 
-            public override void Apply(QArray<Qubit> qubits)
+            public override void Apply(IQArray<Qubit> qubits)
             {
                 _sim._qubitsAllocated -= qubits.Length;
                 base.Apply(qubits);
