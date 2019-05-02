@@ -72,14 +72,14 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     operation T14_QPE_Test () : Unit {
-        AssertAlmostEqualTol(QPE(Z, I, 1), 0.0, 0.25);
-        AssertAlmostEqualTol(QPE(Z, X, 1), 0.5, 0.25);
+        EqualityWithinToleranceFact(QPE(Z, I, 1), 0.0, 0.25);
+        EqualityWithinToleranceFact(QPE(Z, X, 1), 0.5, 0.25);
 
-        AssertAlmostEqualTol(QPE(S, I, 2), 0.0, 0.125);
-        AssertAlmostEqualTol(QPE(S, X, 2), 0.25, 0.125);
+        EqualityWithinToleranceFact(QPE(S, I, 2), 0.0, 0.125);
+        EqualityWithinToleranceFact(QPE(S, X, 2), 0.25, 0.125);
 
-        AssertAlmostEqualTol(QPE(T, I, 3), 0.0,   0.0625);
-        AssertAlmostEqualTol(QPE(T, X, 3), 0.125, 0.0625);
+        EqualityWithinToleranceFact(QPE(T, I, 3), 0.0,   0.0625);
+        EqualityWithinToleranceFact(QPE(T, X, 3), 0.125, 0.0625);
     }
 
 
@@ -92,13 +92,13 @@ namespace Quantum.Kata.PhaseEstimation {
         ResetOracleCallsCount();
 
         let actual = SingleBitPE(U, P);
-        AssertIntEqual(actual, expected, $"Unexpected return for ({U}, {P}): expected {expected}, got {actual}");
+        EqualityFactI(actual, expected, $"Unexpected return for ({U}, {P}): expected {expected}, got {actual}");
         
         let nq = GetMaxQubitCount();
-        AssertIntEqual(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
+        EqualityFactI(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
         
         let nu = GetOracleCallsCount(Controlled U);
-        AssertIntEqual(nu, 1, $"You are allowed to call Controlled U exactly once, and you called it {nu} times");
+        EqualityFactI(nu, 1, $"You are allowed to call Controlled U exactly once, and you called it {nu} times");
     }
 
     operation T21_SingleBitPE_Test () : Unit {
@@ -114,10 +114,10 @@ namespace Quantum.Kata.PhaseEstimation {
         ResetQubitCount();
 
         let actual = TwoBitPE(U, P);
-        AssertAlmostEqualTol(actual, expected, 0.001);
+        EqualityWithinToleranceFact(actual, expected, 0.001);
         
         let nq = GetMaxQubitCount();
-        AssertIntEqual(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
+        EqualityFactI(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
     }
 
     operation T22_TwoBitPE_Test () : Unit {

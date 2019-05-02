@@ -46,7 +46,7 @@ namespace Quantum.Kata.Measurements {
             }
         }
         
-        AssertIntEqual(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
     }
     
     
@@ -161,7 +161,7 @@ namespace Quantum.Kata.Measurements {
                 // if we have a max number of measurements per solution run specified, check that it is not exceeded
                 if (measurementsPerRun > 0) {
                     let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
-                    AssertBoolEqual(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
+                    EqualityFactB(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
                 }
                 
                 // we're not checking the state of the qubit after the operation
@@ -169,7 +169,7 @@ namespace Quantum.Kata.Measurements {
             }
         }
         
-        AssertIntEqual(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
     }
     
     

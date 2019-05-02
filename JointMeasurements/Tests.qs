@@ -50,7 +50,7 @@ namespace Quantum.Kata.JointMeasurements {
             }
         }
         
-        AssertIntEqual(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
     }
     
     
