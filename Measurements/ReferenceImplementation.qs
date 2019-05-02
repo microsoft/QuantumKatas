@@ -10,6 +10,8 @@
 
 namespace Quantum.Kata.Measurements {
     
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;

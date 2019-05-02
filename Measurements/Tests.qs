@@ -70,7 +70,7 @@ namespace Quantum.Kata.Measurements {
     operation T102_InitializeQubit_Test () : Unit {
         using (qs = Qubit[1]) {
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 Ry(2.0 * alpha, qs[0]);
                 
                 // Test Task 1
@@ -126,7 +126,7 @@ namespace Quantum.Kata.Measurements {
         DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitA(PI() / 4.0, _));
         
         for (i in 0 .. 10) {
-            let alpha = (PI() * ToDouble(i)) / 10.0;
+            let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates_OneQubit(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _));
         }
     }
@@ -255,7 +255,7 @@ namespace Quantum.Kata.Measurements {
                 // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
                 // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
                 // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
-                let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
+                let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
                 Ry(2.0 * theta, qs[0]);
                 
                 // do a zero-controlled W-state generation for qubits 1..N-1
@@ -457,7 +457,7 @@ namespace Quantum.Kata.Measurements {
             }
         }
         
-        if (ToDouble(nOk) < threshold * ToDouble(nTotal)) {
+        if (IntAsDouble(nOk) < threshold * IntAsDouble(nTotal)) {
             fail $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state which does not meet the required threshold of at least {threshold * 100.0}%.";
         }
     }
@@ -525,15 +525,15 @@ namespace Quantum.Kata.Measurements {
             }
         }
         
-        if (ToDouble(nInconc) > thresholdInconcl * ToDouble(nTotal)) {
+        if (IntAsDouble(nInconc) > thresholdInconcl * IntAsDouble(nTotal)) {
             fail $"{nInconc} test runs out of {nTotal} returned inconclusive which does not meet the required threshold of at most {thresholdInconcl * 100.0}%.";
         }
         
-        if (ToDouble(nConclOne) < thresholdConcl * ToDouble(nTotal)) {
+        if (IntAsDouble(nConclOne) < thresholdConcl * IntAsDouble(nTotal)) {
             fail $"Only {nConclOne} test runs out of {nTotal} returned conclusive |0⟩ which does not meet the required threshold of at least {thresholdConcl * 100.0}%.";
         }
         
-        if (ToDouble(nConclPlus) < thresholdConcl * ToDouble(nTotal)) {
+        if (IntAsDouble(nConclPlus) < thresholdConcl * IntAsDouble(nTotal)) {
             fail $"Only {nConclPlus} test runs out of {nTotal} returned conclusive |+> which does not meet the required threshold of at least {thresholdConcl * 100.0}%.";
         }
     }
