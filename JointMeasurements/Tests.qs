@@ -18,7 +18,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
-    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit : Adjoint), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
+    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit is Adj), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
         let nTotal = 100;
         mutable nOk = 0;
         
@@ -108,7 +108,7 @@ namespace Quantum.Kata.JointMeasurements {
                 // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
                 // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
                 // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
-                let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
+                let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
                 Ry(2.0 * theta, qs[0]);
                 
                 // do a zero-controlled W-state generation for qubits 1..N-1
@@ -189,7 +189,7 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[2]) {
             
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
                 // prepare A state
                 StatePrep_A(alpha, qs[0]);
@@ -221,8 +221,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     operation T07_ControlledX_General_Test () : Unit {
         // In this task the gate is supposed to work on all inputs, so we can compare the unitary to CNOT.
-        AssertOperationsEqualReferenced(CNOTWrapper, ControlledX_General_Reference, 2);
-        AssertOperationsEqualReferenced(ControlledX_General, ControlledX_General_Reference, 2);
+        AssertOperationsEqualReferenced(2, CNOTWrapper, ControlledX_General_Reference);
+        AssertOperationsEqualReferenced(2, ControlledX_General, ControlledX_General_Reference);
     }
     
 }
