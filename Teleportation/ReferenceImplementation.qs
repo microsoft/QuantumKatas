@@ -21,14 +21,10 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. Entangled pair
-    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit {
-        
-        body (...) {
-            H(qAlice);
-            CNOT(qAlice, qBob);
-        }
-        
-        adjoint invert;
+    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit
+	is Adj {        
+        H(qAlice);
+        CNOT(qAlice, qBob);
     }
     
     
@@ -151,25 +147,22 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 4.1. Entangled trio
-    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit {
+    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
+	is Adj {
         
-        body (...) {
-            H(qAlice);
-            H(qBob);
-            X(qCharlie);
+        H(qAlice);
+        H(qBob);
+        X(qCharlie);
 
-            CCNOT(qAlice, qBob, qCharlie);
+        CCNOT(qAlice, qBob, qCharlie);
 
-            X(qAlice);
-            X(qBob);
+        X(qAlice);
+        X(qBob);
 
-            CCNOT(qAlice, qBob, qCharlie);
+        CCNOT(qAlice, qBob, qCharlie);
 
-            X(qAlice);
-            X(qBob);
-        }
-        
-        adjoint invert;
+        X(qAlice);
+        X(qBob);
     }
     
     

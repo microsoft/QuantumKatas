@@ -79,7 +79,7 @@ namespace Quantum.Kata.Teleportation {
     // which makes testing easier.
     operation TeleportTestHelper (
         teleportOp : ((Qubit, Qubit, Qubit) => Unit), 
-        setupPsiOp : (Qubit => Unit : Adjoint)) : Unit {
+        setupPsiOp : (Qubit => Unit is Adj)) : Unit {
         
         using (qs = Qubit[3]) {
             let qMessage = qs[0];

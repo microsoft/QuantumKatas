@@ -53,12 +53,8 @@ namespace Quantum.Kata.UnitaryPatterns {
                 for (j in 0 .. size - 1) {                    
                     let nonZero = pattern(size, j, k);
                     
-                    if (nonZero) {                        
-                        AssertProbInt(j, 0.5 + ε, LittleEndian(qs), 0.5);
-                    }
-                    else {                        
-                        AssertProbInt(j, 0.0, LittleEndian(qs), ε);
-                    }
+					let (expected, tol) = nonZero ? (0.5 + ε, 0.5) | (0.0, ε);
+                    AssertProbInt(j, expected, LittleEndian(qs), tol);
                 }
                 
                 ResetAll(qs);
@@ -285,10 +281,7 @@ namespace Quantum.Kata.UnitaryPatterns {
                   [ false, false, true, false, false, true, false, false], 
                   [ true, true, false, false, false, false, true, true], 
                   [ true, true, false, false, false, false, true, true] ];
-        if (size != 8) {
-            return false;
-        }
-        return A[row][col]; 		
+        return size != 8 ? false | A[row][col]; 		
     }
     
 

@@ -79,20 +79,17 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     
     // Task 10. Increasing blocks
-    operation IncreasingBlocks_Reference (qs : Qubit[]) : Unit {
-        body (...) {
-            let N = Length(qs);
-            // for N = 1, we need an identity
-            if (N > 1) {
-                // do the bottom-right quarter
-                ApplyToEachCA(Controlled H([Tail(qs)], _), Most(qs));
-                // do the top-left quarter by calling the same operation recursively
-                (ControlledOnInt(0, IncreasingBlocks_Reference))([Tail(qs)], Most(qs));
-            }
+    operation IncreasingBlocks_Reference (qs : Qubit[]) : Unit
+	is Adj + Ctl {
+
+        let N = Length(qs);
+        // for N = 1, we need an identity
+        if (N > 1) {
+            // do the bottom-right quarter
+            ApplyToEachCA(Controlled H([Tail(qs)], _), Most(qs));
+            // do the top-left quarter by calling the same operation recursively
+            (ControlledOnInt(0, IncreasingBlocks_Reference))([Tail(qs)], Most(qs));
         }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
     }
 
 
@@ -117,27 +114,25 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation Decrement (qs : Qubit[]) : Unit {
         X(qs[0]);
         for (i in 1..Length(qs)-1) {
-            (Controlled X)(qs[0..i-1], qs[i]);
+            Controlled X(qs[0..i-1], qs[i]);
         }
     }
     
     // Helper operation: antidiagonal 
-    operation Reflect (qs : Qubit[]) : Unit {
-        body (...) {
-            ApplyToEachC(X, qs);
-        }
-        controlled auto; 
+    operation Reflect (qs : Qubit[]) : Unit
+	is Ctl {
+        ApplyToEachC(X, qs);
     }
     
     // Main operation for Task 13
     operation TIE_Fighter_Reference (qs : Qubit[]) : Unit {
         let n = Length(qs);
         X(qs[n-1]);
-        (Controlled Reflect)([qs[n-1]], qs[0..(n-2)]);
+        Controlled Reflect([qs[n-1]], qs[0..(n-2)]);
         X(qs[n-1]);
         Decrement(qs[0..(n-2)]);
         H(qs[n-1]);
-        (Controlled Reflect)([qs[n-1]], qs[0..(n-2)]);
+        Controlled Reflect([qs[n-1]], qs[0..(n-2)]);
     }
     
 
@@ -153,7 +148,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         CNOT(qs[2], qs[0]); 
         CCNOT(qs[0], qs[2], qs[1]); 
         X(qs[2]);
-        (Controlled H)([qs[2]], qs[1]);
+        Controlled H([qs[2]], qs[1]);
         X(qs[2]);
         H(qs[0]);
         CNOT(qs[1], qs[2]);         
@@ -174,57 +169,56 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     // Helper function for Embed_2x2_Operator: performs a Clifford to implement a base change
     // that maps basis states index1 to 111...10 and index2 to 111...11 (in big endian notation, i.e., LSB in qs[n-1]) 
-    operation Embedding_Perm (index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
-        body (...) {
-            let n = Length(qs); 
-            let bits1 = BoolArrFromPositiveInt(index1, n);
-            let bits2 = BoolArrFromPositiveInt(index2, n);
-            // find the index of the first bit at which the bit strings are different
-            let diff = FirstDiff(bits1, bits2);
+    operation Embedding_Perm (index1 : Int, index2 : Int, qs : Qubit[]) : Unit
+	is Adj {
 
-            // we care only about 2 inputs: basis state of bits1 and bits2
+        let n = Length(qs); 
+        let bits1 = BoolArrFromPositiveInt(index1, n);
+        let bits2 = BoolArrFromPositiveInt(index2, n);
+        // find the index of the first bit at which the bit strings are different
+        let diff = FirstDiff(bits1, bits2);
 
-            // make sure that the state corresponding to bits1 has qs[diff] set to |0⟩
-            if (bits1[diff]) { 
-                X(qs[diff]); 
-            }
+        // we care only about 2 inputs: basis state of bits1 and bits2
+
+        // make sure that the state corresponding to bits1 has qs[diff] set to |0⟩
+        if (bits1[diff]) { 
+            X(qs[diff]); 
+        }
         
-            // iterate through the bit strings again, setting the final state of qubits
-            for (i in 0..n-1) {
-                if (bits1[i] == bits2[i]) {
-                    // if two bits are the same, set both to 1 using X or nothing
+        // iterate through the bit strings again, setting the final state of qubits
+        for (i in 0..n-1) {
+            if (bits1[i] == bits2[i]) {
+                // if two bits are the same, set both to 1 using X or nothing
+                if (not bits1[i]) {
+                    X(qs[i]);
+                }
+            } else {
+                // if two bits are different, set both to 1 using CNOT
+                if (i > diff) {
                     if (not bits1[i]) {
-                        X(qs[i]);
+                        X(qs[diff]);
+                        CNOT(qs[diff], qs[i]);
+                        X(qs[diff]);
                     }
-                } else {
-                    // if two bits are different, set both to 1 using CNOT
-                    if (i > diff) {
-                        if (not bits1[i]) {
-                            X(qs[diff]);
-                            CNOT(qs[diff], qs[i]);
-                            X(qs[diff]);
-                        }
-                        if (not bits2[i]) {
-                            CNOT(qs[diff], qs[i]);
-                        }
+                    if (not bits2[i]) {
+                        CNOT(qs[diff], qs[i]);
                     }
                 }
             }
-
-            // move the differing bit to the last qubit
-            if (diff < n-1) {
-                SWAP(qs[n-1], qs[diff]);
-            }
         }
-        adjoint auto;
+
+        // move the differing bit to the last qubit
+        if (diff < n-1) {
+            SWAP(qs[n-1], qs[diff]);
+        }
     }
     
     
     // Helper function: apply the 2x2 unitary operator at the sub-matrix given by indices for 2 rows/columns
     operation Embed_2x2_Operator (U : (Qubit => Unit is Ctl), index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
         Embedding_Perm(index1, index2, qs);
-        (Controlled U)(Most(qs), Tail(qs));
-        (Adjoint Embedding_Perm)(index1, index2, qs);
+        Controlled U(Most(qs), Tail(qs));
+        Adjoint Embedding_Perm(index1, index2, qs);
     }
 
     
