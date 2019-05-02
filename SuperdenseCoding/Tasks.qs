@@ -76,7 +76,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // The state of the qubits in the end of the operation doesn't matter.
     operation DecodeMessageFromQubits (qBob : Qubit, qAlice : Qubit) : Bool[] {
         // Declare a Bool array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable decoded_bits = new Bool[2];
         
         // ...

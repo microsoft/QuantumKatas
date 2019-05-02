@@ -15,26 +15,23 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // Task 1. Entangled pair
-    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
+    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit
+	is Adj {
         
-        body (...) {
-            // The easiest way to create an entangled pair is to start with
-            // applying a Hadamard transformation to one of the qubits:
-            H(qs[0]);
+        // The easiest way to create an entangled pair is to start with
+        // applying a Hadamard transformation to one of the qubits:
+        H(qs[0]);
             
-            // This has left us in state:
-            // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
+        // This has left us in state:
+        // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
             
-            // Now, if we flip the second qubit conditioned on the state
-            // of the first one, we get that the states of the two qubits will always match.
-            CNOT(qs[0], qs[1]);
-            // So we ended up in the state:
-            // (|00⟩ + |11⟩) / sqrt(2)
-            //
-            // Which is the required Bell pair |Φ⁺⟩
-        }
-        
-        adjoint invert;
+        // Now, if we flip the second qubit conditioned on the state
+        // of the first one, we get that the states of the two qubits will always match.
+        CNOT(qs[0], qs[1]);
+        // So we ended up in the state:
+        // (|00⟩ + |11⟩) / sqrt(2)
+        //
+        // Which is the required Bell pair |Φ⁺⟩
     }
     
     
