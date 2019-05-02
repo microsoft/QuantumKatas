@@ -30,23 +30,20 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit {
+    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit
+	is Adj {
         
-        body (...) {
-            if (bits / 4 == 1) {
-                X(qs[0]);
-            }
-            
-            if ((bits / 2) % 2 == 1) {
-                X(qs[1]);
-            }
-            
-            if (bits % 2 == 1) {
-                X(qs[2]);
-            }
+        if (bits / 4 == 1) {
+            X(qs[0]);
         }
-        
-        adjoint invert;
+            
+        if ((bits / 2) % 2 == 1) {
+            X(qs[1]);
+        }
+            
+        if (bits % 2 == 1) {
+            X(qs[2]);
+        }
     }
     
     
@@ -66,29 +63,26 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit {
+    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit
+	is Adj {
         
-        body (...) {
-            let firstDiff = FindFirstDiff_Reference(bits1, bits2);
-            H(qs[firstDiff]);
+        let firstDiff = FindFirstDiff_Reference(bits1, bits2);
+        H(qs[firstDiff]);
             
-            for (i in 0 .. Length(qs) - 1) {
-                if (bits1[i] == bits2[i]) {
-                    if (bits1[i] == 1) {
+        for (i in 0 .. Length(qs) - 1) {
+            if (bits1[i] == bits2[i]) {
+                if (bits1[i] == 1) {
+                    X(qs[i]);
+                }
+            } else {
+                if (i > firstDiff) {
+                    CNOT(qs[firstDiff], qs[i]);
+                    if (bits1[i] != bits1[firstDiff]) {
                         X(qs[i]);
-                    }
-                } else {
-                    if (i > firstDiff) {
-                        CNOT(qs[firstDiff], qs[i]);
-                        if (bits1[i] != bits1[firstDiff]) {
-                            X(qs[i]);
-                        }
                     }
                 }
             }
         }
-        
-        adjoint invert;
     }
     
     
@@ -159,13 +153,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit {
-        
-        body (...) {
-            Ry(2.0 * alpha, qs[0]);
-        }
-        
-        adjoint invert;
+    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit
+	is Adj {        
+        Ry(2.0 * alpha, qs[0]);
     }
     
     
@@ -181,18 +171,15 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 03
     //////////////////////////////////////////////////////////////////////////
 
-    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit {
+    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit
+	is Adj {
         
-        body (...) {
-            StatePrep_Rotate(qs, alpha);
-            Encode_Reference(qs);
+        StatePrep_Rotate(qs, alpha);
+        Encode_Reference(qs);
             
-            if (hasError) {
-                X(qs[0]);
-            }
+        if (hasError) {
+            X(qs[0]);
         }
-        
-        adjoint invert;
     }
     
     
