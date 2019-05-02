@@ -17,7 +17,7 @@ namespace Quantum.Kata.Superposition {
     
     
     // ------------------------------------------------------
-    operation AssertEqualOnZeroState (N : Int, testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState (N : Int, testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             testImpl(qs);
@@ -53,7 +53,7 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.75 * PI()), MinusState_Reference);
         
         for (i in 1 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(1, UnequalSuperposition(_, alpha), UnequalSuperposition_Reference(_, alpha));
         }
     }

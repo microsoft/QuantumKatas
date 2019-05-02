@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.Superposition {
     
+    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -404,7 +405,7 @@ namespace Quantum.Kata.Superposition {
                 // |W_N⟩ = |0⟩|W_(N-1)⟩ + |1⟩|0...0⟩
                 // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
                 // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
-                let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
+                let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
                 Ry(2.0 * theta, qs[0]);
                 
                 // do a zero-controlled W-state generation for qubits 1..N-1
@@ -438,7 +439,7 @@ namespace Quantum.Kata.Superposition {
                 X(q);
             } else {
                 // represent the target state as cos(theta) * |0⟩ + sin(theta) * |1⟩, as in task 1.3
-                let denom = ToDouble(denominator);
+                let denom = IntAsDouble(denominator);
                 let num = denom - 1.0;
                 let theta = ArcCos(Sqrt(num / denom));
                 Ry(2.0 * theta, q);
