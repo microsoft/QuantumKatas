@@ -57,7 +57,7 @@ namespace Quantum.Kata.PhaseEstimation {
     //      2) a positive integer power.
     // Output:
     //      A single-qubit unitary equal to U raised to the given power.
-    function UnitaryPower (U : (Qubit => Unit : Adjoint, Controlled), power : Int) : (Qubit => Unit : Adjoint, Controlled) {
+    function UnitaryPower (U : (Qubit => Unit is Adj + Ctl), power : Int) : (Qubit => Unit is Adj + Ctl) {
         // Hint: Remember that you can define auxiliary operations.
 
         // ...
@@ -76,7 +76,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // Goal:
     //      Assert that the given state is an eigenstate of the given unitary,
     //      i.e., do nothing if it is, and throw an exception if it is not.
-    operation AssertIsEigenstate (U : (Qubit => Unit), P : (Qubit => Unit : Adjoint)) : Unit {
+    operation AssertIsEigenstate (U : (Qubit => Unit), P : (Qubit => Unit is Adj)) : Unit {
         // ...
     }
 
@@ -90,7 +90,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // Output:
     //      The phase of the eigenvalue that corresponds to the eigenstate |ψ⟩, with n bits of precision.
     //      The phase should be between 0 and 1.
-    operation QPE (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), n : Int) : Double {
+    operation QPE (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), n : Int) : Double {
         // ...
         return -1.0;
     }
@@ -138,7 +138,7 @@ namespace Quantum.Kata.PhaseEstimation {
     //      The eigenvalue which corresponds to the eigenstate |ψ⟩ (+1 or -1).
     //
     // You are allowed to allocate exactly two qubits and call Controlled U exactly once.
-    operation SingleBitPE (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint)) : Int {
+    operation SingleBitPE (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj)) : Int {
         // Note: It is possible to use the QPE implementation from task 1.4 to solve this task, 
         // but we suggest you implement the circuit by hand for the sake of learning.
 
@@ -158,7 +158,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // The returned value has to be accurate within the absolute error of 0.001.
     //
     // You are allowed to allocate exactly two qubits and call Controlled U multiple times.
-    operation TwoBitPE (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint)) : Double {
+    operation TwoBitPE (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj)) : Double {
         // Hint: Start by applying the same circuit as in task 2.1.
         //       What are the possible outcomes for each eigenvalue?
         //       What eigenvalues you can and can not distinguish using this circuit?

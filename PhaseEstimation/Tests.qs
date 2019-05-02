@@ -20,7 +20,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // Part I. Quantum phase estimation (QPE)
     //////////////////////////////////////////////////////////////////
     
-    operation AssertEqualOnZeroState1 (testImpl : (Qubit => Unit), refImpl : (Qubit => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState1 (testImpl : (Qubit => Unit), refImpl : (Qubit => Unit is Adj)) : Unit {
         using (q = Qubit()) {
             // apply operation that needs to be tested
             testImpl(q);
@@ -42,7 +42,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation1 (op : (Qubit => Unit : Adjoint, Controlled), qs : Qubit[]) : Unit {
+    operation ArrayWrapperOperation1 (op : (Qubit => Unit is Adj + Ctl), qs : Qubit[]) : Unit {
         
         body (...) {
             op(qs[0]);
@@ -57,8 +57,8 @@ namespace Quantum.Kata.PhaseEstimation {
     operation T12_UnitaryPower_Test () : Unit {
         for (U in [Z, S, T]) { 
             for (power in 1..5) {
-                AssertOperationsEqualReferenced(ArrayWrapperOperation1(UnitaryPower(U, power), _), 
-                                                ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _), 1);
+                AssertOperationsEqualReferenced(1, ArrayWrapperOperation1(UnitaryPower(U, power), _), 
+                                                ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _));
             }
         }
     }
@@ -93,7 +93,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // Part II. Iterative phase estimation
     //////////////////////////////////////////////////////////////////
     
-    operation Test1BitPEOnOnePair(U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), expected : Int) : Unit {
+    operation Test1BitPEOnOnePair(U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), expected : Int) : Unit {
         ResetQubitCount();
         ResetOracleCallsCount();
 
@@ -116,7 +116,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation Test2BitPEOnOnePair(U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), expected : Double) : Unit {
+    operation Test2BitPEOnOnePair(U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), expected : Double) : Unit {
         ResetQubitCount();
 
         let actual = TwoBitPE(U, P);

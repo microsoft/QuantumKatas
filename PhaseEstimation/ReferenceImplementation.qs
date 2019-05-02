@@ -10,6 +10,10 @@
 
 namespace Quantum.Kata.PhaseEstimation {
     
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Characterization;
+    open Microsoft.Quantum.Arithmetic;
+    open Microsoft.Quantum.Oracles;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -35,7 +39,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation UnitaryPowerImpl_Reference (U : (Qubit => Unit : Adjoint, Controlled), power : Int, q : Qubit) : Unit {
+    operation UnitaryPowerImpl_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, q : Qubit) : Unit {
         body (...) {
             for (i in 1..power) {
                 U(q);
@@ -47,14 +51,14 @@ namespace Quantum.Kata.PhaseEstimation {
     }
 
     // Task 1.2. Inputs to QPE: powers of Z/S/T gates.
-    function UnitaryPower_Reference (U : (Qubit => Unit : Adjoint, Controlled), power : Int) : (Qubit => Unit : Adjoint, Controlled) {
+    function UnitaryPower_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int) : (Qubit => Unit is Adj + Ctl) {
         return UnitaryPowerImpl_Reference(U, power, _);
     }
 
 
     // ------------------------------------------------------
     // Task 1.3. Validate inputs to QPE
-    operation AssertIsEigenstate_Reference (U : (Qubit => Unit), P : (Qubit => Unit : Adjoint)) : Unit {
+    operation AssertIsEigenstate_Reference (U : (Qubit => Unit), P : (Qubit => Unit is Adj)) : Unit {
         using (q = Qubit()) {
             // Prepare the state |ψ⟩
             P(q);
@@ -69,19 +73,15 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation Oracle_Reference (U : (Qubit => Unit : Adjoint, Controlled), power : Int, target : Qubit[]) : Unit {
-        body (...) {
-            for (i in 1 .. power) {
-                U(target[0]);
-            }
+    operation Oracle_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, target : Qubit[]) : Unit 
+	is Adj + Ctl{
+        for (i in 1 .. power) {
+            U(target[0]);
         }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
     }
 
     // Task 1.4. QPE for single-qubit unitaries
-    operation QPE_Reference (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), n : Int) : Double {
+    operation QPE_Reference (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), n : Int) : Double {
         // Construct a phase estimation oracle from the unitary
         let oracle = DiscreteOracle(Oracle_Reference(U, _, _));
         mutable phase = -1.0;
@@ -93,7 +93,7 @@ namespace Quantum.Kata.PhaseEstimation {
             // Call library
             QuantumPhaseEstimation(oracle, eigenstate, phaseRegisterBE);
             // Read out the phase
-            set phase = ToDouble(MeasureIntegerBE(phaseRegisterBE)) / ToDouble(1 <<< n);
+            set phase = IntAsDouble(MeasureIntegerBE(phaseRegisterBE)) / IntAsDouble(1 <<< n);
 
             ResetAll(eigenstate);
             ResetAll(phaseRegister);
@@ -108,7 +108,7 @@ namespace Quantum.Kata.PhaseEstimation {
     //////////////////////////////////////////////////////////////////
     
     // Task 2.1. Single-bit phase estimation
-    operation SingleBitPE_Reference (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint)) : Int {
+    operation SingleBitPE_Reference (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj)) : Int {
         mutable eigenvalue = 0;
         using ((control, eigenstate) = (Qubit(), Qubit())) {
             // prepare the eigenstate |ψ⟩
@@ -127,7 +127,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // Task 2.2. Two bit phase estimation
-    operation TwoBitPE_Reference (U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint)) : Double {
+    operation TwoBitPE_Reference (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj)) : Double {
         // Start by using the same circuit as in task 2.1.
         // For eigenvalues +1 and -1, it produces measurement results Zero and One, respectively, 100% of the time;
         // for eigenvalues +i and -i, it produces both results with 50% probability, so a different circuit is required.
