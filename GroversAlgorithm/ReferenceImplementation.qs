@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
@@ -71,7 +72,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // Task 1.4*. Oracle converter
-    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
+    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit {
         
         body (...) {
             using (target = Qubit()) {
@@ -93,7 +94,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
     
     
-    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         return OracleConverterImpl_Reference(markingOracle, _);
     }
     
@@ -149,7 +150,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // Task 2.3. The Grover iteration
-    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit {
         
         body (...) {
             oracle(register);
@@ -167,7 +168,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 3.1. Grover's search
-    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
+    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         
         body (...) {
             let phaseOracle = OracleConverter_Reference(oracle);

@@ -113,7 +113,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // but it is often easier to write a marking oracle for a given condition. This transformation
     // allows to convert one type of oracle into the other. The transformation is described at
     // https://en.wikipedia.org/wiki/Grover%27s_algorithm, section "Description of Uω".
-    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         
         // Hint: Remember that you can define auxiliary operations.
         
@@ -174,7 +174,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      2) a phase-flipping oracle that takes an N-qubit register and flips
     //         the phase of the state if the register is in the desired state.
     // Goal:  Perform one Grover iteration.
-    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit {
         
         body (...) {
             // Hint: A Grover iteration consists of 4 steps:
@@ -204,7 +204,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //
     // Note: The number of iterations is passed as a parameter because it is defined by the nature of the problem
     // and is easier to configure/calculate outside the search algorithm itself (for example, in the driver).
-    operation GroversSearch (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
+    operation GroversSearch (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
             // ...
     }
     
