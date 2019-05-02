@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.5.1904.1302" />
+    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.6.1905.102" />
   </ItemGroup>
   
 </Project>

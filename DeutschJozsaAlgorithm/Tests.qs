@@ -24,7 +24,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
-    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
+    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
         
         body (...) {
             let N = Length(qs);
@@ -38,12 +38,12 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertTwoOraclesAreEqual (nQubits : Range, 
         oracle1 : ((Qubit[], Qubit) => Unit), 
-        oracle2 : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
         let sol = ApplyOracle(_, oracle1);
         let refSol = ApplyOracleA(_, oracle2);
         
         for (i in nQubits) {
-            AssertOperationsEqualReferenced(sol, refSol, i + 1);
+            AssertOperationsEqualReferenced(i + 1, sol, refSol);
         }
     }
     
@@ -85,7 +85,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertTwoOraclesWithIntAreEqual (r : Int[], 
         oracle1 : ((Qubit[], Qubit, Int[]) => Unit), 
-        oracle2 : ((Qubit[], Qubit, Int[]) => Unit : Adjoint)) : Unit {
+        oracle2 : ((Qubit[], Qubit, Int[]) => Unit is Adj)) : Unit {
         AssertTwoOraclesAreEqual(Length(r) .. Length(r), oracle1(_, _, r), oracle2(_, _, r));
     }
     
@@ -319,27 +319,3 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
 }
 
-//////////////////////////////////////////////////////////////////////
-// These operations are needed by the CounterSimulator
-//////////////////////////////////////////////////////////////////////
-
-namespace Quantum.Kata.Utils {
-   
-    /// # Summary
-    /// Returns how many times a given oracle is executed.
-    function GetOracleCallsCount<'T> (oracle : 'T) : Int { body intrinsic; }
-    
-    /// # Summary
-    /// Resets the variable that tracks how many times an oracle
-    /// is executed back to 0.
-    function ResetOracleCallsCount () : Unit { body intrinsic; }
-
-    /// # Summary
-    /// Returns the max number of qubits allocated at any given point by the simulator.
-    function GetMaxQubitCount () : Int { body intrinsic; }
-
-    /// # Summary
-    /// Resets the variable that tracks the max number of qubits
-    /// allocated at any given point by the simulator.
-    function ResetQubitCount () : Unit { body intrinsic; }
-}
