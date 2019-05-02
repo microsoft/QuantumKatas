@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
@@ -55,7 +56,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Kth_Qubit_Reference (x : Qubit[], y : Qubit, k : Int) : Unit
 	is Adj {        
 
-        AssertBoolEqual(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
+        EqualityFactB(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
         CNOT(x[k], y);
     }
     
@@ -89,7 +90,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 	is Adj {        
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(r), "Arrays should have the same length");
+        EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
         for (i in 0 .. Length(x) - 1) {
             if (r[i] == 1) {
@@ -110,7 +111,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 	is Adj {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(r), "Arrays should have the same length");
+        EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
         for (i in 0 .. Length(x) - 1) {
             if (r[i] == 1) {
@@ -139,7 +140,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         let P = Length(prefix);
-        AssertBoolEqual(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
+        EqualityFactB(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
             
         // Hint: the first part of the function is the same as in task 1.4
         for (q in x) {
@@ -176,7 +177,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 	is Adj {        
         // The following line enforces the constraint on the input array.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertBoolEqual(3 == Length(x), true, "x should have exactly 3 qubits");
+        EqualityFactB(3 == Length(x), true, "x should have exactly 3 qubits");
             
         // Hint: represent f(x) in terms of AND and ⊕ operations
         CCNOT(x[0], x[1], y);

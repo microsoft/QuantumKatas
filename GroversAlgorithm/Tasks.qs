@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
@@ -94,7 +95,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         body (...) {
             // The following line enforces the constraint on the input arrays.
             // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-            AssertIntEqual(Length(queryRegister), Length(pattern), "Arrays should have the same length");
+            EqualityFactI(Length(queryRegister), Length(pattern), "Arrays should have the same length");
 
             // ...
         }

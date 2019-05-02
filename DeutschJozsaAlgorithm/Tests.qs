@@ -180,7 +180,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     // ------------------------------------------------------
-    function AssertIntArrayEqual (actual : Int[], expected : Int[], message : String) : Unit {
+    function AllEqualityFactI (actual : Int[], expected : Int[], message : String) : Unit {
         
         let n = Length(actual);
         if (n != Length(expected)) {
@@ -214,10 +214,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
         let oracle = Oracle_ProductFunction_Reference(_, _, r);
-        AssertIntArrayEqual(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
+        AllEqualityFactI(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
 
         let nu = GetOracleCallsCount(oracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -240,10 +240,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     // ------------------------------------------------------
     operation AssertDJAlgorithmWorks (N : Int, oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
-        AssertBoolEqual(DJ_Algorithm(N, oracle), expected, msg);
+        EqualityFactB(DJ_Algorithm(N, oracle), expected, msg);
         
         let nu = GetOracleCallsCount(oracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -280,11 +280,11 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // check that the oracle was called once (later it will be called again by test harness)
         let nu = GetOracleCallsCount(givenOracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
         
         // check that the oracle obtained from r
         // is equivalent to the oracle obtained from return value
-        AssertIntEqual(Length(res), Length(r), "Returned bit vector must have the same length as the oracle input.");
+        EqualityFactI(Length(res), Length(r), "Returned bit vector must have the same length as the oracle input.");
         let resOracle = Oracle_ProductWithNegationFunction_Reference(_, _, res);
         AssertTwoOraclesAreEqual(Length(r) .. Length(r), givenOracle, resOracle);
     }
