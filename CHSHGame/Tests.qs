@@ -9,11 +9,11 @@
 
 namespace Quantum.Kata.CHSHGame {
 
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Diagnostics;
 
     operation T11_WinCondition_Test () : Unit {
         for (i in 0..1 <<< 4 - 1) {
@@ -38,7 +38,7 @@ namespace Quantum.Kata.CHSHGame {
                 set wins = wins + 1;
             }
         }
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+        Message($"Win rate {IntAsDouble(wins) / 1000.}");
 
         AssertBoolEqual(wins >= 700, true,
                         "Alice and Bob's classical strategy is not optimal");
@@ -47,7 +47,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
-                                      refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+                                      refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
@@ -94,7 +94,7 @@ namespace Quantum.Kata.CHSHGame {
         op(qs[0]);
     }
 
-    operation QubitToRegisterOperationA (op : (Qubit => Unit : Adjoint), qs : Qubit[]) : Unit {
+    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit {
         body (...) {
             op(qs[0]);
         }
@@ -102,10 +102,10 @@ namespace Quantum.Kata.CHSHGame {
     }
 
     operation T23_RotateBobQubit_Test () : Unit {
-        AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(true, _), _),
-                                        QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _), 1);
-        AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(false, _), _),
-                                        QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _), 1);
+        AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(true, _), _),
+                                        QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _));
+        AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(false, _), _),
+                                        QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _));
     }
 
 
@@ -144,7 +144,7 @@ namespace Quantum.Kata.CHSHGame {
                 set wins = wins + 1;
             }
         }
-        AssertAlmostEqualTol(ToDouble(wins) / 10000., 0.85, 0.01);
+        AssertAlmostEqualTol(IntAsDouble(wins) / 10000., 0.85, 0.01);
     }
 
 }
