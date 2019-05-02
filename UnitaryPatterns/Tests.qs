@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.UnitaryPatterns {
     
+    open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;

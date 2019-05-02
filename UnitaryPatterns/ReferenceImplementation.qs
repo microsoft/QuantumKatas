@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.UnitaryPatterns {
     
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -220,7 +221,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     
     // Helper function: apply the 2x2 unitary operator at the sub-matrix given by indices for 2 rows/columns
-    operation Embed_2x2_Operator (U : (Qubit => Unit : Controlled), index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
+    operation Embed_2x2_Operator (U : (Qubit => Unit is Ctl), index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
         Embedding_Perm(index1, index2, qs);
         (Controlled U)(Most(qs), Tail(qs));
         (Adjoint Embedding_Perm)(index1, index2, qs);
