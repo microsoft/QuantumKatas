@@ -10,9 +10,9 @@
 
 namespace Quantum.Kata.GHZGame {
 
+    open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
 
 
     //////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ namespace Quantum.Kata.GHZGame {
     operation PlayClassicalGHZ_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         mutable results = new Bool[Length(inputs)];
         for (i in 0..Length(inputs) - 1) {
-            set results[i] = strategy(inputs[i]);
+            set results w/= i <- strategy(inputs[i]);
         }
         return results;
     }
@@ -90,7 +90,7 @@ namespace Quantum.Kata.GHZGame {
             CreateEntangledTriple_Reference(qs);
 
             for (i in 0..2) {
-                set abc[i] = strategies[i](qs[i]);
+                set abc w/= i <- strategies[i](qs[i]);
             }
 
             ResetAll(qs);

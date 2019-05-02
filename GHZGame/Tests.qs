@@ -9,10 +9,11 @@
 
 namespace Quantum.Kata.GHZGame {
 
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Diagnostics;
 
     // All possible starting bits (r, s and t) that the referee can give
     // to Alice, Bob and Charlie.
@@ -47,7 +48,7 @@ namespace Quantum.Kata.GHZGame {
                 set wins = wins + 1;
             }
         }
-        return ToDouble(wins) / ToDouble(N);
+        return IntAsDouble(wins) / IntAsDouble(N);
     }
 
     operation T12_RandomClassical_Test () : Unit {
@@ -83,7 +84,7 @@ namespace Quantum.Kata.GHZGame {
     // Part II. Quantum GHZ
     //////////////////////////////////////////////////////////////////
 
-    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
