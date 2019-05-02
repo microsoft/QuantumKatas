@@ -431,7 +431,6 @@ namespace Quantum.Kata.Measurements {
         //   |+⟩ |   std |     0    |    1/2   |    1/2
         //   |0⟩ |   had |    1/2   |     0    |    1/2
         //   |+⟩ |   had |     0    |     0    |     1
-        mutable output = 0;
         let basis = RandomInt(2);
         
         // randomize over std and had
@@ -439,28 +438,16 @@ namespace Quantum.Kata.Measurements {
             
             // use standard basis
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |+⟩
-                set output = 1;
-            }
-            else {
-                set output = -1;
-            }
+			// result is One only if the state was |+⟩
+			return result == One ? 1 | -1;
         }
         else {
             // use Hadamard basis
             H(q);
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |0⟩
-                set output = 0;
-            }
-            else {
-                set output = -1;
-            }
+			// result is One only if the state was |0⟩
+			return result == One ? 0 | -1;
         }
-        
-        return output;
     }
 
 
@@ -491,7 +478,6 @@ namespace Quantum.Kata.Measurements {
         // a 4x4 unitary. Using the "Rader trick" we can now block decompose the 3x3 DFT and obtain two
         // 2x2 blocks which we can then implement using controlled single qubit gates. We present
         // the final resulting circuit without additional commentary.
-        mutable output = 0;
         let alpha = ArcCos(Sqrt(2.0 / 3.0));
         
         using (a = Qubit()) {
@@ -512,20 +498,18 @@ namespace Quantum.Kata.Measurements {
             
             // dispatch on the cases
             if (res0 == Zero and res1 == Zero) {
-                set output = 0;
+                return 0;
             }
             elif (res0 == One and res1 == Zero) {
-                set output = 1;
+                return 1;
             }
             elif (res0 == Zero and res1 == One) {
-                set output = 2;
+                return 2;
             }
             else {
                 // this should never occur
-                set output = 3;
+                return 3;
             }
         }
-        
-        return output;
     }  
 }
