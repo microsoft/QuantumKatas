@@ -228,7 +228,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // in a way that would be robust to accidental failures, but you knew the optimal number of iterations
     // (the number that minimizes the probability of such failure). 
     // In this task you also need to make your implementation robust to not knowing the optimal number of iterations.
-    operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Bool[] {
+    operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Bool[] {
         // ...
         return new Bool[N];
     }

@@ -10,6 +10,8 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -241,7 +243,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Part II. Using Grover's algorithm for problems with multiple solutions
     //////////////////////////////////////////////////////////////////
     
-    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
+    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit {
         body (...) {
             using (target = Qubit()) {
                 // Put the target into the |-⟩ state
@@ -260,11 +262,11 @@ namespace Quantum.Kata.GroversAlgorithm {
         adjoint invert;
     }
     
-    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         return OracleConverterImpl_Reference(markingOracle, _);
     }
 
-    operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
+    operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         let phaseOracle = OracleConverter_Reference(oracle);
         ApplyToEach(H, register);
             
@@ -280,7 +282,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
 
     // Task 2.2. Universal implementation of Grover's algorithm
-    operation GroversAlgorithm_Reference (N : Int, oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Bool[] {
+    operation GroversAlgorithm_Reference (N : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Bool[] {
         // In this task you don't know the optimal number of iterations upfront, 
         // so it makes sense to try different numbers of iterations.
         // This way, even if you don't hit the "correct" number of iterations on one of your tries,

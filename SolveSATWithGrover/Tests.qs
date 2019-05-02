@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -18,7 +19,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // ------------------------------------------------------
     // helper wrapper to represent oracle operation on input and output registers as an operation on an array of qubits
-    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit : Adjoint), qs : Qubit[]) : Unit {
+    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit {
         
         body (...) {
             op(Most(qs), Tail(qs));
@@ -30,9 +31,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // ------------------------------------------------------
     // helper wrapper to test for operation equality on various register sizes
-    operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit is Adj)) : Unit {
         for (n in 2 .. 10) {
-            AssertOperationsEqualReferenced(testOp, refOp, n);
+            AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
     
@@ -77,7 +78,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         let testOp = QubitArrayWrapperOperation(Oracle_And, _);
         let refOp = QubitArrayWrapperOperation(Oracle_And_Reference, _);
-        AssertOperationsEqualReferenced(testOp, refOp, 3);
+        AssertOperationsEqualReferenced(3, testOp, refOp);
     }
     
 
@@ -91,7 +92,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         let testOp = QubitArrayWrapperOperation(Oracle_Or, _);
         let refOp = QubitArrayWrapperOperation(Oracle_Or_Reference, _);
-        AssertOperationsEqualReferenced(testOp, refOp, 3);
+        AssertOperationsEqualReferenced(3, testOp, refOp);
     }
     
 
@@ -105,7 +106,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         let testOp = QubitArrayWrapperOperation(Oracle_Xor, _);
         let refOp = QubitArrayWrapperOperation(Oracle_Xor_Reference, _);
-        AssertOperationsEqualReferenced(testOp, refOp, 3);
+        AssertOperationsEqualReferenced(3, testOp, refOp);
     }
 
 
@@ -126,7 +127,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         for (n in 2 .. 5) {
             AssertOracleImplementsFunction(n, Oracle_AlternatingBits, AlternatingBits);
 
-            AssertOperationsEqualReferenced(testOp, refOp, n + 1);
+            AssertOperationsEqualReferenced(n+1, testOp, refOp);
         }
     }
 
@@ -177,25 +178,22 @@ namespace Quantum.Kata.GroversAlgorithm {
         return (nVar, problem);
     }
 
-    operation Run2SATTests (oracle : ((Qubit[], Qubit, (Int, Bool)[][]) => Unit : Adjoint)) : Unit {
+    operation Run2SATTests (oracle : ((Qubit[], Qubit, (Int, Bool)[][]) => Unit is Adj)) : Unit {
         // Cross-tests:
         // OR oracle
-        AssertOperationsEqualReferenced(
+        AssertOperationsEqualReferenced(3, 
             QubitArrayWrapperOperation(oracle(_, _, [[(0, true), (1, true)]]), _),
-            QubitArrayWrapperOperation(Oracle_Or_Reference, _),
-            3);
+            QubitArrayWrapperOperation(Oracle_Or_Reference, _));
 
         // XOR oracle
-        AssertOperationsEqualReferenced(
+        AssertOperationsEqualReferenced(3, 
             QubitArrayWrapperOperation(oracle(_, _, [[(0, true), (1, true)], [(1, false), (0, false)]]), _),
-            QubitArrayWrapperOperation(Oracle_Xor_Reference, _),
-            3);
+            QubitArrayWrapperOperation(Oracle_Xor_Reference, _));
 
         // AlternatingBits oracle for 3 qubits
-        AssertOperationsEqualReferenced(
+        AssertOperationsEqualReferenced(4,
             QubitArrayWrapperOperation(oracle(_, _, [[(1, false), (2, false)], [(0, true), (1, true)], [(1, false), (0, false)], [(2, true), (1, true)]]), _),
-            QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _),
-            4);
+            QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _));
 
         // Standalone tests
         for (i in 1..10) {
@@ -204,10 +202,9 @@ namespace Quantum.Kata.GroversAlgorithm {
 
             AssertOracleImplementsFunction(nVar, oracle(_, _, problem), F_SAT(_, problem));
 
-            AssertOperationsEqualReferenced(
+            AssertOperationsEqualReferenced(nVar + 1,
                 QubitArrayWrapperOperation(oracle(_, _, problem), _),
-                QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _),
-                nVar + 1
+                QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _)
             );
         }
     }
@@ -229,10 +226,9 @@ namespace Quantum.Kata.GroversAlgorithm {
 
             AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
 
-            AssertOperationsEqualReferenced(
+            AssertOperationsEqualReferenced(nVar + 1,
                 QubitArrayWrapperOperation(Oracle_SAT(_, _, problem), _),
-                QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _),
-                nVar + 1
+                QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _)
             );
         }
     }
