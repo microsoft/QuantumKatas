@@ -43,35 +43,26 @@ namespace Quantum.Kata.CHSHGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1. Entangled pair
-    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
-        body (...) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
-        }
-
-        adjoint invert;
+    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit
+	is Adj {
+        H(qs[0]);
+        CNOT(qs[0], qs[1]);
     }
 
 
     // Task 2.2. Alice's quantum strategy
     operation AliceQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
-        if (bit) {
-            // Measure in sign basis if bit is 1
-            return BoolFromResult(Measure([PauliX], [qubit]));
-        } else {
-            // Measure in computational basis if bit is 0
-            return BoolFromResult(Measure([PauliZ], [qubit]));
-        }
+        // Measure in sign basis if bit is 1, and
+        // measure in computational basis if bit is 0
+		let basis = bit ? PauliX | PauliZ;
+        return BoolFromResult(Measure([basis], [qubit]));
     }
 
 
     // Task 2.3. Rotate Bob's qubit
     operation RotateBobQubit_Reference (clockwise : Bool, qubit : Qubit) : Unit {
-        if (clockwise) {
-            Ry(-2.0 * PI() / 8.0, qubit);
-        } else {
-            Ry(2.0 * PI() / 8.0, qubit);
-        }
+		let angle = 2.0 * PI() / 8.0;
+		Ry(clockwise ? -angle | angle, qubit);
     }
 
 
@@ -85,20 +76,18 @@ namespace Quantum.Kata.CHSHGame {
     // Task 2.5. Play the CHSH game
     operation PlayQuantumCHSH_Reference (askAlice : (Qubit => Bool),
                                          askBob : (Qubit => Bool)) : (Bool, Bool) {
-        mutable aliceResult = false;
-        mutable bobResult = false;
 
         using ((aliceQubit, bobQubit) = (Qubit(), Qubit())) {
             CreateEntangledPair_Reference([aliceQubit, bobQubit]);
 
-            set aliceResult = askAlice(aliceQubit);
-            set bobResult = askBob(bobQubit);
+            let aliceResult = askAlice(aliceQubit);
+            let bobResult = askBob(bobQubit);
 
             Reset(aliceQubit);
             Reset(bobQubit);
+			return (aliceResult, bobResult);
         }
 
-        return (aliceResult, bobResult);
     }
 
 }

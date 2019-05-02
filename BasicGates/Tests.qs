@@ -18,15 +18,9 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit {
-        
-        body (...) {
-            op(qs[0]);
-        }
-        
-        adjoint (...) {
-            Adjoint op(qs[0]);
-        }
+    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
+	is Adj {
+        op(qs[0]);
     }
     
     
@@ -77,24 +71,21 @@ namespace Quantum.Kata.BasicGates {
     // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
     // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
     // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
-    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit {
+    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit
+	is Adj {
         
-        body (...) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
+        H(qs[0]);
+        CNOT(qs[0], qs[1]);
             
-            // now we have |00⟩ + |11⟩ - modify it based on state arg
-            if (state % 2 == 1) {
-                // negative phase
-                Z(qs[1]);
-            }
-            
-            if (state / 2 == 1) {
-                X(qs[1]);
-            }
+        // now we have |00⟩ + |11⟩ - modify it based on state arg
+        if (state % 2 == 1) {
+            // negative phase
+            Z(qs[1]);
         }
-        
-        adjoint invert;
+            
+        if (state / 2 == 1) {
+            X(qs[1]);
+        }
     }
     
     

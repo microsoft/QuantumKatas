@@ -176,13 +176,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
-    operation BV_StatePrep (query : Qubit[], answer : Qubit) : Unit {
-        
-        body (...) {
+    operation BV_StatePrep (query : Qubit[], answer : Qubit) : Unit
+	is Adj {
             // ...
-        }
-        
-        adjoint invert;
     }
     
     
@@ -203,7 +199,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation BV_Algorithm (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
         
         // Declare an Int array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable r = new Int[N];
         
         // ...
@@ -306,7 +302,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // it just needs to produce equivalent results.
         
         // Declare an Int array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable r = new Int[N];
         
         // ...
