@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.QEC_BitFlipCode {
     
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -91,7 +92,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation TestParityOnState (statePrep : (Qubit[] => Unit : Adjoint), parity : Int, stateStr : String) : Unit {
+    operation TestParityOnState (statePrep : (Qubit[] => Unit is Adj), parity : Int, stateStr : String) : Unit {
         
         using (register = Qubit[3]) {
             // prepare basis state to test on
@@ -138,9 +139,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //////////////////////////////////////////////////////////////////////////
     
     operation AssertEqualOnZeroState (
-        statePrep : (Qubit[] => Unit : Adjoint), 
+        statePrep : (Qubit[] => Unit is Adj), 
         testImpl : (Qubit[] => Unit), 
-        refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+        refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[3]) {
             // prepare state
             statePrep(qs);
@@ -170,7 +171,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     operation T02_Encode_Test () : Unit {
         for (i in 0 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(StatePrep_Rotate(_, alpha), Encode, Encode_Reference);
         }
     }
@@ -198,7 +199,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     operation T03_DetectErrorOnLeftQubit_Test () : Unit {
         using (register = Qubit[3]) {
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 StatePrep_WithError(register, alpha, false);
                 AssertResultEqual(DetectErrorOnLeftQubit(register), Zero, "Failed on a state without X error.");
                 Adjoint StatePrep_WithError(register, alpha, false);
@@ -217,7 +218,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //////////////////////////////////////////////////////////////////////////
     
     operation BindErrorCorrectionRoundImpl (
-        encoder : (Qubit[] => Unit : Adjoint), 
+        encoder : (Qubit[] => Unit is Adj), 
         error : Pauli[], 
         logicalOp : (Qubit[] => Unit), 
         correction : (Qubit[] => Unit), 
@@ -246,7 +247,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     function BindErrorCorrectionRound (
-        encoder : (Qubit[] => Unit : Adjoint), 
+        encoder : (Qubit[] => Unit is Adj), 
         error : Pauli[], 
         logicalOp : (Qubit[] => Unit), 
         correction : (Qubit[] => Unit)) : (Qubit[] => Unit) {
@@ -269,7 +270,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let errors = PauliErrors();
         
         for (idxError in 0 .. 1) {
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), NoOp<Qubit[]>, 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
         }
     }
     
@@ -316,7 +317,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 06: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), NoOp<Qubit[]>, 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
         }
     }
     
@@ -332,7 +333,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 07: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), ApplyPauli([PauliX], _), 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyPauli([PauliX], _));
         }
     }
     
@@ -348,7 +349,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 08: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), ApplyToEachA(Z, _), 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyToEachA(Z, _));
         }
     }
     
