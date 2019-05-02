@@ -15,7 +15,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // ------------------------------------------------------
-    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
