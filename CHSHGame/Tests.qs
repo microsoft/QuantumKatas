@@ -94,11 +94,9 @@ namespace Quantum.Kata.CHSHGame {
         op(qs[0]);
     }
 
-    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit {
-        body (...) {
-            op(qs[0]);
-        }
-        adjoint auto;
+    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
+	is Adj {
+        op(qs[0]);
     }
 
     operation T23_RotateBobQubit_Test () : Unit {

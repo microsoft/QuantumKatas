@@ -15,25 +15,17 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     
     // ------------------------------------------------------
-    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
-        
-        body (...) {
-            let N = Length(qs);
-            oracle(qs[0 .. N - 2], qs[N - 1]);
-        }
-        
-        adjoint invert;
+    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
+	is Adj {        
+        let N = Length(qs);
+        oracle(qs[0 .. N - 2], qs[N - 1]);
     }
     
     
-    operation ApplyOracleWithOutputArrA (qs : Qubit[], oracle : ((Qubit[], Qubit[]) => Unit is Adj), outputSize : Int) : Unit {
-        
-        body (...) {
-            let N = Length(qs);
-            oracle(qs[0 .. (N - 1) - outputSize], qs[N - outputSize .. N - 1]);
-        }
-        
-        adjoint invert;
+    operation ApplyOracleWithOutputArrA (qs : Qubit[], oracle : ((Qubit[], Qubit[]) => Unit is Adj), outputSize : Int) : Unit
+	is Adj {
+        let N = Length(qs);
+        oracle(qs[0 .. (N - 1) - outputSize], qs[N - outputSize .. N - 1]);
     }
     
     

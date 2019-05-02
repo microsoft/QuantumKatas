@@ -48,13 +48,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_And (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_And (queryRegister : Qubit[], target : Qubit) : Unit
+	is Adj {        
+        // ...
     }
 
 
@@ -68,13 +64,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_Or (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_Or (queryRegister : Qubit[], target : Qubit) : Unit
+	is Adj {        
+        // ...
     }
 
 
@@ -88,13 +80,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_Xor (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_Xor (queryRegister : Qubit[], target : Qubit) : Unit
+	is Adj {        
+        // ...
     }
 
 
@@ -109,13 +97,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     // |10101...⟩ and |01010...⟩
     // It is possible (and quite straightforward) to implement this oracle based on this observation; 
     // however, for the purposes of learning to write oracles to solve SAT problems we recommend using the representation above.
-    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit
+	is Adj {        
+        // ...
     }
 
 
@@ -150,13 +134,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     operation Oracle_2SAT (queryRegister : Qubit[], 
                            target : Qubit, 
-                           problem : (Int, Bool)[][]) : Unit {
-        
-        body (...) {
+                           problem : (Int, Bool)[][]) : Unit
+		is Adj {        
             // ...
-        }
-        
-        adjoint auto;
     }
 
 
@@ -184,13 +164,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     operation Oracle_SAT (queryRegister : Qubit[], 
                           target : Qubit, 
-                          problem : (Int, Bool)[][]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+                          problem : (Int, Bool)[][]) : Unit
+		is Adj {        
+        // ...
     }
 
 
