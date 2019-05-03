@@ -457,7 +457,7 @@ namespace Quantum.Kata.Measurements {
     //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),
     //        |B⟩ = 1/sqrt(2) (|0⟩ + ω |1⟩),
     //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩).
-    //          where ω = exp(2π/3) denotes a primitive, complex 3rd root of unity.
+    //        where ω = exp(2π/3) denotes a primitive, complex 3rd root of unity.
     // Output: 1 or 2 if qubit was in the |A⟩ state,
     //         0 or 2 if qubit was in the |B⟩ state,
     //         0 or 1 if qubit was in the |C⟩ state.
