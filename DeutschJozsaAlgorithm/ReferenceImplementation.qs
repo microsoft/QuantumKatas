@@ -320,7 +320,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
             // now y = Σᵢ 𝑟ᵢ
             
-            // Declare a Bool array in which the result will be stored;
+            // Declare an Int array in which the result will be stored;
             // the variable has to be mutable to allow updating it.
             mutable r = new Int[N];
 
