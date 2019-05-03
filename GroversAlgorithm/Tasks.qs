@@ -19,7 +19,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // It covers the following topics:
     //  - writing oracles for Grover's search,
     //  - performing steps of the algorithm, and
-    //	- putting it all together: Grover's search algorithm.
+    //    - putting it all together: Grover's search algorithm.
     
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -137,7 +137,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Note:  If the register started in the |0...0⟩ state, this operation
     //        will prepare an equal superposition of all 2^N basis states.
     operation HadamardTransform (register : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         // ...
     }
     
@@ -150,8 +150,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        If the register is in any other basis state, multiply its phase by -1.
     // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
     operation ConditionalPhaseFlip (register : Qubit[]) : Unit
-	is Adj {
-	
+    is Adj {
+    
         // Hint 1: Note that quantum states are defined up to a global phase.
         // Thus the state obtained as a result of this operation is the same
         // as the state obtained by flipping the sign of only the |0...0⟩ state.
@@ -169,7 +169,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //         the phase of the state if the register is in the desired state.
     // Goal:  Perform one Grover iteration.
     operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit
-	is Adj {
+    is Adj {
         
         // Hint: A Grover iteration consists of 4 steps:
         //    1) apply the oracle

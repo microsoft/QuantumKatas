@@ -289,7 +289,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // ..X..X..
     // XX....XX
     // XX....XX
-    operation Creeper (qs : Qubit[]) : Unit {        		
+    operation Creeper (qs : Qubit[]) : Unit {                
         // ...
     }
     

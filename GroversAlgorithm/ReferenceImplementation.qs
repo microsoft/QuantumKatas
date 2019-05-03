@@ -23,14 +23,14 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 1.1. The |11...1⟩ oracle
     operation Oracle_AllOnes_Reference (queryRegister : Qubit[], target : Qubit) : Unit
-	is Adj {        
+    is Adj {        
         Controlled X(queryRegister, target);
     }
     
     
     // Task 1.2. The |1010...⟩ oracle
     operation Oracle_AlternatingBits_Reference (queryRegister : Qubit[], target : Qubit) : Unit
-	is Adj {
+    is Adj {
 
         // flip the bits in odd (0-based positions),
         // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
@@ -41,7 +41,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     operation FlipOddPositionBits_Reference (register : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         // iterate over elements in odd positions (indexes are 0-based)
         for (i in 1 .. 2 .. Length(register) - 1) {
@@ -52,14 +52,14 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 1.3. Arbitrary bit pattern oracle
     operation Oracle_ArbitraryPattern_Reference (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit
-	is Adj {        
+    is Adj {        
         (ControlledOnBitString(pattern, X))(queryRegister, target);
     }
     
     
     // Task 1.4*. Oracle converter
     operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         using (target = Qubit()) {
             // Put the target into the |-⟩ state
@@ -88,7 +88,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 2.1. The Hadamard transform
     operation HadamardTransform_Reference (register : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         ApplyToEachA(H, register);
 
@@ -131,7 +131,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 2.3. The Grover iteration
     operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit
-	is Adj {
+    is Adj {
         
         oracle(register);
         HadamardTransform_Reference(register);
@@ -146,7 +146,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 3.1. Grover's search
     operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit
-	is Adj {
+    is Adj {
         
         let phaseOracle = OracleConverter_Reference(oracle);
         HadamardTransform_Reference(register);

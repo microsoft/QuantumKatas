@@ -95,7 +95,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
     operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         op(qs[0]);
     }
 

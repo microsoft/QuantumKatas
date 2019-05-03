@@ -16,7 +16,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     // Task 1. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         // The easiest way to create an entangled pair is to start with
         // applying a Hadamard transformation to one of the qubits:
@@ -77,7 +77,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         // |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2) ---> |11⟩
         
         // So we can retrieve the encoded bits just by measuring.
-		return [M(qAlice) == One, M(qBob) == One];
+        return [M(qAlice) == One, M(qBob) == One];
     }
     
     
@@ -105,7 +105,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             
             // Make sure that we return qubits back in 0 state before returning the decoded bits.
             ResetAll(qs);
-			return decoded_bits;
+            return decoded_bits;
         }
     }
     

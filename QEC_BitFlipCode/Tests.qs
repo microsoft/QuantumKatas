@@ -31,7 +31,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit
-	is Adj {
+    is Adj {
         
         if (bits / 4 == 1) {
             X(qs[0]);
@@ -64,7 +64,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit
-	is Adj {
+    is Adj {
         
         let firstDiff = FindFirstDiff_Reference(bits1, bits2);
         H(qs[firstDiff]);
@@ -154,7 +154,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit
-	is Adj {        
+    is Adj {        
         Ry(2.0 * alpha, qs[0]);
     }
     
@@ -172,7 +172,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //////////////////////////////////////////////////////////////////////////
 
     operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit
-	is Adj {
+    is Adj {
         
         StatePrep_Rotate(qs, alpha);
         Encode_Reference(qs);

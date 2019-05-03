@@ -20,7 +20,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     // helper wrapper to represent oracle operation on input and output registers as an operation on an array of qubits
     operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit
-	is Adj {        
+    is Adj {        
         op(Most(qs), Tail(qs));
     }
     
@@ -157,8 +157,8 @@ namespace Quantum.Kata.GroversAlgorithm {
                 set nVarInClause = nVar;
             }
             
-			mutable problemRow = new (Int, Bool)[nVarInClause];
-			mutable usedVariables = new Bool[nVar];
+            mutable problemRow = new (Int, Bool)[nVarInClause];
+            mutable usedVariables = new Bool[nVar];
             // Make sure variables in each clause are distinct
             for (k in 0..nVarInClause-1) {
                 mutable nextInd = -1;

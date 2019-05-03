@@ -56,7 +56,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit
-	is Adj {
+    is Adj {
         
         // prep cos(alpha) * |0..0⟩ + sin(alpha) * |1..1⟩
         Ry(2.0 * alpha, qs[0]);
@@ -93,7 +93,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation StatePrep_WState_Arbitrary (qs : Qubit[]) : Unit
-	is Adj + Ctl {
+    is Adj + Ctl {
         
         let N = Length(qs);
             
@@ -117,7 +117,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit
-	is Adj {
+    is Adj {
         
         if (state == 0) {
             StatePrep_ParityMeasurement(qs, 0, alpha);
@@ -136,7 +136,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation StatePrep_DifferentBasis (qs : Qubit[], state : Int, alpha : Double) : Unit
-	is Adj {
+    is Adj {
         
         // prep cos(alpha) * |00⟩ + sin(alpha) * |11⟩
         Ry(2.0 * alpha, qs[0]);
@@ -159,7 +159,7 @@ namespace Quantum.Kata.JointMeasurements {
     // ------------------------------------------------------
     // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
     operation StatePrep_A (alpha : Double, q : Qubit) : Unit
-	is Adj {        
+    is Adj {        
         Ry(2.0 * alpha, q);
     }
     

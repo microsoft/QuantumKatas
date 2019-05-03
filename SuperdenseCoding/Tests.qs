@@ -47,7 +47,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             
             // Make sure that we return qubits back in 0 state.
             ResetAll(qs);
-			return result;
+            return result;
         }
     }
     
@@ -59,7 +59,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         
         // Loop over the 4 possible combinations of two bits
         for (n in 0 .. 3) {
-			let data = [1 == n / 2, 1 == n % 2];
+            let data = [1 == n / 2, 1 == n % 2];
             
             for (iter in 1 .. 100) {
                 let result = protocolOp(data);

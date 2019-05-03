@@ -219,7 +219,7 @@ namespace Quantum.Kata.Measurements {
     
     
     operation StatePrep_TwoBitstringsMeasurement (qs : Qubit[], bits1 : Bool[], bits2 : Bool[], state : Int) : Unit {
-		let bits = state == 0 ? bits1 | bits2;
+        let bits = state == 0 ? bits1 | bits2;
         StatePrep_Bitstring(qs, bits);
     }
     
@@ -239,7 +239,7 @@ namespace Quantum.Kata.Measurements {
     
     // ------------------------------------------------------
     operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit
-	is Adj + Ctl {
+    is Adj + Ctl {
         let N = Length(qs);
             
         if (N == 1) {
@@ -279,7 +279,7 @@ namespace Quantum.Kata.Measurements {
     
     // ------------------------------------------------------
     operation GHZ_State_Reference (qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         H(qs[0]);
         for (i in 1 .. Length(qs) - 1) {
@@ -380,7 +380,7 @@ namespace Quantum.Kata.Measurements {
     // ------------------------------------------------------
     
     operation StatePrep_ThreeQubitMeasurement (qs : Qubit[], state : Int) : Unit
-	is Adj {
+    is Adj {
         
         WState_Arbitrary_Reference(qs);
             

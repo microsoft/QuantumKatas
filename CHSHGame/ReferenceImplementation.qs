@@ -44,7 +44,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 2.1. Entangled pair
     operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         H(qs[0]);
         CNOT(qs[0], qs[1]);
     }
@@ -54,15 +54,15 @@ namespace Quantum.Kata.CHSHGame {
     operation AliceQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         // Measure in sign basis if bit is 1, and
         // measure in computational basis if bit is 0
-		let basis = bit ? PauliX | PauliZ;
+        let basis = bit ? PauliX | PauliZ;
         return BoolFromResult(Measure([basis], [qubit]));
     }
 
 
     // Task 2.3. Rotate Bob's qubit
     operation RotateBobQubit_Reference (clockwise : Bool, qubit : Qubit) : Unit {
-		let angle = 2.0 * PI() / 8.0;
-		Ry(clockwise ? -angle | angle, qubit);
+        let angle = 2.0 * PI() / 8.0;
+        Ry(clockwise ? -angle | angle, qubit);
     }
 
 
@@ -85,7 +85,7 @@ namespace Quantum.Kata.CHSHGame {
 
             Reset(aliceQubit);
             Reset(bobQubit);
-			return (aliceResult, bobResult);
+            return (aliceResult, bobResult);
         }
 
     }

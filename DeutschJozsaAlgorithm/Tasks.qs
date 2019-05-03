@@ -178,7 +178,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
     operation BV_StatePrep (query : Qubit[], answer : Qubit) : Unit
-	is Adj {
+    is Adj {
             // ...
     }
     

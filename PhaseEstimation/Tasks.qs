@@ -42,7 +42,7 @@ namespace Quantum.Kata.PhaseEstimation {
     //      Prepare one of the eigenstates of Z gate (which are the same as eigenstates of S or T gates):
     //      eigenstate |0⟩ if state = 0, or eigenstate |1⟩ if state = 1.
     operation Eigenstates_ZST (q : Qubit, state : Int) : Unit
-	is Adj {
+    is Adj {
         // ...
     }
 

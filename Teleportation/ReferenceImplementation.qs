@@ -22,7 +22,7 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 1.1. Entangled pair
     operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit
-	is Adj {        
+    is Adj {        
         H(qAlice);
         CNOT(qAlice, qBob);
     }
@@ -68,7 +68,7 @@ namespace Quantum.Kata.Teleportation {
             PrepareQubit(basis, qs[0]);
             let classicalBits = SendMessage_Reference(qAlice, qs[0]);
             Reset(qs[0]);
-			return classicalBits;
+            return classicalBits;
         }
     }
     
@@ -148,7 +148,7 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 4.1. Entangled trio
     operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
-	is Adj {
+    is Adj {
         
         H(qAlice);
         H(qBob);

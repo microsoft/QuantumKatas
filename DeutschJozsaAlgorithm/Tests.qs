@@ -25,7 +25,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     // ------------------------------------------------------
     operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
-	is Adj {        
+    is Adj {        
         let N = Length(qs);
         oracle(qs[0 .. N - 2], qs[N - 1]);
     }

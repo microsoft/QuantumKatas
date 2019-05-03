@@ -20,7 +20,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     // helper wrapper to represent oracle operation on input and output registers as an operation on an array of qubits
     operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         op(Most(qs), Tail(qs));
     }
     

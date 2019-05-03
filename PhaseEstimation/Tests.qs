@@ -43,7 +43,7 @@ namespace Quantum.Kata.PhaseEstimation {
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
     operation ArrayWrapperOperation1 (op : (Qubit => Unit is Adj + Ctl), qs : Qubit[]) : Unit
-	is Adj + Ctl {
+    is Adj + Ctl {
         op(qs[0]);
     }
 

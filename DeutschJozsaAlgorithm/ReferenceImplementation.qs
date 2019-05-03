@@ -25,7 +25,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_Zero_Reference (x : Qubit[], y : Qubit) : Unit
-	is Adj {
+    is Adj {
 
         // Since f(x) = 0 for all values of x, |y ⊕ f(x)⟩ = |y⟩.
         // This means that the operation doesn't need to do any transformation to the inputs.
@@ -39,7 +39,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_One_Reference (x : Qubit[], y : Qubit) : Unit
-	is Adj {
+    is Adj {
 
         // Since f(x) = 1 for all values of x, |y ⊕ f(x)⟩ = |y ⊕ 1⟩ = |NOT y⟩.
         // This means that the operation needs to flip qubit y (i.e. transform |0⟩ to |1⟩ and vice versa).
@@ -54,7 +54,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      3) 0-based index of the qubit from input register (0 <= k < N)
     // Goal: transform state |x, y⟩ into state |x, y ⊕ xₖ⟩ (⊕ is addition modulo 2).
     operation Oracle_Kth_Qubit_Reference (x : Qubit[], y : Qubit, k : Int) : Unit
-	is Adj {        
+    is Adj {        
 
         EqualityFactB(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
         CNOT(x[k], y);
@@ -67,8 +67,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_OddNumberOfOnes_Reference (x : Qubit[], y : Qubit) : Unit 
-	is Adj {       
-	
+    is Adj {       
+    
         // Hint: f(x) can be represented as x_0 ⊕ x_1 ⊕ ... ⊕ x_(N-1)
         for (q in x) {
             CNOT(q, y);
@@ -87,7 +87,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     // Note: the functions featured in tasks 1.1, 1.3 and 1.4 are special cases of this function.
     operation Oracle_ProductFunction_Reference (x : Qubit[], y : Qubit, r : Int[]) : Unit
-	is Adj {        
+    is Adj {        
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
@@ -108,7 +108,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // You are guaranteed that the qubit array and the bit vector have the same length.
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_ProductWithNegationFunction_Reference (x : Qubit[], y : Qubit, r : Int[]) : Unit
-	is Adj {
+    is Adj {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
@@ -136,7 +136,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // A prefix of length k of a state |x⟩ = |x₁, ..., xₙ⟩ is the state of its first k qubits |x₁, ..., xₖ⟩.
     // For example, a prefix of length 2 of a state |0110⟩ is 01.
     operation Oracle_HammingWithPrefix_Reference (x : Qubit[], y : Qubit, prefix : Int[]) : Unit
-	is Adj {        
+    is Adj {        
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         let P = Length(prefix);
@@ -174,7 +174,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      2) a qubit in arbitrary state |y⟩ (output qubit)
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_MajorityFunction_Reference (x : Qubit[], y : Qubit) : Unit
-	is Adj {        
+    is Adj {        
         // The following line enforces the constraint on the input array.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactB(3 == Length(x), true, "x should have exactly 3 qubits");
@@ -199,7 +199,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
     operation BV_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit
-	is Adj {        
+    is Adj {        
         ApplyToEachA(H, query);
         X(answer);
         H(answer);
@@ -236,7 +236,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
             // measure all qubits of the input register;
             // the result of each measurement is converted to an Int
-			mutable r = new Int[N];
+            mutable r = new Int[N];
             for (i in 0 .. N - 1) {
                 if (M(x[i]) != Zero) {
                     set r w/= i <- 1;
@@ -246,7 +246,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             // before releasing the qubits make sure they are all in |0⟩ state
             ResetAll(x);
             Reset(y);
-			return r;
+            return r;
         }
     }
     
@@ -319,9 +319,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
             // now y = Σᵢ 𝑟ᵢ
             
-			// Declare a Bool array in which the result will be stored;
-			// the variable has to be mutable to allow updating it.
-			mutable r = new Int[N];
+            // Declare a Bool array in which the result will be stored;
+            // the variable has to be mutable to allow updating it.
+            mutable r = new Int[N];
 
             // measure the output register
             let m = M(y);
@@ -333,7 +333,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             // before releasing the qubits make sure they are all in |0⟩ state
             ResetAll(x);
             Reset(y);
-			return r;
+            return r;
         }
     }
     

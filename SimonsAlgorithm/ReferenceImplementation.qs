@@ -20,7 +20,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (parity of the number of bits set to 1)
     operation Oracle_CountBits_Reference (x : Qubit[], y : Qubit) : Unit
-	is Adj {
+    is Adj {
         
         let N = Length(x);
 
@@ -32,7 +32,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 1.2. Bitwise right shift
     operation Oracle_BitwiseRightShift_Reference (x : Qubit[], y : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         
         let N = Length(x);
 
@@ -44,7 +44,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 1.3. Linear operator
     operation Oracle_OperatorOutput_Reference (x : Qubit[], y : Qubit, A : Int[]) : Unit
-	is Adj {
+    is Adj {
         
         let N = Length(x);
             
@@ -58,7 +58,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 1.4. Multidimensional linear operator
     operation Oracle_MultidimensionalOperatorOutput_Reference (x : Qubit[], y : Qubit[], A : Int[][]) : Unit
-	is Adj {
+    is Adj {
         
         let N1 = Length(y);
         let N2 = Length(x);
@@ -79,7 +79,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 2.1. State preparation for Simon's algorithm
     operation SA_StatePrep_Reference (query : Qubit[]) : Unit
-	is Adj {        
+    is Adj {        
         ApplyToEachA(H, query);
     }
     
@@ -100,7 +100,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
             
             // measure all qubits of the input register;
             // the result of each measurement is converted to an Int
-			mutable j = new Int[N];
+            mutable j = new Int[N];
             for (i in 0 .. N - 1) {
                 if (M(x[i]) == One) {
                     set j w/= i <- 1;
@@ -110,7 +110,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
             // before releasing the qubits make sure they are all in |0⟩ states
             ResetAll(x);
             ResetAll(y);
-			return j;
+            return j;
         }
     }
     
