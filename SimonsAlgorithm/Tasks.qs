@@ -80,7 +80,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     is Adj {
         
         // The following lines enforce the constraints on the input arrays.
-        // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
+        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(A[0]), "Arrays x and A[0] should have the same length");
         EqualityFactI(Length(y), Length(A), "Arrays y and A should have the same length");
             
