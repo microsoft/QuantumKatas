@@ -56,7 +56,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
             let testOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern(_, _, pattern), _);
             let refOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern_Reference(_, _, pattern), _);
-            AssertOperationsEqualReferenced(n+1, testOp, refOp);
+            AssertOperationsEqualReferenced(n + 1, testOp, refOp);
         }
     }
     
