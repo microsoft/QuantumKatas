@@ -123,7 +123,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         for (n in 2 .. 5) {
             AssertOracleImplementsFunction(n, Oracle_AlternatingBits, AlternatingBits);
 
-            AssertOperationsEqualReferenced(n+1, testOp, refOp);
+            AssertOperationsEqualReferenced(n + 1, testOp, refOp);
         }
     }
 
