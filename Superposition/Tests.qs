@@ -195,7 +195,7 @@ namespace Quantum.Kata.Superposition {
             
             // convert numbers to bit strings
             for (i in 0 .. 3) {
-                set bits w/= i <- BoolArrFromPositiveInt(numbers[i], N);
+                set bits w/= i <- IntAsBoolArray(numbers[i], N);
             }
             
             AssertEqualOnZeroState(N, FourBitstringSuperposition(_, bits), FourBitstringSuperposition_Reference(_, bits));
