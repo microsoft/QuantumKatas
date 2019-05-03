@@ -15,12 +15,12 @@ namespace Microsoft.Quantum.Katas
     public class CheckKataMagic : MagicSymbol
     {
         /// <summary>
-        /// IQ# Magic that checks that the Reference implementation of a Kata runs successfully.
+        /// IQ# Magic that checks that the reference implementation of a Kata's test runs successfully.
         /// </summary>
         public CheckKataMagic(IOperationResolver resolver, ICompilerService compiler, ILogger<KataMagic> logger)
         {
             this.Name = $"%check_kata";
-            this.Documentation = new Documentation() { Summary = "Checks the resference implementaiton of a single kata." };
+            this.Documentation = new Documentation() { Summary = "Checks the resference implementaiton of a single kata's test." };
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
 
@@ -43,9 +43,9 @@ namespace Microsoft.Quantum.Katas
 
         /// <summary>
         /// What this Magic does when triggered. It will:
-        /// - find the Kata to execute based on the Kata name,
-        /// - compile the code after found after the name as the user's answer.
-        /// - run (simulate) the kata.
+        /// - find the Test to execute based on the provided name,
+        /// - semi-compile the code after to identify the name of the operation with the user's answer.
+        /// - call simulate to execute the test.
         /// </summary>
         public virtual ExecutionResult Run(string input, IChannel channel)
         {
@@ -62,8 +62,8 @@ namespace Microsoft.Quantum.Katas
             var name = args[0];
             var code = args[1];
 
-            var kata = FindKata(name);
-            if (kata == null)
+            var test = FindTest(name);
+            if (test == null)
             {
                 channel.Stderr($"Invalid test name: {name}");
                 return ExecuteStatus.Error.ToExecutionResult();
@@ -72,7 +72,7 @@ namespace Microsoft.Quantum.Katas
             var userAnswer = Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
 
-            return Simulate(kata, userAnswer, channel)
+            return Simulate(test, userAnswer, channel)
                 ? "Success!".ToExecutionResult()
                 : ExecuteStatus.Error.ToExecutionResult();
         }
@@ -116,24 +116,24 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Executes the given kata using the provided <c>userAnswer</c> as the actual answer.
-        /// To do this, it finds another operation with the same name but in the Kata's namespace
-        /// (by calling `FindRawAnswer`) and replace its implementation with the userAnswer
-        /// in the simulator.
+        /// Executes the given test by replacing the userAnswer with its reference implementation.
+        /// It is expected that the test will succeed with no warnings.
         /// </summary>
-        public virtual bool Simulate(OperationInfo kata, string userAnswer, IChannel channel)
+        public virtual bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
         {
-            var rawAnswer = FindRawAnswer(kata, userAnswer);
-            if (rawAnswer == null)
+            // The skeleton answer used to compile the workspace
+            var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
+            if (skeletonAnswer == null)
             {
-                channel.Stderr($"Invalid task: {userAnswer}");
+                channel.Stderr($"Invalid task name: {userAnswer}");
                 return false;
             }
 
-            var referenceAnser = FindReferenceImplementation(kata, userAnswer);
-            if (referenceAnser == null)
+            // The reference implementation
+            var referenceAnswer = FindReferenceImplementation(test, userAnswer);
+            if (referenceAnswer == null)
             {
-                channel.Stderr($"Invalid Reference answer: {userAnswer}");
+                channel.Stderr($"Reference answer not found: {userAnswer}");
                 return false;
             }
 
@@ -143,14 +143,14 @@ namespace Microsoft.Quantum.Katas
                 var hasWarnings = false;
 
                 qsim.DisableLogToConsole();
-                qsim.Register(rawAnswer.RoslynType, referenceAnser.RoslynType, typeof(ICallable));
+                qsim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
                 qsim.OnLog += (msg) =>
                 {
                     hasWarnings = msg?.StartsWith("[WARNING]") ?? hasWarnings;
                     channel.Stdout(msg);
                 };
 
-                var value = kata.RunAsync(qsim, null).Result;
+                var value = test.RunAsync(qsim, null).Result;
 
                 if (qsim is IDisposable dis) { dis.Dispose(); }
 
@@ -171,33 +171,33 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Creates the instance of the simulator to use to run the Kata 
+        /// Creates the instance of the simulator to use to run the test 
         /// (for now always CounterSimulator from the same package).
         /// </summary>
         public virtual SimulatorBase CreateSimulator() =>
             new CounterSimulator();
 
         /// <summary>
-        /// Returns the OperationInfo for the Kata to run.
+        /// Returns the OperationInfo for the test to run.
         /// </summary>
-        public virtual OperationInfo FindKata(string kataName) =>
-             Resolver.Resolve(kataName);
+        public virtual OperationInfo FindTest(string testName) =>
+             Resolver.Resolve(testName);
 
         /// <summary>
-        /// Returns the original shell for the Kata's answer in the workspace for the given userAnswer.
+        /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
-        /// Kata's namespace
+        /// test's namespace
         /// </summary>
-        public virtual OperationInfo FindRawAnswer(OperationInfo kata, string userAnswer) =>
-            Resolver.Resolve($"{kata.Header.QualifiedName.Namespace.Value}.{userAnswer}");
+        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}");
 
         /// <summary>
-        /// Returns the original shell for the Kata's answer in the workspace for the given userAnswer.
+        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
-        /// Kata's namespace
+        /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
         /// </summary>
-        public virtual OperationInfo FindReferenceImplementation(OperationInfo kata, string userAnswer) =>
-            Resolver.Resolve($"{kata.Header.QualifiedName.Namespace.Value}.{userAnswer}_Reference");
+        public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}_Reference");
     }
 }
 
