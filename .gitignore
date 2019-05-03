@@ -17,6 +17,7 @@ Tests/build
 # test outputs
 TestResults/
 *.qxe
+Check.ipynb
 
 # Random VS files
 *.suo
