@@ -30,7 +30,7 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// The Resolver let's us find compiled Q# operations from the workspace
+        /// The Resolver lets us find compiled Q# operations from the workspace
         /// </summary>
         protected IOperationResolver Resolver { get; }
 
