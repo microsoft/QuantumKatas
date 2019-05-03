@@ -54,7 +54,9 @@ namespace Q22
             {
                 get
                 {
-                    var array = (IQArray<IQArray<long>>)new QArray<IQArray<long>>(transformation.Select(vector => new QArray<long>(vector)));
+                    var array = (IQArray<IQArray<long>>)new QArray<IQArray<long>>(
+                        transformation.Select(vector => new QArray<long>(vector))
+                    );
                     array = QArray<IQArray<long>>.Add (array, new QArray<IQArray<long>>(new QArray<long>(transformation.Last())));
                     return array;
                 }
