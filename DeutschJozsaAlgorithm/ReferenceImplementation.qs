@@ -27,7 +27,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_Zero_Reference (x : Qubit[], y : Qubit) : Unit
     is Adj {
-
         // Since f(x) = 0 for all values of x, |y ⊕ f(x)⟩ = |y⟩.
         // This means that the operation doesn't need to do any transformation to the inputs.
         // Build the project and run the tests to see that T01_Oracle_Zero_Test test passes.
@@ -41,7 +40,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_One_Reference (x : Qubit[], y : Qubit) : Unit
     is Adj {
-
         // Since f(x) = 1 for all values of x, |y ⊕ f(x)⟩ = |y ⊕ 1⟩ = |NOT y⟩.
         // This means that the operation needs to flip qubit y (i.e. transform |0⟩ to |1⟩ and vice versa).
         X(y);
@@ -56,7 +54,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: transform state |x, y⟩ into state |x, y ⊕ xₖ⟩ (⊕ is addition modulo 2).
     operation Oracle_Kth_Qubit_Reference (x : Qubit[], y : Qubit, k : Int) : Unit
     is Adj {        
-
         EqualityFactB(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
         CNOT(x[k], y);
     }
@@ -69,7 +66,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_OddNumberOfOnes_Reference (x : Qubit[], y : Qubit) : Unit 
     is Adj {       
-    
         // Hint: f(x) can be represented as x_0 ⊕ x_1 ⊕ ... ⊕ x_(N-1)
         for (q in x) {
             CNOT(q, y);
