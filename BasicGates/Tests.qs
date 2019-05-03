@@ -19,7 +19,7 @@ namespace Quantum.Kata.BasicGates {
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
     operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
-	is Adj {
+    is Adj {
         op(qs[0]);
     }
     
@@ -72,7 +72,7 @@ namespace Quantum.Kata.BasicGates {
     // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
     // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
     operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit
-	is Adj {
+    is Adj {
         
         H(qs[0]);
         CNOT(qs[0], qs[1]);

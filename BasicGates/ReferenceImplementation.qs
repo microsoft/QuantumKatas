@@ -73,7 +73,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
     operation AmplitudeChange_Reference (q : Qubit, alpha : Double) : Unit
-	is Adj {        
+    is Adj {        
         Ry(2.0 * alpha, q);
     }
     
@@ -82,7 +82,7 @@ namespace Quantum.Kata.BasicGates {
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the qubit state to α |0⟩ + iβ |1⟩ (flip the phase of |1⟩ component of the superposition).
     operation PhaseFlip_Reference (q : Qubit) : Unit 
-	is Adj {        
+    is Adj {        
         S(q);
         // alternatively Rz(0.5 * PI(), q);
     }
@@ -97,7 +97,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
     operation PhaseChange_Reference (q : Qubit, alpha : Double) : Unit
-	is Adj {        
+    is Adj {        
         Rz(alpha, q);
     }
     
@@ -106,7 +106,7 @@ namespace Quantum.Kata.BasicGates {
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
     operation BellStateChange1_Reference (qs : Qubit[]) : Unit
-	is Adj {        
+    is Adj {        
         Z(qs[0]);
         // alternatively Z(qs[1]);
     }
@@ -116,7 +116,7 @@ namespace Quantum.Kata.BasicGates {
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
     operation BellStateChange2_Reference (qs : Qubit[]) : Unit
-	is Adj {        
+    is Adj {        
         X(qs[0]);
         // alternatively X(qs[1]);
     }
@@ -126,7 +126,7 @@ namespace Quantum.Kata.BasicGates {
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
     operation BellStateChange3_Reference (qs : Qubit[]) : Unit
-	is Adj {        
+    is Adj {        
         Y(qs[0]);
     }
     
