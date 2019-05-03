@@ -9,18 +9,18 @@
 
 namespace Quantum.Kata.PhaseEstimation {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
     // Part I. Quantum phase estimation (QPE)
     //////////////////////////////////////////////////////////////////
     
-    operation AssertEqualOnZeroState1 (testImpl : (Qubit => Unit), refImpl : (Qubit => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState1 (testImpl : (Qubit => Unit), refImpl : (Qubit => Unit is Adj)) : Unit {
         using (q = Qubit()) {
             // apply operation that needs to be tested
             testImpl(q);
@@ -42,23 +42,17 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation1 (op : (Qubit => Unit : Adjoint, Controlled), qs : Qubit[]) : Unit {
-        
-        body (...) {
-            op(qs[0]);
-        }
-        
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
+    operation ArrayWrapperOperation1 (op : (Qubit => Unit is Adj + Ctl), qs : Qubit[]) : Unit
+    is Adj + Ctl {
+        op(qs[0]);
     }
 
 
     operation T12_UnitaryPower_Test () : Unit {
         for (U in [Z, S, T]) { 
             for (power in 1..5) {
-                AssertOperationsEqualReferenced(ArrayWrapperOperation1(UnitaryPower(U, power), _), 
-                                                ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _), 1);
+                AssertOperationsEqualReferenced(1, ArrayWrapperOperation1(UnitaryPower(U, power), _), 
+                                                ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _));
             }
         }
     }
@@ -78,14 +72,14 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     operation T14_QPE_Test () : Unit {
-        AssertAlmostEqualTol(QPE(Z, I, 1), 0.0, 0.25);
-        AssertAlmostEqualTol(QPE(Z, X, 1), 0.5, 0.25);
+        EqualityWithinToleranceFact(QPE(Z, I, 1), 0.0, 0.25);
+        EqualityWithinToleranceFact(QPE(Z, X, 1), 0.5, 0.25);
 
-        AssertAlmostEqualTol(QPE(S, I, 2), 0.0, 0.125);
-        AssertAlmostEqualTol(QPE(S, X, 2), 0.25, 0.125);
+        EqualityWithinToleranceFact(QPE(S, I, 2), 0.0, 0.125);
+        EqualityWithinToleranceFact(QPE(S, X, 2), 0.25, 0.125);
 
-        AssertAlmostEqualTol(QPE(T, I, 3), 0.0,   0.0625);
-        AssertAlmostEqualTol(QPE(T, X, 3), 0.125, 0.0625);
+        EqualityWithinToleranceFact(QPE(T, I, 3), 0.0,   0.0625);
+        EqualityWithinToleranceFact(QPE(T, X, 3), 0.125, 0.0625);
     }
 
 
@@ -93,18 +87,18 @@ namespace Quantum.Kata.PhaseEstimation {
     // Part II. Iterative phase estimation
     //////////////////////////////////////////////////////////////////
     
-    operation Test1BitPEOnOnePair(U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), expected : Int) : Unit {
+    operation Test1BitPEOnOnePair(U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), expected : Int) : Unit {
         ResetQubitCount();
         ResetOracleCallsCount();
 
         let actual = SingleBitPE(U, P);
-        AssertIntEqual(actual, expected, $"Unexpected return for ({U}, {P}): expected {expected}, got {actual}");
+        EqualityFactI(actual, expected, $"Unexpected return for ({U}, {P}): expected {expected}, got {actual}");
         
         let nq = GetMaxQubitCount();
-        AssertIntEqual(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
+        EqualityFactI(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
         
         let nu = GetOracleCallsCount(Controlled U);
-        AssertIntEqual(nu, 1, $"You are allowed to call Controlled U exactly once, and you called it {nu} times");
+        EqualityFactI(nu, 1, $"You are allowed to call Controlled U exactly once, and you called it {nu} times");
     }
 
     operation T21_SingleBitPE_Test () : Unit {
@@ -116,14 +110,14 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation Test2BitPEOnOnePair(U : (Qubit => Unit : Adjoint, Controlled), P : (Qubit => Unit : Adjoint), expected : Double) : Unit {
+    operation Test2BitPEOnOnePair(U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), expected : Double) : Unit {
         ResetQubitCount();
 
         let actual = TwoBitPE(U, P);
-        AssertAlmostEqualTol(actual, expected, 0.001);
+        EqualityWithinToleranceFact(actual, expected, 0.001);
         
         let nq = GetMaxQubitCount();
-        AssertIntEqual(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
+        EqualityFactI(nq, 2, $"You are allowed to allocate exactly 2 qubits, and you allocated {nq}");
     }
 
     operation T22_TwoBitPE_Test () : Unit {

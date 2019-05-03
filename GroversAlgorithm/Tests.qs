@@ -9,30 +9,27 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     // ------------------------------------------------------
     // helper wrapper to represent oracle operation on input and output registers as an operation on an array of qubits
-    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit : Adjoint), qs : Qubit[]) : Unit {
-        
-        body (...) {
-            op(Most(qs), Tail(qs));
-        }
-        
-        adjoint invert;
+    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit
+    is Adj {
+        op(Most(qs), Tail(qs));
     }
     
     
     // ------------------------------------------------------
     // helper wrapper to test for operation equality on various register sizes
-    operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit is Adj)) : Unit {
         for (n in 2 .. 10) {
-            AssertOperationsEqualReferenced(testOp, refOp, n);
+            AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
     
@@ -59,7 +56,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
             let testOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern(_, _, pattern), _);
             let refOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern_Reference(_, _, pattern), _);
-            AssertOperationsEqualReferenced(testOp, refOp, n + 1);
+            AssertOperationsEqualReferenced(n + 1, testOp, refOp);
         }
     }
     
@@ -71,7 +68,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let phaseOracleRef = OracleConverter_Reference(markingOracle);
             let phaseOracleSol = OracleConverter(markingOracle);
-            AssertOperationsEqualReferenced(phaseOracleSol, phaseOracleRef, n);
+            AssertOperationsEqualReferenced(n, phaseOracleSol, phaseOracleRef);
         }
     }
     
@@ -96,7 +93,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let flipOracle = OracleConverter_Reference(markingOracle);
             let testOp = GroverIteration(_, flipOracle);
             let refOp = GroverIteration_Reference(_, flipOracle);
-            AssertOperationsEqualReferenced(testOp, refOp, n);
+            AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
     
@@ -108,7 +105,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let testOp = GroversSearch(_, markingOracle, 4);
             let refOp = GroversSearch_Reference(_, markingOracle, 4);
-            AssertOperationsEqualReferenced(testOp, refOp, n);
+            AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
     

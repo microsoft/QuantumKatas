@@ -3,7 +3,8 @@
 
 namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -70,7 +71,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Kth_Qubit (x : Qubit[], y : Qubit, k : Int) : Unit {
         // The following line enforces the constraints on the value of k that you are given.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertBoolEqual(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
+        EqualityFactB(0 <= k and k < Length(x), true, "k should be between 0 and N-1, inclusive");
 
         // ...
     }
@@ -100,7 +101,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_ProductFunction (x : Qubit[], y : Qubit, r : Int[]) : Unit {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(r), "Arrays should have the same length");
+        EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
 
         // ...
     }
@@ -116,7 +117,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_ProductWithNegationFunction (x : Qubit[], y : Qubit, r : Int[]) : Unit {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertIntEqual(Length(x), Length(r), "Arrays should have the same length");
+        EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
 
         // ...
     }
@@ -135,7 +136,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         let P = Length(prefix);
-        AssertBoolEqual(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
+        EqualityFactB(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
 
         // Hint: the first part of the function is the same as in task 1.4
 
@@ -156,7 +157,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_MajorityFunction (x : Qubit[], y : Qubit) : Unit {
         // The following line enforces the constraint on the input array.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-        AssertBoolEqual(3 == Length(x), true, "x should have exactly 3 qubits");
+        EqualityFactB(3 == Length(x), true, "x should have exactly 3 qubits");
 
         // Hint: represent f(x) in terms of AND and ⊕ operations
 
@@ -176,13 +177,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
-    operation BV_StatePrep (query : Qubit[], answer : Qubit) : Unit {
-        
-        body (...) {
+    operation BV_StatePrep (query : Qubit[], answer : Qubit) : Unit
+    is Adj {
             // ...
-        }
-        
-        adjoint invert;
     }
     
     
@@ -203,7 +200,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation BV_Algorithm (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
         
         // Declare an Int array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable r = new Int[N];
         
         // ...
@@ -226,7 +223,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You might want to use something like the following:
         // let oracle = Oracle_ProductFunction(_, _, [...your bit vector here...]);
 
-        // Hint: use AssertIntArrayEqual function to assert that the return value of BV_Algorithm operation 
+        // Hint: use AllEqualityFactI function to assert that the return value of BV_Algorithm operation 
         // matches the expected value (i.e. the bit vector passed to Oracle_ProductFunction).
 
         // BV_Test appears in the list of unit tests for the solution; run it to verify your code.
@@ -278,7 +275,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Hint: you will need to use partial application to test ones such as Oracle_Kth_Qubit and Oracle_ProductFunction;
         // see task 2.3 for a description of how to do that.
 
-        // Hint: use AssertBoolEqual function to assert that the return value of DJ_Algorithm operation matches the expected value
+        // Hint: use EqualityFactB function to assert that the return value of DJ_Algorithm operation matches the expected value
 
         // DJ_Test appears in the list of unit tests for the solution; run it to verify your code.
 
@@ -306,7 +303,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // it just needs to produce equivalent results.
         
         // Declare an Int array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable r = new Int[N];
         
         // ...

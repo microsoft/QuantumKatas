@@ -9,16 +9,16 @@
 
 namespace Quantum.Kata.CHSHGame {
 
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Diagnostics;
 
     operation T11_WinCondition_Test () : Unit {
         for (i in 0..1 <<< 4 - 1) {
             let bits = BoolArrFromPositiveInt(i, 4);
-            AssertBoolEqual(
+            EqualityFactB(
                 WinCondition(bits[0], bits[1], bits[2], bits[3]),
                 (bits[0] and bits[1]) == (bits[2] != bits[3]),
                 $"Win condition is wrong for X = {bits[0]}, Y = {bits[1]}, A = {bits[2]}, " +
@@ -38,16 +38,16 @@ namespace Quantum.Kata.CHSHGame {
                 set wins = wins + 1;
             }
         }
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+        Message($"Win rate {IntAsDouble(wins) / 1000.}");
 
-        AssertBoolEqual(wins >= 700, true,
+        EqualityFactB(wins >= 700, true,
                         "Alice and Bob's classical strategy is not optimal");
     }
 
 
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
-                                      refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+                                      refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
@@ -70,20 +70,20 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     operation T22_AliceQuantum_Test () : Unit {
         using (q = Qubit()) {
-            AssertBoolEqual(AliceQuantum(false, q), false, "|0⟩ not measured as false");
+            EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
             Reset(q);
 
             X(q);
-            AssertBoolEqual(AliceQuantum(false, q), true, "|1⟩ not measured as true");
+            EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
             Reset(q);
 
             H(q);
-            AssertBoolEqual(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
+            EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
             Reset(q);
 
             X(q);
             H(q);
-            AssertBoolEqual(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
+            EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
             Reset(q);
         }
     }
@@ -94,18 +94,16 @@ namespace Quantum.Kata.CHSHGame {
         op(qs[0]);
     }
 
-    operation QubitToRegisterOperationA (op : (Qubit => Unit : Adjoint), qs : Qubit[]) : Unit {
-        body (...) {
-            op(qs[0]);
-        }
-        adjoint auto;
+    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
+    is Adj {
+        op(qs[0]);
     }
 
     operation T23_RotateBobQubit_Test () : Unit {
-        AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(true, _), _),
-                                        QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _), 1);
-        AssertOperationsEqualReferenced(QubitToRegisterOperation(RotateBobQubit(false, _), _),
-                                        QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _), 1);
+        AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(true, _), _),
+                                        QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _));
+        AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(false, _), _),
+                                        QubitToRegisterOperationA(Ry(2.0 * PI() / 8.0, _), _));
     }
 
 
@@ -113,21 +111,21 @@ namespace Quantum.Kata.CHSHGame {
     operation T24_BobQuantum_Test () : Unit {
         using (q = Qubit()) {
             RotateBobQubit_Reference(false, q);
-            AssertBoolEqual(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
+            EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
             Reset(q);
 
             X(q);
             RotateBobQubit_Reference(false, q);
-            AssertBoolEqual(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
+            EqualityFactB(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
             Reset(q);
 
             RotateBobQubit_Reference(true, q);
-            AssertBoolEqual(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
+            EqualityFactB(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
             Reset(q);
 
             X(q);
             RotateBobQubit_Reference(true, q);
-            AssertBoolEqual(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
+            EqualityFactB(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
             Reset(q);
         }
     }
@@ -144,7 +142,7 @@ namespace Quantum.Kata.CHSHGame {
                 set wins = wins + 1;
             }
         }
-        AssertAlmostEqualTol(ToDouble(wins) / 10000., 0.85, 0.01);
+        EqualityWithinToleranceFact(IntAsDouble(wins) / 10000., 0.85, 0.01);
     }
 
 }

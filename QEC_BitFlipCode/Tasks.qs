@@ -3,7 +3,7 @@
 
 namespace Quantum.Kata.QEC_BitFlipCode {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     

@@ -12,40 +12,40 @@ using Microsoft.Quantum.Simulation.Core;
 
 namespace Microsoft.Quantum.Katas
 {
-    public class KataMagic : MagicSymbol
+    public class CheckKataMagic : MagicSymbol
     {
         /// <summary>
-        /// IQ# Magic that enables executing the Katas on Jupyter.
+        /// IQ# Magic that checks that the reference implementation of a Kata's test runs successfully.
         /// </summary>
-        public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger)
+        public CheckKataMagic(IOperationResolver resolver, ICompilerService compiler, ILogger<KataMagic> logger)
         {
-            this.Name = $"%kata";
-            this.Documentation = new Documentation() { Summary = "Executes a single test.", Full = "## Executes a single test.\n##Usage: \n%kata Test \"q# operation\"" };
+            this.Name = $"%check_kata";
+            this.Documentation = new Documentation() { Summary = "Checks the resference implementaiton of a single kata's test." };
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
 
             this.Resolver = resolver;
-            this.Snippets = snippets;
+            this.Compiler = compiler;
             this.Logger = logger;
         }
 
         /// <summary>
-        /// The Resolver let's us find compiled Q# operations from the workspace
+        /// The Resolver lets us find compiled Q# operations from the workspace
         /// </summary>
         protected IOperationResolver Resolver { get; }
 
         /// <summary>
         /// The list of user-defined Q# code snippets from the notebook.
         /// </summary>
-        protected ISnippets Snippets { get; }
+        protected ICompilerService Compiler { get; }
 
         protected ILogger<KataMagic> Logger { get; }
 
         /// <summary>
         /// What this Magic does when triggered. It will:
-        /// - find the Test to execute based on the given name,
-        /// - compile the code after found after the name as the user's answer.
-        /// - run (simulate) the test and report its result.
+        /// - find the Test to execute based on the provided name,
+        /// - semi-compile the code after to identify the name of the operation with the user's answer.
+        /// - call simulate to execute the test.
         /// </summary>
         public virtual ExecutionResult Run(string input, IChannel channel)
         {
@@ -81,17 +81,15 @@ namespace Microsoft.Quantum.Katas
         /// Compiles the given code. Checks there is only one operation defined in the code,
         /// and returns its corresponding OperationInfo
         /// </summary>
-        public virtual OperationInfo Compile(string code, IChannel channel)
+        public virtual string Compile(string code, IChannel channel)
         {
             try
             {
-                var result = Snippets.Compile(code);
-
-                foreach (var m in result.warnings) { channel.Stdout(m); }
+                var result = Compiler.IdentifyElements(code);
 
                 // Gets the names of all the operations found for this snippet
                 var opsNames =
-                    result.Elements?
+                    result
                         .Where(e => e.IsQsCallable)
                         .Select(e => e.ToFullName().WithoutNamespace(Microsoft.Quantum.IQSharp.Snippets.SNIPPETS_NAMESPACE))
                         .OrderBy(o => o)
@@ -102,7 +100,7 @@ namespace Microsoft.Quantum.Katas
                     channel.Stdout("Expecting only one Q# operation in code. Using the first one");
                 }
 
-                return Resolver.Resolve(opsNames.First());
+                return opsNames.First();
             }
             catch (CompilationErrorsException c)
             {
@@ -118,33 +116,45 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Executes the given kata using the provided <c>userAnswer</c> as the actual answer.
-        /// To do this, it finds another operation with the same name but in the Kata's namespace
-        /// (by calling `FindRawAnswer`) and replace its implementation with the userAnswer
-        /// in the simulator.
+        /// Executes the given test by replacing the userAnswer with its reference implementation.
+        /// It is expected that the test will succeed with no warnings.
         /// </summary>
-        public virtual bool Simulate(OperationInfo test, OperationInfo userAnswer, IChannel channel)
+        public virtual bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
         {
+            // The skeleton answer used to compile the workspace
             var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
             if (skeletonAnswer == null)
             {
-                channel.Stderr($"Invalid task: {userAnswer.FullName}");
+                channel.Stderr($"Invalid task name: {userAnswer}");
+                return false;
+            }
+
+            // The reference implementation
+            var referenceAnswer = FindReferenceImplementation(test, userAnswer);
+            if (referenceAnswer == null)
+            {
+                channel.Stderr($"Reference answer not found: {userAnswer}");
                 return false;
             }
 
             try
             {
                 var qsim = CreateSimulator();
+                var hasWarnings = false;
 
                 qsim.DisableLogToConsole();
-                qsim.Register(skeletonAnswer.RoslynType, userAnswer.RoslynType, typeof(ICallable));
-                qsim.OnLog += channel.Stdout;
+                qsim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
+                qsim.OnLog += (msg) =>
+                {
+                    hasWarnings = msg?.StartsWith("[WARNING]") ?? hasWarnings;
+                    channel.Stdout(msg);
+                };
 
                 var value = test.RunAsync(qsim, null).Result;
 
                 if (qsim is IDisposable dis) { dis.Dispose(); }
 
-                return true;
+                return !hasWarnings;
             }
             catch (AggregateException agg)
             {
@@ -161,14 +171,14 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Creates the instance of the simulator to use to run the Test 
+        /// Creates the instance of the simulator to use to run the test 
         /// (for now always CounterSimulator from the same package).
         /// </summary>
         public virtual SimulatorBase CreateSimulator() =>
             new CounterSimulator();
 
         /// <summary>
-        /// Returns the OperationInfo with the Test to run based on the given name.
+        /// Returns the OperationInfo for the test to run.
         /// </summary>
         public virtual OperationInfo FindTest(string testName) =>
              Resolver.Resolve(testName);
@@ -178,8 +188,16 @@ namespace Microsoft.Quantum.Katas
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
         /// test's namespace
         /// </summary>
-        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
+        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}");
+
+        /// <summary>
+        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
+        /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
+        /// </summary>
+        public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}_Reference");
     }
 }
 

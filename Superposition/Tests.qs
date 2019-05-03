@@ -9,15 +9,15 @@
 
 namespace Quantum.Kata.Superposition {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     // ------------------------------------------------------
-    operation AssertEqualOnZeroState (N : Int, testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation AssertEqualOnZeroState (N : Int, testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             testImpl(qs);
@@ -53,7 +53,7 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.75 * PI()), MinusState_Reference);
         
         for (i in 1 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(1, UnequalSuperposition(_, alpha), UnequalSuperposition_Reference(_, alpha));
         }
     }
@@ -182,7 +182,7 @@ namespace Quantum.Kata.Superposition {
             repeat {
                 mutable ok = true;
                 for (i in 0 .. 3) {
-                    set numbers[i] = RandomInt(1 <<< N);
+                    set numbers w/= i <- RandomInt(1 <<< N);
                     for (j in 0 .. i - 1) {
                         if (numbers[i] == numbers[j]) {
                             set ok = false;
@@ -195,7 +195,7 @@ namespace Quantum.Kata.Superposition {
             
             // convert numbers to bit strings
             for (i in 0 .. 3) {
-                set bits[i] = BoolArrFromPositiveInt(numbers[i], N);
+                set bits w/= i <- IntAsBoolArray(numbers[i], N);
             }
             
             AssertEqualOnZeroState(N, FourBitstringSuperposition(_, bits), FourBitstringSuperposition_Reference(_, bits));

@@ -3,10 +3,10 @@
 
 namespace Quantum.Kata.Measurements {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -270,7 +270,7 @@ namespace Quantum.Kata.Measurements {
     //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),
     //        |B⟩ = 1/sqrt(2) (|0⟩ + ω |1⟩),
     //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩),
-    //	      where ω = exp(2iπ/3) denotes a primitive, complex 3rd root of unity.
+    //          where ω = exp(2iπ/3) denotes a primitive, complex 3rd root of unity.
     // Output: 1 or 2 if the qubit was in the |A⟩ state,
     //         0 or 2 if the qubit was in the |B⟩ state,
     //         0 or 1 if the qubit was in the |C⟩ state.

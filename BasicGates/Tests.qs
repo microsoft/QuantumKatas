@@ -9,65 +9,59 @@
 
 namespace Quantum.Kata.BasicGates {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Diagnostics;
     
     
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation (op : (Qubit => Unit : Adjoint), qs : Qubit[]) : Unit {
-        
-        body (...) {
-            op(qs[0]);
-        }
-        
-        adjoint (...) {
-            Adjoint op(qs[0]);
-        }
+    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
+    is Adj {
+        op(qs[0]);
     }
     
     
     // ------------------------------------------------------
     operation T11_StateFlip_Test () : Unit {
-        AssertOperationsEqualReferenced(ArrayWrapperOperation(StateFlip, _), ArrayWrapperOperation(StateFlip_Reference, _), 1);
+        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(StateFlip, _), ArrayWrapperOperation(StateFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T12_BasisChange_Test () : Unit {
-        AssertOperationsEqualReferenced(ArrayWrapperOperation(BasisChange, _), ArrayWrapperOperation(BasisChange_Reference, _), 1);
+        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(BasisChange, _), ArrayWrapperOperation(BasisChange_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T13_SignFlip_Test () : Unit {
-        AssertOperationsEqualReferenced(ArrayWrapperOperation(SignFlip, _), ArrayWrapperOperation(SignFlip_Reference, _), 1);
+        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(SignFlip, _), ArrayWrapperOperation(SignFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T14_AmplitudeChange_Test () : Unit {
         for (i in 0 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
-            AssertOperationsEqualReferenced(ArrayWrapperOperation(AmplitudeChange(_, alpha), _), ArrayWrapperOperation(AmplitudeChange_Reference(_, alpha), _), 1);
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
+            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(AmplitudeChange(_, alpha), _), ArrayWrapperOperation(AmplitudeChange_Reference(_, alpha), _));
         }
     }
     
     
     // ------------------------------------------------------
     operation T15_PhaseFlip_Test () : Unit {
-        AssertOperationsEqualReferenced(ArrayWrapperOperation(PhaseFlip, _), ArrayWrapperOperation(PhaseFlip_Reference, _), 1);
+        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseFlip, _), ArrayWrapperOperation(PhaseFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T16_PhaseChange_Test () : Unit {
         for (i in 0 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
-            AssertOperationsEqualReferenced(ArrayWrapperOperation(PhaseChange(_, alpha), _), ArrayWrapperOperation(PhaseChange_Reference(_, alpha), _), 1);
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
+            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseChange(_, alpha), _), ArrayWrapperOperation(PhaseChange_Reference(_, alpha), _));
         }
     }
     
@@ -77,24 +71,21 @@ namespace Quantum.Kata.BasicGates {
     // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
     // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
     // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
-    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit {
+    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit
+    is Adj {
         
-        body (...) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
+        H(qs[0]);
+        CNOT(qs[0], qs[1]);
             
-            // now we have |00⟩ + |11⟩ - modify it based on state arg
-            if (state % 2 == 1) {
-                // negative phase
-                Z(qs[1]);
-            }
-            
-            if (state / 2 == 1) {
-                X(qs[1]);
-            }
+        // now we have |00⟩ + |11⟩ - modify it based on state arg
+        if (state % 2 == 1) {
+            // negative phase
+            Z(qs[1]);
         }
-        
-        adjoint invert;
+            
+        if (state / 2 == 1) {
+            X(qs[1]);
+        }
     }
     
     
@@ -153,7 +144,7 @@ namespace Quantum.Kata.BasicGates {
         // we need to create an input state |A⟩ and check that the output state is correct
         using (qs = Qubit[2]) {
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
                 // prepare A state
                 StatePrep_A(alpha, qs[0]);
@@ -215,20 +206,20 @@ namespace Quantum.Kata.BasicGates {
     
     
     operation T23_TwoQubitGate3_Test () : Unit {
-        AssertOperationsEqualReferenced(SwapWrapper, TwoQubitGate3_Reference, 2);
-        AssertOperationsEqualReferenced(TwoQubitGate3, TwoQubitGate3_Reference, 2);
+        AssertOperationsEqualReferenced(2, SwapWrapper, TwoQubitGate3_Reference);
+        AssertOperationsEqualReferenced(2, TwoQubitGate3, TwoQubitGate3_Reference);
     }
     
     
     // ------------------------------------------------------
     operation T24_ToffoliGate_Test () : Unit {
-        AssertOperationsEqualReferenced(ToffoliGate, ToffoliGate_Reference, 3);
+        AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
     
     
     // ------------------------------------------------------
     operation T25_FredkinGate_Test () : Unit {
-        AssertOperationsEqualReferenced(FredkinGate, FredkinGate_Reference, 3);
+        AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }
     
 }

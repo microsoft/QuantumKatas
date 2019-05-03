@@ -42,7 +42,7 @@ ENV PATH=$PATH:${HOME}/dotnet:${HOME}/.dotnet/tools \
     DOTNET_ROOT=${HOME}/dotnet
 
 # install IQSharp
-RUN dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.5.1904.1302
+RUN dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.6.1905.301
 RUN dotnet iqsharp install --user --path-to-tool="$(which dotnet-iqsharp)"
 
 # Make sure the contents of our repo are in ${HOME}

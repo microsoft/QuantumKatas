@@ -9,9 +9,10 @@
 
 namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Diagnostics;
 
     open Quantum.Kata.Utils;
     
@@ -24,26 +25,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
-    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
-        
-        body (...) {
-            let N = Length(qs);
-            oracle(qs[0 .. N - 2], qs[N - 1]);
-        }
-        
-        adjoint invert;
+    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
+    is Adj {        
+        let N = Length(qs);
+        oracle(qs[0 .. N - 2], qs[N - 1]);
     }
     
     
     // ------------------------------------------------------
     operation AssertTwoOraclesAreEqual (nQubits : Range, 
         oracle1 : ((Qubit[], Qubit) => Unit), 
-        oracle2 : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
         let sol = ApplyOracle(_, oracle1);
         let refSol = ApplyOracleA(_, oracle2);
         
         for (i in nQubits) {
-            AssertOperationsEqualReferenced(sol, refSol, i + 1);
+            AssertOperationsEqualReferenced(i + 1, sol, refSol);
         }
     }
     
@@ -85,7 +82,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertTwoOraclesWithIntAreEqual (r : Int[], 
         oracle1 : ((Qubit[], Qubit, Int[]) => Unit), 
-        oracle2 : ((Qubit[], Qubit, Int[]) => Unit : Adjoint)) : Unit {
+        oracle2 : ((Qubit[], Qubit, Int[]) => Unit is Adj)) : Unit {
         AssertTwoOraclesAreEqual(Length(r) .. Length(r), oracle1(_, _, r), oracle2(_, _, r));
     }
     
@@ -102,7 +99,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // the mask with all 0's corresponds to Oracle_Zero
         for (i in 0 .. L - 1) {
-            set r[i] = 0;
+            set r w/= i <- 0;
         }
         
         for (i in 2 .. L) {
@@ -111,9 +108,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // the mask with only the K-th element set to 1 corresponds to Oracle_Kth_Qubit
         for (i in 0 .. L - 1) {
-            set r[i] = 1;
-            AssertTwoOraclesAreEqual(L .. L, Oracle_ProductFunction(_, _, r), Oracle_Kth_Qubit_Reference(_, _, i));
-            set r[i] = 0;
+            AssertTwoOraclesAreEqual(L .. L, Oracle_ProductFunction(_, _, r w/ i <- 1), Oracle_Kth_Qubit_Reference(_, _, i));
         }
         
         set r = [1, 0, 1, 0, 1, 0];
@@ -184,7 +179,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     // ------------------------------------------------------
-    function AssertIntArrayEqual (actual : Int[], expected : Int[], message : String) : Unit {
+    function AllEqualityFactI (actual : Int[], expected : Int[], message : String) : Unit {
         
         let n = Length(actual);
         if (n != Length(expected)) {
@@ -202,12 +197,12 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
         
-        let rbool = BoolArrFromPositiveInt(n, bits);
+        let rbool = IntAsBoolArray(n, bits);
         mutable r = new Int[bits];
         
         for (i in 0 .. bits - 1) {
             if (rbool[i]) {
-                set r[i] = 1;
+                set r w/= i <- 1;
             }
         }
         
@@ -218,10 +213,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
         let oracle = Oracle_ProductFunction_Reference(_, _, r);
-        AssertIntArrayEqual(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
+        AllEqualityFactI(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
 
         let nu = GetOracleCallsCount(oracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -244,10 +239,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     // ------------------------------------------------------
     operation AssertDJAlgorithmWorks (N : Int, oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
-        AssertBoolEqual(DJ_Algorithm(N, oracle), expected, msg);
+        EqualityFactB(DJ_Algorithm(N, oracle), expected, msg);
         
         let nu = GetOracleCallsCount(oracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
     
@@ -284,11 +279,11 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // check that the oracle was called once (later it will be called again by test harness)
         let nu = GetOracleCallsCount(givenOracle);
-        AssertBoolEqual(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
         
         // check that the oracle obtained from r
         // is equivalent to the oracle obtained from return value
-        AssertIntEqual(Length(res), Length(r), "Returned bit vector must have the same length as the oracle input.");
+        EqualityFactI(Length(res), Length(r), "Returned bit vector must have the same length as the oracle input.");
         let resOracle = Oracle_ProductWithNegationFunction_Reference(_, _, res);
         AssertTwoOraclesAreEqual(Length(r) .. Length(r), givenOracle, resOracle);
     }
@@ -318,3 +313,4 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertNonameAlgorithmWorks([1, 0, 1, 0, 1, 0]);
     }
 }
+

@@ -9,16 +9,16 @@
 
 namespace Quantum.Kata.JointMeasurements {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
-    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit : Adjoint), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
+    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit is Adj), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
         let nTotal = 100;
         mutable nOk = 0;
         
@@ -36,7 +36,7 @@ namespace Quantum.Kata.JointMeasurements {
                 // get the solution's answer and verify that it's a match
                 let ans = testImpl(qs);
                 if (ans == state) {
-                    set nOk = nOk + 1;
+                    set nOk += 1;
                 }
                 
                 if (preserveState) {
@@ -50,29 +50,26 @@ namespace Quantum.Kata.JointMeasurements {
             }
         }
         
-        AssertIntEqual(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
     }
     
     
     // ------------------------------------------------------
-    operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit {
+    operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit
+    is Adj {
         
-        body (...) {
-            // prep cos(alpha) * |0..0⟩ + sin(alpha) * |1..1⟩
-            Ry(2.0 * alpha, qs[0]);
-            for (i in 1 .. Length(qs) - 1) {
-                CNOT(qs[0], qs[i]);
-            }
+        // prep cos(alpha) * |0..0⟩ + sin(alpha) * |1..1⟩
+        Ry(2.0 * alpha, qs[0]);
+        for (i in 1 .. Length(qs) - 1) {
+            CNOT(qs[0], qs[i]);
+        }
             
-            if (state == 1) {
-                // flip the state of the last half of the qubits
-                for (i in 0 .. Length(qs) / 2 - 1) {
-                    X(qs[i]);
-                }
+        if (state == 1) {
+            // flip the state of the last half of the qubits
+            for (i in 0 .. Length(qs) / 2 - 1) {
+                X(qs[i]);
             }
         }
-        
-        adjoint invert;
     }
     
     
@@ -95,46 +92,38 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation StatePrep_WState_Arbitrary (qs : Qubit[]) : Unit {
+    operation StatePrep_WState_Arbitrary (qs : Qubit[]) : Unit
+    is Adj + Ctl {
         
-        body (...) {
-            let N = Length(qs);
+        let N = Length(qs);
             
-            if (N == 1) {
-                // base case of recursion: |1⟩
-                X(qs[0]);
-            }
-            else {
-                // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
-                // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
-                // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
-                let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
-                Ry(2.0 * theta, qs[0]);
-                
-                // do a zero-controlled W-state generation for qubits 1..N-1
-                X(qs[0]);
-                Controlled StatePrep_WState_Arbitrary(qs[0 .. 0], qs[1 .. N - 1]);
-                X(qs[0]);
-            }
+        if (N == 1) {
+            // base case of recursion: |1⟩
+            X(qs[0]);
         }
-        
-        adjoint invert;
-        controlled distribute;
-        controlled adjoint distribute;
+        else {
+            // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
+            // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
+            // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
+            let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
+            Ry(2.0 * theta, qs[0]);
+                
+            // do a zero-controlled W-state generation for qubits 1..N-1
+            X(qs[0]);
+            Controlled StatePrep_WState_Arbitrary(qs[0 .. 0], qs[1 .. N - 1]);
+            X(qs[0]);
+        }
     }
     
     
-    operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit {
+    operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit
+    is Adj {
         
-        body (...) {
-            if (state == 0) {
-                StatePrep_ParityMeasurement(qs, 0, alpha);
-            } else {
-                StatePrep_WState_Arbitrary(qs);
-            }
+        if (state == 0) {
+            StatePrep_ParityMeasurement(qs, 0, alpha);
+        } else {
+            StatePrep_WState_Arbitrary(qs);
         }
-        
-        adjoint invert;
     }
     
     
@@ -146,22 +135,19 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation StatePrep_DifferentBasis (qs : Qubit[], state : Int, alpha : Double) : Unit {
+    operation StatePrep_DifferentBasis (qs : Qubit[], state : Int, alpha : Double) : Unit
+    is Adj {
         
-        body (...) {
-            // prep cos(alpha) * |00⟩ + sin(alpha) * |11⟩
-            Ry(2.0 * alpha, qs[0]);
-            CNOT(qs[0], qs[1]);
+        // prep cos(alpha) * |00⟩ + sin(alpha) * |11⟩
+        Ry(2.0 * alpha, qs[0]);
+        CNOT(qs[0], qs[1]);
             
-            if (state == 1) {
-                X(qs[1]);
-            }
-            
-            // convert to X basis
-            ApplyToEachA(H, qs);
+        if (state == 1) {
+            X(qs[1]);
         }
-        
-        adjoint invert;
+            
+        // convert to X basis
+        ApplyToEachA(H, qs);
     }
     
     
@@ -172,13 +158,9 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
-    operation StatePrep_A (alpha : Double, q : Qubit) : Unit {
-        
-        body (...) {
-            Ry(2.0 * alpha, q);
-        }
-        
-        adjoint invert;
+    operation StatePrep_A (alpha : Double, q : Qubit) : Unit
+    is Adj {        
+        Ry(2.0 * alpha, q);
     }
     
     
@@ -189,7 +171,7 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[2]) {
             
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
                 // prepare A state
                 StatePrep_A(alpha, qs[0]);
@@ -221,8 +203,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     operation T07_ControlledX_General_Test () : Unit {
         // In this task the gate is supposed to work on all inputs, so we can compare the unitary to CNOT.
-        AssertOperationsEqualReferenced(CNOTWrapper, ControlledX_General_Reference, 2);
-        AssertOperationsEqualReferenced(ControlledX_General, ControlledX_General_Reference, 2);
+        AssertOperationsEqualReferenced(2, CNOTWrapper, ControlledX_General_Reference);
+        AssertOperationsEqualReferenced(2, ControlledX_General, ControlledX_General_Reference);
     }
     
 }

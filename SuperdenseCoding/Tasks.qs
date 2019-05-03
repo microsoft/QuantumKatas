@@ -3,7 +3,8 @@
 
 namespace Quantum.Kata.SuperdenseCoding {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -42,7 +43,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     operation CreateEntangledPair (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // ...
     }
@@ -76,7 +77,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // The state of the qubits in the end of the operation doesn't matter.
     operation DecodeMessageFromQubits (qBob : Qubit, qAlice : Qubit) : Bool[] {
         // Declare a Bool array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable decoded_bits = new Bool[2];
         
         // ...

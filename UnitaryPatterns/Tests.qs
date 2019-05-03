@@ -9,12 +9,12 @@
 
 namespace Quantum.Kata.UnitaryPatterns {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Arithmetic;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Extensions.Diagnostics;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     // ------------------------------------------------------
@@ -45,20 +45,16 @@ namespace Quantum.Kata.UnitaryPatterns {
                 op(qs);
                 
                 // Make sure the solution didn't use any measurements
-                AssertIntEqual(GetOracleCallsCount(M), 0, "You are not allowed to use measurements in this task");
-                AssertIntEqual(GetOracleCallsCount(Measure), 0, "You are not allowed to use measurements in this task");
+                EqualityFactI(GetOracleCallsCount(M), 0, "You are not allowed to use measurements in this task");
+                EqualityFactI(GetOracleCallsCount(Measure), 0, "You are not allowed to use measurements in this task");
 
                 // Test that the result matches the k-th column
                 // DumpMachine($"C:/Tmp/dump{N}_{k}.txt");
                 for (j in 0 .. size - 1) {                    
                     let nonZero = pattern(size, j, k);
                     
-                    if (nonZero) {                        
-                        AssertProbInt(j, 0.5 + ε, LittleEndian(qs), 0.5);
-                    }
-                    else {                        
-                        AssertProbInt(j, 0.0, LittleEndian(qs), ε);
-                    }
+                    let (expected, tol) = nonZero ? (0.5 + ε, 0.5) | (0.0, ε);
+                    AssertProbInt(j, expected, LittleEndian(qs), tol);
                 }
                 
                 ResetAll(qs);
@@ -285,10 +281,7 @@ namespace Quantum.Kata.UnitaryPatterns {
                   [ false, false, true, false, false, true, false, false], 
                   [ true, true, false, false, false, false, true, true], 
                   [ true, true, false, false, false, false, true, true] ];
-        if (size != 8) {
-            return false;
-        }
-        return A[row][col]; 		
+        return size != 8 ? false | A[row][col];         
     }
     
 
