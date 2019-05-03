@@ -11,6 +11,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
 
     open Quantum.Kata.Utils;
@@ -196,7 +197,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // ------------------------------------------------------
     function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
         
-        let rbool = BoolArrFromPositiveInt(n, bits);
+        let rbool = IntAsBoolArray(n, bits);
         mutable r = new Int[bits];
         
         for (i in 0 .. bits - 1) {
