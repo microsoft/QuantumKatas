@@ -114,7 +114,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
-        for (i in 0 .. Length(x) - 1) {
+        for (i in IndexRange(x)) {
             if (r[i] == 1) {
                 CNOT(x[i], y);
             } else {
