@@ -110,7 +110,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
-        for (i in 0 .. Length(x) - 1) {
+        for (i in IndexRange(x)) {
             if (r[i] == 1) {
                 CNOT(x[i], y);
             } else {
@@ -316,7 +316,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
             // now y = Σᵢ 𝑟ᵢ
             
-            // Declare a Bool array in which the result will be stored;
+            // Declare an Int array in which the result will be stored;
             // the variable has to be mutable to allow updating it.
             mutable r = new Int[N];
 

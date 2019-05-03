@@ -80,7 +80,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation Oracle_Xor_2SAT (queryRegister : Qubit[], target : Qubit) : Unit
     is Adj {        
         // x₀ ⊕ x₁ = (x₀ ∨ x₁) ∧ (¬x₀ ∨ ¬x₁)
-        // Allocate 2 ancilla qubits to store results of clause evaluation
+        // Allocate 2 auxillary qubits to store results of clause evaluation
         using ((a1, a2) = (Qubit(), Qubit())) {
             // The first clause is exactly the Or oracle
             Oracle_Or_Reference(queryRegister, a1);
