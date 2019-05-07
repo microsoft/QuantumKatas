@@ -14,7 +14,6 @@ namespace Quantum.Kata.UnitaryPatterns {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
-    open Microsoft.Quantum.Math;
     
     
     // Task 1. Main diagonal
@@ -173,8 +172,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     is Adj {
 
         let n = Length(qs); 
-        let bits1 = BoolArrFromPositiveInt(index1, n);
-        let bits2 = BoolArrFromPositiveInt(index2, n);
+        let bits1 = IntAsBoolArray(index1, n);
+        let bits2 = IntAsBoolArray(index2, n);
         // find the index of the first bit at which the bit strings are different
         let diff = FirstDiff(bits1, bits2);
 

@@ -11,7 +11,6 @@
 namespace Quantum.Kata.SuperdenseCoding {
     
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     
     
     // Task 1. Entangled pair

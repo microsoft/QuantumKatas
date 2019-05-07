@@ -10,7 +10,6 @@
 namespace Quantum.Kata.GroversAlgorithm {
     
     open Microsoft.Quantum.Arrays;
-    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
@@ -53,7 +52,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     operation T13_Oracle_ArbitraryPattern_Test () : Unit {
         for (n in 2 .. 10) {
-            let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
+            let pattern = IntAsBoolArray(RandomIntPow2(n), n);
             let testOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern(_, _, pattern), _);
             let refOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern_Reference(_, _, pattern), _);
             AssertOperationsEqualReferenced(n + 1, testOp, refOp);
@@ -64,7 +63,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     operation T14_OracleConverter_Test () : Unit {
         for (n in 2 .. 10) {
-            let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
+            let pattern = IntAsBoolArray(RandomIntPow2(n), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let phaseOracleRef = OracleConverter_Reference(markingOracle);
             let phaseOracleSol = OracleConverter(markingOracle);
@@ -88,7 +87,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     operation T23_GroverIteration_Test () : Unit {
         for (n in 2 .. 10) {
-            let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
+            let pattern = IntAsBoolArray(RandomIntPow2(n), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let flipOracle = OracleConverter_Reference(markingOracle);
             let testOp = GroverIteration(_, flipOracle);
@@ -101,7 +100,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     operation T31_GroversSearch_Test () : Unit {
         for (n in 2 .. 10) {
-            let pattern = BoolArrFromPositiveInt(RandomIntPow2(n), n);
+            let pattern = IntAsBoolArray(RandomIntPow2(n), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let testOp = GroversSearch(_, markingOracle, 4);
             let refOp = GroversSearch_Reference(_, markingOracle, 4);

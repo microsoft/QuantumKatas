@@ -5,8 +5,8 @@ namespace Quantum.Kata.CHSHGame {
 
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
 
 
     //////////////////////////////////////////////////////////////////

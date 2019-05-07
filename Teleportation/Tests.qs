@@ -9,8 +9,8 @@
 
 namespace Quantum.Kata.Teleportation {
     
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     
     
@@ -271,7 +271,7 @@ namespace Quantum.Kata.Teleportation {
                     setupPsiOps[i](qMessage);
                     EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
                     let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
-                    let b3 = BoolFromResult(M(qBob));
+                    let b3 = ResultAsBool(M(qBob));
                     ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
                     Adjoint setupPsiOps[i](qCharlie);
                     AssertQubit(Zero, qCharlie);

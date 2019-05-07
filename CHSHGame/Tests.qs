@@ -11,13 +11,14 @@ namespace Quantum.Kata.CHSHGame {
 
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
 
+
+    // ------------------------------------------------------
     operation T11_WinCondition_Test () : Unit {
         for (i in 0..1 <<< 4 - 1) {
-            let bits = BoolArrFromPositiveInt(i, 4);
+            let bits = IntAsBoolArray(i, 4);
             EqualityFactB(
                 WinCondition(bits[0], bits[1], bits[2], bits[3]),
                 (bits[0] and bits[1]) == (bits[2] != bits[3]),
@@ -40,8 +41,7 @@ namespace Quantum.Kata.CHSHGame {
         }
         Message($"Win rate {IntAsDouble(wins) / 1000.}");
 
-        EqualityFactB(wins >= 700, true,
-                        "Alice and Bob's classical strategy is not optimal");
+        Fact(wins >= 700, "Alice and Bob's classical strategy is not optimal");
     }
 
 
@@ -94,8 +94,7 @@ namespace Quantum.Kata.CHSHGame {
         op(qs[0]);
     }
 
-    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
-    is Adj {
+    operation QubitToRegisterOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit is Adj {
         op(qs[0]);
     }
 

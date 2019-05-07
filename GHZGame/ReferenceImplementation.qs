@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.GHZGame {
 
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
@@ -76,7 +77,7 @@ namespace Quantum.Kata.GHZGame {
         if (input) {
             H(qubit);
         }
-        return BoolFromResult(M(qubit));
+        return ResultAsBool(M(qubit));
     }
 
 

@@ -46,7 +46,7 @@ namespace Quantum.Kata.Superposition {
     operation UnequalSuperposition_Reference (qs : Qubit[], alpha : Double) : Unit
     is Adj {        
 
-        // Hint: Experiment with rotation gates from Microsoft.Quantum.Primitive
+        // Hint: Experiment with rotation gates from Microsoft.Quantum.Intrinsic
         Ry(2.0 * alpha, qs[0]);
     }
     

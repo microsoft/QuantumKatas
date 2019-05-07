@@ -14,8 +14,6 @@ namespace Quantum.Kata.GroversAlgorithm {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Convert;
-    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
