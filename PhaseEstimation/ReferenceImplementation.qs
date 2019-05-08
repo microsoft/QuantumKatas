@@ -125,7 +125,7 @@ namespace Quantum.Kata.PhaseEstimation {
             // prepare the eigenstate |ψ⟩
             P(eigenstate);
 
-            mutable (measuredZero, measuredOne) = (false, false); 
+            mutable (measZero, measOne) = (false, false); 
             mutable iter = 0;
             repeat {
                 set iter += 1;
@@ -135,18 +135,18 @@ namespace Quantum.Kata.PhaseEstimation {
                 H(control);
 
                 let meas = MResetZ(control);
-                set (measuredZero, measuredOne) = (meas == Zero, meas == One);
+                set (measZero, measOne) = (measZero or meas == Zero, measOne or meas == One);
             } 
             // repeat the loop until we get both Zero and One measurement outcomes
             // or until we're reasonably certain that we won't get a different outcome
-            until (iter == 10 or measuredZero and measuredOne)
+            until (iter == 10 or measZero and measOne)
             fixup {}
             Reset(eigenstate);
 
             // all measurements yielded Zero => eigenvalue +1
             // all measurements yielded One => eigenvalue -1
-            if (not measuredZero or not measuredOne) {
-                return measuredOne ? 0.5 | 0.0;
+            if (not measZero or not measOne) {
+                return measOne ? 0.5 | 0.0;
             }
         }
 
