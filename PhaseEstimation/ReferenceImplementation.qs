@@ -135,7 +135,7 @@ namespace Quantum.Kata.PhaseEstimation {
                 H(control);
 
                 let meas = MResetZ(control);
-                set (measuredZero, measuredOne) = (meas == Zero, meas == One);
+                set (measuredZero, measuredOne) = (measuredZero or meas == Zero, measuredOne or meas == One);
             } 
             // repeat the loop until we get both Zero and One measurement outcomes
             // or until we're reasonably certain that we won't get a different outcome
