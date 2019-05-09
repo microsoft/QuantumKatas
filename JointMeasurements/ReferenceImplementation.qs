@@ -12,9 +12,6 @@ namespace Quantum.Kata.JointMeasurements {
     
     open Microsoft.Quantum.Characterization;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Convert;
-    open Microsoft.Quantum.Math;
     
     
     // Task 1. Single-qubit measurement

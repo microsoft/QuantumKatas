@@ -273,7 +273,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             
             for (idxError in 0 .. Length(errors) - 1) {
                 let θ = RandomReal(12);
-                let statePrep = BindCA([H, Rz(θ, _)]);
+                let statePrep = BoundCA([H, Rz(θ, _)]);
                 mutable errorStr = "no error";
                 if (idxError > 0) {
                     set errorStr = $"error on qubit {idxError}";

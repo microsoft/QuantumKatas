@@ -11,6 +11,6 @@ You can [run the BasicGates kata as a Jupyter Notebook](https://mybinder.org/v2/
 
 #### Q# materials
 
-* Basic gates provided in Q# belong to the `Microsoft.Quantum.Primitive` namespace and are listed [here](https://docs.microsoft.com/qsharp/api/prelude/microsoft.quantum.primitive).
+* Basic gates provided in Q# belong to the `Microsoft.Quantum.Intrinsic` namespace and are listed [here](https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.intrinsic).
 * Using controlled and adjoint versions of gates is covered in the Q# documentation on [operation types](https://docs.microsoft.com/quantum/language/type-model#operation-and-function-types).
-* Defining controlled and adjoint versions of gates is covered in the Q# documentation on [operation definitions](https://docs.microsoft.com/quantum/language/file-structure#operation-definitions).
+* Defining controlled and adjoint versions of gates is covered in the Q# documentation on [operation definitions](https://docs.microsoft.com/quantum/language/file-structure#operation-declarations).

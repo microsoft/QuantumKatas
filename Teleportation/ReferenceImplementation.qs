@@ -11,9 +11,6 @@ namespace Quantum.Kata.Teleportation {
     
     open Microsoft.Quantum.Preparation;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Convert;
-    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////

@@ -10,11 +10,9 @@
 
 namespace Quantum.Kata.CHSHGame {
 
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Primitive;
-
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Intrinsic;
 
 
     //////////////////////////////////////////////////////////////////
@@ -55,7 +53,7 @@ namespace Quantum.Kata.CHSHGame {
         // Measure in sign basis if bit is 1, and
         // measure in computational basis if bit is 0
         let basis = bit ? PauliX | PauliZ;
-        return BoolFromResult(Measure([basis], [qubit]));
+        return ResultAsBool(Measure([basis], [qubit]));
     }
 
 
@@ -69,7 +67,7 @@ namespace Quantum.Kata.CHSHGame {
     // Task 2.4. Bob's quantum strategy
     operation BobQuantum_Reference (bit : Bool, qubit : Qubit) : Bool {
         RotateBobQubit_Reference(not bit, qubit);
-        return BoolFromResult(M(qubit));
+        return ResultAsBool(M(qubit));
     }
 
 

@@ -11,7 +11,6 @@ namespace Quantum.Kata.GHZGame {
 
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
 
@@ -27,7 +26,7 @@ namespace Quantum.Kata.GHZGame {
     operation T11_WinCondition_Test () : Unit {
         for (rst in RefereeBits()) {
             for (i in 0..1 <<< 3 - 1) {
-                let abc = BoolArrFromPositiveInt(i, 3);
+                let abc = IntAsBoolArray(i, 3);
                 EqualityFactB(
                     WinCondition(rst, abc),
                     WinCondition_Reference(rst, abc),

@@ -57,7 +57,7 @@ namespace Quantum.Kata.Superposition {
     //      2) angle alpha, in radians, represented as Double
     // Goal: create a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
     operation UnequalSuperposition (qs : Qubit[], alpha : Double) : Unit {
-        // Hint: Experiment with rotation gates from Microsoft.Quantum.Primitive namespace.
+        // Hint: Experiment with rotation gates from the Microsoft.Quantum.Intrinsic namespace.
         // Note that all rotation operators rotate the state by _half_ of its angle argument.
 
         // ...

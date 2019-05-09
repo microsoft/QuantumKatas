@@ -11,7 +11,6 @@
 namespace Quantum.Kata.BasicGates {
     
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     
     
     //////////////////////////////////////////////////////////////////

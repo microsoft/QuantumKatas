@@ -9,8 +9,6 @@
 
 namespace Quantum.Kata.SimonsAlgorithm {
     
-    open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     
     

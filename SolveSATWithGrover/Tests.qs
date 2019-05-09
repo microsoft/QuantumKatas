@@ -42,7 +42,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         using ((qs, target) = (Qubit[N], Qubit())) {
             for (k in 0 .. size - 1) {
                 // Prepare k-th bit vector
-                let binary = BoolArrFromPositiveInt(k, N);
+                let binary = IntAsBoolArray(k, N);
                 
                 //Message($"{k}/{N} = {binary}");
                 // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0

@@ -12,8 +12,6 @@ namespace Quantum.Kata.PhaseEstimation {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
-    open Microsoft.Quantum.Convert;
-    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -63,8 +61,8 @@ namespace Quantum.Kata.PhaseEstimation {
         // Test state/unitary pairs which are eigenstates (so no exception should be thrown)
         for ((unitary, statePrep) in [(Z, I), (Z, X),
                                       (S, I), (S, X),
-                                      (X, H), (X, BindCA([X, H])),
-                                      (Y, BindCA([H, S])), (Y, BindCA([X, H, S]))]) {
+                                      (X, H), (X, BoundCA([X, H])),
+                                      (Y, BoundCA([H, S])), (Y, BoundCA([X, H, S]))]) {
             AssertIsEigenstate(unitary, statePrep);
         }
     }
@@ -105,7 +103,7 @@ namespace Quantum.Kata.PhaseEstimation {
         Test1BitPEOnOnePair(Z, I, +1);
         Test1BitPEOnOnePair(Z, X, -1);
         Test1BitPEOnOnePair(X, H, +1);
-        Test1BitPEOnOnePair(X, BindCA([X, H]), -1);
+        Test1BitPEOnOnePair(X, BoundCA([X, H]), -1);
     }
 
 
@@ -124,13 +122,13 @@ namespace Quantum.Kata.PhaseEstimation {
         Test2BitPEOnOnePair(Z, I, 0.0);
         Test2BitPEOnOnePair(Z, X, 0.5);
         Test2BitPEOnOnePair(S, X, 0.25);
-        Test2BitPEOnOnePair(BindCA([S, Z]), X, 0.75);
+        Test2BitPEOnOnePair(BoundCA([S, Z]), X, 0.75);
 
         Test2BitPEOnOnePair(X, H, 0.0);
-        Test2BitPEOnOnePair(X, BindCA([X, H]), 0.5);
-        Test2BitPEOnOnePair(BindCA([H, S, H]), H, 0.0);
-        Test2BitPEOnOnePair(BindCA([H, S, H]), BindCA([X, H]), 0.25);
-        Test2BitPEOnOnePair(BindCA([H, S, Z, H]), BindCA([X, H]), 0.75);
+        Test2BitPEOnOnePair(X, BoundCA([X, H]), 0.5);
+        Test2BitPEOnOnePair(BoundCA([H, S, H]), H, 0.0);
+        Test2BitPEOnOnePair(BoundCA([H, S, H]), BoundCA([X, H]), 0.25);
+        Test2BitPEOnOnePair(BoundCA([H, S, Z, H]), BoundCA([X, H]), 0.75);
     }
 
 
