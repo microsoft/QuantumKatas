@@ -3,7 +3,7 @@
 
 namespace Quantum.Kata.BasicGates {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -94,26 +94,18 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation AmplitudeChange (q : Qubit, alpha : Double) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation AmplitudeChange (q : Qubit, alpha : Double) : Unit
+    is Adj {        
+        // ...
     }
     
     
     // Task 1.5. Phase flip
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the qubit state to α |0⟩ + iβ |1⟩ (flip the phase of |1⟩ component of the superposition).
-    operation PhaseFlip (q : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation PhaseFlip (q : Qubit) : Unit 
+    is Adj {
+        // ...
     }
     
     
@@ -125,52 +117,36 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, don't change its state.
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation PhaseChange (q : Qubit, alpha : Double) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation PhaseChange (q : Qubit, alpha : Double) : Unit
+    is Adj {
+        // ...
     }
     
     
     // Task 1.7. Bell state change - 1
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
-    operation BellStateChange1 (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation BellStateChange1 (qs : Qubit[]) : Unit
+    is Adj {
+        // ...
     }
     
     
     // Task 1.8. Bell state change - 2
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
-    operation BellStateChange2 (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation BellStateChange2 (qs : Qubit[]) : Unit
+    is Adj {
+        // ...
     }
     
     
     // Task 1.9. Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
-    operation BellStateChange3 (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation BellStateChange3 (qs : Qubit[]) : Unit
+    is Adj {        
+        // ...
     }
     
     

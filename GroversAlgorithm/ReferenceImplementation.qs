@@ -10,90 +10,72 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    
+
     
     //////////////////////////////////////////////////////////////////
     // Part I. Oracles for Grover's Search
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. The |11...1⟩ oracle
-    operation Oracle_AllOnes_Reference (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            Controlled X(queryRegister, target);
-        }
-        
-        adjoint invert;
+    operation Oracle_AllOnes_Reference (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {        
+        Controlled X(queryRegister, target);
     }
     
     
     // Task 1.2. The |1010...⟩ oracle
-    operation Oracle_AlternatingBits_Reference (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // flip the bits in odd (0-based positions),
-            // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
-            FlipOddPositionBits_Reference(queryRegister);
-            Controlled X(queryRegister, target);
-            Adjoint FlipOddPositionBits_Reference(queryRegister);
-        }
-        
-        adjoint invert;
+    operation Oracle_AlternatingBits_Reference (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {
+
+        // flip the bits in odd (0-based positions),
+        // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
+        FlipOddPositionBits_Reference(queryRegister);
+        Controlled X(queryRegister, target);
+        Adjoint FlipOddPositionBits_Reference(queryRegister);
     }
     
     
-    operation FlipOddPositionBits_Reference (register : Qubit[]) : Unit {
+    operation FlipOddPositionBits_Reference (register : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            // iterate over elements in odd positions (indexes are 0-based)
-            for (i in 1 .. 2 .. Length(register) - 1) {
-                X(register[i]);
-            }
+        // iterate over elements in odd positions (indexes are 0-based)
+        for (i in 1 .. 2 .. Length(register) - 1) {
+            X(register[i]);
         }
-        
-        adjoint invert;
     }
     
     
     // Task 1.3. Arbitrary bit pattern oracle
-    operation Oracle_ArbitraryPattern_Reference (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit {
-        
-        body (...) {
-            (ControlledOnBitString(pattern, X))(queryRegister, target);
-        }
-        
-        adjoint invert;
+    operation Oracle_ArbitraryPattern_Reference (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit
+    is Adj {        
+        (ControlledOnBitString(pattern, X))(queryRegister, target);
     }
     
     
     // Task 1.4*. Oracle converter
-    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
+    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            using (target = Qubit()) {
-                // Put the target into the |-⟩ state
-                X(target);
-                H(target);
+        using (target = Qubit()) {
+            // Put the target into the |-⟩ state
+            X(target);
+            H(target);
                 
-                // Apply the marking oracle; since the target is in the |-⟩ state,
-                // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-                markingOracle(register, target);
+            // Apply the marking oracle; since the target is in the |-⟩ state,
+            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+            markingOracle(register, target);
                 
-                // Put the target back into |0⟩ so we can return it
-                H(target);
-                X(target);
-            }
+            // Put the target back into |0⟩ so we can return it
+            H(target);
+            X(target);
         }
-        
-        adjoint invert;
     }
     
     
-    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         return OracleConverterImpl_Reference(markingOracle, _);
     }
     
@@ -103,19 +85,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 2.1. The Hadamard transform
-    operation HadamardTransform_Reference (register : Qubit[]) : Unit {
+    operation HadamardTransform_Reference (register : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            ApplyToEachA(H, register);
+        ApplyToEachA(H, register);
 
-            // ApplyToEach is a library routine that is equivalent to the following code:
-            // let nQubits = Length(register);
-            // for (idxQubit in 0..nQubits - 1) {
-            //     H(register[idxQubit]);
-            // }
-        }
-        
-        adjoint invert;
+        // ApplyToEach is a library routine that is equivalent to the following code:
+        // let nQubits = Length(register);
+        // for (idxQubit in 0..nQubits - 1) {
+        //     H(register[idxQubit]);
+        // }
     }
     
     
@@ -149,16 +128,13 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // Task 2.3. The Grover iteration
-    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit
+    is Adj {
         
-        body (...) {
-            oracle(register);
-            HadamardTransform_Reference(register);
-            ConditionalPhaseFlip_Reference(register);
-            HadamardTransform_Reference(register);
-        }
-        
-        adjoint invert;
+        oracle(register);
+        HadamardTransform_Reference(register);
+        ConditionalPhaseFlip_Reference(register);
+        HadamardTransform_Reference(register);
     }
     
     
@@ -167,18 +143,15 @@ namespace Quantum.Kata.GroversAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 3.1. Grover's search
-    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
+    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit
+    is Adj {
         
-        body (...) {
-            let phaseOracle = OracleConverter_Reference(oracle);
-            HadamardTransform_Reference(register);
+        let phaseOracle = OracleConverter_Reference(oracle);
+        HadamardTransform_Reference(register);
             
-            for (i in 1 .. iterations) {
-                GroverIteration_Reference(register, phaseOracle);
-            }
+        for (i in 1 .. iterations) {
+            GroverIteration_Reference(register, phaseOracle);
         }
-        
-        adjoint invert;
     }
     
 }

@@ -10,7 +10,8 @@
 
 namespace Quantum.Kata.QEC_BitFlipCode {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -21,13 +22,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     // Task 2. Encoding Codewords
-    operation Encode_Reference (register : Qubit[]) : Unit {
-        
-        body (...) {
-            ApplyToEachA(CNOT(Head(register), _), Rest(register));
-        }
-        
-        adjoint invert;
+    operation Encode_Reference (register : Qubit[]) : Unit
+    is Adj {        
+        ApplyToEachA(CNOT(Head(register), _), Rest(register));
     }
     
     

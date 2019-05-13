@@ -10,9 +10,10 @@
 
 namespace Quantum.Kata.GHZGame {
 
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
 
 
     //////////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ namespace Quantum.Kata.GHZGame {
     operation PlayClassicalGHZ_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         mutable results = new Bool[Length(inputs)];
         for (i in 0..Length(inputs) - 1) {
-            set results[i] = strategy(inputs[i]);
+            set results w/= i <- strategy(inputs[i]);
         }
         return results;
     }
@@ -53,23 +54,21 @@ namespace Quantum.Kata.GHZGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1. Entangled triple
-    operation CreateEntangledTriple_Reference (qs : Qubit[]) : Unit {
-        body (...) {
-            X(qs[0]);
-            X(qs[1]);
+    operation CreateEntangledTriple_Reference (qs : Qubit[]) : Unit
+    is Adj {
+        X(qs[0]);
+        X(qs[1]);
 
-            H(qs[0]);
-            H(qs[1]);
-            // At this point we have (|000⟩ - |010⟩ - |100⟩ + |110⟩) / 2
+        H(qs[0]);
+        H(qs[1]);
+        // At this point we have (|000⟩ - |010⟩ - |100⟩ + |110⟩) / 2
 
-            // Flip the sign of the last term
-            Controlled Z([qs[0]], qs[1]);
+        // Flip the sign of the last term
+        Controlled Z([qs[0]], qs[1]);
 
-            // Flip the state of the last qubit for the two middle terms
-            (ControlledOnBitString([false, true], X))([qs[0], qs[1]], qs[2]);
-            (ControlledOnBitString([true, false], X))([qs[0], qs[1]], qs[2]);
-        }
-        adjoint auto;
+        // Flip the state of the last qubit for the two middle terms
+        (ControlledOnBitString([false, true], X))([qs[0], qs[1]], qs[2]);
+        (ControlledOnBitString([true, false], X))([qs[0], qs[1]], qs[2]);
     }
 
 
@@ -78,25 +77,24 @@ namespace Quantum.Kata.GHZGame {
         if (input) {
             H(qubit);
         }
-        return BoolFromResult(M(qubit));
+        return ResultAsBool(M(qubit));
     }
 
 
     // Task 2.3. Play the GHZ game using the quantum strategy
     operation PlayQuantumGHZ_Reference (strategies : (Qubit => Bool)[]) : Bool[] {
-        mutable abc = new Bool[3];
 
         using (qs = Qubit[3]) {
             CreateEntangledTriple_Reference(qs);
-
+            
+            mutable abc = new Bool[3];
             for (i in 0..2) {
-                set abc[i] = strategies[i](qs[i]);
+                set abc w/= i <- strategies[i](qs[i]);
             }
 
             ResetAll(qs);
+            return abc;
         }
-
-        return abc;
     }
 
 }

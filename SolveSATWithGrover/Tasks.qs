@@ -3,10 +3,11 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -47,13 +48,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_And (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_And (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {        
+        // ...
     }
 
 
@@ -67,13 +64,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_Or (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_Or (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {        
+        // ...
     }
 
 
@@ -87,13 +80,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
     //               for queryRegister containing an arbitrary number of qubits?
-    operation Oracle_Xor (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_Xor (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {        
+        // ...
     }
 
 
@@ -108,13 +97,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     // |10101...⟩ and |01010...⟩
     // It is possible (and quite straightforward) to implement this oracle based on this observation; 
     // however, for the purposes of learning to write oracles to solve SAT problems we recommend using the representation above.
-    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit
+    is Adj {        
+        // ...
     }
 
 
@@ -149,13 +134,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     operation Oracle_2SAT (queryRegister : Qubit[], 
                            target : Qubit, 
-                           problem : (Int, Bool)[][]) : Unit {
-        
-        body (...) {
+                           problem : (Int, Bool)[][]) : Unit
+        is Adj {        
             // ...
-        }
-        
-        adjoint auto;
     }
 
 
@@ -183,13 +164,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       Leave the query register in the same state it started in.
     operation Oracle_SAT (queryRegister : Qubit[], 
                           target : Qubit, 
-                          problem : (Int, Bool)[][]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+                          problem : (Int, Bool)[][]) : Unit
+        is Adj {        
+        // ...
     }
 
 
@@ -222,7 +199,12 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Output:
     //      An array of N boolean values which satisfy the expression implemented by the oracle
     //      (i.e., any basis state marked by the oracle).
-    operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Bool[] {
+    // 
+    // Note that the similar task in the GroversAlgorithm kata required you to implement Grover's algorithm
+    // in a way that would be robust to accidental failures, but you knew the optimal number of iterations
+    // (the number that minimizes the probability of such failure). 
+    // In this task you also need to make your implementation robust to not knowing the optimal number of iterations.
+    operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Bool[] {
         // ...
         return new Bool[N];
     }

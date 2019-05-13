@@ -10,31 +10,27 @@
 
 namespace Quantum.Kata.SuperdenseCoding {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Intrinsic;
     
     
     // Task 1. Entangled pair
-    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit {
+    operation CreateEntangledPair_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            // The easiest way to create an entangled pair is to start with
-            // applying a Hadamard transformation to one of the qubits:
-            H(qs[0]);
+        // The easiest way to create an entangled pair is to start with
+        // applying a Hadamard transformation to one of the qubits:
+        H(qs[0]);
             
-            // This has left us in state:
-            // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
+        // This has left us in state:
+        // ((|0⟩ + |1⟩) / sqrt(2)) ⊗ |0⟩
             
-            // Now, if we flip the second qubit conditioned on the state
-            // of the first one, we get that the states of the two qubits will always match.
-            CNOT(qs[0], qs[1]);
-            // So we ended up in the state:
-            // (|00⟩ + |11⟩) / sqrt(2)
-            //
-            // Which is the required Bell pair |Φ⁺⟩
-        }
-        
-        adjoint invert;
+        // Now, if we flip the second qubit conditioned on the state
+        // of the first one, we get that the states of the two qubits will always match.
+        CNOT(qs[0], qs[1]);
+        // So we ended up in the state:
+        // (|00⟩ + |11⟩) / sqrt(2)
+        //
+        // Which is the required Bell pair |Φ⁺⟩
     }
     
     
@@ -62,9 +58,6 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     // Task 3. Decode the message (Bob's task)
     operation DecodeMessageFromQubits_Reference (qBob : Qubit, qAlice : Qubit) : Bool[] {
-        // Declare a Bool array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
-        mutable decoded_bits = new Bool[2];
         
         // Time to get our state back, by performing transformations as follows.
         // Notice that it's important to keep the order right. The qubits that are
@@ -83,16 +76,12 @@ namespace Quantum.Kata.SuperdenseCoding {
         // |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2) ---> |11⟩
         
         // So we can retrieve the encoded bits just by measuring.
-        set decoded_bits[0] = M(qAlice) == One;
-        set decoded_bits[1] = M(qBob) == One;
-        
-        return decoded_bits;
+        return [M(qAlice) == One, M(qBob) == One];
     }
     
     
     // Task 4. Superdense coding protocol end-to-end
     operation SuperdenseCodingProtocol_Reference (message : Bool[]) : Bool[] {
-        mutable decoded_bits = new Bool[2];
         
         // Get a temporary qubit register for the protocol run.
         using (qs = Qubit[2]) {
@@ -111,13 +100,12 @@ namespace Quantum.Kata.SuperdenseCoding {
             // STEP 3:
             // Bob receives the qubit from Alice and can now
             // manipulate and measure both qubits to get the encoded data.
-            set decoded_bits = DecodeMessageFromQubits_Reference(qs[1], qs[0]);
+            let decoded_bits = DecodeMessageFromQubits_Reference(qs[1], qs[0]);
             
-            // Make sure that we return qubits back in 0 state.
+            // Make sure that we return qubits back in 0 state before returning the decoded bits.
             ResetAll(qs);
+            return decoded_bits;
         }
-        
-        return decoded_bits;
     }
     
 }

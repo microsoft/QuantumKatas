@@ -10,10 +10,11 @@
 
 namespace Quantum.Kata.Measurements {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Arithmetic;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ namespace Quantum.Kata.Measurements {
     
     // Task 1.1. |0⟩ or |1⟩ ?
     // Input: a qubit which is guaranteed to be in |0⟩ or |1⟩ state.
-    // Output: true if qubit was in |1⟩ state, or false if it was in |0⟩ state.
+    // Output: true if the qubit was in |1⟩ state, or false if it was in |0⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitOne_Reference (q : Qubit) : Bool {
         return M(q) == One;
@@ -40,7 +41,7 @@ namespace Quantum.Kata.Measurements {
     // Task 1.3. |+⟩ or |-⟩ ?
     // Input: a qubit which is guaranteed to be in |+⟩ or |-⟩ state
     //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
-    // Output: true if qubit was in |+⟩ state, or false if it was in |-⟩ state.
+    // Output: true if the qubit was in |+⟩ state, or false if it was in |-⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitPlus_Reference (q : Qubit) : Bool {
         H(q);
@@ -54,7 +55,7 @@ namespace Quantum.Kata.Measurements {
     //      2) a qubit which is guaranteed to be in |A⟩ or |B⟩ state
     //         |A⟩ =   cos(alpha) * |0⟩ + sin(alpha) * |1⟩,
     //         |B⟩ = - sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
-    // Output: true if qubit was in |A⟩ state, or false if it was in |B⟩ state.
+    // Output: true if the qubit was in |A⟩ state, or false if it was in |B⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitA_Reference (alpha : Double, q : Qubit) : Bool {
         // |0⟩ is converted into |A⟩ and |1⟩ into |B⟩ by Ry(2.0 * alpha)
@@ -65,14 +66,12 @@ namespace Quantum.Kata.Measurements {
     
     
     // Task 1.5. |00⟩ or |11⟩ ?
-    // Input: two qubits (stored in an array) which are guaranteed to be in |00⟩ or |11⟩ state.
-    // Output: 0 if qubits were in |00⟩ state,
+    // Input: two qubits (stored in an array of length 2) which are guaranteed to be in either the  |00⟩ or the |11⟩ state.
+    // Output: 0 if the qubits were in the |00⟩ state,
     //         1 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne_Reference (qs : Qubit[]) : Int {
         // it's enough to do one measurement on any qubit
-        let res = M(qs[0]);
-        
         return M(qs[0]) == Zero ? 0 | 1;
     }
     
@@ -86,17 +85,10 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BasisStateMeasurement_Reference (qs : Qubit[]) : Int {
-        // measurement on the first qubit gives the higher bit of the answer, on the second - the lower
-        mutable m1 = 0;
-        if (M(qs[0]) == One) {
-            set m1 = 1;
-        }
-        
-        mutable m2 = 0;
-        if (M(qs[1]) == One) {
-            set m2 = 1;
-        }
-        
+        // Measurement on the first qubit gives the higher bit of the answer, on the second - the lower.
+        // You can also use library function MeasureIntegerBE to get the same result.
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m1 * 2 + m2;
     }
     
@@ -116,15 +108,12 @@ namespace Quantum.Kata.Measurements {
     // Example: for bit strings [false, true, false] and [false, false, true]
     //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
-        
-        mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] and firstDiff == -1) {
-                set firstDiff = i;
+            if (bits1[i] != bits2[i]) {
+                return i;
             }
         }
-        
-        return firstDiff;
+        return -1;
     }
     
     
@@ -149,19 +138,16 @@ namespace Quantum.Kata.Measurements {
         // (and there should never be two or more Ones)
         mutable countOnes = 0;
         
-        for (i in 0 .. Length(qs) - 1) {
-            if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+        for (q in qs) {
+            if (M(q) == One) {
+                set countOnes += 1;
             }
         }
         
         if (countOnes > 1) {
             fail "Impossible to get multiple Ones when measuring W state";
         }
-        if (countOnes == 0) {
-            return 0;
-        }
-        return 1;
+        return countOnes == 0 ? 0 | 1;
     }
     
     
@@ -176,22 +162,19 @@ namespace Quantum.Kata.Measurements {
         // measure all qubits; if there is exactly one One, it's W state,
         // if there are no Ones or all are Ones, it's GHZ
         // (and there should never be a different number of Ones)
-        let N = Length(qs);
         mutable countOnes = 0;
         
-        for (i in 0 .. N - 1) {
-            if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+        for (q in qs) {
+            if (M(q) == One) {
+                set countOnes += 1;
             }
         }
         
-        if (countOnes > 1 and countOnes < Length(qs)) {
+        let N = Length(qs);
+        if (countOnes > 1 and countOnes < N) {
             fail $"Impossible to get {countOnes} Ones when measuring W state or GHZ state on {N} qubits";
         }
-        if (countOnes == 1) {
-            return 1;
-        }
-        return 0;
+        return countOnes == 1 ? 1 | 0;
     }
     
     
@@ -212,21 +195,14 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[1], qs[0]);
         H(qs[1]);
 
-        mutable m1 = 0;
-        if (M(qs[0]) == One) {
-            set m1 = 1;
-        }
-        
-        mutable m2 = 0;
-        if (M(qs[1]) == One) {
-            set m2 = 1;
-        }
-        
+        // these changes brought the state back to one of the 2-qubit basis states from task 1.6 (but in different order)
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let  m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
     
     
-    // Task 1.11*. Distinguish four orthogonal 2-qubit states
+    // Task 1.11. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -247,7 +223,7 @@ namespace Quantum.Kata.Measurements {
     }
     
     
-    // Task 1.12**. Distinguish four orthogonal 2-qubit states, part two
+    // Task 1.12*. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
@@ -275,16 +251,8 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[0], qs[1]);
         H(qs[0]);
 
-        mutable m1 = 1;
-        if (M(qs[0]) == One) {
-            set m1 = 0;
-        }
-        
-        mutable m2 = 1;
-        if (M(qs[1]) == One) {
-            set m2 = 0;
-        }
-        
+        let m1 = M(qs[0]) == One ? 0 | 1;
+        let m2 = M(qs[1]) == One ? 0 | 1;
         return m2 * 2 + m1;
     }
     
@@ -462,7 +430,6 @@ namespace Quantum.Kata.Measurements {
         //   |+⟩ |   std |     0    |    1/2   |    1/2
         //   |0⟩ |   had |    1/2   |     0    |    1/2
         //   |+⟩ |   had |     0    |     0    |     1
-        mutable output = 0;
         let basis = RandomInt(2);
         
         // randomize over std and had
@@ -470,28 +437,16 @@ namespace Quantum.Kata.Measurements {
             
             // use standard basis
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |+⟩
-                set output = 1;
-            }
-            else {
-                set output = -1;
-            }
+            // result is One only if the state was |+⟩
+            return result == One ? 1 | -1;
         }
         else {
             // use Hadamard basis
             H(q);
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |0⟩
-                set output = 0;
-            }
-            else {
-                set output = -1;
-            }
+            // result is One only if the state was |0⟩
+            return result == One ? 0 | -1;
         }
-        
-        return output;
     }
 
 
@@ -501,7 +456,7 @@ namespace Quantum.Kata.Measurements {
     //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),
     //        |B⟩ = 1/sqrt(2) (|0⟩ + ω |1⟩),
     //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩).
-    //	      where ω = exp(2π/3) denotes a primitive, complex 3rd root of unity.
+    //        where ω = exp(2π/3) denotes a primitive, complex 3rd root of unity.
     // Output: 1 or 2 if qubit was in the |A⟩ state,
     //         0 or 2 if qubit was in the |B⟩ state,
     //         0 or 1 if qubit was in the |C⟩ state.
@@ -522,7 +477,6 @@ namespace Quantum.Kata.Measurements {
         // a 4x4 unitary. Using the "Rader trick" we can now block decompose the 3x3 DFT and obtain two
         // 2x2 blocks which we can then implement using controlled single qubit gates. We present
         // the final resulting circuit without additional commentary.
-        mutable output = 0;
         let alpha = ArcCos(Sqrt(2.0 / 3.0));
         
         using (a = Qubit()) {
@@ -543,20 +497,18 @@ namespace Quantum.Kata.Measurements {
             
             // dispatch on the cases
             if (res0 == Zero and res1 == Zero) {
-                set output = 0;
+                return 0;
             }
             elif (res0 == One and res1 == Zero) {
-                set output = 1;
+                return 1;
             }
             elif (res0 == Zero and res1 == One) {
-                set output = 2;
+                return 2;
             }
             else {
                 // this should never occur
-                set output = 3;
+                return 3;
             }
         }
-        
-        return output;
     }  
 }
