@@ -11,8 +11,9 @@
 namespace Quantum.Kata.MagicSquareGame {
 
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Arrays;
 
 
     //////////////////////////////////////////////////////////////////
@@ -29,7 +30,7 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     function IsPlusOrMinusOne (input : Int) : Bool {
-        return input == 1 or input == -1;
+        return AbsI(input) == 1;
     }
 
     function CountMinusSignsFolder (count : Int, input : Int) : Int {
@@ -38,8 +39,10 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // Task 1.2. Win condition
-    function WinCondition_Reference (alice : Int[], row : Int, bob : Int[], column : Int) : Bool {
-        return ValidAliceMove_Reference(alice) and ValidBobMove_Reference(bob) and alice[column] == bob[row];
+    function WinCondition_Reference (rowIndex : Int, columnIndex : Int, row : Int[], column : Int[]) : Bool {
+        return ValidAliceMove_Reference(row) and 
+               ValidBobMove_Reference(column) and 
+               row[columnIndex] == column[rowIndex];
     }
 
 
@@ -47,23 +50,23 @@ namespace Quantum.Kata.MagicSquareGame {
     // Alice and Bob decide on a magic square to use before the game starts, and will always place
     // the same sign in a given row and column. However, it's not possible to make a magic square
     // that is self-consistent while still following the rules of the game. Alice and Bob will
-    // always have different signs in at least one cell, so they can only win at most 8/9 of the
-    // time.
+    // always have different signs in at least one cell, so they can only win at most 89% of the time.
     //
-    // Here we use only one possible magic square; other squares that yield the same win rate are
-    // also possible.
-    function AliceClassical_Reference (row : Int) : Int[] {
-        let rows = [[1, 1, 1],
-                    [1, -1, -1],
-                    [-1, 1, -1]];
-        return rows[row];
+    // Here we use one possible magic square, described at 
+    // https://en.wikipedia.org/wiki/Quantum_pseudo-telepathy#The_Mermin-Peres_magic_square_game;
+    // other squares that yield the same win rate are possible.
+    function AliceClassical_Reference (rowIndex : Int) : Int[] {
+        let rows = [[+1, +1, +1],
+                    [+1, -1, -1],
+                    [-1, +1, -1]];
+        return rows[rowIndex];
     }
 
-    function BobClassical_Reference (column : Int) : Int[] {
-        let columns = [[1, 1, -1],
-                       [1, -1, 1],
-                       [1, -1, 1]];
-        return columns[column];
+    function BobClassical_Reference (columnIndex : Int) : Int[] {
+        let columns = [[+1, +1, -1],
+                       [+1, -1, +1],
+                       [+1, -1, +1]];
+        return columns[columnIndex];
     }
 
 
@@ -72,20 +75,17 @@ namespace Quantum.Kata.MagicSquareGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1. Entangled state
-    operation CreateEntangledState_Reference (qs : Qubit[]) : Unit {
-        body (...) {
-            // The desired state is equivalent to two Bell pairs split between Alice and Bob.
-            for (i in 0..Length(qs) / 2 - 1) {
-                H(qs[i]);
-                CNOT(qs[i], qs[i + 2]);
-            }
+    operation CreateEntangledState_Reference (qs : Qubit[]) : Unit is Adj {
+        // The desired state is equivalent to two Bell pairs split between Alice and Bob.
+        for (i in 0..1) {
+            H(qs[i]);
+            CNOT(qs[i], qs[i + 2]);
         }
-        adjoint auto;
     }
 
 
     // Task 2.2. Magic square observables
-    function MagicSquareObservable_Reference (row : Int, column : Int) : (Qubit[] => Unit : Adjoint, Controlled) {
+    function MagicSquareObservable_Reference (row : Int, column : Int) : (Qubit[] => Unit is Adj+Ctl) {
         return MagicSquareObservableImpl_Reference(row, column, _);
     }
 
@@ -131,7 +131,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // Task 2.3. Measure an operator
-    operation MeasureOperator_Reference (op : (Qubit[] => Unit : Controlled), target : Qubit[]) : Result {
+    operation MeasureOperator_Reference (op : (Qubit[] => Unit is Ctl), target : Qubit[]) : Result {
         mutable result = Zero;
         using (q = Qubit()) {
             H(q);
@@ -149,7 +149,7 @@ namespace Quantum.Kata.MagicSquareGame {
         mutable cells = new Int[3];
         for (column in 0..2) {
             let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
-            set cells[column] = IsResultZero(result) ? 1 | -1;
+            set cells w/= column <- IsResultZero(result) ? 1 | -1;
         }
         return cells;
     }
@@ -158,7 +158,7 @@ namespace Quantum.Kata.MagicSquareGame {
         mutable cells = new Int[3];
         for (row in 0..2) {
             let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
-            set cells[row] = IsResultZero(result) ? 1 | -1;
+            set cells w/= row <- IsResultZero(result) ? 1 | -1;
         }
         return cells;
     }

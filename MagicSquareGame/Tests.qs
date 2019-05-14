@@ -9,40 +9,35 @@
 
 namespace Quantum.Kata.MagicSquareGame {
 
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Convert;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Arrays;
+
+
+    function SignFromBool (input : Bool) : Int {
+        return input ? 1 | -1;
+    }
 
     operation T11_ValidMove_Test () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
-            let cells = Map(SignFromBool, BoolArrFromPositiveInt(i, 3));
-            AssertBoolEqual(
-                ValidAliceMove(cells),
-                ValidAliceMove_Reference(cells),
-                $"Valid Alice move is wrong for {cells}");
-            AssertBoolEqual(
-                ValidBobMove(cells),
-                ValidBobMove_Reference(cells),
-                $"Valid Bob move is wrong for {cells}");
+            let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
+            Fact(ValidAliceMove(cells) == ValidAliceMove_Reference(cells),
+                 $"Incorrect Alice move validity for {cells}");
+            Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
+                 $"Incorrect Bob move validity for {cells}");
         }
 
         // Moves with numbers other than +1 and -1 should be rejected.
-        let cellsOutOfRange = [1, -2, 10];
-        AssertBoolEqual(
-            ValidAliceMove(cellsOutOfRange),
-            false,
-            $"Valid Alice move is wrong for {cellsOutOfRange}");
-        AssertBoolEqual(
-            ValidBobMove(cellsOutOfRange),
-            false,
-            $"Valid Bob move is wrong for {cellsOutOfRange}");
-    }
-
-    function SignFromBool (input : Bool) : Int {
-        return input ? 1 | -1;
+        for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
+            Fact(ValidAliceMove(cellsOutOfRange) == false,
+                 $"Invalid Alice move judged valid for {cellsOutOfRange}");
+            Fact(ValidBobMove(cellsOutOfRange) == false,
+                 $"Invalid Bob move judged valid for {cellsOutOfRange}");
+        }
     }
 
 
@@ -51,15 +46,16 @@ namespace Quantum.Kata.MagicSquareGame {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
             for (j in 0..1 <<< 3 - 1) {
-                for (row in 0..2) {
-                    for (column in 0..2) {
-                        let alice = Map(SignFromBool, BoolArrFromPositiveInt(i, 3));
-                        let bob = Map(SignFromBool, BoolArrFromPositiveInt(j, 3));
+                for (rowIndex in 0..2) {
+                    for (columnIndex in 0..2) {
+                        let row = Mapped(SignFromBool, IntAsBoolArray(i, 3));
+                        let column = Mapped(SignFromBool, IntAsBoolArray(j, 3));
 
-                        AssertBoolEqual(
-                            WinCondition(alice, row, bob, column),
-                            WinCondition_Reference(alice, row, bob, column),
-                            $"Win condition is wrong for Alice={alice}, row={row}, Bob={bob}, column={column}");
+                        Fact(
+                            WinCondition(rowIndex, columnIndex, row, column) ==
+                            WinCondition_Reference(rowIndex, columnIndex, row, column),
+                            $"Incorrect win condition for rowIndex={rowIndex}, columnIndex={columnIndex}, " +
+                            $" row={row}, column={column}");
                     }
                 }
             }
@@ -69,7 +65,7 @@ namespace Quantum.Kata.MagicSquareGame {
         let aliceOutOfRange = [-1, -1, 7];
         let bobInRange = [-1, 1, 1];
         AssertBoolEqual(
-            WinCondition(aliceOutOfRange, 0, bobInRange, 0),
+            WinCondition(0, 0, aliceOutOfRange, bobInRange),
             false,
             $"Win condition is wrong for Alice={aliceOutOfRange}, row=0, Bob={bobInRange}, column=0");
     }
@@ -79,31 +75,29 @@ namespace Quantum.Kata.MagicSquareGame {
     operation RunTrials (n : Int, moves : ((Int, Int) => (Int[], Int[]))) : Int {
         mutable wins = 0;
         for (i in 1..n) {
-            let row = RandomInt(3);
-            let column = RandomInt(3);
-            let (alice, bob) = moves(row, column);
-            if (WinCondition_Reference(alice, row, bob, column)) {
-                set wins = wins + 1;
+            let rowIndex = RandomInt(3);
+            let columnIndex = RandomInt(3);
+            let (alice, bob) = moves(rowIndex, columnIndex);
+            if (WinCondition_Reference(rowIndex, columnIndex, alice, bob)) {
+                set wins += 1;
             }
         }
         return wins;
     }
 
-    operation ClassicalRunner (row : Int, column : Int) : (Int[], Int[]) {
-        return (AliceClassical(row), BobClassical(column));
+    operation ClassicalRunner (rowIndex : Int, columnIndex : Int) : (Int[], Int[]) {
+        return (AliceClassical(rowIndex), BobClassical(columnIndex));
     }
 
     operation T13_ClassicalStrategy_Test() : Unit {
         let wins = RunTrials(1000, ClassicalRunner);
-        Message($"Win rate {ToDouble(wins) / 1000.}");
-        AssertBoolEqual(wins >= 850, true,
-                        "Alice and Bob's classical strategy is not optimal");
+        Fact(wins >= 850, $"The classical strategy implemented is not optimal: win rate {IntAsDouble(wins) / 1000.}");
     }
 
 
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
-                                      refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+                                      refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[N]) {
             // apply operation that needs to be tested
             taskImpl(qs);
@@ -122,66 +116,49 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
-    operation ProductCA (operators : (Qubit[] => Unit : Adjoint, Controlled)[], qs : Qubit[]) : Unit {
-        body (...) {
-            for (op in operators) {
-                op(qs);
-            }
+    operation ProductCA (operators : (Qubit[] => Unit is Adj+Ctl)[], qs : Qubit[]) : Unit is Adj+Ctl {
+        for (op in operators) {
+            op(qs);
         }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
     }
 
-    operation MinusI (q : Qubit) : Unit {
-        body (...) {
-            Z(q);
-            X(q);
-            Z(q);
-            X(q);
-        }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
+    operation MinusI (q : Qubit) : Unit is Adj+Ctl {
+        Z(q);
+        X(q);
+        Z(q);
+        X(q);
     }
 
     function Pairs<'T> (array : 'T[]) : ('T, 'T)[] {
-        let length = Factorial(Length(array)) / (2 * Factorial(Length(array) - 2));
+        let N = Length(array);
+        let length = N * (N - 1) / 2;
         mutable pairs = new ('T, 'T)[length];
         mutable i = 0;
-        for (j in 0..Length(array) - 1) {
-            for (k in j + 1..Length(array) - 1) {
-                set pairs[i] = (array[j], array[k]);
+        for (j in 0..N - 1) {
+            for (k in j + 1..N - 1) {
+                set pairs w/= i <- (array[j], array[k]);
                 set i = i + 1;
             }
         }
         return pairs;
     }
 
-    function Factorial (n : Int) : Int {
-        if (n < 1) {
-            return 1;
-        } else {
-            return n * Factorial(n - 1);
-        }
-    }
-
-    operation AssertOperationsMutuallyCommute (operations : (Qubit[] => Unit : Adjoint, Controlled)[]) : Unit {
+    operation AssertOperationsMutuallyCommute (operations : (Qubit[] => Unit is Adj+Ctl)[]) : Unit {
         for ((a, b) in Pairs(operations)) {
-            AssertOperationsEqualReferenced(ProductCA([a, b], _), ProductCA([b, a], _), 2);
+            AssertOperationsEqualReferenced(2, ProductCA([a, b], _), ProductCA([b, a], _));
         }
     }
 
     operation T22_MagicSquareObservable_Test () : Unit {
         for (row in 0..2) {
-            let observables = Map(MagicSquareObservable(row, _), IntArrayFromRange(0..2));
-            AssertOperationsEqualReferenced(ProductCA(observables, _), ApplyToEachA(I, _), 2);
+            let observables = Mapped(MagicSquareObservable(row, _), RangeAsIntArray(0..2));
+            AssertOperationsEqualReferenced(2, ProductCA(observables, _), ApplyToEachA(I, _));
             AssertOperationsMutuallyCommute(observables);
         }
         for (column in 0..2) {
-            let observables = Map(MagicSquareObservable(_, column), IntArrayFromRange(0..2));
+            let observables = Mapped(MagicSquareObservable(_, column), RangeAsIntArray(0..2));
             // TODO: This can't actually tell the difference between I and -I?
-            AssertOperationsEqualReferenced(ProductCA(observables, _), ApplyToEachA(MinusI, _), 2);
+            AssertOperationsEqualReferenced(2, ProductCA(observables, _), ApplyToEachA(MinusI, _));
             AssertOperationsMutuallyCommute(observables);
         }
     }
@@ -219,16 +196,16 @@ namespace Quantum.Kata.MagicSquareGame {
 
     operation T24_QuantumStrategy_Test () : Unit {
         let wins = RunTrials(1000, QuantumRunner(PlayQuantumMagicSquare_Reference, _, _));
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+        Message($"Win rate {IntAsDouble(wins) / 1000.}");
         AssertBoolEqual(wins == 1000, true,
                         "Alice and Bob's quantum strategy is not optimal");
     }
 
 
     // ------------------------------------------------------
-    operation T24_PlayQuantumMagicSquare_Test () : Unit {
+    operation T25_PlayQuantumMagicSquare_Test () : Unit {
         let wins = RunTrials(1000, QuantumRunner(PlayQuantumMagicSquare, _, _));
-        Message($"Win rate {ToDouble(wins) / 1000.}");
+        Message($"Win rate {IntAsDouble(wins) / 1000.}");
         AssertBoolEqual(wins == 1000, true,
                         "Alice and Bob's quantum strategy is not optimal");
     }
@@ -240,13 +217,13 @@ namespace Quantum.Kata.MagicSquareGame {
             mutable line = new String[3];
             for (j in 0..2) {
                 if (i == row and j == column and alice[j] != bob[i]) {
-                    set line[j] = "±";
+                    set line w/= j <- "±";
                 } elif (i == row) {
-                    set line[j] = alice[j] == 1 ? "+" | (alice[j] == -1 ? "-" | "?");
+                    set line w/= j <- alice[j] == 1 ? "+" | (alice[j] == -1 ? "-" | "?");
                 } elif (j == column) {
-                    set line[j] = bob[i] == 1 ? "+" | (bob[i] == -1 ? "-" | "?");
+                    set line w/= j <- bob[i] == 1 ? "+" | (bob[i] == -1 ? "-" | "?");
                 } else {
-                    set line[j] = " ";
+                    set line w/= j <- " ";
                 }
             }
             Message("-------");

@@ -1,12 +1,15 @@
-This is a Q# kata for the Mermin-Peres magic square game, a quantum game where
-the players use entangled qubits to help them win. The tests for each task in
-the kata can be run using the "test" task in Visual Studio Code or with the
-`dotnet test` command.
+# Welcome!
 
-The kata also contains an interactive version of the magic square game where you
-play as the "adversary" who chooses the row and column for Alice and Bob. You
-can also choose which strategy Alice and Bob use. Experiment with the different
-strategies and see how often you can make Alice and Bob lose! It can be run with
-the `dotnet run` command.
+This kata covers the Mermin-Peres magic square game, a well-known example of a nonlocal (entanglement) game.
 
-http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf
+In a nonlocal game, several cooperating players play a game against a referee answering the referee's questions. 
+The players are free to share information (and even qubits!) before the game starts, 
+but are forbidden from communicating with each other afterwards. 
+Nonlocal games show that quantum entanglement can be used to increase the players' chance of winning 
+beyond what would be possible with a purely classical strategy.
+
+#### Theory
+
+* [Mermin-Peres magic square game on Wikipedia](https://en.wikipedia.org/wiki/Quantum_pseudo-telepathy#The_Mermin-Peres_magic_square_game).
+* Exercise 4 from the [assignment](http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf) from Advanced Topics in Quantum Information Theory course by Christandl and Renner.
+* A [blog post](http://twistedoakstudios.com/blog/Post6536_implementing-quantum-pseudo-telepathy) by Craig Gidney.
