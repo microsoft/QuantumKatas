@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.MagicSquareGame {
 
+    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
@@ -22,11 +23,11 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // Task 1.1. Validate Alice and Bob's moves
     function ValidAliceMove_Reference (cells : Int[]) : Bool {
-        return ForAll(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 0;
+        return All(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 0;
     }
 
     function ValidBobMove_Reference (cells : Int[]) : Bool {
-        return ForAll(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 1;
+        return All(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 1;
     }
 
     function IsPlusOrMinusOne (input : Int) : Bool {
@@ -85,86 +86,70 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // Task 2.2. Magic square observables
-    function MagicSquareObservable_Reference (row : Int, column : Int) : (Qubit[] => Unit is Adj+Ctl) {
-        return MagicSquareObservableImpl_Reference(row, column, _);
+    // This solution uses magic square described in http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf:
+    //    X ⊗ X   |   X ⊗ 1   |   1 ⊗ X
+    //    Y ⊗ Y   |  -X ⊗ Z   |  -Z ⊗ X
+    //    Z ⊗ Z   |   1 ⊗ Z   |   Z ⊗ 1
+    function GetMagicObservables_Reference (row : Int, column : Int) : (Int, Pauli[]) {
+        return [[(+1, [PauliX, PauliX]), (+1, [PauliX, PauliI]), (+1, [PauliI, PauliX])],
+                [(+1, [PauliY, PauliY]), (-1, [PauliX, PauliZ]), (-1, [PauliZ, PauliX])],
+                [(+1, [PauliZ, PauliZ]), (+1, [PauliI, PauliZ]), (+1, [PauliZ, PauliI])]] [row][column];
     }
 
-    operation MagicSquareObservableImpl_Reference (row : Int, column : Int, qs : Qubit[]) : Unit {
-        body (...) {
-            if (row == 0 and column == 0) {
-                ApplyToEachCA(X, qs);
-            } elif (row == 0 and column == 1) {
-                X(qs[0]);
-            } elif (row == 0 and column == 2) {
-                X(qs[1]);
-            } elif (row == 1 and column == 0) {
-                ApplyToEachCA(Y, qs);
-            } elif (row == 1 and column == 1) {
-                MinusX(qs[0]);
-                Z(qs[1]);
-            } elif (row == 1 and column == 2) {
-                Z(qs[0]);
-                MinusX(qs[1]);
-            } elif (row == 2 and column == 0) {
-                ApplyToEachCA(Z, qs);
-            } elif (row == 2 and column == 1) {
-                Z(qs[1]);
-            } elif (row == 2 and column == 2) {
-                Z(qs[0]);
-            }
+
+    // Task 2.3. Apply magic square observables
+    operation ApplyMagicObservables_Reference (observable : (Int, Pauli[]), qs : Qubit[]) : Unit is Adj+Ctl {
+        let (sign, paulis) = observable;
+        ApplyPauli(paulis, qs);
+        // remember to apply the sign - this will be important when measuring these observables!
+        if (sign < 0) {
+            R(PauliI, 2.0 * PI(), qs[0]);
         }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
-    }
-
-    operation MinusX(q : Qubit) : Unit {
-        body (...) {
-            Z(q);
-            X(q);
-            Z(q);
-        }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
     }
 
 
-    // Task 2.3. Measure an operator
+    // Task 2.4. Measure observables using joint measurement
+    operation MeasureObservable_Reference (observable : (Int, Pauli[]), target : Qubit[]) : Result {
+        let (sign, paulis) = observable;
+        // Do a joint measurement of the paulis, convert it to +1/-1 eigenvalue, multiply by sign and convert back to Result
+        return (sign * (Measure(paulis, target) == Zero ? +1 | -1)) == +1 ? Zero | One;
+    }
+
+
+    // Task 2.5. Measure an operator
     operation MeasureOperator_Reference (op : (Qubit[] => Unit is Ctl), target : Qubit[]) : Result {
-        mutable result = Zero;
         using (q = Qubit()) {
             H(q);
             Controlled op([q], target);
             H(q);
-            set result = M(q);
-            Reset(q);
+            return MResetZ(q);
         }
-        return result;
     }
 
 
-    // Task 2.4. Alice and Bob's quantum strategy
-    operation AliceQuantum_Reference(row : Int, qs : Qubit[]) : Int[] {
+    // Task 2.6. Alice and Bob's quantum strategy
+    operation AliceQuantum_Reference(rowIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (column in 0..2) {
-            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
+            let obs = GetMagicObservables_Reference(rowIndex, column);
+            let result = MeasureObservable_Reference(obs, qs);
             set cells w/= column <- IsResultZero(result) ? 1 | -1;
         }
         return cells;
     }
 
-    operation BobQuantum_Reference(column : Int, qs : Qubit[]) : Int[] {
+    operation BobQuantum_Reference(columnIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (row in 0..2) {
-            let result = MeasureOperator_Reference(MagicSquareObservable_Reference(row, column), qs);
+            let obs = GetMagicObservables_Reference(row, columnIndex);
+            let result = MeasureObservable_Reference(obs, qs);
             set cells w/= row <- IsResultZero(result) ? 1 | -1;
         }
         return cells;
     }
 
 
-    // Task 2.5. Play the magic square game using the quantum strategy
+    // Task 2.7. Play the magic square game using the quantum strategy
     operation PlayQuantumMagicSquare_Reference (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
         mutable alice = new Int[3];
         mutable bob = new Int[3];
