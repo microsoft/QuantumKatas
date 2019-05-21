@@ -176,7 +176,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactB(3 == Length(x), true, "x should have exactly 3 qubits");
             
-        // Hint: represent f(x) in terms of AND and ⊕ operations
+        // f(x) can be represented in terms of AND and ⊕ operations as follows:
+        // f(x) = (x₀ AND x₁) ⊕ (x₀ AND x₂) ⊕ (x₁ AND x₂)
         CCNOT(x[0], x[1], y);
         CCNOT(x[0], x[2], y);
         CCNOT(x[1], x[2], y);
