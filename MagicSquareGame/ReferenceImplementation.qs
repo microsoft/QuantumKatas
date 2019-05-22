@@ -128,9 +128,15 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // Task 2.6. Alice and Bob's quantum strategy
+    // Note that Alice uses MeasureObservable, while Bob uses ApplyMagicObservables followed by
+    // MeasureOperator. These both give the same result; we only show both to demonstrate that they
+    // are equivalent. Alice and Bob can choose to use either method without affecting their
+    // strategy.
     operation AliceQuantum_Reference(rowIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (column in 0..2) {
+            // Alice uses joint measurement to measure the the qubits in the observable's Pauli
+            // bases.
             let obs = GetMagicObservables_Reference(rowIndex, column);
             let result = MeasureObservable_Reference(obs, qs);
             set cells w/= column <- IsResultZero(result) ? 1 | -1;
@@ -141,8 +147,10 @@ namespace Quantum.Kata.MagicSquareGame {
     operation BobQuantum_Reference(columnIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (row in 0..2) {
+            // Bob converts the observable into an operator before measuring it.
             let obs = GetMagicObservables_Reference(row, columnIndex);
-            let result = MeasureObservable_Reference(obs, qs);
+            let op = ApplyMagicObservables_Reference(obs, _);
+            let result = MeasureOperator_Reference(op, qs);
             set cells w/= row <- IsResultZero(result) ? 1 | -1;
         }
         return cells;

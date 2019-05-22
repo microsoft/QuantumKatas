@@ -194,7 +194,10 @@ namespace Quantum.Kata.MagicSquareGame {
     // Output: The signs Alice should place in her row (as an Int array of length 3).
     //         +1 indicates plus sign, -1 - minus sign.
     operation AliceQuantum (rowIndex : Int, qs : Qubit[]) : Int[] {
-        // Hint: Use GetMagicObservables and MeasureObservable from tasks 2.2 and 2.4.
+        // Hint: Use GetMagicObservables from task 2.2.
+        
+        // Hint: You can use either MeasureObservable from task 2.4, or ApplyMagicObservables and
+        // MeasureOperator from tasks 2.3 and 2.5.
 
         // ...
         fail "Alice's strategy in task 2.6 not implemented yet";
@@ -206,7 +209,10 @@ namespace Quantum.Kata.MagicSquareGame {
     // Output: The signs Bob should place in his column (as an Int array of length 3).
     //         +1 indicates plus sign, -1 - minus sign.
     operation BobQuantum (columnIndex : Int, qs : Qubit[]) : Int[] {
-        // Hint: Use GetMagicObservables and MeasureObservable from tasks 2.2 and 2.4.
+        // Hint: Use GetMagicObservables from task 2.2.
+        
+        // Hint: You can use either MeasureObservable from task 2.4, or ApplyMagicObservables and
+        // MeasureOperator from tasks 2.3 and 2.5.
 
         // ...
         fail "Bob's strategy in task 2.6 not implemented yet";
