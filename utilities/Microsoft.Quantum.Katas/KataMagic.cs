@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
@@ -27,10 +28,11 @@ namespace Microsoft.Quantum.Katas
             this.Resolver = resolver;
             this.Snippets = snippets;
             this.Logger = logger;
+            this.AllAnswers = new Dictionary<OperationInfo, OperationInfo>();
         }
 
         /// <summary>
-        /// The Resolver let's us find compiled Q# operations from the workspace
+        /// The Resolver lets us find compiled Q# operations from the workspace
         /// </summary>
         protected IOperationResolver Resolver { get; }
 
@@ -40,6 +42,8 @@ namespace Microsoft.Quantum.Katas
         protected ISnippets Snippets { get; }
 
         protected ILogger<KataMagic> Logger { get; }
+
+        protected Dictionary<OperationInfo, OperationInfo> AllAnswers { get; }
 
         /// <summary>
         /// What this Magic does when triggered. It will:
@@ -137,7 +141,11 @@ namespace Microsoft.Quantum.Katas
                 var qsim = CreateSimulator();
 
                 qsim.DisableLogToConsole();
-                qsim.Register(skeletonAnswer.RoslynType, userAnswer.RoslynType, typeof(ICallable));
+                // Register all solutions to previously executed tasks (including the current one)
+                foreach (KeyValuePair<OperationInfo, OperationInfo> answer in AllAnswers) {
+                    Logger.LogDebug($"Registering {answer.Key.FullName}");
+                    qsim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
+                }
                 qsim.OnLog += channel.Stdout;
 
                 var value = test.RunAsync(qsim, null).Result;
@@ -178,8 +186,17 @@ namespace Microsoft.Quantum.Katas
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
         /// test's namespace
         /// </summary>
-        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
+        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
+        {
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
+            Logger.LogDebug($"Resolved {userAnswer.FullName} to {skeletonAnswer}");
+            if (skeletonAnswer != null)
+            {
+                // Remember the last user answer for this task
+                AllAnswers[skeletonAnswer] = userAnswer;
+            }
+            return skeletonAnswer;
+        }
     }
 }
 
