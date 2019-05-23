@@ -143,7 +143,7 @@ namespace Microsoft.Quantum.Katas
                 qsim.DisableLogToConsole();
                 // Register all solutions to previously executed tasks (including the current one)
                 foreach (KeyValuePair<OperationInfo, OperationInfo> answer in AllAnswers) {
-                    Console.Out.WriteLine($"Registering {answer.Key.FullName}");
+                    Logger.LogDebug($"Registering {answer.Key.FullName}");
                     qsim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
                 }
                 qsim.OnLog += channel.Stdout;
@@ -189,7 +189,7 @@ namespace Microsoft.Quantum.Katas
         public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
         {
             var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
-            Console.Out.WriteLine($"Resolved {userAnswer.FullName} to {skeletonAnswer}");
+            Logger.LogDebug($"Resolved {userAnswer.FullName} to {skeletonAnswer}");
             if (skeletonAnswer != null)
             {
                 // Remember the last user answer for this task
