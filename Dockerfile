@@ -3,7 +3,7 @@ FROM python:3.7-slim
 
 # install qsharp and the notebook packages
 RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook qsharp
+    pip install --no-cache notebook qsharp==0.6.1905.301
 
 # pre-requisites for .NET SDK
 RUN apt-get update && apt-get -y install wget && \
@@ -39,7 +39,8 @@ USER ${USER}
 
 # Make sure .net tools is in the path
 ENV PATH=$PATH:${HOME}/dotnet:${HOME}/.dotnet/tools \
-    DOTNET_ROOT=${HOME}/dotnet
+    DOTNET_ROOT=${HOME}/dotnet \
+    IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
 
 # install IQSharp
 RUN dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.6.1905.301
