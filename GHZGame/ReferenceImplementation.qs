@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.GHZGame {
 
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Canon;
@@ -41,11 +42,7 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.4. Referee classical GHZ game
     operation PlayClassicalGHZ_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
-        mutable results = new Bool[Length(inputs)];
-        for (i in 0..Length(inputs) - 1) {
-            set results w/= i <- strategy(inputs[i]);
-        }
-        return results;
+        return ForEach(strategy, inputs);
     }
 
 
