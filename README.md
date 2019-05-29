@@ -32,7 +32,7 @@ Each kata is a separate project which includes:
 Each kata covers one topic.
 Currently covered topics are:
 
-*Quantum computing concepts:*
+#### Quantum computing concepts
 * **[Basic quantum computing gates](./BasicGates/)**.
   This kata focuses on main single-qubit and multi-qubit gates used in quantum computing.
 * **[Superposition](./Superposition/)**.
@@ -42,7 +42,7 @@ Currently covered topics are:
 * **[Joint measurements](./JointMeasurements/)**.
   The tasks focus on using joint (parity) measurements for distinguishing quantum states and performing gates.
 
-*Simple algorithms:*
+#### Simple algorithms
 * **[Teleportation](./Teleportation/)**.
   This kata walks you through the standard teleportation protocol and several variations.
 * **[Superdense coding](./SuperdenseCoding/)**.
@@ -52,17 +52,18 @@ Currently covered topics are:
 * **[Simon's algorithm](./SimonsAlgorithm/)**.
   This kata introduces Simon's algorithm.
 
-*Entanglement games:*
-* **[CHSH game](./CHSHGame/)**.
-* **[GHZ game](./GHZGame/)**.
-
-*Grover's algorithm:*
+#### Grover's algorithm
 * **[Grover's algorithm](./GroversAlgorithm/)**.
   This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
   This kata continues the exploration of Grover's search algorithm, using SAT problems as an example. It covers implementing quantum oracles based on the problem description instead of a hard-coded answer and using Grover's algorithm to solve problems with unknown number of solutions.
 
-*Miscellaneous:*
+#### Entanglement games
+* **[CHSH game](./CHSHGame/)**.
+* **[GHZ game](./GHZGame/)**.
+* **[Mermin-Peres magic square game](./MagicSquareGame)**.
+
+#### Miscellaneous
 * **[Phase estimation](./PhaseEstimation/)**.
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
