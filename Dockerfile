@@ -71,3 +71,6 @@ RUN jupyter nbconvert Measurements/Measurements.ipynb --execute --stdout --to ma
 
 RUN dotnet build Superposition
 RUN jupyter nbconvert Superposition/Superposition.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build Teleportation
+RUN jupyter nbconvert Teleportation/Teleportation.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
