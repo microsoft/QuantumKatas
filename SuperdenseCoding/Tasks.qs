@@ -88,10 +88,11 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     // Task 4. Superdense coding protocol end-to-end
     // Put together the steps performed in tasks 1-3 to implement the full superdense coding protocol.
-    // Input: Two classical bits
+    // Input: Two classical bits to be transmitted.
     // Goal:  Prepare an EPR Pair, encode the two classical bits in the
     // state of the pair by applying quantum gates to one member of the pair,
-    // and decode the two classical gates from the state of the pair
+    // and decode the two classical bits from the state of the pair.
+    // Return the result of decoding. 
     operation SuperdenseCodingProtocol (message : Bool[]) : Bool[] {
         
         mutable decoded_bits = new Bool[2];

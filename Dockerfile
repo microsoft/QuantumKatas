@@ -69,6 +69,9 @@ RUN jupyter nbconvert GHZGame/GHZGame.ipynb --execute --stdout --to markdown  --
 RUN dotnet build Measurements
 RUN jupyter nbconvert Measurements/Measurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build SuperdenseCoding
+RUN jupyter nbconvert SuperdenseCoding/SuperdenseCoding.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build Superposition
 RUN jupyter nbconvert Superposition/Superposition.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
