@@ -1,11 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+//////////////////////////////////////////////////////////////////////
+// This file contains testing harness for all tasks.
+// You should not modify anything in this file.
+// The tasks themselves can be found in Tasks.qs file.
+//////////////////////////////////////////////////////////////////////
+
 namespace Quantum.Kata.GraphColoring {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Extensions.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Diagnostics;
     
 
     //////////////////////////////////////////////////////////////////
@@ -16,24 +24,24 @@ namespace Quantum.Kata.GraphColoring {
     operation T11_Test () : Unit {
         using ((register, target) = (Qubit[5], Qubit())) {
             Task11(register, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
 
             X(register[0]);
             Task11(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -41,12 +49,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[2]);
             X(register[4]);
             Task11(register, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -56,12 +64,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[3]);
             X(register[4]);
             Task11(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -72,12 +80,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[4]);
             X(target);
             Task11(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
         }
@@ -86,24 +94,24 @@ namespace Quantum.Kata.GraphColoring {
     operation T12_Test () : Unit {
         using ((register, target) = (Qubit[5], Qubit())) {
             Task12(register, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
 
             X(register[0]);
             Task12(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -111,12 +119,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[2]);
             X(register[4]);
             Task12(register, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -126,12 +134,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[3]);
             X(register[4]);
             Task12(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
 
@@ -142,12 +150,12 @@ namespace Quantum.Kata.GraphColoring {
             X(register[4]);
             X(target);
             Task12(register, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[2], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[3], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[4], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(register);
             Reset(target);
         }
@@ -156,11 +164,11 @@ namespace Quantum.Kata.GraphColoring {
     operation T13_Test () : Unit {
         using ((r1, r2, target) = (Qubit[2], Qubit[2], Qubit())) {
             Task13(r1, r2, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -168,11 +176,11 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[0]);
             X(r2[0]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -180,11 +188,11 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[1]);
             X(r2[1]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -194,11 +202,11 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[0]);
             X(r2[1]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -210,11 +218,11 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[1]);
             X(target);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -223,11 +231,11 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[1]);
             X(r2[1]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -235,22 +243,22 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[0]);
             X(r2[1]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
 
             X(r1[0]);
             Task13(r1, r2, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             Reset(target);
@@ -260,13 +268,13 @@ namespace Quantum.Kata.GraphColoring {
     operation T21_Test () : Unit {
         using ((r1, r2, r3, target) = (Qubit[2], Qubit[2], Qubit[2], Qubit())) {
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -276,13 +284,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[0]);
             X(r3[0]);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -295,13 +303,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[1]);
             X(r3[1]);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -315,13 +323,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r3[1]);
             X(target);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -329,13 +337,13 @@ namespace Quantum.Kata.GraphColoring {
 
             X(r2[0]);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -344,13 +352,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[1]);
             X(r2[0]);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -359,13 +367,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[0]);
             X(r2[0]);
             Task21(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -376,13 +384,13 @@ namespace Quantum.Kata.GraphColoring {
     operation T22_Test () : Unit {
         using ((r1, r2, r3, target) = (Qubit[2], Qubit[2], Qubit[2], Qubit())) {
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -392,13 +400,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[0]);
             X(r3[0]);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -411,13 +419,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r2[1]);
             X(r3[1]);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -431,13 +439,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r3[1]);
             X(target);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -445,13 +453,13 @@ namespace Quantum.Kata.GraphColoring {
 
             X(r2[0]);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -460,13 +468,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[1]);
             X(r2[0]);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -478,13 +486,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r3[1]);
             X(target);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -493,13 +501,13 @@ namespace Quantum.Kata.GraphColoring {
             X(r1[0]);
             X(r2[0]);
             Task22(r1, r2, r3, target);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r1[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r1[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), r2[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r2[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[0], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), r3[1], 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
             ResetAll(r1);
             ResetAll(r2);
             ResetAll(r3);
@@ -571,15 +579,15 @@ namespace Quantum.Kata.GraphColoring {
         return true;
     }
 
-    operation Test_Assignment(orc : ((Qubit[], Qubit) => Unit : Adjoint), assignment : Int[], outState : Int, register : Qubit[], target : Qubit) : Unit {
+    operation Test_Assignment(orc : ((Qubit[], Qubit) => Unit is Adj), assignment : Int[], outState : Int, register : Qubit[], target : Qubit) : Unit {
         Assign_Colors(register, assignment);
         orc(register, target);
 
         Assert_Colors(register, assignment);
         if (outState == 0) {
-            AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), target, 1e-5);
         } elif (outState == 1) {
-            AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
+            AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), target, 1e-5);
         } else {
             fail "Desired output state must be 0 or 1";
         }
@@ -614,24 +622,24 @@ namespace Quantum.Kata.GraphColoring {
 
         for (i in 0 .. Length(assignments) - 1) {
             if (assignments[i] == 0) {
-                AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2], 1e-5);
-                AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2 + 1], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2 + 1], 1e-5);
             } elif (assignments[i] == 1) {
-                AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2], 1e-5);
-                AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2 + 1], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2 + 1], 1e-5);
             } elif (assignments[i] == 2) {
-                AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2], 1e-5);
-                AssertQubitState((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2 + 1], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(1.0, 0.0), Complex(0.0, 0.0)), register[i * 2 + 1], 1e-5);
             } elif (assignments[i] == 3) {
-                AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2], 1e-5);
-                AssertQubitState((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2 + 1], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2], 1e-5);
+                AssertQubitIsInStateWithinTolerance((Complex(0.0, 0.0), Complex(1.0, 0.0)), register[i * 2 + 1], 1e-5);
             } else {
                 fail "Color Assignments need to be from 0 - 3";
             }
         }
     }
 
-    operation gen_Task31 (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit : Adjoint) {
+    operation gen_Task31 (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit is Adj) {
         return Task31(edgeList, numNodes, _, _);
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 namespace Quantum.Kata.GraphColoring {
     open Microsoft.Quantum.Extensions.Convert;
     open Microsoft.Quantum.Extensions.Math;
@@ -12,12 +15,18 @@ namespace Quantum.Kata.GraphColoring {
     
     // The "Graph coloring" quantum kata is a series of exercises designed
     // to teach you the basics of using Grover search to solve constraint
-    // satisfaction problems, specifically graph coloring.
+    // satisfaction problems, using graph coloring problem as an example.
+    // It covers the following topics:
+    //  - writing oracles implementing constraints on graph coloring,
+    //  - using Grover's algorithm to solve problems with unknown number of solutions.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
     // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
     // with some Q# code to make the failing test pass.
+
+    // Within each section, tasks are given in approximate order of increasing difficulty;
+    // harder ones are marked with asterisks.
 
 
     //////////////////////////////////////////////////////////////////
@@ -126,7 +135,7 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.1. "Graph Coloring" oracle
     // Inputs:
-    //      1) an array containing pairs of ints representing the list of edges between nodes
+    //      1) an array containing pairs of integers representing the list of edges between nodes
     //      2) the number of nodes in the graph
     //      3) a register of qubits numbering twice the number of nodes encoding the color assignments
     //      4) a qubit in an arbitrary state |y⟩ (target qubit)
@@ -154,7 +163,7 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.2. "Graph Coloring" oracle generator
     // Inputs:
-    //      1) an array containing pairs of ints representing the list of edges between nodes
+    //      1) an array containing pairs of integers representing the list of edges between nodes
     //      2) the number of nodes in the graph
     //
     // Output: A marking oracle that takes a register and a target qubit and flips the target
@@ -162,7 +171,7 @@ namespace Quantum.Kata.GraphColoring {
     //         attached nodes have the same color.
     //
     // Essentially, it is returning the oracle in Task 3.1., but for a particular graph.
-    operation Task32 (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit : Adjoint) {
+    operation Task32 (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit is Adj) {
 
         body (...) {
             return Task11;
@@ -177,11 +186,11 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 4. Using Grover's search to find color assignments
     // Inputs:
-    //      1) an array containing pairs of ints representing the list of edges between nodes
+    //      1) an array containing pairs of integers representing the list of edges between nodes
     //      2) the number of nodes in the graph
     //
     // Output: a color assignment for the graph that has no edge having its nodes share the same color.
-    //         Note that we are returning an interger array corresponding to the measured qubit encoding.
+    //         Note that we are returning an integer array corresponding to the measured qubit encoding.
     //
     // Hint, use the provided GroversSearch operation and the "Graph Coloring" oracle generator.
     operation Task4 (edgeList : (Int, Int)[], numNodes : Int) : Int[] {
@@ -191,92 +200,4 @@ namespace Quantum.Kata.GraphColoring {
         }
 
     }
-
-
-    // The following functions are taken from the Grover's search Kata
-    operation GroversSearch (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
-        body (...) {
-            let phaseOracle = OracleConverter(oracle);
-            HadamardTransform(register);
-            
-            for (i in 1 .. iterations) {
-                GroverIteration(register, phaseOracle);
-            }
-        }
-        adjoint invert;
-    }
-
-    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
-        body (...) {
-            oracle(register);
-            HadamardTransform(register);
-            ConditionalPhaseFlip(register);
-            HadamardTransform(register);
-        }
-        adjoint invert;
-    }
-
-    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
-        return OracleConverterImpl(markingOracle, _);
-    }
-
-    operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
-        body (...) {
-            using (target = Qubit()) {
-                // Put the target into the |-⟩ state
-                X(target);
-                H(target);
-                
-                // Apply the marking oracle; since the target is in the |-⟩ state,
-                // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-                markingOracle(register, target);
-                
-                // Put the target back into |0⟩ so we can return it
-                H(target);
-                X(target);
-            }
-        }
-        adjoint invert;
-    }
-
-    operation HadamardTransform (register : Qubit[]) : Unit {
-        body (...) {
-            ApplyToEachA(H, register);
-        }
-        adjoint invert;
-    }
-
-    operation ConditionalPhaseFlip (register : Qubit[]) : Unit {
-        body (...) {
-            // Define a marking oracle which detects an all zero state
-            let allZerosOracle = Oracle_ArbitraryPattern(_, _, new Bool[Length(register)]);
-            
-            // Convert it into a phase-flip oracle and apply it
-            let flipOracle = OracleConverter(allZerosOracle);
-            flipOracle(register);
-        }
-        adjoint self;
-    }
-    
-    operation PhaseFlip_ControlledZ (register : Qubit[]) : Unit {
-        body (...) {
-            // Alternative solution, described at https://quantumcomputing.stackexchange.com/questions/4268/how-to-construct-the-inversion-about-the-mean-operator/4269#4269
-            ApplyToEachA(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEachA(X, register);
-        }
-        adjoint self;
-    }
-
-    operation Oracle_ArbitraryPattern(queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit {
-        
-        body (...) {
-            (ControlledOnBitString(pattern, X))(queryRegister, target);
-        }
-        
-        adjoint invert;
-    }
-    
-
-
 }

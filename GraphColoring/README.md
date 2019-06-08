@@ -1,18 +1,6 @@
 # Welcome!
 
-The basic gates kata covers the using Grover's search to solve the Constraint Satisfaction Problem of Graph Coloring.
+This kata continues the exploration of the Grover's search algorithm started in the "Grover's Algorithm" kata. It teaches writing oracles for the algorithm which describe the problem instead of the solution, using graph coloring problem as an example. Then it takes the implementation of the Grover's search to the next level, covering the problems with unknown number of solutions.
 
-#### Theory
-
-* The tasks follow the explanation from *Quantum Computation and Quantum Information* by Nielsen and Chuang.
-  In the 10th anniversary edition, this is section 6.1.2 on pages 248-251.
-* A different explanation of Grover's algorithm can be found in 
-  [this Wikipedia article](https://en.wikipedia.org/wiki/Grover%27s_algorithm).
-* [An Introduction to Quantum Algorithms](https://people.cs.umass.edu/~strubell/doc/quantum_tutorial.pdf) by Emma Strubell, pages 20-24.
-* [Lecture 4: Grover's Algorithm](https://www.cs.cmu.edu/~odonnell/quantum15/lecture04.pdf) by John Wright.
-* Lectures [12](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/12.pdf) and [13](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/13.pdf) by John Watrous.
-* [This page](http://davidbkemp.github.io/animated-qubits/grover.html) has an animated demonstration of Grover's algorithm for a simple case.
-
-#### Q# materials
-
-* Q# Samples repository has an [implementation of Grover's search](https://github.com/Microsoft/Quantum/tree/master/Samples/DatabaseSearch).
+* It is strongly recommended to complete the [Grover's Algorithm kata](./../GroversAlgorithm/) before proceeding to this one. You can also refer to its [README.md](./../GroversAlgorithm/README.md) for the list of resources on Grover's algorithm.
+* [SolveSATWithGrover](./../SolveSATWithGrover/) is another kata covering oracle implementation for solving constraint satisfaction problems.

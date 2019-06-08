@@ -1,24 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+//////////////////////////////////////////////////////////////////////
+// This file contains reference solutions to all tasks.
+// The tasks themselves can be found in Tasks.qs file.
+// We recommend that you try to solve the tasks yourself first,
+// but feel free to look up the solution if you get stuck.
+//////////////////////////////////////////////////////////////////////
+
 namespace Quantum.Kata.GraphColoring {
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Primitive;
+
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Diagnostics;
-
-    //////////////////////////////////////////////////////////////////
-    // Welcome!
-    //////////////////////////////////////////////////////////////////
-
-    // The "Graph coloring" quantum kata is a series of exercises designed
-    // to teach you the basics of using Grover search to solve constraint
-    // satisfaction problems, specifically graph coloring.
-
-    // Each task is wrapped in one operation preceded by the description of the task.
-    // Each task (except tasks in which you have to write a test) has a unit test associated with it,
-    // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
-    // with some Q# code to make the failing test pass.
-
+    open Microsoft.Quantum.Diagnostics;
 
     //////////////////////////////////////////////////////////////////
     // Part I. Building marking oracles for classical functions
@@ -237,7 +234,7 @@ namespace Quantum.Kata.GraphColoring {
     //         attached nodes have the same color.
     //
     // Essentially, it is returning the oracle in Task 3.1., but for a particular graph.
-    operation Task32_Reference (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit : Adjoint) {
+    operation Task32_Reference (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit is Adj) {
 
         body (...) {
             return Task31_Reference(edgeList, numNodes, _, _);
@@ -256,7 +253,7 @@ namespace Quantum.Kata.GraphColoring {
     //      2) the number of nodes in the graph
     //
     // Output: a color assignment for the graph that has no edge having its nodes share the same color.
-    //         Note that we are returning an interger array corresponding to the measured qubit encoding.
+    //         Note that we are returning an integer array corresponding to the measured qubit encoding.
     //
     // Hint, use the provided GroversSearch operation, the Oracle Converter, and the "Graph Coloring" oracle generator.
     operation Task4_Reference (edgeList : (Int, Int)[], numNodes : Int) : Int[] {
@@ -264,21 +261,21 @@ namespace Quantum.Kata.GraphColoring {
         body (...) {
             let orc = Task32_Reference(edgeList, numNodes);
             mutable ret = new Int[numNodes];
-            let it = RandomInt(MaxI(1, Round(PI() / 4.0 * Sqrt(PowD(4.0, ToDouble(numNodes))))));
+            let it = RandomInt(MaxI(1, Round(PI() / 4.0 * Sqrt(PowD(4.0, IntAsDouble(numNodes))))));
             using (queryRegister = Qubit[numNodes * 2]) {
                 GroversSearch_Reference(queryRegister, orc, it);
                 for (i in 0 .. numNodes - 1) {
                     let r1 = M(queryRegister[i * 2]);
                     let r2 = M(queryRegister[i * 2 + 1]);
 
-                    if (r1 == Zero && r2 == Zero) {
-                        set ret[i] = 0;
+                    if (r1 == Zero and r2 == Zero) {
+                        set ret w/= i <- 0;
                     } elif (r1 == Zero) {
-                        set ret[i] = 1;
+                        set ret w/= i <- 1;
                     } elif (r2 == Zero) {
-                        set ret[i] = 2;
+                        set ret w/= i <- 2;
                     } else {
-                        set ret[i] = 3;
+                        set ret w/= i <- 3;
                     }
                 }
                 ResetAll(queryRegister);
@@ -290,7 +287,7 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // The following functions are taken from the Grover's search Kata
-    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
+    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         body (...) {
             let phaseOracle = OracleConverter_Reference(oracle);
             HadamardTransform_Reference(register);
@@ -302,7 +299,7 @@ namespace Quantum.Kata.GraphColoring {
         adjoint invert;
     }
 
-    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit {
         body (...) {
             oracle(register);
             HadamardTransform_Reference(register);
@@ -312,11 +309,11 @@ namespace Quantum.Kata.GraphColoring {
         adjoint invert;
     }
 
-    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         return OracleConverterImpl_Reference(markingOracle, _);
     }
 
-    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint), register : Qubit[]) : Unit {
+    operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit {
         body (...) {
             using (target = Qubit()) {
                 // Put the target into the |-⟩ state
