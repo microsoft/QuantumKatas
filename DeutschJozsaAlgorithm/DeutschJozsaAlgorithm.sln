@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeutschJozsaAlgorithm", "DeutschJozsaAlgorithm.csproj", "{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeutschJozsaAlgorithm", "DeutschJozsaAlgorithm.csproj", "{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\utilities\Common\Common.csproj", "{54985402-1C47-4025-BF9D-42C394D9EB63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54985402-1C47-4025-BF9D-42C394D9EB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54985402-1C47-4025-BF9D-42C394D9EB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54985402-1C47-4025-BF9D-42C394D9EB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54985402-1C47-4025-BF9D-42C394D9EB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

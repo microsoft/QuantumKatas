@@ -47,16 +47,28 @@
 			"name": "10. Solving SAT problems using Grover's algorithm"
 		},
 		{
+			"path": "CHSHGame",
+			"name": "11. CHSH game"
+		},
+		{
+			"path": "GHZGame",
+			"name": "12. GHZ game"
+		},
+		{
+			"path": "MagicSquareGame",
+			"name": "13. Mermin-Peres magic square game"
+		},
+		{
 			"path": "PhaseEstimation",
-			"name": "11. Phase Estimation"
+			"name": "14. Phase Estimation"
 		},
 		{
 			"path": "QEC_BitFlipCode",
-			"name": "12. QEC: Bit-flip Code"
+			"name": "15. QEC: Bit-flip Code"
 		},
 		{
 			"path": "UnitaryPatterns",
-			"name": "13*. Unitary Patterns"
+			"name": "16*. Unitary Patterns"
 		},
 	],
 	"settings": {
@@ -88,7 +100,11 @@
 			// Hide build artifacts.
 			"**/bin": true,
 			"**/obj": true,
-			"**/.vs": true
+			"**/.vs": true,
+
+			// Hide Jupyter Notebooks artifacts.
+			"**/*.ipynb": true,
+			"**/.ipynb_checkpoints": true
 		}
 	}
 }

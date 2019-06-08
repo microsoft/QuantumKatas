@@ -10,10 +10,11 @@
 
 namespace Quantum.Kata.Measurements {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Arithmetic;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ namespace Quantum.Kata.Measurements {
     
     // Task 1.1. |0⟩ or |1⟩ ?
     // Input: a qubit which is guaranteed to be in |0⟩ or |1⟩ state.
-    // Output: true if qubit was in |1⟩ state, or false if it was in |0⟩ state.
+    // Output: true if the qubit was in |1⟩ state, or false if it was in |0⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitOne_Reference (q : Qubit) : Bool {
         return M(q) == One;
@@ -40,7 +41,7 @@ namespace Quantum.Kata.Measurements {
     // Task 1.3. |+⟩ or |-⟩ ?
     // Input: a qubit which is guaranteed to be in |+⟩ or |-⟩ state
     //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
-    // Output: true if qubit was in |+⟩ state, or false if it was in |-⟩ state.
+    // Output: true if the qubit was in |+⟩ state, or false if it was in |-⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitPlus_Reference (q : Qubit) : Bool {
         H(q);
@@ -54,7 +55,7 @@ namespace Quantum.Kata.Measurements {
     //      2) a qubit which is guaranteed to be in |A⟩ or |B⟩ state
     //         |A⟩ =   cos(alpha) * |0⟩ + sin(alpha) * |1⟩,
     //         |B⟩ = - sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
-    // Output: true if qubit was in |A⟩ state, or false if it was in |B⟩ state.
+    // Output: true if the qubit was in |A⟩ state, or false if it was in |B⟩ state.
     // The state of the qubit at the end of the operation does not matter.
     operation IsQubitA_Reference (alpha : Double, q : Qubit) : Bool {
         // |0⟩ is converted into |A⟩ and |1⟩ into |B⟩ by Ry(2.0 * alpha)
@@ -65,14 +66,12 @@ namespace Quantum.Kata.Measurements {
     
     
     // Task 1.5. |00⟩ or |11⟩ ?
-    // Input: two qubits (stored in an array) which are guaranteed to be in |00⟩ or |11⟩ state.
-    // Output: 0 if qubits were in |00⟩ state,
+    // Input: two qubits (stored in an array of length 2) which are guaranteed to be in either the  |00⟩ or the |11⟩ state.
+    // Output: 0 if the qubits were in the |00⟩ state,
     //         1 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne_Reference (qs : Qubit[]) : Int {
         // it's enough to do one measurement on any qubit
-        let res = M(qs[0]);
-        
         return M(qs[0]) == Zero ? 0 | 1;
     }
     
@@ -86,17 +85,10 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BasisStateMeasurement_Reference (qs : Qubit[]) : Int {
-        // measurement on the first qubit gives the higher bit of the answer, on the second - the lower
-        mutable m1 = 0;
-        if (M(qs[0]) == One) {
-            set m1 = 1;
-        }
-        
-        mutable m2 = 0;
-        if (M(qs[1]) == One) {
-            set m2 = 1;
-        }
-        
+        // Measurement on the first qubit gives the higher bit of the answer, on the second - the lower.
+        // You can also use library function MeasureIntegerBE to get the same result.
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m1 * 2 + m2;
     }
     
@@ -116,15 +108,12 @@ namespace Quantum.Kata.Measurements {
     // Example: for bit strings [false, true, false] and [false, false, true]
     //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
-        
-        mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
-                set firstDiff = i;
+            if (bits1[i] != bits2[i]) {
+                return i;
             }
         }
-        
-        return firstDiff;
+        return -1;
     }
     
     
@@ -149,19 +138,16 @@ namespace Quantum.Kata.Measurements {
         // (and there should never be two or more Ones)
         mutable countOnes = 0;
         
-        for (i in 0 .. Length(qs) - 1) {
-            if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+        for (q in qs) {
+            if (M(q) == One) {
+                set countOnes += 1;
             }
         }
         
         if (countOnes > 1) {
             fail "Impossible to get multiple Ones when measuring W state";
         }
-        if (countOnes == 0) {
-            return 0;
-        }
-        return 1;
+        return countOnes == 0 ? 0 | 1;
     }
     
     
@@ -176,22 +162,19 @@ namespace Quantum.Kata.Measurements {
         // measure all qubits; if there is exactly one One, it's W state,
         // if there are no Ones or all are Ones, it's GHZ
         // (and there should never be a different number of Ones)
-        let N = Length(qs);
         mutable countOnes = 0;
         
-        for (i in 0 .. N - 1) {
-            if (M(qs[i]) == One) {
-                set countOnes = countOnes + 1;
+        for (q in qs) {
+            if (M(q) == One) {
+                set countOnes += 1;
             }
         }
         
-        if (countOnes > 1 && countOnes < Length(qs)) {
+        let N = Length(qs);
+        if (countOnes > 1 and countOnes < N) {
             fail $"Impossible to get {countOnes} Ones when measuring W state or GHZ state on {N} qubits";
         }
-        if (countOnes == 1) {
-            return 1;
-        }
-        return 0;
+        return countOnes == 1 ? 1 | 0;
     }
     
     
@@ -212,21 +195,14 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[1], qs[0]);
         H(qs[1]);
 
-        mutable m1 = 0;
-        if (M(qs[0]) == One) {
-            set m1 = 1;
-        }
-        
-        mutable m2 = 0;
-        if (M(qs[1]) == One) {
-            set m2 = 1;
-        }
-        
+        // these changes brought the state back to one of the 2-qubit basis states from task 1.6 (but in different order)
+        let m1 = M(qs[0]) == Zero ? 0 | 1;
+        let  m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
     
     
-    // Task 1.11*. Distinguish four orthogonal 2-qubit states
+    // Task 1.11. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -247,7 +223,7 @@ namespace Quantum.Kata.Measurements {
     }
     
     
-    // Task 1.12**. Distinguish four orthogonal 2-qubit states, part two
+    // Task 1.12*. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
@@ -275,16 +251,8 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[0], qs[1]);
         H(qs[0]);
 
-        mutable m1 = 1;
-        if (M(qs[0]) == One) {
-            set m1 = 0;
-        }
-        
-        mutable m2 = 1;
-        if (M(qs[1]) == One) {
-            set m2 = 0;
-        }
-        
+        let m1 = M(qs[0]) == One ? 0 | 1;
+        let m2 = M(qs[1]) == One ? 0 | 1;
         return m2 * 2 + m1;
     }
     
@@ -319,6 +287,77 @@ namespace Quantum.Kata.Measurements {
     }
     
     
+    
+    // Task 1.13**. Distinguish two orthogonal states on three qubits
+    operation ThreeQubitMeasurement_Reference (qs : Qubit[]) : Int {
+        
+        // We first apply a unitary operation to the input state so that it maps the first state
+        // to the W-state (see Task 10 in the "Superposition" kata) 1/sqrt(3) ( |100⟩ + |010⟩ + |001⟩ ).
+        // This can be accomplished by a tensor product of the form I₂ ⊗ R ⊗ R², where
+        //  - I₂ denotes the 2x2 identity matrix which is applied to qubit 0,
+        //  - R is the diagonal matrix diag(1, ω^-1) = diag(1, ω²) which is applied to qubit 1,
+        //  - R² = diag(1, ω) which is applied to qubit 2.
+        // Note that upon applying the operator I₂ ⊗ R ⊗ R²,
+        // the second state gets then mapped to 1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ ).
+        //
+        // We can now perfectly distinguish these two states by invoking the inverse of the state prep
+        // routine for W-states (as in Task 10 of "Superposition") which will map the first state to the
+        // state |000⟩ and the second state to some state which is guaranteed to be perpendicular to
+        // the state |000⟩, i.e., the second state gets mapped to a superposition that does not involve
+        // |000⟩. Now, the two states can be perfectly distinguished (while leaving them intact) by
+        // attaching an ancilla qubit, computing the OR function of the three bits (which can be
+        // accomplished using a multiply-controlled X gate with inverted inputs) and measuring said
+        // ancilla qubit.
+        mutable result = 0;
+        
+        // rotate qubit 1 by angle - 2π/3 around z-axis
+        Rz((4.0 * PI()) / 3.0, qs[1]);
+        
+        // rotate qubit 2 by angle - 4π/3 around z-axis
+        Rz((8.0 * PI()) / 3.0, qs[2]);
+        
+        // Apply inverse state prep of 1/sqrt(3) ( |100⟩ + |010⟩ + |001⟩ )
+        Adjoint WState_Arbitrary_Reference(qs);
+        
+        // need one qubit to store result of comparison "000" vs "not 000"
+        using (anc = Qubit()) {
+            // compute the OR function into anc
+            (ControlledOnInt(0, X))(qs, anc);
+            set result = MResetZ(anc) == One ? 0 | 1;
+        }
+        
+        // Fix up the state so that it is identical to the input state
+        // (this is not required if the state of the qubits after the operation does not matter)
+
+        // Apply state prep of 1/sqrt(3) ( |100⟩ + |010⟩ + |001⟩ )
+        WState_Arbitrary_Reference(qs);
+        
+        // rotate qubit 1 by angle 2π/3 around z-axis
+        Rz((-4.0 * PI()) / 3.0, qs[1]);
+        
+        // rotate qubit 2 by angle 4π/3 around z-axis
+        Rz((-8.0 * PI()) / 3.0, qs[2]);
+        
+        // finally, we return the result
+        return result;
+    }
+
+
+    // An alternative solution to task 1.13, using a simpler measurement
+    operation ThreeQubitMeasurement_SimpleMeasurement (qs : Qubit[]) : Int {
+        // map the first state to 000 state and the second one to something orthogonal to it
+        // (as described in reference solution)
+        R1(-2.0 * PI() / 3.0, qs[1]);
+        R1(-4.0 * PI() / 3.0, qs[2]);
+        Adjoint WState_Arbitrary_Reference(qs);
+
+        // measure all qubits: if all of them are 0, we have the first state,
+        // if at least one of them is 1, we have the second state
+        return MeasureInteger(LittleEndian(qs)) == 0 ? 0 | 1;
+    }
+
+    
+
     //////////////////////////////////////////////////////////////////
     // Part II*. Discriminating Nonorthogonal States
     //////////////////////////////////////////////////////////////////
@@ -391,7 +430,6 @@ namespace Quantum.Kata.Measurements {
         //   |+⟩ |   std |     0    |    1/2   |    1/2
         //   |0⟩ |   had |    1/2   |     0    |    1/2
         //   |+⟩ |   had |     0    |     0    |     1
-        mutable output = 0;
         let basis = RandomInt(2);
         
         // randomize over std and had
@@ -399,28 +437,78 @@ namespace Quantum.Kata.Measurements {
             
             // use standard basis
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |+⟩
-                set output = 1;
-            }
-            else {
-                set output = -1;
-            }
+            // result is One only if the state was |+⟩
+            return result == One ? 1 | -1;
         }
         else {
             // use Hadamard basis
             H(q);
             let result = M(q);
-            if (result == One) {
-                // this can only arise if the state was |0⟩
-                set output = 0;
+            // result is One only if the state was |0⟩
+            return result == One ? 0 | -1;
+        }
+    }
+
+
+    // Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
+    //           (a.k.a. the Peres/Wootters game)
+    // Input: a qubit which is guaranteed to be in one of the three states with equal probability:
+    //        |A⟩ = 1/sqrt(2) (|0⟩ + |1⟩),
+    //        |B⟩ = 1/sqrt(2) (|0⟩ + ω |1⟩),
+    //        |C⟩ = 1/sqrt(2) (|0⟩ + ω² |1⟩).
+    //        where ω = exp(2π/3) denotes a primitive, complex 3rd root of unity.
+    // Output: 1 or 2 if qubit was in the |A⟩ state,
+    //         0 or 2 if qubit was in the |B⟩ state,
+    //         0 or 1 if qubit was in the |C⟩ state.
+    // The state of the qubit at the end of the operation does not matter.
+    // Note: in this task you have to succeed with probability 1, i.e., your are never allowed
+    //       to give an incorrect answer.
+    operation IsQubitNotInABC_Reference (q : Qubit) : Int {
+        
+        // The key is the observation that the POVM with rank one elements {E_0, E_1, E_2} will do
+        // the job, where E_k = |psi_k><psi_k| and |psi_k⟩ = 1/sqrt(2)(|0⟩-ω^k |1⟩) and where
+        // k = 0, 1, 2. The remaining task will be to find a von Neumann measurement (on a qubit
+        // system) that implements said POVM by means of a quantum circuit. To obtain such a
+        // quantum circuit, we observe that all we need is a unitary extension of the matrix
+        // formed by A = (psi_0, psi_1, psi_2). In general, such a unitary extension can be
+        // found using a Singular Value Decomposition of the matrix. Here we can apply a short cut:
+        // The matrix A can be extended (up to a +1/-1 diagonal) to a 3x3 Discrete Fourier Transform.
+        // Padded with 1 extra dimension (i.e., a 1x1 block in which we have phase freedom), we obtain
+        // a 4x4 unitary. Using the "Rader trick" we can now block decompose the 3x3 DFT and obtain two
+        // 2x2 blocks which we can then implement using controlled single qubit gates. We present
+        // the final resulting circuit without additional commentary.
+        let alpha = ArcCos(Sqrt(2.0 / 3.0));
+        
+        using (a = Qubit()) {
+            Z(q);
+            CNOT(a, q);
+            Controlled H([q], a);
+            S(a);
+            X(q);
+
+            (ControlledOnInt(0, Ry))([a], (-2.0 * alpha, q));
+            CNOT(a, q);
+            Controlled H([q], a);
+            CNOT(a, q);
+            
+            // finally, measure in the standard basis
+            let res0 = MResetZ(a);
+            let res1 = M(q);
+            
+            // dispatch on the cases
+            if (res0 == Zero and res1 == Zero) {
+                return 0;
+            }
+            elif (res0 == One and res1 == Zero) {
+                return 1;
+            }
+            elif (res0 == Zero and res1 == One) {
+                return 2;
             }
             else {
-                set output = -1;
+                // this should never occur
+                return 3;
             }
         }
-        
-        return output;
-    }
-    
+    }  
 }

@@ -10,36 +10,31 @@
 
 namespace Quantum.Kata.Superposition {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     // Task 1. Plus state
     // Input: a qubit in |0⟩ state (stored in an array of length 1).
     // Goal: create a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
-    operation PlusState_Reference (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            H(qs[0]);
-        }
-        
-        adjoint invert;
+    operation PlusState_Reference (qs : Qubit[]) : Unit 
+    is Adj {        
+        H(qs[0]);
     }
     
     
     // Task 2. Minus state
     // Input: a qubit in |0⟩ state (stored in an array of length 1).
     // Goal: create a |-⟩ state on this qubit (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
-    operation MinusState_Reference (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            X(qs[0]);
-            H(qs[0]);
-        }
-        
-        adjoint invert;
+    operation MinusState_Reference (qs : Qubit[]) : Unit
+    is Adj {        
+        X(qs[0]);
+        H(qs[0]);
     }
     
     
@@ -48,71 +43,58 @@ namespace Quantum.Kata.Superposition {
     //      1) a qubit in |0⟩ state (stored in an array of length 1).
     //      2) angle alpha, in radians, represented as Double
     // Goal: create a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
-    operation UnequalSuperposition_Reference (qs : Qubit[], alpha : Double) : Unit {
-        
-        body (...) {
-            // Hint: Experiment with rotation gates from Microsoft.Quantum.Primitive
-            Ry(2.0 * alpha, qs[0]);
-        }
-        
-        adjoint invert;
+    operation UnequalSuperposition_Reference (qs : Qubit[], alpha : Double) : Unit
+    is Adj {        
+
+        // Hint: Experiment with rotation gates from Microsoft.Quantum.Intrinsic
+        Ry(2.0 * alpha, qs[0]);
     }
     
     
     // Task 4. Superposition of all basis vectors on two qubits
-    operation AllBasisVectors_TwoQubits_Reference (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            // Since a Hadamard gate will change |0⟩ into |+⟩ = (|0⟩ + |1⟩)/sqrt(2)
-            // And the desired state is just a tensor product |+⟩|+⟩, we can apply
-            // a Hadamard transformation to each qubit.
-            H(qs[0]);
-            H(qs[1]);
-        }
-        
-        adjoint invert;
+    operation AllBasisVectors_TwoQubits_Reference (qs : Qubit[]) : Unit
+    is Adj {
+
+        // Since a Hadamard gate will change |0⟩ into |+⟩ = (|0⟩ + |1⟩)/sqrt(2)
+        // And the desired state is just a tensor product |+⟩|+⟩, we can apply
+        // a Hadamard transformation to each qubit.
+        H(qs[0]);
+        H(qs[1]);
     }
     
     
     // Task 5. Superposition of basis vectors with phases
-    operation AllBasisVectorsWithPhases_TwoQubits_Reference (qs : Qubit[]) : Unit {
+    operation AllBasisVectorsWithPhases_TwoQubits_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            // Question:
-            // Is this state separable?
+        // Question:
+        // Is this state separable?
             
-            // Answer:
-            // Yes. It is. We can see that:
-            // ((|0⟩ - |1⟩) / sqrt(2)) ⊗ ((|0⟩ + i*|1⟩) / sqrt(2)) is equal to the desired
-            // state, so we can create it by doing operations on each qubit independently.
+        // Answer:
+        // Yes. It is. We can see that:
+        // ((|0⟩ - |1⟩) / sqrt(2)) ⊗ ((|0⟩ + i*|1⟩) / sqrt(2)) is equal to the desired
+        // state, so we can create it by doing operations on each qubit independently.
             
-            // We can see that the first qubit is in state |-⟩ and the second in state |i⟩,
-            // so the transformations that we need are:
+        // We can see that the first qubit is in state |-⟩ and the second in state |i⟩,
+        // so the transformations that we need are:
             
-            // Qubit 0 is taken into |+⟩ and then z-rotated into |-⟩.
-            H(qs[0]);
-            Z(qs[0]);
+        // Qubit 0 is taken into |+⟩ and then z-rotated into |-⟩.
+        H(qs[0]);
+        Z(qs[0]);
             
-            // Qubit 1 is taken into |+⟩ and then z-rotated into |i⟩.
-            H(qs[1]);
-            S(qs[1]);
-        }
-        
-        adjoint invert;
+        // Qubit 1 is taken into |+⟩ and then z-rotated into |i⟩.
+        H(qs[1]);
+        S(qs[1]);
     }
     
     
     // Task 6. Bell state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
-    operation BellState_Reference (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
-        }
-        
-        adjoint invert;
+    operation BellState_Reference (qs : Qubit[]) : Unit
+    is Adj {        
+        H(qs[0]);
+        CNOT(qs[0], qs[1]);
     }
     
     
@@ -125,40 +107,34 @@ namespace Quantum.Kata.Superposition {
     //       1: |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
     //       2: |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
     //       3: |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
-    operation AllBellStates_Reference (qs : Qubit[], index : Int) : Unit {
+    operation AllBellStates_Reference (qs : Qubit[], index : Int) : Unit
+    is Adj {
         
-        body (...) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
+        H(qs[0]);
+        CNOT(qs[0], qs[1]);
             
-            // now we have |00⟩ + |11⟩ - modify it based on index arg
-            if (index % 2 == 1) {
-                // negative phase
-                Z(qs[1]);
-            }
-            if (index / 2 == 1) {
-                X(qs[1]);
-            }
+        // now we have |00⟩ + |11⟩ - modify it based on index arg
+        if (index % 2 == 1) {
+            // negative phase
+            Z(qs[1]);
         }
-        
-        adjoint invert;
+        if (index / 2 == 1) {
+            X(qs[1]);
+        }
     }
     
     
     // Task 8. Greenberger–Horne–Zeilinger state
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
-    operation GHZ_State_Reference (qs : Qubit[]) : Unit {
+    operation GHZ_State_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            H(qs[0]);
+        H(qs[0]);
             
-            for (i in 1 .. Length(qs) - 1) {
-                CNOT(qs[0], qs[i]);
-            }
+        for (q in Rest(qs)) {
+            CNOT(qs[0], q);
         }
-        
-        adjoint invert;
     }
     
     
@@ -166,15 +142,12 @@ namespace Quantum.Kata.Superposition {
     // Input: N qubits in |0...0⟩ state.
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
     // (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) ).
-    operation AllBasisVectorsSuperposition_Reference (qs : Qubit[]) : Unit {
+    operation AllBasisVectorsSuperposition_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            for (i in 0 .. Length(qs) - 1) {
-                H(qs[i]);
-            }
+        for (q in qs) {
+            H(q);
         }
-        
-        adjoint invert;
     }
     
     
@@ -182,20 +155,17 @@ namespace Quantum.Kata.Superposition {
     // Task 10. |00⟩ + |01⟩ + |10⟩ state
     // Input: 2 qubits in |00⟩ state.
     // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
-    operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit {
+    operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            // Follow Niel's answer at https://quantumcomputing.stackexchange.com/a/2313/
+        // Follow Niel's answer at https://quantumcomputing.stackexchange.com/a/2313/
             
-            // Rotate first qubit to (sqrt(2) |0⟩ + |1⟩) / sqrt(3) (task 1.4 from BasicGates kata)
-            let theta = ArcSin(1.0 / Sqrt(3.0));
-            Ry(2.0 * theta, qs[0]);
+        // Rotate first qubit to (sqrt(2) |0⟩ + |1⟩) / sqrt(3) (task 1.4 from BasicGates kata)
+        let theta = ArcSin(1.0 / Sqrt(3.0));
+        Ry(2.0 * theta, qs[0]);
             
-            // Split the state sqrt(2) |0⟩ ⊗ |0⟩ into |00⟩ + |01⟩
-            (ControlledOnInt(0, H))([qs[0]], qs[1]);
-        }
-        
-        adjoint auto;
+        // Split the state sqrt(2) |0⟩ ⊗ |0⟩ into |00⟩ + |01⟩
+        (ControlledOnInt(0, H))([qs[0]], qs[1]);
     }
 
     // Alternative solution, based on post-selection
@@ -226,24 +196,21 @@ namespace Quantum.Kata.Superposition {
     // You are guaranteed that the qubit array and the bit string have the same length.
     // You are guaranteed that the first bit of the bit string is true.
     // Example: for bit string = [true, false] the qubit state required is (|00⟩ + |10⟩) / sqrt(2).
-    operation ZeroAndBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[]) : Unit {
+    operation ZeroAndBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[]) : Unit
+    is Adj {
         
-        body (...) {
-            AssertIntEqual(Length(bits), Length(qs), "Arrays should have the same length");
-            AssertBoolEqual(bits[0], true, "First bit of the input bit string should be set to true");
+        EqualityFactI(Length(bits), Length(qs), "Arrays should have the same length");
+        EqualityFactB(bits[0], true, "First bit of the input bit string should be set to true");
             
-            // Hadamard first qubit
-            H(qs[0]);
+        // Hadamard first qubit
+        H(qs[0]);
             
-            // iterate through the bit string and CNOT to qubits corresponding to true bits
-            for (i in 1 .. Length(qs) - 1) {
-                if (bits[i]) {
-                    CNOT(qs[0], qs[i]);
-                }
+        // iterate through the bit string and CNOT to qubits corresponding to true bits
+        for (i in 1 .. Length(qs) - 1) {
+            if (bits[i]) {
+                CNOT(qs[0], qs[i]);
             }
         }
-        
-        adjoint invert;
     }
     
     
@@ -262,7 +229,7 @@ namespace Quantum.Kata.Superposition {
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
         mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
                 set firstDiff = i;
             }
         }
@@ -270,35 +237,32 @@ namespace Quantum.Kata.Superposition {
     }
     
     
-    operation TwoBitstringSuperposition_Reference (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Unit {
+    operation TwoBitstringSuperposition_Reference (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Unit
+    is Adj {
         
-        body (...) {
-            // find the index of the first bit at which the bit strings are different
-            let firstDiff = FindFirstDiff_Reference(bits1, bits2);
+        // find the index of the first bit at which the bit strings are different
+        let firstDiff = FindFirstDiff_Reference(bits1, bits2);
             
-            // Hadamard corresponding qubit to create superposition
-            H(qs[firstDiff]);
+        // Hadamard corresponding qubit to create superposition
+        H(qs[firstDiff]);
             
-            // iterate through the bit strings again setting the final state of qubits
-            for (i in 0 .. Length(qs) - 1) {
-                if (bits1[i] == bits2[i]) {
-                    // if two bits are the same apply X or nothing
-                    if (bits1[i]) {
+        // iterate through the bit strings again setting the final state of qubits
+        for (i in 0 .. Length(qs) - 1) {
+            if (bits1[i] == bits2[i]) {
+                // if two bits are the same apply X or nothing
+                if (bits1[i]) {
+                    X(qs[i]);
+                }
+            } else {
+                // if two bits are different, set their difference using CNOT
+                if (i > firstDiff) {
+                    CNOT(qs[firstDiff], qs[i]);
+                    if (bits1[i] != bits1[firstDiff]) {
                         X(qs[i]);
-                    }
-                } else {
-                    // if two bits are different, set their difference using CNOT
-                    if (i > firstDiff) {
-                        CNOT(qs[firstDiff], qs[i]);
-                        if (bits1[i] != bits1[firstDiff]) {
-                            X(qs[i]);
-                        }
                     }
                 }
             }
         }
-        
-        adjoint invert;
     }
     
     
@@ -312,36 +276,33 @@ namespace Quantum.Kata.Superposition {
     //         bit values false and true correspond to |0⟩ and |1⟩ states.
     //
     // Goal: create an equal superposition of the four basis states given by the bit strings.
-    operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit {
-        body (...) {
-            let N = Length(qs);
+    operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit
+    is Adj {
+        let N = Length(qs);
             
-            using (anc = Qubit[2]) {
-                // Put two ancillas into equal superposition of 2-qubit basis states
-                ApplyToEachA(H, anc);
+        using (anc = Qubit[2]) {
+            // Put two ancillas into equal superposition of 2-qubit basis states
+            ApplyToEachA(H, anc);
                 
-                // Set up the right pattern on the main qubits with control on ancillas
-                for (i in 0 .. 3) {
-                    for (j in 0 .. N - 1) {
-                        if ((bits[i])[j]) {
-                            (ControlledOnInt(i, X))(anc, qs[j]);
-                        }
-                    }
-                }
-                
-                // Uncompute the ancillas, using patterns on main qubits as control
-                for (i in 0 .. 3) {
-                    if (i % 2 == 1) {
-                        (ControlledOnBitString(bits[i], X))(qs, anc[0]);
-                    }
-                    if (i / 2 == 1) {
-                        (ControlledOnBitString(bits[i], X))(qs, anc[1]);
+            // Set up the right pattern on the main qubits with control on ancillas
+            for (i in 0 .. 3) {
+                for (j in 0 .. N - 1) {
+                    if ((bits[i])[j]) {
+                        (ControlledOnInt(i, X))(anc, qs[j]);
                     }
                 }
             }
+                
+            // Uncompute the ancillas, using patterns on main qubits as control
+            for (i in 0 .. 3) {
+                if (i % 2 == 1) {
+                    (ControlledOnBitString(bits[i], X))(qs, anc[0]);
+                }
+                if (i / 2 == 1) {
+                    (ControlledOnBitString(bits[i], X))(qs, anc[1]);
+                }
+            }
         }
-        
-        adjoint auto;
     }
 
 
@@ -351,36 +312,33 @@ namespace Quantum.Kata.Superposition {
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
     // Example: for N = 4, W state is (|1000⟩ + |0100⟩ + |0010⟩ + |0001⟩) / 2.
-    operation WState_PowerOfTwo_Reference (qs : Qubit[]) : Unit {
+    operation WState_PowerOfTwo_Reference (qs : Qubit[]) : Unit
+    is Adj {
         
-        body (...) {
-            let N = Length(qs);
+        let N = Length(qs);
             
-            if (N == 1) {
-                // base of recursion: |1⟩
-                X(qs[0]);
-            } else {
-                let K = N / 2;
+        if (N == 1) {
+            // base of recursion: |1⟩
+            X(qs[0]);
+        } else {
+            let K = N / 2;
                 
-                // create W state on the first K qubits
-                WState_PowerOfTwo_Reference(qs[0 .. K - 1]);
+            // create W state on the first K qubits
+            WState_PowerOfTwo_Reference(qs[0 .. K - 1]);
                 
-                // the next K qubits are in |0...0⟩ state
-                // allocate ancilla in |+⟩ state
-                using (anc = Qubit[1]) {
-                    H(anc[0]);
+            // the next K qubits are in |0...0⟩ state
+            // allocate ancilla in |+⟩ state
+            using (anc = Qubit()) {
+                H(anc);
                     
-                    for (i in 0 .. K - 1) {
-                        Controlled SWAP(anc, (qs[i], qs[i + K]));
-                    }
-                    for (i in K .. N - 1) {
-                        CNOT(qs[i], anc[0]);
-                    }
+                for (i in 0 .. K - 1) {
+                    Controlled SWAP([anc], (qs[i], qs[i + K]));
+                }
+                for (i in K .. N - 1) {
+                    CNOT(qs[i], anc);
                 }
             }
         }
-        
-        adjoint invert;
     }
     
     
@@ -392,31 +350,26 @@ namespace Quantum.Kata.Superposition {
     // Example: for N = 3, W state is (|100⟩ + |010⟩ + |001⟩) / sqrt(3).
     
     // general solution based on rotations and recursive application of controlled generation routine
-    operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit {
+    operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit
+    is Adj + Ctl {
         
-        body (...) {
-            let N = Length(qs);
+        let N = Length(qs);
             
-            if (N == 1) {
-                // base case of recursion: |1⟩
-                X(qs[0]);
-            } else {
-                // |W_N⟩ = |0⟩|W_(N-1)⟩ + |1⟩|0...0⟩
-                // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
-                // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
-                let theta = ArcSin(1.0 / Sqrt(ToDouble(N)));
-                Ry(2.0 * theta, qs[0]);
+        if (N == 1) {
+            // base case of recursion: |1⟩
+            X(qs[0]);
+        } else {
+            // |W_N⟩ = |0⟩|W_(N-1)⟩ + |1⟩|0...0⟩
+            // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
+            // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
+            let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
+            Ry(2.0 * theta, qs[0]);
                 
-                // do a zero-controlled W-state generation for qubits 1..N-1
-                X(qs[0]);
-                Controlled WState_Arbitrary_Reference(qs[0 .. 0], qs[1 .. N - 1]);
-                X(qs[0]);
-            }
+            // do a zero-controlled W-state generation for qubits 1..N-1
+            X(qs[0]);
+            Controlled WState_Arbitrary_Reference(qs[0 .. 0], qs[1 .. N - 1]);
+            X(qs[0]);
         }
-        
-        adjoint invert;
-        controlled distribute;
-        controlled adjoint distribute;
     }
 
 
@@ -432,21 +385,18 @@ namespace Quantum.Kata.Superposition {
     
     // Given a qubit in |0⟩ state and a denominator N,
     // transform the qubit to state sqrt((N-1) / N) |0⟩ + sqrt(1/N) |1⟩.
-    operation FractionSuperposition(denominator : Int, q : Qubit) : Unit {
-        body (...) {
-            if (denominator == 1) {
-                X(q);
-            } else {
-                // represent the target state as cos(theta) * |0⟩ + sin(theta) * |1⟩, as in task 1.3
-                let denom = ToDouble(denominator);
-                let num = denom - 1.0;
-                let theta = ArcCos(Sqrt(num / denom));
-                Ry(2.0 * theta, q);
-            }
+    operation FractionSuperposition(denominator : Int, q : Qubit) : Unit
+    is Adj + Ctl {
+
+        if (denominator == 1) {
+            X(q);
+        } else {
+            // represent the target state as cos(theta) * |0⟩ + sin(theta) * |1⟩, as in task 1.3
+            let denom = IntAsDouble(denominator);
+            let num = denom - 1.0;
+            let theta = ArcCos(Sqrt(num / denom));
+            Ry(2.0 * theta, q);
         }
-        adjoint invert;
-        controlled distribute;
-        controlled adjoint distribute;
     }
     
     
@@ -463,7 +413,7 @@ namespace Quantum.Kata.Superposition {
             mutable P = 1;
             for (i in 1 .. 6) {
                 if (P < N) {
-                    set P = P * 2;
+                    set P *= 2;
                 }
             }
             
@@ -482,7 +432,7 @@ namespace Quantum.Kata.Superposition {
                         // measure ancilla qubits; if all of the results are Zero, we get the right state on main qubits
                         mutable allZeros = true;
                         for (i in 0 .. (P - N) - 1) {
-                            set allZeros = allZeros && IsResultZero(M(anc[i]));
+                            set allZeros = allZeros and IsResultZero(M(anc[i]));
                         }
                     }
                     until (allZeros)

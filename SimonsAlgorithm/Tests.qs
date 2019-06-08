@@ -9,44 +9,34 @@
 
 namespace Quantum.Kata.SimonsAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
     
     
     // ------------------------------------------------------
-    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
-        
-        body (...) {
-            let N = Length(qs);
-            oracle(qs[0 .. N - 2], qs[N - 1]);
-        }
-        
-        adjoint invert;
+    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
+    is Adj {        
+        let N = Length(qs);
+        oracle(qs[0 .. N - 2], qs[N - 1]);
     }
     
     
-    operation ApplyOracleWithOutputArrA (qs : Qubit[], oracle : ((Qubit[], Qubit[]) => Unit : Adjoint), outputSize : Int) : Unit {
-        
-        body (...) {
-            let N = Length(qs);
-            oracle(qs[0 .. (N - 1) - outputSize], qs[N - outputSize .. N - 1]);
-        }
-        
-        adjoint invert;
+    operation ApplyOracleWithOutputArrA (qs : Qubit[], oracle : ((Qubit[], Qubit[]) => Unit is Adj), outputSize : Int) : Unit
+    is Adj {
+        let N = Length(qs);
+        oracle(qs[0 .. (N - 1) - outputSize], qs[N - outputSize .. N - 1]);
     }
     
     
     // ------------------------------------------------------
     operation AssertTwoOraclesAreEqual (
         nQubits : Range, 
-        oracle1 : ((Qubit[], Qubit) => Unit : Adjoint), 
-        oracle2 : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
+        oracle1 : ((Qubit[], Qubit) => Unit is Adj), 
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
         let sol = ApplyOracleA(_, oracle1);
         let refSol = ApplyOracleA(_, oracle2);
         
         for (i in nQubits) {
-            AssertOperationsEqualReferenced(sol, refSol, i + 1);
+            AssertOperationsEqualReferenced(i+1, sol, refSol);
         }
     }
     
@@ -54,11 +44,11 @@ namespace Quantum.Kata.SimonsAlgorithm {
     operation AssertTwoOraclesWithOutputArrAreEqual (
         inputSize : Int, 
         outputSize : Int, 
-        oracle1 : ((Qubit[], Qubit[]) => Unit : Adjoint), 
-        oracle2 : ((Qubit[], Qubit[]) => Unit : Adjoint)) : Unit {
+        oracle1 : ((Qubit[], Qubit[]) => Unit is Adj), 
+        oracle2 : ((Qubit[], Qubit[]) => Unit is Adj)) : Unit {
         let sol = ApplyOracleWithOutputArrA(_, oracle1, outputSize);
         let refSol = ApplyOracleWithOutputArrA(_, oracle2, outputSize);
-        AssertOperationsEqualReferenced(sol, refSol, inputSize + outputSize);
+        AssertOperationsEqualReferenced(inputSize + outputSize, sol, refSol);
     }
     
     
@@ -77,7 +67,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     
     // ------------------------------------------------------
-    operation AssertTwoOraclesWithIntArrAreEqual (A : Int[], oracle1 : ((Qubit[], Qubit, Int[]) => Unit : Adjoint), oracle2 : ((Qubit[], Qubit, Int[]) => Unit : Adjoint)) : Unit {
+    operation AssertTwoOraclesWithIntArrAreEqual (A : Int[], oracle1 : ((Qubit[], Qubit, Int[]) => Unit is Adj), oracle2 : ((Qubit[], Qubit, Int[]) => Unit is Adj)) : Unit {
         AssertTwoOraclesAreEqual(Length(A) .. Length(A), oracle1(_, _, A), oracle2(_, _, A));
     }
     
@@ -109,8 +99,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // ------------------------------------------------------
     operation AssertTwoOraclesWithIntMatrixAreEqual (
         A : Int[][], 
-        oracle1 : ((Qubit[], Qubit[], Int[][]) => Unit : Adjoint), 
-        oracle2 : ((Qubit[], Qubit[], Int[][]) => Unit : Adjoint)) : Unit {
+        oracle1 : ((Qubit[], Qubit[], Int[][]) => Unit is Adj), 
+        oracle2 : ((Qubit[], Qubit[], Int[][]) => Unit is Adj)) : Unit {
         let inputSize = Length(A[0]);
         let outputSize = Length(A);
         AssertTwoOraclesWithOutputArrAreEqual(inputSize, outputSize, oracle1(_, _, A), oracle2(_, _, A));
@@ -119,11 +109,11 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     operation AssertTwoOraclesWithDifferentOutputsAreEqual (
         inputSize : Int, 
-        oracle1 : ((Qubit[], Qubit[]) => Unit : Adjoint), 
-        oracle2 : ((Qubit[], Qubit) => Unit : Adjoint)) : Unit {
+        oracle1 : ((Qubit[], Qubit[]) => Unit is Adj), 
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
         let sol = ApplyOracleWithOutputArrA(_, oracle1, 1);
         let refSol = ApplyOracleA(_, oracle2);
-        AssertOperationsEqualReferenced(sol, refSol, inputSize + 1);
+        AssertOperationsEqualReferenced(inputSize + 1, sol, refSol);
     }
     
     

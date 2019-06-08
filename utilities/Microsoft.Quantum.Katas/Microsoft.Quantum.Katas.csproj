@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Microsoft</Authors>
+    <Description>Microsoft's Quantum Katas support.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageReleaseNotes>See: https://docs.microsoft.com/en-us/quantum/relnotes/</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/Microsoft/QuantumKatas/raw/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/master/Microsoft.Quantum.Katas</PackageProjectUrl>
+    <PackageIconUrl>https://secure.gravatar.com/avatar/bd1f02955b2853ba0a3b1cdc2434e8ec.png</PackageIconUrl>
+    <PackageTags>Quantum Q# Qsharp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Jupyter.Core" Version="1.1.13141" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.7.1905.3109" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="all" />
+    <BuildOutputInPackage Include="..\Common\bin\$(Configuration)\netstandard2.0\Microsoft.Quantum.Katas.Common.dll" />
+  </ItemGroup>
+  
+</Project>

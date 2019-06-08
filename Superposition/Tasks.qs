@@ -3,11 +3,12 @@
 
 namespace Quantum.Kata.Superposition {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+
     
     //////////////////////////////////////////////////////////////////
     // Welcome!
@@ -56,7 +57,7 @@ namespace Quantum.Kata.Superposition {
     //      2) angle alpha, in radians, represented as Double
     // Goal: create a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
     operation UnequalSuperposition (qs : Qubit[], alpha : Double) : Unit {
-        // Hint: Experiment with rotation gates from Microsoft.Quantum.Primitive namespace.
+        // Hint: Experiment with rotation gates from the Microsoft.Quantum.Intrinsic namespace.
         // Note that all rotation operators rotate the state by _half_ of its angle argument.
 
         // ...
@@ -69,7 +70,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectors_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // ...
     }
@@ -81,7 +82,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectorsWithPhases_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(qs), 2, "The array should have exactly 2 qubits.");
+        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
 
         // Hint: Is this state separable?
         // ...
@@ -149,8 +150,8 @@ namespace Quantum.Kata.Superposition {
     operation ZeroAndBitstringSuperposition (qs : Qubit[], bits : Bool[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        AssertIntEqual(Length(bits), Length(qs), "Arrays should have the same length");
-        AssertBoolEqual(bits[0], true, "First bit of the input bit string should be set to true");
+        EqualityFactI(Length(bits), Length(qs), "Arrays should have the same length");
+        EqualityFactB(bits[0], true, "First bit of the input bit string should be set to true");
 
         // ...
     }
