@@ -2,12 +2,10 @@
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.GraphColoring {
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Primitive;
+
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Diagnostics;
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
@@ -18,7 +16,7 @@ namespace Quantum.Kata.GraphColoring {
     // satisfaction problems, using graph coloring problem as an example.
     // It covers the following topics:
     //  - writing oracles implementing constraints on graph coloring,
-    //  - using Grover's algorithm to solve problems with unknown number of solutions.
+    //  - using Grover's algorithm to solve graph coloring problems with unknown number of solutions.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -30,174 +28,124 @@ namespace Quantum.Kata.GraphColoring {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part I. Building marking oracles for classical functions
+    // Part I. Colors representation and manipulation
     //////////////////////////////////////////////////////////////////
 
-
-    // Task 1.1. The AND oracle: f(x) = x₀ ∧ ... ∧ xₙ
+    // Task 1.1. Initialize register to a color
     // Inputs:
-    //      1) n qubits in an arbitrary state |x⟩ (input/query register)
-    //      2) a qubit in an arbitrary state |y⟩ (target qubit)
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       i.e., flip the target state if all qubits of the query register are in the |1⟩ state,
-    //       and leave it unchanged otherwise.
-    //       Leave the query register in the same state it started in.
-    operation Task11 (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    //      1) An integer C (0 ≤ C ≤ 2ᴺ - 1).
+    //      2) An array of N qubits in the |0...0⟩ state.
+    // Goal: Prepare the array in the basis state which represents the binary notation of C.
+    //       Use little-endian encoding (i.e., the least significant bit should be stored in the first qubit).
+    // Example: for N = 2 and C = 2 the state should be |01⟩.
+    operation InitializeColor (C : Int, register : Qubit[]) : Unit is Adj {
+        // ...
     }
 
 
-    // Task 1.2. The OR oracle: f(x) = x₀ ∨ ...  ∨ xₙ
-    // Inputs:
-    //      1) n qubits in an arbitrary state |x⟩ (input/query register)
-    //      2) a qubit in an arbitrary state |y⟩ (target qubit)
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       i.e., flip the target state if at least one qubit of the query register is in the |1⟩ state,
-    //       and leave it unchanged otherwise.
-    //       Leave the query register in the same state it started in.
-    operation Task12 (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint auto;
+    // Task 1.2. Read color from a register
+    // Input: An array of N qubits which are guaranteed to be in one of the 2ᴺ basis states.
+    // Output: An N-bit integer that represents this basis state, in little-endian encoding.
+    //         The operation should not change the state of the qubits.
+    // Example: for N = 2 and the qubits in the state |01⟩ return 2 (and keep the qubits in |01⟩).
+    operation MeasureColor (register : Qubit[]) : Int {
+        // ...
+        return -1;
     }
 
-    // Task 1.3. "Qubit Pairs Match" oracle
-    // Inputs:
-    //      1) 2 qubits in an arbitrary state |x₀⟩ (input/query register)
-    //      2) 2 qubits in an arbitrary state |x₁⟩ (input/query register)
-    //      3) a qubit in an arbitrary state |y⟩ (target qubit)
-    //
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       where f(x) = 1 if x₀ and x₁ share the same state.
-    //       Leave the query register in the same state it started in.
-    operation Task13 (queryRegister0 : Qubit[], queryRegister1 : Qubit[], target : Qubit) : Unit {
 
-        body (...) {
-            // ...
-        }
-
-        adjoint auto;
+    // Task 1.3. Read coloring from a register
+    // Inputs: 
+    //      1) The number of elements in the coloring K.
+    //      2) An array of K * N qubits which are guaranteed to be in one of the 2ᴷᴺ basis states.
+    // Output: An array of K N-bit integers that represent this basis state. 
+    //         Integer i of the array is stored in qubits i * N, i * N + 1, ..., i * N + N - 1 in little-endian format.
+    //         The operation should not change the state of the qubits.
+    // Example: for N = 2, K = 2 and the qubits in the state |0110⟩ return [2, 1].
+    operation MeasureColoring (K : Int, register : Qubit[]) : Int[] {
+        // ...
+        return new Int[0];
     }
 
-    //////////////////////////////////////////////////////////////////
-    // Part II. Steps Towards Implementing the Graph Coloring Oracle
-    //////////////////////////////////////////////////////////////////
 
-    // Task 2.1. "One Qubit Pair Match" oracle
+    // Task 1.4. 2-bit color equality oracle
     // Inputs:
-    //      1) 2 qubits in an arbitrary state |x₀⟩ (input/query register)
-    //      2) 2 qubits in an arbitrary state |x₁⟩ (input/query register)
-    //      3) 2 qubits in an arbitrary state |x₂⟩ (input/query register)
-    //      4) a qubit in an arbitrary state |y⟩ (target qubit)
-    //
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       where f(x) = 1 if for x₀, x₁, and x₂, a pair of those qubits share the same state.
+    //      1) an array of 2 qubits in an arbitrary state |c₀⟩ representing the first color,
+    //      1) an array of 2 qubits in an arbitrary state |c₁⟩ representing the second color,
+    //      3) a qubit in an arbitrary state |y⟩ (target qubit).
+    // Goal: Transform state |c₀⟩|c₁⟩|y⟩ into state |c₀⟩|c₁⟩|y ⊕ f(c₀, c₁)⟩ (⊕ is addition modulo 2),
+    //       where f(x) = 1 if c₀ and c₁ are in the same state, and 0 otherwise.
     //       Leave the query register in the same state it started in.
-    operation Task21 (queryRegister0 : Qubit[], queryRegister1 : Qubit[], queryRegister2 : Qubit[], target : Qubit) : Unit {
-
-        body (...) {
-            // ...
-        }
-
-        adjoint auto;
+    // In this task you are allowed to allocate extra qubits.
+    operation ColorEqualityOracle_2bit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj {
+        // ...
     }
 
-    // Task 2.2. "No Qubit Pair Match" oracle
-    // Inputs:
-    //      1) 2 qubits in an arbitrary state |x₀⟩ (input/query register)
-    //      2) 2 qubits in an arbitrary state |x₁⟩ (input/query register)
-    //      3) 2 qubits in an arbitrary state |x₂⟩ (input/query register)
-    //      4) a qubit in an arbitrary state |y⟩ (target qubit)
-    //
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       where f(x) = 1 if for x₀, x₁, and x₂, no pairs of those qubits share the same state.
-    //       Leave the query register in the same state it started in.
-    operation Task22 (queryRegister0 : Qubit[], queryRegister1 : Qubit[], queryRegister2 : Qubit[], target : Qubit) : Unit {
 
-        body (...) {
-            // ...
-        }
-
-        adjoint auto;
+    // Task 1.5. N-bit color equality oracle (no extra qubits)
+    // This task is the same as task 1.3, but in this task you are NOT allowed to allocate extra qubits.
+    operation ColorEqualityOracle_Nbit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj {
+        // ...
     }
 
+
+
     //////////////////////////////////////////////////////////////////
-    // Part III.  Implementing the Graph Coloring Oracle
+    // Part II. Vertex coloring problem
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. "Graph Coloring" oracle
+    // Task 2.1. Classical verification of vertex coloring
     // Inputs:
-    //      1) an array containing pairs of integers representing the list of edges between nodes
-    //      2) the number of nodes in the graph
-    //      3) a register of qubits numbering twice the number of nodes encoding the color assignments
-    //      4) a qubit in an arbitrary state |y⟩ (target qubit)
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    //      3) An array of V integers, representing the vertex coloring of the graph.
+    //         i-th element of the array is the color of the vertex number i.
+    // Output: true if the given vertex coloring is valid 
+    //         (i.e., no pair of vertices connected by an edge have the same color),
+    //         and false otherwise.
+    // Example: Graph 0 -- 1 -- 2 would have V = 3 and edges = [(0, 1), (1, 2)].
+    //         Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
+    function IsVertexColoringValid (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // The following lines enforce the constraints on the input that you are given.
+        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+        Fact(Length(colors) == V, $"The vertex coloring must contain exactly {V} elements, and it contained {Length(colors)}.");
+
+        // ...
+
+        return true;
+    }
+
+
+    // Task 2.2. Oracle for verifying vertex coloring
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    //      3) An array of 2V qubits colorsRegister that encodes the color assignments.
+    //      4) A qubit in an arbitrary state |y⟩ (target qubit).
     //
     // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       where f(x) = 1 if no edges in the graph have its end nodes having the same color.
+    //       where f(x) = 1 the given vertex coloring is valid and 0 otherwise.
     //       Leave the query register in the same state it started in.
     //
-    // Here, we represent the encoding of colors with 2 qubits, with 00, 01, 10, 11 being our colors.
-    // Thus, each node is represented by 2 qubits in the register, with node n having 2*n and 2*n+1
-    // as its qubit color encoding. Nodes are numbered 0 .. numNodes - 1 with each entry in the edge
-    // list showing which nodes are connected in the graph. For instance, the graph 0 -- 1 -- 2 would
-    // have an edgeList of [(0, 1), (1, 2)] and 3 as its numNodes. Note that pairs of nodes in the
-    // edgeList do not have to be in any order.
-    operation Task31 (edgeList : (Int, Int)[], numNodes : Int, queryRegister : Qubit[], target : Qubit) : Unit {
-
-        body (...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    // Each color in colorsRegister is represented as a 2-bit integer in little-endian format.
+    // See task 1.3 for a more detailed description of color assignments.
+    operation VertexColoringOracle (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        // ...
     }
 
-    // Task 3.2. "Graph Coloring" oracle generator
+
+    // Task 2.3. Using Grover's search to find vertex coloring
     // Inputs:
-    //      1) an array containing pairs of integers representing the list of edges between nodes
-    //      2) the number of nodes in the graph
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) A marking oracle which implements vertex coloring verification, as implemented in task 2.2.
     //
-    // Output: A marking oracle that takes a register and a target qubit and flips the target
-    //         if the register encodes a color assignment that leads to no edge having its
-    //         attached nodes have the same color.
-    //
-    // Essentially, it is returning the oracle in Task 3.1., but for a particular graph.
-    operation Task32 (edgeList : (Int, Int)[], numNodes : Int) : ((Qubit[], Qubit) => Unit is Adj) {
-
-        body (...) {
-            return Task11;
-        }
-
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Part IV. Using Grover's search algorithm
-    //////////////////////////////////////////////////////////////////
-
-
-    // Task 4. Using Grover's search to find color assignments
-    // Inputs:
-    //      1) an array containing pairs of integers representing the list of edges between nodes
-    //      2) the number of nodes in the graph
-    //
-    // Output: a color assignment for the graph that has no edge having its nodes share the same color.
-    //         Note that we are returning an integer array corresponding to the measured qubit encoding.
-    //
-    // Hint, use the provided GroversSearch operation and the "Graph Coloring" oracle generator.
-    operation Task4 (edgeList : (Int, Int)[], numNodes : Int) : Int[] {
-
-        body (...) {
-            return new Int[numNodes];
-        }
-
+    // Output: A valid vertex coloring for the graph, in a format used in task 2.1.
+    operation GroversAlgorithm (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
+        // ...
+        return new Int[V];
     }
 }
