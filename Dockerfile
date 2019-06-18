@@ -66,6 +66,9 @@ RUN jupyter nbconvert DeutschJozsaAlgorithm/DeutschJozsaAlgorithm.ipynb --execut
 RUN dotnet build GHZGame
 RUN jupyter nbconvert GHZGame/GHZGame.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build GroversAlgorithm
+RUN jupyter nbconvert GroversAlgorithm/GroversAlgorithm.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build JointMeasurements
 RUN jupyter nbconvert JointMeasurements/JointMeasurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
