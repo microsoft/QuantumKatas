@@ -6,11 +6,12 @@ namespace Quantum.Kata.SuperdenseCoding {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Measurement;
     
-	/// # Summary
-	/// Data type that represents the message that is transmitted 
-	/// as part of the superdense coding protocol. 
-	/// It includes two classical bits (Bit1 and Bit2) of type Bool.   
-	newtype Message = (Bit1 : Bool, Bit2 : Bool);    
+    /// # Summary
+    /// Data type that represents the message that is transmitted 
+    /// as part of the superdense coding protocol. 
+    /// It includes two classical bits (Bit1 and Bit2) of type Bool.   
+    newtype Message = (Bit1 : Bool, Bit2 : Bool);    
+
 
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
@@ -54,7 +55,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Encode the message (two classical bits) in the state of Alice's qubit.
     // Inputs:
     //      1) Alice's part of the entangled pair of qubits qAlice.
-    //      2) two classical bits.
+    //      2) two classical bits stored as Message.
     // Goal: Transform the input qubit to encode the two classical bits.
     operation EncodeMessageInQubit (qAlice : Qubit, message : Message) : Unit {
         // Hint: manipulate Alice's half of the entangled pair

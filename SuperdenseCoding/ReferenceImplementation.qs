@@ -56,7 +56,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     }
     
     
-    // Task 3. Decode the message (Bob's task) and reset the qubits
+    // Task 3. Decode the message and reset the qubits (Bob's task)
     operation DecodeMessageFromQubits_Reference (qAlice : Qubit, qBob : Qubit) : Message {
         
         // Time to get our state back, by performing transformations as follows.
@@ -64,7 +64,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         // subject to the Hadamard transform and the CNOT gate in the preparation
         // of the pair have to match the operations below, or the order of the data
         // bits will get flipped.
-		Adjoint CreateEntangledPair_Reference(qAlice, qBob);
+        Adjoint CreateEntangledPair_Reference(qAlice, qBob);
         
         // What is the outcome of this transformation, assuming each of the possible
         // quantum states after the encoding step?
@@ -99,7 +99,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             // STEP 3:
             // Bob receives the qubit from Alice and can now
             // manipulate and measure both qubits to get the encoded data.
-            return DecodeMessageFromQubits_Reference(q2, q1);            
+            return DecodeMessageFromQubits_Reference(q1, q2);            
         }
     }
     
