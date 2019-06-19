@@ -7,7 +7,12 @@ namespace Quantum.Kata.SuperdenseCoding {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
-    
+	/// # Summary
+	/// Data type that represents the message that is transmitted 
+	/// as part of the superdense coding protocol. 
+	/// It includes two classical bits (Bit1 and Bit2) of type Bool.   
+	newtype Message = (Bit1 : Bool, Bit2 : Bool);    
+
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
     //  Superdense Coding Kata : Share 2 bits for the price of 1 qubit!  //
@@ -40,22 +45,19 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Task 1. Entangled pair
     // Input: An array of two qubits in the |00⟩ state.
     // Goal:  Create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
-    operation CreateEntangledPair (qs : Qubit[]) : Unit {
-        // The following lines enforce the constraints on the input that you are given.
-        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        EqualityFactI(Length(qs), 2, "The array should have exactly 2 qubits.");
+    operation CreateEntangledPair (q1 : Qubit, q2 : Qubit) : Unit {
 
         // ...
     }
     
     
     // Task 2. Send the message (Alice's task)
-    // Encode the message (classical bits) in the state of Alice's qubit.
+    // Encode the message (two classical bits) in the state of Alice's qubit.
     // Inputs:
     //      1) Alice's part of the entangled pair of qubits qAlice.
-    //      2) two classical bits, stored in an array.
+    //      2) two classical bits.
     // Goal: Transform the input qubit to encode the two classical bits.
-    operation EncodeMessageInQubit (qAlice : Qubit, message : Bool[]) : Unit {
+    operation EncodeMessageInQubit (qAlice : Qubit, message : Message) : Unit {
         // Hint: manipulate Alice's half of the entangled pair
         // to change the joint state of the two qubits to one of the following four states
         // based on the value of message:
@@ -75,14 +77,10 @@ namespace Quantum.Kata.SuperdenseCoding {
     //      2) qubit received from Alice qAlice.
     // Goal:  Retrieve two bits of classic data from the qubits.
     // The state of the qubits in the end of the operation doesn't matter.
-    operation DecodeMessageFromQubits (qBob : Qubit, qAlice : Qubit) : Bool[] {
-        // Declare a Bool array in which the result will be stored;
-        // the variable has to be mutable to allow updating it.
-        mutable decoded_bits = new Bool[2];
+    operation DecodeMessageFromQubits (qBob : Qubit, qAlice : Qubit) : Message {
         
         // ...
-
-        return decoded_bits;
+        fail ("not implemented");
     }
     
     
@@ -93,13 +91,10 @@ namespace Quantum.Kata.SuperdenseCoding {
     // state of the pair by applying quantum gates to one member of the pair,
     // and decode the two classical bits from the state of the pair.
     // Return the result of decoding. 
-    operation SuperdenseCodingProtocol (message : Bool[]) : Bool[] {
-        
-        mutable decoded_bits = new Bool[2];
-        
+    operation SuperdenseCodingProtocol (message : Message) : Message {
+                
         // ...
-
-        return decoded_bits;
+        fail ("not implemented");
     }
     
 }
