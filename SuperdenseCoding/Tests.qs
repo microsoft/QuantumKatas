@@ -38,11 +38,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         using (qs = Qubit[2]) {
             CreateEntangledPair_Reference(qs[0], qs[1]);
             encodeOp(qs[0], message);
-            let result = decodeOp(qs[1], qs[0]);
-            
-            // Make sure that we return qubits back in 0 state.
-            ResetAll(qs);
-            return result;
+            return decodeOp(qs[0], qs[1]);            
         }
     }
     

@@ -3,9 +3,8 @@
 
 namespace Quantum.Kata.SuperdenseCoding {
     
-    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Measurement;
     
 	/// # Summary
 	/// Data type that represents the message that is transmitted 
@@ -45,7 +44,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Task 1. Entangled pair
     // Input: An array of two qubits in the |00⟩ state.
     // Goal:  Create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
-    operation CreateEntangledPair (q1 : Qubit, q2 : Qubit) : Unit {
+    operation CreateEntangledPair (q1 : Qubit, q2 : Qubit) : Unit is Adj {
 
         // ...
     }
@@ -70,16 +69,15 @@ namespace Quantum.Kata.SuperdenseCoding {
     }
     
     
-    // Task 3. Decode the message (Bob's task)
-    // Decode the message using the qubit received from Alice.
+    // Task 3. Decode the message and reset the qubits (Bob's task)
+    // Decode the message using the qubit received from Alice and reset them to a |00⟩ state.
     // Inputs:
     //      1) Bob's part of the entangled pair qBob.
     //      2) qubit received from Alice qAlice.
     // Goal:  Retrieve two bits of classic data from the qubits.
-    // The state of the qubits in the end of the operation doesn't matter.
-    operation DecodeMessageFromQubits (qBob : Qubit, qAlice : Qubit) : Message {
-        
-        // ...
+    // The state of the qubits in the end of the operation should be |00⟩.
+    operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : Message {
+
         fail ("not implemented");
     }
     
@@ -93,7 +91,6 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Return the result of decoding. 
     operation SuperdenseCodingProtocol (message : Message) : Message {
                 
-        // ...
         fail ("not implemented");
     }
     

@@ -11,11 +11,11 @@
 namespace Quantum.Kata.SuperdenseCoding {
     
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Measurement;
     
     
     // Task 1. Entangled pair
-    operation CreateEntangledPair_Reference (q1 : Qubit, q2 : Qubit) : Unit
-    is Adj {
+    operation CreateEntangledPair_Reference (q1 : Qubit, q2 : Qubit) : Unit is Adj {
         
         // The easiest way to create an entangled pair is to start with
         // applying a Hadamard transformation to one of the qubits:
@@ -56,16 +56,15 @@ namespace Quantum.Kata.SuperdenseCoding {
     }
     
     
-    // Task 3. Decode the message (Bob's task)
-    operation DecodeMessageFromQubits_Reference (qBob : Qubit, qAlice : Qubit) : Message {
+    // Task 3. Decode the message (Bob's task) and reset the qubits
+    operation DecodeMessageFromQubits_Reference (qAlice : Qubit, qBob : Qubit) : Message {
         
         // Time to get our state back, by performing transformations as follows.
         // Notice that it's important to keep the order right. The qubits that are
         // subject to the Hadamard transform and the CNOT gate in the preparation
         // of the pair have to match the operations below, or the order of the data
         // bits will get flipped.
-        CNOT(qAlice, qBob);
-        H(qAlice);
+		Adjoint CreateEntangledPair_Reference(qAlice, qBob);
         
         // What is the outcome of this transformation, assuming each of the possible
         // quantum states after the encoding step?
@@ -76,7 +75,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         // |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2) ---> |11⟩
         
         // So we can retrieve the encoded bits just by measuring.
-        return Message(M(qAlice) == One, M(qBob) == One);
+        return Message(MResetZ(qAlice) == One, MResetZ(qBob) == One);
     }
     
     
@@ -100,11 +99,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             // STEP 3:
             // Bob receives the qubit from Alice and can now
             // manipulate and measure both qubits to get the encoded data.
-            let decoded_bits = DecodeMessageFromQubits_Reference(q2, q1);
-            
-            // Make sure that we return qubits back in 0 state before returning the decoded bits.
-            ResetAll([q1,q2]);
-            return decoded_bits;
+            return DecodeMessageFromQubits_Reference(q2, q1);            
         }
     }
     
