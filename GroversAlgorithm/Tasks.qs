@@ -19,7 +19,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // It covers the following topics:
     //  - writing oracles for Grover's search,
     //  - performing steps of the algorithm, and
-    //    - putting it all together: Grover's search algorithm.
+    //  - putting it all together: Grover's search algorithm.
     
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -89,7 +89,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        Leave the state of the target qubit unchanged if the query register is in any other state.
     //        Leave the query register in the same state it started in.
     // Example:
-    //        If the bit patterns is [true, false], you need to flip the target qubit if and only if the qubits are in the |10⟩ state.
+    //        If the bit pattern is [true, false], you need to flip the target qubit if and only if the qubits are in the |10⟩ state.
     operation Oracle_ArbitraryPattern (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit {
         
         body (...) {
