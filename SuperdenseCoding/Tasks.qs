@@ -79,7 +79,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // The state of the qubits in the end of the operation should be |00⟩.
     operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : Message {
 
-        fail ("not implemented");
+        fail ("Task 3 not implemented");
     }
     
     
