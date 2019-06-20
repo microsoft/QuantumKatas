@@ -25,7 +25,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             Adjoint CreateEntangledPair_Reference(q1, q2);
 
             // assert that all qubits end up in |0⟩ state
-            AssertAllZero([q1,q2]);
+            AssertAllZero([q1, q2]);
         }
     }
     
