@@ -71,7 +71,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // Task 3. Decode the message and reset the qubits (Bob's task)
-    // Decode the message using the qubit received from Alice and reset them to a |00⟩ state.
+    // Decode the message using the qubit received from Alice and reset both qubits to a |00⟩ state.
     // Inputs:
     //      1) Bob's part of the entangled pair qBob.
     //      2) qubit received from Alice qAlice.
@@ -79,7 +79,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // The state of the qubits in the end of the operation should be |00⟩.
     operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : ProtocollMessage {
 
-        fail ("not implemented");
+        fail ("Task 3 not implemented");
     }
     
     
@@ -92,7 +92,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Return the result of decoding. 
     operation SuperdenseCodingProtocol (message : ProtocollMessage) : ProtocollMessage {
                 
-        fail ("not implemented");
+        fail ("Task 4 not implemented");
     }
     
 }

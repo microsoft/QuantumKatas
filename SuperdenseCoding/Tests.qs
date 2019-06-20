@@ -16,7 +16,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // ------------------------------------------------------
         
     operation T1_CreateEntangledPair_Test () : Unit {
-        using ((q1,q2) = (Qubit(), Qubit())) {
+        using ((q1, q2) = (Qubit(), Qubit())) {
 
             // apply operation that needs to be tested
             CreateEntangledPair(q1, q2);
@@ -25,7 +25,7 @@ namespace Quantum.Kata.SuperdenseCoding {
             Adjoint CreateEntangledPair_Reference(q1, q2);
 
             // assert that all qubits end up in |0⟩ state
-            AssertAllZero([q1,q2]);
+            AssertAllZero([q1, q2]);
         }
     }
     
