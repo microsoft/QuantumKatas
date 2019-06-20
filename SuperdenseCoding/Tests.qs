@@ -16,7 +16,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // ------------------------------------------------------
         
     operation T1_CreateEntangledPair_Test () : Unit {
-        using ((q1,q2) = (Qubit(), Qubit())) {
+        using ((q1, q2) = (Qubit(), Qubit())) {
 
             // apply operation that needs to be tested
             CreateEntangledPair(q1, q2);
