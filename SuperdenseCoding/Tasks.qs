@@ -55,7 +55,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Encode the message (two classical bits) in the state of Alice's qubit.
     // Inputs:
     //      1) Alice's part of the entangled pair of qubits qAlice.
-    //      2) two classical bits, stored as Message.
+    //      2) two classical bits, stored as ProtocollMessage.
     // Goal: Transform the input qubit to encode the two classical bits.
     operation EncodeMessageInQubit (qAlice : Qubit, message : ProtocollMessage) : Unit {
         // Hint: manipulate Alice's half of the entangled pair
@@ -66,6 +66,9 @@ namespace Quantum.Kata.SuperdenseCoding {
         // [1; 0]:    |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
         // [1; 1]:    |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
 
+		if (message::Bit1) { // accesses the item 'Bit1' of 'message'
+			// ...
+		}
         // ...
     }
     
