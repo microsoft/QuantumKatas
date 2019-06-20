@@ -71,7 +71,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // Task 3. Decode the message and reset the qubits (Bob's task)
-    // Decode the message using the qubit received from Alice and reset them to a |00⟩ state.
+    // Decode the message using the qubit received from Alice and reset both qubits to a |00⟩ state.
     // Inputs:
     //      1) Bob's part of the entangled pair qBob.
     //      2) qubit received from Alice qAlice.
