@@ -92,7 +92,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Return the result of decoding. 
     operation SuperdenseCodingProtocol (message : Message) : Message {
                 
-        fail ("not implemented");
+        fail ("Task 4 not implemented");
     }
     
 }
