@@ -43,8 +43,9 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Finally, we compose those steps into the complete superdense coding protocol.
     
     // Task 1. Entangled pair
-    // Input: An array of two qubits in the |00⟩ state.
-    // Goal:  Create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
+    // Input: A tuple of two qubits.
+    // Goal:  If both qubits are initially in a state |00>, 
+    // create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     operation CreateEntangledPair (q1 : Qubit, q2 : Qubit) : Unit is Adj {
 
         // ...
