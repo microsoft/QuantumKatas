@@ -35,7 +35,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // Task 2. Send the message (Alice's task)
-    operation EncodeMessageInQubit_Reference (qAlice : Qubit, message : Message) : Unit {
+    operation EncodeMessageInQubit_Reference (qAlice : Qubit, message : ProtocollMessage) : Unit {
         // We are starting this step with the entangled pair in state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
         // By doing operations on one of those qubits,
         // we can encode each of the values as a transformation:
@@ -57,7 +57,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // Task 3. Decode the message and reset the qubits (Bob's task)
-    operation DecodeMessageFromQubits_Reference (qAlice : Qubit, qBob : Qubit) : Message {
+    operation DecodeMessageFromQubits_Reference (qAlice : Qubit, qBob : Qubit) : ProtocollMessage {
         
         // Time to get our state back, by performing transformations as follows.
         // Notice that it's important to keep the order right. The qubits that are
@@ -75,12 +75,12 @@ namespace Quantum.Kata.SuperdenseCoding {
         // |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2) ---> |11⟩
         
         // So we can retrieve the encoded bits just by measuring.
-        return Message(MResetZ(qAlice) == One, MResetZ(qBob) == One);
+        return ProtocollMessage(MResetZ(qAlice) == One, MResetZ(qBob) == One);
     }
     
     
     // Task 4. Superdense coding protocol end-to-end
-    operation SuperdenseCodingProtocol_Reference (message : Message) : Message {
+    operation SuperdenseCodingProtocol_Reference (message : ProtocollMessage) : ProtocollMessage {
         
         // Get a temporary qubit register for the protocol run.
         using ((q1, q2) = (Qubit(), Qubit())) {
