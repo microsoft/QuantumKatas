@@ -5,8 +5,8 @@ FROM mcr.microsoft.com/quantum/iqsharp-base:0.8.1906.2007-beta
 # Required for mybinder.org
 COPY . ${HOME}
 USER root
-RUN chown -R ${NB_UID} ${HOME}
-USER ${NB_USER}
+RUN chown -R ${USER} ${HOME}
+USER ${USER}
 
 # Pre-exec notebooks to improve first-use start time
 RUN ${HOME}/build/prebuild-kata.sh BasicGates
