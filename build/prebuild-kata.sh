@@ -4,5 +4,5 @@ KATA_NOTEBOOK=${2:-$1.ipynb}
 
 echo "Prebuilding: $KATA_NOTEBOOK in $KATA_FOLDER kata..."
 
-echo dotnet build $KATA_FOLDER
-echo jupyter nbconvert $KATA_FOLDER/$KATA_NOTEBOOK --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+dotnet build $KATA_FOLDER
+jupyter nbconvert $KATA_FOLDER/$KATA_NOTEBOOK --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
