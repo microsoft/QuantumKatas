@@ -135,8 +135,7 @@ namespace Quantum.Kata.MagicSquareGame {
     operation AliceQuantum_Reference(rowIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
         for (column in 0..2) {
-            // Alice uses joint measurement to measure the the qubits in the observable's Pauli
-            // bases.
+            // Alice uses joint measurement to measure the qubits in the observable's Pauli bases.
             let obs = GetMagicObservables_Reference(rowIndex, column);
             let result = MeasureObservable_Reference(obs, qs);
             set cells w/= column <- IsResultZero(result) ? 1 | -1;
