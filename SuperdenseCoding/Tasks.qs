@@ -10,7 +10,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     /// Data type that represents the message that is transmitted 
     /// as part of the superdense coding protocol. 
     /// It includes two classical bits (Bit1 and Bit2) of type Bool.   
-    newtype ProtocollMessage = (Bit1 : Bool, Bit2 : Bool);    
+    newtype ProtocolMessage = (Bit1 : Bool, Bit2 : Bool);    
 
 
     ///////////////////////////////////////////////////////////////////////
@@ -43,9 +43,8 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Finally, we compose those steps into the complete superdense coding protocol.
     
     // Task 1. Entangled pair
-    // Input: A tuple of two qubits.
-    // Goal:  If both qubits are initially in a state |00>, 
-    // create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
+    // Input: Two qubits, each in the |0⟩ state.
+    // Goal:  Create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     operation CreateEntangledPair (q1 : Qubit, q2 : Qubit) : Unit is Adj {
 
         // ...
@@ -58,7 +57,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     //      1) Alice's part of the entangled pair of qubits qAlice.
     //      2) two classical bits, stored as ProtocollMessage.
     // Goal: Transform the input qubit to encode the two classical bits.
-    operation EncodeMessageInQubit (qAlice : Qubit, message : ProtocollMessage) : Unit {
+    operation EncodeMessageInQubit (qAlice : Qubit, message : ProtocolMessage) : Unit {
         // Hint: manipulate Alice's half of the entangled pair
         // to change the joint state of the two qubits to one of the following four states
         // based on the value of message:
@@ -67,9 +66,9 @@ namespace Quantum.Kata.SuperdenseCoding {
         // [1; 0]:    |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
         // [1; 1]:    |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
 
-		if (message::Bit1) { // accesses the item 'Bit1' of 'message'
-			// ...
-		}
+        if (message::Bit1) { // accesses the item 'Bit1' of 'message'
+            // ...
+        }
         // ...
     }
     
@@ -81,7 +80,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     //      2) Bob's part of the entangled pair qBob.
     // Goal:  Retrieve two bits of classic data from the qubits.
     // The state of the qubits in the end of the operation should be |00⟩.
-    operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : ProtocollMessage {
+    operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : ProtocolMessage {
 
         fail ("Task 3 not implemented");
     }
@@ -94,7 +93,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // state of the pair by applying quantum gates to one member of the pair,
     // and decode the two classical bits from the state of the pair.
     // Return the result of decoding. 
-    operation SuperdenseCodingProtocol (message : ProtocollMessage) : ProtocollMessage {
+    operation SuperdenseCodingProtocol (message : ProtocolMessage) : ProtocolMessage {
                 
         fail ("Task 4 not implemented");
     }
