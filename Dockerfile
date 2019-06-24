@@ -3,7 +3,7 @@ FROM python:3.7-slim
 
 # install qsharp and the notebook packages
 RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook qsharp==0.6.1905.301
+    pip install --no-cache notebook qsharp==0.7.1905.3109
 
 # pre-requisites for .NET SDK
 RUN apt-get update && apt-get -y install wget && \
@@ -43,7 +43,7 @@ ENV PATH=$PATH:${HOME}/dotnet:${HOME}/.dotnet/tools \
     IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
 
 # install IQSharp
-RUN dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.6.1905.301
+RUN dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.7.1905.3109
 RUN dotnet iqsharp install --user --path-to-tool="$(which dotnet-iqsharp)"
 
 # Make sure the contents of our repo are in ${HOME}
@@ -66,8 +66,23 @@ RUN jupyter nbconvert DeutschJozsaAlgorithm/DeutschJozsaAlgorithm.ipynb --execut
 RUN dotnet build GHZGame
 RUN jupyter nbconvert GHZGame/GHZGame.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build GroversAlgorithm
+RUN jupyter nbconvert GroversAlgorithm/GroversAlgorithm.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build JointMeasurements
+RUN jupyter nbconvert JointMeasurements/JointMeasurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build MagicSquareGame
+RUN jupyter nbconvert MagicSquareGame/MagicSquareGame.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build Measurements
 RUN jupyter nbconvert Measurements/Measurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build SuperdenseCoding
+RUN jupyter nbconvert SuperdenseCoding/SuperdenseCoding.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build Superposition
 RUN jupyter nbconvert Superposition/Superposition.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build Teleportation
+RUN jupyter nbconvert Teleportation/Teleportation.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120

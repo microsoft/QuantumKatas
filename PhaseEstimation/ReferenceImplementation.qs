@@ -138,8 +138,7 @@ namespace Quantum.Kata.PhaseEstimation {
             } 
             // repeat the loop until we get both Zero and One measurement outcomes
             // or until we're reasonably certain that we won't get a different outcome
-            until (iter == 10 or measuredZero and measuredOne)
-            fixup {}
+            until (iter == 10 or measuredZero and measuredOne);
             Reset(eigenstate);
 
             // all measurements yielded Zero => eigenvalue +1
