@@ -56,8 +56,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Inputs:
     //      1) Alice's part of the entangled pair of qubits qAlice.
     //      2) Two classical bits, stored as ProtocolMessage.
-    //         ProtocolMessage is a custom type that represents the message to be transmitted. 
-    //         It includes two items of type Bool called Bit1 and Bit2.
+    //         ProtocolMessage is a custom type introduced in the beginning of this file.
     // Goal: Transform the input qubit to encode the two classical bits.
     operation EncodeMessageInQubit (qAlice : Qubit, message : ProtocolMessage) : Unit {
         // Hint: manipulate Alice's half of the entangled pair
