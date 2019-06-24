@@ -173,7 +173,7 @@ docker build -t katas .
 ```
 
 To run the image in the container named `katas-container` with interactive command-line and 
-redirect container port 8888 to local port 8888 (needed to run jupyter):
+redirect container port `8888` to local port `8888` (needed to run jupyter):
 ```
 docker run -it --name katas-container -p 8888:8888 katas /bin/bash
 ```

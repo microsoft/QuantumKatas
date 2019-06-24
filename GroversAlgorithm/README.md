@@ -3,6 +3,8 @@
 The Grover's Algorithm kata covers Grover's search algorithm, which is one of the fundamental quantum computing algorithms.
 It solves the problem of finding an input to a black box (oracle) that produces a particular output.
 
+You can [run the GroversAlgorithm kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=GroversAlgorithm%2FGroversAlgorithm.ipynb)!
+
 #### Theory
 
 * The tasks follow the explanation from *Quantum Computation and Quantum Information* by Nielsen and Chuang.
