@@ -55,7 +55,9 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Encode the message (two classical bits) in the state of Alice's qubit.
     // Inputs:
     //      1) Alice's part of the entangled pair of qubits qAlice.
-    //      2) two classical bits, stored as ProtocolMessage.
+    //      2) Two classical bits, stored as ProtocolMessage.
+    //         ProtocolMessage is a custom type that represents the message to be transmitted. 
+    //         It includes two items of type Bool called Bit1 and Bit2.
     // Goal: Transform the input qubit to encode the two classical bits.
     operation EncodeMessageInQubit (qAlice : Qubit, message : ProtocolMessage) : Unit {
         // Hint: manipulate Alice's half of the entangled pair
@@ -78,8 +80,9 @@ namespace Quantum.Kata.SuperdenseCoding {
     // Inputs:
     //      1) The qubit received from Alice qAlice.
     //      2) Bob's part of the entangled pair qBob.
-    // Goal:  Retrieve two bits of classic data from the qubits.
+    // Goal:  Retrieve two bits of classic data from the qubits and return them as ProtocolMessage.
     // The state of the qubits in the end of the operation should be |00⟩.
+    // You can create an instance of ProtocolMessage as ProtocolMessage(bit1value, bit2value).
     operation DecodeMessageFromQubits (qAlice : Qubit, qBob : Qubit) : ProtocolMessage {
 
         fail ("Task 3 not implemented");
