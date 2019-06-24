@@ -10,7 +10,7 @@ This kata covers hierarchical reversible logic synthesis, i.e., building network
 To complete this kata, one should be familiar with basic quantum gates (in particular, the CNOT and Toffoli gate). Their description can be found in [this Wikipedia article](https://en.wikipedia.org/wiki/Quantum_logic_gate). 
 
 #### Q# materials
-* Basic gates provided in Q# belong to the `Microsoft.Quantum.Primitive` namespace and are listed [here](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic).
+* Basic gates provided in Q# belong to the `Microsoft.Quantum.Intrinsic` namespace and are listed [here](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic).
 * CNOT gate description is given [here](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.cnot).
 * Toffoli gate description is given [here](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.ccnot).
 
