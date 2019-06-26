@@ -35,7 +35,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
 
 
-    // Function 4. f(x) = 1 if x has odd number of 1s, and 0 otherwise
+    // Function 4. f(x) = 1 if the binary notation of x has odd number of 1s, and 0 otherwise
     function Function_OddNumberOfOnes_Reference (x : Int) : Int {
         mutable nOnes = 0;
         mutable xBits = x;

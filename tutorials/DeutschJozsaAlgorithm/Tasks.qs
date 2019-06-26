@@ -18,7 +18,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part I. Classical algorithm
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 1. 
+    // Exercise 1.
+    function Function_MostSignificantBit (x : Int, N : Int) : Int {
+        // ...
+        return -1;
+    }
+
+
+    // Exercise 2. 
     function IsFunctionConstant_Classical (N : Int, f : (Int -> Int)) : Bool {
         // ...
         return false;
@@ -26,10 +33,20 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum algorithm
+    // Part II. Quantum oracles
     //////////////////////////////////////////////////////////////////
     
-    // Exercise 2.
+    // Exercise 3.
+    operation PhaseOracle_MostSignificantBit (x : Qubit[]) : Unit {
+        // ...
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Quantum algorithm
+    //////////////////////////////////////////////////////////////////
+    
+    // Exercise 4.
     operation DeutschJozsaAlgorithm (N : Int, oracle : (Qubit[] => Unit)) : Bool {
         // ...
         return false;

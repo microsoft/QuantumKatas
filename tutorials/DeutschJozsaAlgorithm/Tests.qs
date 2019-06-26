@@ -23,8 +23,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part I. Classical algorithm
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 1. 
+    // Exercise 1.
+    operation E1_ClassicalFunction_Test () : Unit {
+        for (N in 1..5) {
+            for (x in 0..(1 <<< (N - 1)) - 1) {
+                let ret = Function_MostSignificantBit(x, N);
+                Fact(ret == 0, $"Unexpected return for x = {x}, N = {N}: expected 0, got {ret}");
+            }
+            for (x in (1 <<< (N - 1))..(1 <<< N) - 1) {
+                let ret = Function_MostSignificantBit(x, N);
+                Fact(ret == 1, $"Unexpected return for x = {x}, N = {N}: expected 1, got {ret}");
+            }
+        }
+    }
 
+
+    // Exercise 2.
     operation CheckClassicalAlgorithm (N : Int, f : (Int -> Int), expected : Bool, functionName : String) : Unit {
         Message($"Testing {functionName}...");
 
@@ -41,7 +55,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
 
 
-    operation E1_ClassicalSolution_Test () : Unit {
+    operation E2_ClassicalAlgorithm_Test () : Unit {
         CheckClassicalAlgorithm(4, Function_Zero_Reference, true, "f(x) = 0");
         CheckClassicalAlgorithm(4, Function_One_Reference, true, "f(x) = 1");
         CheckClassicalAlgorithm(4, Function_Xmod2_Reference, false, "f(x) = x mod 2");
@@ -50,11 +64,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum algorithm
+    // Part II. Quantum oracles
     //////////////////////////////////////////////////////////////////
     
-    // Exercise 2.
+    // Exercise 3.
+    operation E3_QuantumOracle_Test () : Unit {
+        for (N in 1..5) {
+            AssertOperationsEqualReferenced(N, PhaseOracle_MostSignificantBit, PhaseOracle_MostSignificantBit_Reference);
+        }
+    }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Quantum algorithm
+    //////////////////////////////////////////////////////////////////
+    
+    // Exercise 4.
     operation CheckQuantumAlgorithm (N : Int, oracle : (Qubit[] => Unit), expected : Bool, functionName : String) : Unit {
         Message($"Testing {functionName}...");
 
@@ -77,7 +102,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
     
     
-    operation E2_DJAlgorithm_Test () : Unit {
+    operation E4_QuantumAlgorithm_Test () : Unit {
         ResetOracleCallsCount();
         
         CheckQuantumAlgorithm(4, PhaseOracle_Zero_Reference, true, "f(x) = 0");
