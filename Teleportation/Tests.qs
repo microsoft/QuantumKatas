@@ -141,7 +141,7 @@ namespace Quantum.Kata.Teleportation {
     
     
     // Test the full Teleport operation
-    operation T14_Teleport_Test () : Unit {
+    operation T14_StandardTeleport_Test () : Unit {
         TeleportTestLoop(StandardTeleport);
     }
     

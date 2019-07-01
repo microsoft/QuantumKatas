@@ -30,7 +30,7 @@ namespace Quantum.Kata.GroversAlgorithm
         [OperationDriver(TestNamespace = "Quantum.Kata.GroversAlgorithm")]
         public void TestTarget(TestOperation op)
         {
-            using (var sim = new CounterSimulator())
+            using (var sim = new QuantumSimulator())
             {
                 // OnLog defines action(s) performed when Q# test calls function Message
                 sim.OnLog += (msg) => { output.WriteLine(msg); };
