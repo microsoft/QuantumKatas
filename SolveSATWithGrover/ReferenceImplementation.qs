@@ -83,11 +83,11 @@ namespace Quantum.Kata.GroversAlgorithm {
             // The first clause is exactly the Or oracle
             Oracle_Or_Reference(queryRegister, a1);
             // The second clause is the Or oracle, applied to negations of the variables
-            WithA(ApplyToEachA(X, _), Oracle_Or_Reference(_, a2), queryRegister);
+            ApplyWithA(ApplyToEachA(X, _), Oracle_Or_Reference(_, a2), queryRegister);
             // To calculate the final answer, apply the And oracle with the ancilla qubits as inputs
             Oracle_And_Reference([a1, a2], target);
             // Uncompute the values of the ancillas before releasing them (no measuring!)
-            Adjoint WithA(ApplyToEachA(X, _), Oracle_Or_Reference(_, a2), queryRegister);
+            Adjoint ApplyWithA(ApplyToEachA(X, _), Oracle_Or_Reference(_, a2), queryRegister);
             Adjoint Oracle_Or_Reference(queryRegister, a1);
         }
     }
@@ -160,7 +160,7 @@ namespace Quantum.Kata.GroversAlgorithm {
                 }
 
                 // Actually calculate the clause (flip the necessary qubits, call OR oracle, flip them back)
-                With(ApplyPauliFromBitString(PauliX, true, flip, _), Oracle_Or_Reference(_, ancillaRegister[clauseIndex]), qubits);
+                ApplyWith(ApplyPauliFromBitString(PauliX, true, flip, _), Oracle_Or_Reference(_, ancillaRegister[clauseIndex]), qubits);
             }
         }
         
@@ -188,7 +188,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         // Allocate qubits to store results of clauses evaluation
         using (anc = Qubit[Length(problem)]) {
             // Compute clauses, evaluate the overall formula as an AND oracle (can use reference depending on the implementation) and uncompute
-            WithA(EvaluateOrClauses(queryRegister, _, problem), Controlled X(_, target), anc);
+            ApplyWithA(EvaluateOrClauses(queryRegister, _, problem), Controlled X(_, target), anc);
         }
     }
 
