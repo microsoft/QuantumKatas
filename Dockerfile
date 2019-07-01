@@ -66,11 +66,20 @@ RUN jupyter nbconvert DeutschJozsaAlgorithm/DeutschJozsaAlgorithm.ipynb --execut
 RUN dotnet build GHZGame
 RUN jupyter nbconvert GHZGame/GHZGame.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build GroversAlgorithm
+RUN jupyter nbconvert GroversAlgorithm/GroversAlgorithm.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build JointMeasurements
 RUN jupyter nbconvert JointMeasurements/JointMeasurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build MagicSquareGame
+RUN jupyter nbconvert MagicSquareGame/MagicSquareGame.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build Measurements
 RUN jupyter nbconvert Measurements/Measurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build SolveSATWithGrover
+RUN jupyter nbconvert SolveSATWithGrover/SolveSATWithGrover.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
 RUN dotnet build SuperdenseCoding
 RUN jupyter nbconvert SuperdenseCoding/SuperdenseCoding.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120

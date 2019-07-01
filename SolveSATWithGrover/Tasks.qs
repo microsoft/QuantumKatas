@@ -43,7 +43,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      1) 2 qubits in an arbitrary state |x⟩ (input/query register)
     //      2) a qubit in an arbitrary state |y⟩ (target qubit)
     // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       i.e., flip the target state if both qubits of the query register are in the |1⟩ state,
+    //       i.e., flip the target state if all qubits of the query register are in the |1⟩ state,
     //       and leave it unchanged otherwise.
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
@@ -152,13 +152,13 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      3) a 2-dimensional array of tuples "problem" which describes the SAT problem instance f(x).
     //
     // i-th element of "problem" describes the i-th clause of f(x);
-    // it is an array of 2 tuples, each of them describing one component of the clause.
+    // it is an array of one or more tuples, each of them describing one component of the clause.
     // Each tuple is an (Int, Bool) pair:
     //  - the first element is the index of the variable xⱼ,
     //  - the second element is true if the variable is included as itself (xⱼ) and false if it is included as a negation (¬xⱼ)
     // 
     // Example:
-    // A more general case on the OR oracle for 3 variables f(x) = (x₀ ∨ x₁ ∨ x₂) can be represented as [[(0, true), (1, true), (2, true)]].
+    // A more general case of the OR oracle for 3 variables f(x) = (x₀ ∨ x₁ ∨ x₂) can be represented as [[(0, true), (1, true), (2, true)]].
     // 
     // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     //       Leave the query register in the same state it started in.
@@ -175,7 +175,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 2.1. Using Grover's algorithm
-    // Goal: Implement Grover's algorithm and use it to find solutions to SAT instances from part 1.
+    // Goal: Implement Grover's algorithm and use it to find solutions to SAT instances from part I.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
     //
     // If you want to learn the Grover's algorithm itself, try doing GroversAlgorithm kata first.
@@ -195,14 +195,14 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Task 2.2. Universal implementation of Grover's algorithm
     // Inputs: 
     //      1) the number of qubits N,
-    //      2) a marking oracle which implements a boolean expression, similar to the oracles from section 1.
+    //      2) a marking oracle which implements a boolean expression, similar to the oracles from part I.
     // Output:
     //      An array of N boolean values which satisfy the expression implemented by the oracle
     //      (i.e., any basis state marked by the oracle).
     // 
     // Note that the similar task in the GroversAlgorithm kata required you to implement Grover's algorithm
     // in a way that would be robust to accidental failures, but you knew the optimal number of iterations
-    // (the number that minimizes the probability of such failure). 
+    // (the number that minimized the probability of such failure). 
     // In this task you also need to make your implementation robust to not knowing the optimal number of iterations.
     operation GroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Bool[] {
         // ...
