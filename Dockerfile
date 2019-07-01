@@ -78,6 +78,9 @@ RUN jupyter nbconvert MagicSquareGame/MagicSquareGame.ipynb --execute --stdout -
 RUN dotnet build Measurements
 RUN jupyter nbconvert Measurements/Measurements.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
+RUN dotnet build SolveSATWithGrover
+RUN jupyter nbconvert SolveSATWithGrover/SolveSATWithGrover.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
 RUN dotnet build SuperdenseCoding
 RUN jupyter nbconvert SuperdenseCoding/SuperdenseCoding.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
 
