@@ -16,7 +16,10 @@ RUN ${HOME}/build/prebuild-kata.sh DeutschJozsaAlgorithm
 RUN ${HOME}/build/prebuild-kata.sh GHZGame
 RUN ${HOME}/build/prebuild-kata.sh GroversAlgorithm
 RUN ${HOME}/build/prebuild-kata.sh JointMeasurements
+RUN ${HOME}/build/prebuild-kata.sh MagicSquareGame
 RUN ${HOME}/build/prebuild-kata.sh Measurements
+RUN ${HOME}/build/prebuild-kata.sh QEC_BitFlipCode
+RUN ${HOME}/build/prebuild-kata.sh SolveSATWithGrover
 RUN ${HOME}/build/prebuild-kata.sh SuperdenseCoding
 RUN ${HOME}/build/prebuild-kata.sh Superposition
 RUN ${HOME}/build/prebuild-kata.sh Teleportation
