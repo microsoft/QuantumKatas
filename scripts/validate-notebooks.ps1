@@ -1,6 +1,12 @@
 # Script to validate Jupyter notebooks.
 
-#
+# Install iqsharp if not installed yet.
+dotnet iqhsarp --versions
+If ($LastExitCode -ne 0) {
+    dotnet tool install Microsoft.Quantum.IQSharp --version 0.7.1905.3109 --global
+    dotnet iqsharp install --user
+}
+
 # This function takes a folder with Katas. Copies the corresponding 
 # jupyter notebook into a "Check.ipynb" that replaces the %kata magic
 # with a %check_kata magic that runs the kata not with the user-supplied code
