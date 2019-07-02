@@ -13,8 +13,18 @@ variables:
   Build.Configuration: 'Release'
   Drops.Dir: $(Build.ArtifactStagingDirectory)/drops
 
+
 jobs:
-- job: QuantumKatas
+- job: Windows
   pool: 'Hosted VS2017'
   steps:
   - template: scripts/steps.yml
+- job: macOS
+  pool: 'Hosted macOS'
+  steps:
+  - template: scripts/steps.yml
+- job: Linux
+  pool: 'Hosted Ubuntu 1604'
+  steps:
+  - template: scripts/steps.yml
+
