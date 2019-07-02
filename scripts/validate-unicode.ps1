@@ -1,4 +1,7 @@
-﻿# Find all lines with bad bra or ket characters
+﻿
+Write-Host "Validating unicode characters in Q# files"
+
+# Find all lines with bad bra or ket characters
 $lines = Select-String -Path "**\*.qs" -Pattern "[〉〈]"
 $lines
 
