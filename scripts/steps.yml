@@ -13,7 +13,7 @@ steps:
   displayName: 'Install Python tools'
 
 - powershell: ./install-iqsharp.ps1
-  displayName: "Installing IQ$"
+  displayName: "Installing IQ#"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
 ##
