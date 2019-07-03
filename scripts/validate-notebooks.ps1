@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 # Script to validate Jupyter notebooks.
+$all_ok = $True
 
 # This function takes a folder with Katas. Copies the corresponding 
 # jupyter notebook into a "Check.ipynb" that replaces the %kata magic
@@ -32,11 +33,12 @@ function validate {
     jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120
 
     # if jupyter returns an error code, return that this notebook is invalid:
-    $invalid = ($LastExitCode -ne 0)
-    Write-Host "Result for $Notebook -" $LastExitCode
+    if ($LastExitCode -ne 0) {
+        Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
+        $script:all_ok = $false
+    }
 
     popd
-    return $invalid
 }
 
 # List of Notebooks that can't be validated as they required user-input
@@ -58,10 +60,8 @@ Get-ChildItem (Join-Path $PSScriptRoot '..') `
     -Exclude $not_ready `
         | ForEach-Object { $errors = (validate $_) -or $errors }
 
-$result = 0
-if ($errors) { 
-    Write-Host "##vso[task.logissue type=error;]Validation errors for Jupyter notebooks."
-    $result = 1 
-}
 
-exit($result)
+if (-not $all_ok) {
+    Write-Host "##vso[task.logissue type=error;]Validation errors for Jupyter notebooks."
+    throw "At least one test failed execution. Check the logs."
+}
