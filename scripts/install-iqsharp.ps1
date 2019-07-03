@@ -9,7 +9,7 @@ dotnet iqsharp --version
 If ($LastExitCode -ne 0) {
     dotnet tool install Microsoft.Quantum.IQSharp --version 0.7.1905.3109 --tool-path $Env:TOOLS_DIR
 
-    $path = (Get-Item "$Env:TOOLS_DIR\dotnet-iqsharp.*").FullName
+    $path = (Get-Item "$Env:TOOLS_DIR\dotnet-iqsharp*").FullName
     Write-Host "iq# installed at $path"
     & $path install --user --path-to-tool $path
 }
