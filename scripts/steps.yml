@@ -7,7 +7,7 @@ steps:
   displayName: 'Use .NET Core sdk'
   inputs:
     packageType: sdk
-    version: 2.2
+    version: 2.2.x
 
 - task: UsePythonVersion@0
   inputs:
