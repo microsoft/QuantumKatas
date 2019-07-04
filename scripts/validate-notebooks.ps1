@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 # Script to validate Jupyter notebooks.
+& "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
 # This function takes a folder with Katas. Copies the corresponding 
@@ -32,7 +33,7 @@ function validate {
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
     jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120
 
-    # if jupyter returns an error code, return that this notebook is invalid:
+    # if jupyter returns an error code, report that this notebook is invalid:
     if ($LastExitCode -ne 0) {
         Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
         $script:all_ok = $false
