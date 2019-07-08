@@ -56,8 +56,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation AmplitudeChange_Reference (q : Qubit, alpha : Double) : Unit
-    is Adj {
+    operation AmplitudeChange_Reference (q : Qubit, alpha : Double) : Unit is Adj {
         Ry(2.0 * alpha, q);
     }
 
@@ -65,8 +64,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.5. Phase flip
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the qubit state to α |0⟩ + iβ |1⟩ (flip the phase of |1⟩ component of the superposition).
-    operation PhaseFlip_Reference (q : Qubit) : Unit
-    is Adj {
+    operation PhaseFlip_Reference (q : Qubit) : Unit is Adj {
         S(q);
         // alternatively Rz(0.5 * PI(), q);
     }
@@ -80,8 +78,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, don't change its state.
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation PhaseChange_Reference (q : Qubit, alpha : Double) : Unit
-    is Adj {
+    operation PhaseChange_Reference (alpha : Double, q : Qubit) : Unit is Adj {
         Rz(alpha, q);
     }
 
@@ -89,8 +86,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.7. Bell state change - 1
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
-    operation BellStateChange1_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation BellStateChange1_Reference (qs : Qubit[]) : Unit is Adj {
         Z(qs[0]);
         // alternatively Z(qs[1]);
     }
@@ -99,8 +95,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.8. Bell state change - 2
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
-    operation BellStateChange2_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation BellStateChange2_Reference (qs : Qubit[]) : Unit is Adj {
         X(qs[0]);
         // alternatively X(qs[1]);
     }
@@ -109,8 +104,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.9. Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
-    operation BellStateChange3_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation BellStateChange3_Reference (qs : Qubit[]) : Unit is Adj {
         Y(qs[0]);
     }
 
@@ -127,8 +121,7 @@ namespace Quantum.Kata.BasicGates {
     // Note that unless the starting state of the first qubit was |0⟩ or |1⟩,
     // the resulting two-qubit state can not be represented as a tensor product
     // of the states of individual qubits any longer; thus the qubits become entangled.
-    operation TwoQubitGate1_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation TwoQubitGate1_Reference (qs : Qubit[]) : Unit is Adj {
         CNOT(qs[0], qs[1]);
     }
 
@@ -140,8 +133,8 @@ namespace Quantum.Kata.BasicGates {
     // Note that while the starting state can be represented as a tensor product of single-qubit states,
     // the resulting two-qubit state can not be represented in such a way.
     operation TwoQubitGate2_Reference (qs : Qubit[]) : Unit is Adj {
-        CZ(qs[0], qs[1]);
-        // alternatively: Controlled Z([qs[0]], qs[1]);
+        Controlled Z([qs[0]], qs[1]);
+        // alternatively: CZ(qs[0], qs[1]);
     }
 
     // Task 2.3. Two-qubit gate - 3

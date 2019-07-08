@@ -61,7 +61,7 @@ namespace Quantum.Kata.BasicGates {
     operation T16_PhaseChange_Test () : Unit {
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseChange(_, alpha), _), ArrayWrapperOperation(PhaseChange_Reference(_, alpha), _));
+            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseChange(alpha, _), _), ArrayWrapperOperation(PhaseChange_Reference(alpha, _), _));
         }
     }
     
