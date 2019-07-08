@@ -4,21 +4,24 @@ We're so glad you asked!
 
 **Table of Contents**
 
-[Reporting Bugs](#reporting-bugs)
+* [Reporting Bugs](#reporting-bugs)
 
-[Improving Documentation](#improving-documentation)
+* [Improving Documentation](#improving-documentation)
 
-[Contributing New Tasks](#contributing-new-tasks)
-* [Contributing New Tasks to the Existing Katas](#contributing-new-tasks-to-the-existing-katas)
-* [Contributing New Katas](#contributing-new-katas)
+* [Contributing New Tasks](#contributing-new-tasks)
+   * [Contributing New Tasks to the Existing Katas](#contributing-new-tasks-to-the-existing-katas)
+   * [Contributing New Katas](#contributing-new-katas)
 
-[Style Guide](#style-guide)
+* [Style Guide](#style-guide)
 
-[Contributor License Agreement](#contributor-license-agreement)
+* [Contributor License Agreement](#contributor-license-agreement)
 
-[Code of Conduct](#code-of-conduct)
+* [Code of Conduct](#code-of-conduct)
 
 ## Reporting Bugs
+
+The Quantum Development Kit is distributed across multiple repositories. If you have found a bug in one of the parts of the Quantum Development Kit, try to file the issue against the correct repository.
+Check the list [in the contribution guide](https://docs.microsoft.com/quantum/contributing/#where-do-contributions-go) if you aren't sure which repo is correct.
 
 If you think you've found a bug in one of the tasks, start by looking through [the existing issues](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue) in case it has already been reported (or it's not a bug at all). 
 
@@ -28,21 +31,25 @@ You can also [create a pull request](https://help.github.com/articles/about-pull
 
 ## Improving Documentation
 
-Each kata has a README.md file with a brief description of the topic covered in the kata and a list of useful links on that topic. If you have come across a paper/tutorial/lecture which was really helpful for solving some of the kata's tasks, feel free to create a pull request to add it to the corresponding README file.
+If you are interested in contributing to conceptual documentation about the Quantum Development Kit, please see the [MicrosoftDocs/quantum-docs-pr](https://github.com/MicrosoftDocs/quantum-docs-pr) repository.
 
-## Contributing New Tasks
+Besides, each kata has a README.md file with a brief description of the topic covered in the kata and a list of useful links on that topic. If you have come across a paper/tutorial/lecture which was really helpful for solving some of the kata's tasks, feel free to create a pull request to add it to the corresponding README file.
 
-Whether you want to contribute a new task to an existing kata or to create a completely new kata, start by opening an issue describing your intended contribution. 
+## Contributing Code
+
+Whether you want to contribute a new task to an existing kata, to improve the testing harness for one of the tasks or to create a completely new kata, start by opening an issue describing your intended contribution. 
 This way you'll get feedback on your idea faster and easier than if you go all the way to implementing it first.
 This will also ensure that you're not working on the same thing as somebody else.
 
 We're always happy to discuss new ideas and to offer advice, be it on the test harness implementation or on the best breakdown of a topic into tasks.
 
-### Contributing New Tasks to the Existing Katas
+#### Contributing New Tasks to the Existing Katas
 
 Each kata is a sequence of tasks on the topic progressing from very simple to quite challenging. If you have an idea for a task which fits nicely in the sequence, filling a gap between other tasks or expanding the sequence with harder tasks, bring it forward!
 
-### Contributing New Katas
+You are also welcome to browse through the list of issues labeled as ["help wanted"](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and pick up any of them to work on it.
+
+#### Contributing New Katas
 
 We aim for the Quantum Katas to be a proper companion for any "Introduction to Quantum Computing" course, and eventually go beyond that.
 Obviously, there is a lot of work to be done to get there! 

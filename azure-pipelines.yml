@@ -3,16 +3,28 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 name: $(Build.Major).$(Build.Minor).$(BuildId)
+trigger:
+- master
+
 variables:
   Build.Major: 1
   Build.Minor: 0
   Build.Patch: $(Build.BuildId)
   Build.Configuration: 'Release'
-  Assembly.Version: $(Build.BuildNumber)
-  KatasRootFolder: $(System.DefaultWorkingDirectory)
+  Drops.Dir: $(Build.ArtifactStagingDirectory)/drops
 
-pool:
-  vmImage: 'VS2017-Win2016'
 
-steps:
-- template: scripts/step-build-katas.yml
+jobs:
+- job: Windows
+  pool: 'Hosted VS2017'
+  steps:
+  - template: scripts/steps.yml
+- job: macOS
+  pool: 'Hosted macOS'
+  steps:
+  - template: scripts/steps.yml
+- job: Linux
+  pool: 'Hosted Ubuntu 1604'
+  steps:
+  - template: scripts/steps.yml
+

@@ -192,9 +192,9 @@ namespace Quantum.Kata.GroversAlgorithm {
             QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _));
 
         // Standalone tests
-        for (i in 1..10) {
+        for (i in 1..8) {
             let (nVar, problem) = Generate_SAT_Instance(true);
-            Message($"{problem}");
+            Message($"Testing 2-SAT instance {problem}");
 
             AssertOracleImplementsFunction(nVar, oracle(_, _, problem), F_SAT(_, problem));
 
@@ -216,9 +216,9 @@ namespace Quantum.Kata.GroversAlgorithm {
         Run2SATTests(Oracle_SAT);
 
         // General SAT instances
-        for (i in 1..10) {
+        for (i in 1..5) {
             let (nVar, problem) = Generate_SAT_Instance(false);
-            Message($"{problem}");
+            Message($"Testing k-SAT instance {problem}");
 
             AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
 
@@ -259,14 +259,4 @@ namespace Quantum.Kata.GroversAlgorithm {
         // SAT instance: 1/2^6
         RunGroverOnOneInstance(6, [[(1, false)], [(0, true), (1, true)], [(2, true), (3, true), (4, true)], [(3, false), (5, false)], [(0, false), (2, false), (5, true)], [(1, true), (3, true), (4, false)], [(1, true), (5, true)]]);
     }
-
-
-    // ------------------------------------------------------
-    function GetOracleCallsCount<'T> (oracle : 'T) : Int { return 0; }
-    
-    function ResetOracleCallsCount () : Unit { }
-
-    function GetMaxQubitCount () : Int { return 0; }
-    
-    function ResetQubitCount () : Unit { }
 }
