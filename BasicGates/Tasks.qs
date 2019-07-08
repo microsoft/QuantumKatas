@@ -40,6 +40,8 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |1⟩, change its state to |0⟩.
     // Note that this operation is self-adjoint: applying it for a second time
     // returns the qubit to the original state.
+    // `is Adj` at the end of the operation signature means that Q# will compute 
+    // the operation that returns the qubit to the original state automatically.
     operation StateFlip (q : Qubit) : Unit is Adj {
         // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.
         // Type X(q);
@@ -71,13 +73,15 @@ namespace Quantum.Kata.BasicGates {
 
     // Task 1.4*. Amplitude change: |0⟩ to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     // Inputs:
-    //     1) A qubit in state β|0⟩ + γ|1⟩.
-    //     2) Angle alpha, in radians, represented as Double
+    //     1) Angle alpha, in radians, represented as Double.
+    //     2) A qubit in state β|0⟩ + γ|1⟩.
     // Goal:  Change the state of the qubit as follows:
     //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation AmplitudeChange (q : Qubit, alpha : Double) : Unit is Adj {
+    // This is the first operation in this kata that is not self-adjoint, 
+    // i.e., applying it for a second time does not return the qubit to the original state. 
+    operation AmplitudeChange (alpha : Double, q : Qubit) : Unit is Adj {
         // ...
     }
 
@@ -92,7 +96,7 @@ namespace Quantum.Kata.BasicGates {
 
     // Task 1.6*. Phase change
     // Inputs:
-    //     1) Angle alpha, in radians, represented as Double
+    //     1) Angle alpha, in radians, represented as Double.
     //     2) A qubit in state β|0⟩ + γ|1⟩.
     // Goal:  Change the state of the qubit as follows:
     //        If the qubit is in state |0⟩, don't change its state.
@@ -163,6 +167,7 @@ namespace Quantum.Kata.BasicGates {
         // Hint: this task can be solved using one intrinsic gate;
         // as an exercise, try to express the solution using several
         // (possibly controlled) Pauli gates.
+        // ...
     }
 
 

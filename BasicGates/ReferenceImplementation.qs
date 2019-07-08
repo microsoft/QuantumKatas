@@ -10,7 +10,6 @@
 
 namespace Quantum.Kata.BasicGates {
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
 
 
     //////////////////////////////////////////////////////////////////
@@ -50,13 +49,13 @@ namespace Quantum.Kata.BasicGates {
 
     // Task 1.4*. Amplitude change (|0⟩ to cos(alpha)*|0⟩ + sin(alpha)*|1⟩).
     // Inputs:
-    //     1) A qubit in state β|0⟩ + γ|1⟩.
-    //     2) Angle alpha, in radians, represented as Double
+    //     1) Angle alpha, in radians, represented as Double.
+    //     2) A qubit in state β|0⟩ + γ|1⟩.
     // Goal:  Change the state of the qubit as follows:
     //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation AmplitudeChange_Reference (q : Qubit, alpha : Double) : Unit is Adj {
+    operation AmplitudeChange_Reference (alpha : Double, q : Qubit) : Unit is Adj {
         Ry(2.0 * alpha, q);
     }
 
@@ -72,8 +71,8 @@ namespace Quantum.Kata.BasicGates {
 
     // Task 1.6*. Phase change
     // Inputs:
-    //     1) A qubit in state β|0⟩ + γ|1⟩.
-    //     2) Angle alpha, in radians, represented as Double
+    //     1) Angle alpha, in radians, represented as Double.
+    //     2) A qubit in state β|0⟩ + γ|1⟩.
     // Goal:  Change the state of the qubit as follows:
     //        If the qubit is in state |0⟩, don't change its state.
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
