@@ -47,28 +47,32 @@
 			"name": "10. Solving SAT problems using Grover's algorithm"
 		},
 		{
+			"path": "GraphColoring",
+			"name": "11. Solving graph coloring problems using Grover's algorithm"
+		},
+		{
 			"path": "CHSHGame",
-			"name": "11. CHSH game"
+			"name": "12. CHSH game"
 		},
 		{
 			"path": "GHZGame",
-			"name": "12. GHZ game"
+			"name": "13. GHZ game"
 		},
 		{
 			"path": "MagicSquareGame",
-			"name": "13. Mermin-Peres magic square game"
+			"name": "14. Mermin-Peres magic square game"
 		},
 		{
 			"path": "PhaseEstimation",
-			"name": "14. Phase Estimation"
+			"name": "15. Phase Estimation"
 		},
 		{
 			"path": "QEC_BitFlipCode",
-			"name": "15. QEC: Bit-flip Code"
+			"name": "16. QEC: Bit-flip Code"
 		},
 		{
 			"path": "UnitaryPatterns",
-			"name": "16*. Unitary Patterns"
+			"name": "17*. Unitary Patterns"
 		},
 	],
 	"settings": {

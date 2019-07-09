@@ -57,6 +57,8 @@ Currently covered topics are:
   This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
   This kata continues the exploration of Grover's search algorithm, using SAT problems as an example. It covers implementing quantum oracles based on the problem description instead of a hard-coded answer and using Grover's algorithm to solve problems with unknown number of solutions.
+* **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
+  This kata continues the exploration of Grover's search algorithm, using graph coloring problems as an example.
 
 #### Entanglement games
 * **[CHSH game](./CHSHGame/)**.

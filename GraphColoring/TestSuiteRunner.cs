@@ -12,7 +12,7 @@ using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
 
-namespace Quantum.Kata.GroversAlgorithm
+namespace Quantum.Kata.GraphColoring
 {
     public class TestSuiteRunner
     {
@@ -25,9 +25,9 @@ namespace Quantum.Kata.GroversAlgorithm
 
         /// <summary>
         /// This driver will run all Q# tests (operations named "...Test") 
-        /// that belong to namespace Quantum.Kata.GroversAlgorithm.
+        /// that belong to namespace Quantum.Kata.GraphColoring.
         /// </summary>
-        [OperationDriver(TestNamespace = "Quantum.Kata.GroversAlgorithm")]
+        [OperationDriver(TestNamespace = "Quantum.Kata.GraphColoring")]
         public void TestTarget(TestOperation op)
         {
             using (var sim = new QuantumSimulator())
