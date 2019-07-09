@@ -18,8 +18,7 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit
-    is Adj {
+    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit is Adj {
         op(qs[0]);
     }
     
@@ -46,7 +45,7 @@ namespace Quantum.Kata.BasicGates {
     operation T14_AmplitudeChange_Test () : Unit {
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(AmplitudeChange(_, alpha), _), ArrayWrapperOperation(AmplitudeChange_Reference(_, alpha), _));
+            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(AmplitudeChange(alpha, _), _), ArrayWrapperOperation(AmplitudeChange_Reference(alpha, _), _));
         }
     }
     
@@ -61,7 +60,7 @@ namespace Quantum.Kata.BasicGates {
     operation T16_PhaseChange_Test () : Unit {
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseChange(_, alpha), _), ArrayWrapperOperation(PhaseChange_Reference(_, alpha), _));
+            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PhaseChange(alpha, _), _), ArrayWrapperOperation(PhaseChange_Reference(alpha, _), _));
         }
     }
     
@@ -71,8 +70,7 @@ namespace Quantum.Kata.BasicGates {
     // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
     // 2 - |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
     // 3 - |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
-    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit
-    is Adj {
+    operation StatePrep_BellState (qs : Qubit[], state : Int) : Unit is Adj {
         
         H(qs[0]);
         CNOT(qs[0], qs[1]);
@@ -127,13 +125,8 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
-    operation StatePrep_A (alpha : Double, q : Qubit) : Unit {
-        
-        body (...) {
-            Ry(2.0 * alpha, q);
-        }
-        
-        adjoint invert;
+    operation StatePrep_A (alpha : Double, q : Qubit) : Unit is Adj {
+        Ry(2.0 * alpha, q);
     }
     
     
@@ -165,13 +158,8 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     // prepare state |+⟩ ⊗ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
-    operation StatePrep_PlusPlus (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            ApplyToEachA(H, qs);
-        }
-        
-        adjoint invert;
+    operation StatePrep_PlusPlus (qs : Qubit[]) : Unit is Adj {
+        ApplyToEachA(H, qs);
     }
     
     
@@ -195,13 +183,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation SwapWrapper (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            SWAP(qs[0], qs[1]);
-        }
-        
-        adjoint self;
+    operation SwapWrapper (qs : Qubit[]) : Unit is Adj {
+        SWAP(qs[0], qs[1]);
     }
     
     
