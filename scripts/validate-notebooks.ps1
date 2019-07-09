@@ -6,7 +6,7 @@
 $all_ok = $True
 
 # This function takes a folder with Katas. Copies the corresponding 
-# Jupyter notebook into a "Check.ipynb" that replaces the %kata magic
+# jupyter notebook into a "Check.ipynb" that replaces the %kata magic
 # with a %check_kata magic that runs the kata not with the user-supplied code
 # but with the Reference implementation.
 # If the execution fails or has warnings, the execution of the notebook
@@ -51,8 +51,7 @@ $not_ready =
     'DeutschJozsaAlgorithm.ipynb',
     'GHZGame.ipynb',
     'MagicSquareGame.ipynb',
-    'SolveSATWithGrover.ipynb',
-    'tutorials/DeutschJozsaAlgorithm/DeutschJozsaAlgorithmTutorial.ipynb'
+    'SolveSATWithGrover.ipynb'
 )
 
 $errors = $false
