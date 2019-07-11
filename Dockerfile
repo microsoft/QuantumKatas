@@ -92,3 +92,7 @@ RUN jupyter nbconvert Superposition/Superposition.ipynb --execute --stdout --to 
 
 RUN dotnet build Teleportation
 RUN jupyter nbconvert Teleportation/Teleportation.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
+RUN dotnet build tutorials/DeutschJozsaAlgorithm
+RUN jupyter nbconvert DeutschJozsaAlgorithm/DeutschJozsaAlgorithmTutorial.ipynb --execute --stdout --to markdown  --allow-errors  --ExecutePreprocessor.timeout=120
+
