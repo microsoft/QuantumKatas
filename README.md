@@ -34,7 +34,7 @@ Each kata is a separate project which includes:
 
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
-  discusses the classical solution to the Deutsch–Jozsa problem and introduces Deutsch and Deutsch–Jozsa algorithms.
+  discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
 
 ## List of Katas <a name="kata-topics" /> ##
 
@@ -85,7 +85,7 @@ Currently covered topics are:
 
 ## Running the Katas and tutorials as Jupyter Notebooks <a name="run-as-notebook" /> ##
 
-The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and tutorials and instructions on running them online.
+The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata and tutorial Notebooks and for instructions on running them online.
 
 
 ## Running the Katas locally <a name="kata-locally" /> ##
