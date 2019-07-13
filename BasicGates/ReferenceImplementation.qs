@@ -78,7 +78,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
     operation PhaseChange_Reference (alpha : Double, q : Qubit) : Unit is Adj {
-        Rz(alpha, q);
+        R1(alpha, q);
     }
 
 
