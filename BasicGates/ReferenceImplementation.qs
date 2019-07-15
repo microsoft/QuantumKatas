@@ -22,7 +22,7 @@ namespace Quantum.Kata.BasicGates {
     // Example:
     //     If the qubit is in state |0⟩, change its state to |1⟩.
     //     If the qubit is in state |1⟩, change its state to |0⟩.
-    operation StateFlip_Reference (q : Qubit) : Unit is Adj {
+    operation StateFlip_Reference (q : Qubit) : Unit is Adj+Ctl {
         X(q);
     }
 
@@ -34,7 +34,7 @@ namespace Quantum.Kata.BasicGates {
     //     If the qubit is in state |1⟩, change its state to |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
     //     If the qubit is in superposition, change its state according to the effect on basis vectors.
     // Note: |+⟩ and |-⟩ form a different basis for single-qubit states, called X basis.
-    operation BasisChange_Reference (q : Qubit) : Unit is Adj {
+    operation BasisChange_Reference (q : Qubit) : Unit is Adj+Ctl {
         H(q);
     }
 
@@ -42,7 +42,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.3. Sign flip: |+⟩ to |-⟩ and vice versa.
     // Inputs: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal: Change the qubit state to α |0⟩ - β |1⟩ (flip the sign of |1⟩ component of the superposition).
-    operation SignFlip_Reference (q : Qubit) : Unit is Adj {
+    operation SignFlip_Reference (q : Qubit) : Unit is Adj+Ctl {
         Z(q);
     }
 
@@ -55,7 +55,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, change its state to cos(alpha)*|0⟩ + sin(alpha)*|1⟩.
     //        If the qubit is in state |1⟩, change its state to -sin(alpha)*|0⟩ + cos(alpha)*|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation AmplitudeChange_Reference (alpha : Double, q : Qubit) : Unit is Adj {
+    operation AmplitudeChange_Reference (alpha : Double, q : Qubit) : Unit is Adj+Ctl {
         Ry(2.0 * alpha, q);
     }
 
@@ -63,9 +63,9 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.5. Phase flip
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the qubit state to α |0⟩ + iβ |1⟩ (flip the phase of |1⟩ component of the superposition).
-    operation PhaseFlip_Reference (q : Qubit) : Unit is Adj {
+    operation PhaseFlip_Reference (q : Qubit) : Unit is Adj+Ctl {
         S(q);
-        // alternatively Rz(0.5 * PI(), q);
+        // alternatively R1(0.5 * PI(), q);
     }
 
 
@@ -77,7 +77,7 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |0⟩, don't change its state.
     //        If the qubit is in state |1⟩, change its state to exp(i*alpha)|1⟩.
     //        If the qubit is in superposition, change its state according to the effect on basis vectors.
-    operation PhaseChange_Reference (alpha : Double, q : Qubit) : Unit is Adj {
+    operation PhaseChange_Reference (alpha : Double, q : Qubit) : Unit is Adj+Ctl {
         R1(alpha, q);
     }
 
@@ -85,7 +85,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.7. Bell state change - 1
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
-    operation BellStateChange1_Reference (qs : Qubit[]) : Unit is Adj {
+    operation BellStateChange1_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
         Z(qs[0]);
         // alternatively Z(qs[1]);
     }
@@ -94,7 +94,7 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.8. Bell state change - 2
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
-    operation BellStateChange2_Reference (qs : Qubit[]) : Unit is Adj {
+    operation BellStateChange2_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
         X(qs[0]);
         // alternatively X(qs[1]);
     }
@@ -103,8 +103,10 @@ namespace Quantum.Kata.BasicGates {
     // Task 1.9. Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
-    operation BellStateChange3_Reference (qs : Qubit[]) : Unit is Adj {
-        Y(qs[0]);
+    operation BellStateChange3_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
+        X(qs[0]);
+        Z(qs[0]);
+        // note that this is not equivalent to Y(qs[0]), since Y gate adds an extra global phase
     }
 
 
