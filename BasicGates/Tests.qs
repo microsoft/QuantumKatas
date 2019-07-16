@@ -16,9 +16,19 @@ namespace Quantum.Kata.BasicGates {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Diagnostics;
     
-    
+    //////////////////////////////////////////////////////////////////
+    // Part I. Single-Qubit Gates
+    //////////////////////////////////////////////////////////////////
+
+    // The tests in part I are written to test controlled versions of operations instead of plain ones.
+    // This is done to verify that the tasks don't add a global phase to the implementations.
+    // Global phase is not relevant physically, but it can be very confusing for a beginner to consider R1 vs Rz,
+    // so the tests use controlled version of the operations which converts the global phase into a relative phase
+    // and makes it possible to detect.
+
     // ------------------------------------------------------
-    // helper wrapper to represent operation on one qubit as an operation on an array of qubits
+    // Helper wrapper to represent controlled variant of operation on one qubit 
+    // as an operation on an array of two qubits
     operation ArrayWrapperOperation (op : (Qubit => Unit is Adj+Ctl), qs : Qubit[]) : Unit is Adj+Ctl {
         Controlled op([qs[0]], qs[1]);
     }

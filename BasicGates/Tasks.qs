@@ -32,6 +32,12 @@ namespace Quantum.Kata.BasicGates {
     // Part I. Single-Qubit Gates
     //////////////////////////////////////////////////////////////////
 
+    // Note that all operations in this section have `is Adj+Ctl` in their signature.
+    // This means that they should be implemented in a way that allows Q# 
+    // to compute their adjoint and controlled variants automatically.
+    // Since each task is solved using only intrinsic gates, you should not need to put any special effort in this.
+
+
     // Task 1.1. State flip: |0⟩ to |1⟩ and vice versa
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the state of the qubit to α |1⟩ + β |0⟩.
@@ -40,10 +46,6 @@ namespace Quantum.Kata.BasicGates {
     //        If the qubit is in state |1⟩, change its state to |0⟩.
     // Note that this operation is self-adjoint: applying it for a second time
     // returns the qubit to the original state.
-    //
-    // `is Adj+Ctl` at the end of the operation signature means that Q# will compute 
-    // the operation that returns the qubit to the original state 
-    // and the controlled version of the operation automatically.
     operation StateFlip (q : Qubit) : Unit is Adj+Ctl {
         // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.
         // Type X(q);
