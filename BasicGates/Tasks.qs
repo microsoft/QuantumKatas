@@ -54,6 +54,7 @@ namespace Quantum.Kata.BasicGates {
         // ...
     }
 
+
     // Task 1.2. Basis change: |0⟩ to |+⟩ and |1⟩ to |-⟩ (and vice versa)
     // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
     // Goal:  Change the state of the qubit as follows:
