@@ -32,29 +32,38 @@ namespace Quantum.Kata.Superposition {
     
     
     // ------------------------------------------------------
+    operation ArrayWrapperOperation (op : (Qubit => Unit), qs : Qubit[]) : Unit {
+        op(qs[0]);
+    }
+
+    operation ArrayWrapperOperationA (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit is Adj {
+        op(qs[0]);
+    }
+
+
     operation T01_PlusState_Test () : Unit {
-        AssertEqualOnZeroState(1, PlusState, PlusState_Reference);
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(PlusState, _), ArrayWrapperOperationA(PlusState_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T02_MinusState_Test () : Unit {
-        AssertEqualOnZeroState(1, MinusState, MinusState_Reference);
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(MinusState, _), ArrayWrapperOperationA(MinusState_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T03_UnequalSuperposition_Test () : Unit {
         // cross-test
-        AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.0), ApplyToEachA(I, _));
-        AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.5 * PI()), ApplyToEachA(X, _));
-        AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.5 * PI()), ApplyToEachA(Y, _));
-        AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.25 * PI()), PlusState_Reference);
-        AssertEqualOnZeroState(1, UnequalSuperposition(_, 0.75 * PI()), MinusState_Reference);
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.0), _), ApplyToEachA(I, _));
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(X, _));
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(Y, _));
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.25 * PI()), _), ArrayWrapperOperationA(PlusState_Reference, _));
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.75 * PI()), _), ArrayWrapperOperationA(MinusState_Reference, _));
         
         for (i in 1 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-            AssertEqualOnZeroState(1, UnequalSuperposition(_, alpha), UnequalSuperposition_Reference(_, alpha));
+            AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, alpha), _), ArrayWrapperOperationA(UnequalSuperposition_Reference(_, alpha), _));
         }
     }
     
@@ -90,7 +99,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     operation T08_GHZ_State_Test () : Unit {
         // for N = 1 it's just |+⟩
-        AssertEqualOnZeroState(1, GHZ_State, PlusState_Reference);
+        AssertEqualOnZeroState(1, GHZ_State, ArrayWrapperOperationA(PlusState_Reference, _));
         
         // for N = 2 it's Bell state
         AssertEqualOnZeroState(2, GHZ_State, BellState_Reference);
@@ -104,7 +113,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     operation T09_AllBasisVectorsSuperposition_Test () : Unit {
         // for N = 1 it's just |+⟩
-        AssertEqualOnZeroState(1, AllBasisVectorsSuperposition, PlusState_Reference);
+        AssertEqualOnZeroState(1, AllBasisVectorsSuperposition, ArrayWrapperOperationA(PlusState_Reference, _));
         
         for (n in 2 .. 9) {
             AssertEqualOnZeroState(n, AllBasisVectorsSuperposition, AllBasisVectorsSuperposition_Reference);
@@ -121,7 +130,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     operation T11_ZeroAndBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
-        AssertEqualOnZeroState(1, ZeroAndBitstringSuperposition(_, [true]), PlusState_Reference);
+        AssertEqualOnZeroState(1, ZeroAndBitstringSuperposition(_, [true]), ArrayWrapperOperationA(PlusState_Reference, _));
         AssertEqualOnZeroState(2, ZeroAndBitstringSuperposition(_, [true, true]), BellState_Reference);
         AssertEqualOnZeroState(3, ZeroAndBitstringSuperposition(_, [true, true, true]), GHZ_State_Reference);
         
@@ -139,7 +148,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     operation T12_TwoBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
-        AssertEqualOnZeroState(1, TwoBitstringSuperposition(_, [true], [false]), PlusState_Reference);
+        AssertEqualOnZeroState(1, TwoBitstringSuperposition(_, [true], [false]), ArrayWrapperOperationA(PlusState_Reference, _));
         AssertEqualOnZeroState(2, TwoBitstringSuperposition(_, [false, false], [true, true]), BellState_Reference);
         AssertEqualOnZeroState(3, TwoBitstringSuperposition(_, [true, true, true], [false, false, false]), GHZ_State_Reference);
         

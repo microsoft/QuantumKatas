@@ -29,12 +29,11 @@ namespace Quantum.Kata.Superposition {
     // The tasks are given in approximate order of increasing difficulty; harder ones are marked with asterisks.
     
     // Task 1. Plus state
-    // Input: a qubit in |0⟩ state (stored in an array of length 1).
-    // Goal: create a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
-    operation PlusState (qs : Qubit[]) : Unit {
+    // Input: a qubit in the |0⟩ state.
+    // Goal: prepare a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
+    operation PlusState (q : Qubit) : Unit {
         // Hadamard gate H will convert |0⟩ state to |+⟩ state.
-        // The first qubit of the array can be accessed as qs[0].
-        // Type the following: H(qs[0]);
+        // Type the following: H(q);
         // Then rebuild the project and rerun the tests - T01_PlusState_Test should now pass!
 
         // ...
@@ -42,9 +41,9 @@ namespace Quantum.Kata.Superposition {
     
     
     // Task 2. Minus state
-    // Input: a qubit in |0⟩ state (stored in an array of length 1).
-    // Goal: create a |-⟩ state on this qubit (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
-    operation MinusState (qs : Qubit[]) : Unit {
+    // Input: a qubit in the |0⟩ state.
+    // Goal: prepare a |-⟩ state on this qubit (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
+    operation MinusState (q : Qubit) : Unit {
         // In this task, as well as in all subsequent ones, you have to come up with the solution yourself.
             
         // ...
@@ -53,10 +52,10 @@ namespace Quantum.Kata.Superposition {
     
     // Task 3*. Unequal superposition
     // Inputs:
-    //      1) a qubit in |0⟩ state (stored in an array of length 1).
-    //      2) angle alpha, in radians, represented as Double
-    // Goal: create a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
-    operation UnequalSuperposition (qs : Qubit[], alpha : Double) : Unit {
+    //      1) a qubit in the |0⟩ state.
+    //      2) angle alpha, in radians, represented as Double.
+    // Goal: prepare a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
+    operation UnequalSuperposition (q : Qubit, alpha : Double) : Unit {
         // Hint: Experiment with rotation gates from the Microsoft.Quantum.Intrinsic namespace.
         // Note that all rotation operators rotate the state by _half_ of its angle argument.
 
