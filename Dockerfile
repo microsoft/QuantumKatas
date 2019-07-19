@@ -1,5 +1,5 @@
 # The same image used by mybinder.org
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.8.1906.2007-beta
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.8.1907.1701
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
