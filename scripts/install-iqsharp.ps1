@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 # Install iqsharp if not installed yet.
 dotnet iqsharp --version
 If ($LastExitCode -ne 0) {
-    dotnet tool install Microsoft.Quantum.IQSharp --version 0.7.1905.3109 --tool-path $Env:TOOLS_DIR
+    dotnet tool install Microsoft.Quantum.IQSharp --version 0.8.1907.1701 --tool-path $Env:TOOLS_DIR
 
     $path = (Get-Item "$Env:TOOLS_DIR\dotnet-iqsharp*").FullName
     Write-Host "iq# installed at $path"
