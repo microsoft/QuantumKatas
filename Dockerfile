@@ -19,6 +19,7 @@ RUN ${HOME}/scripts/prebuild-kata.sh BasicGates
 RUN ${HOME}/scripts/prebuild-kata.sh CHSHGame
 RUN ${HOME}/scripts/prebuild-kata.sh DeutschJozsaAlgorithm
 RUN ${HOME}/scripts/prebuild-kata.sh GHZGame
+RUN ${HOME}/scripts/prebuild-kata.sh GraphColoring
 RUN ${HOME}/scripts/prebuild-kata.sh GroversAlgorithm
 RUN ${HOME}/scripts/prebuild-kata.sh JointMeasurements
 RUN ${HOME}/scripts/prebuild-kata.sh MagicSquareGame
