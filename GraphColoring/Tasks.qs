@@ -77,14 +77,14 @@ namespace Quantum.Kata.GraphColoring {
     //       where f(x) = 1 if c₀ and c₁ are in the same state, and 0 otherwise.
     //       Leave the query register in the same state it started in.
     // In this task you are allowed to allocate extra qubits.
-    operation ColorEqualityOracle_2bit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj {
+    operation ColorEqualityOracle_2bit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
 
     // Task 1.5. N-bit color equality oracle (no extra qubits)
-    // This task is the same as task 1.3, but in this task you are NOT allowed to allocate extra qubits.
-    operation ColorEqualityOracle_Nbit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj {
+    // This task is the same as task 1.4, but in this task you are NOT allowed to allocate extra qubits.
+    operation ColorEqualityOracle_Nbit (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -128,7 +128,7 @@ namespace Quantum.Kata.GraphColoring {
     //      4) A qubit in an arbitrary state |y⟩ (target qubit).
     //
     // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
-    //       where f(x) = 1 the given vertex coloring is valid and 0 otherwise.
+    //       where f(x) = 1 if the given vertex coloring is valid and 0 otherwise.
     //       Leave the query register in the same state it started in.
     //
     // Each color in colorsRegister is represented as a 2-bit integer in little-endian format.
