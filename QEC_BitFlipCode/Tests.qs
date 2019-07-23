@@ -17,6 +17,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Bitwise;
     
+    open Quantum.Kata.Utils;
     
     //////////////////////////////////////////////////////////////////////////
     // Task 01
@@ -91,6 +92,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         using (register = Qubit[3]) {
             // prepare basis state to test on
             statePrep(register);
+
+            ResetOracleCallsCount();
+
             let res = MeasureParity(register);
             
             // check that the returned parity is correct
@@ -99,6 +103,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             // check that the state has not been modified
             Adjoint statePrep(register);
             AssertAllZero(register);
+
+            let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+            AssertBoolEqual(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
         }
     }
     
