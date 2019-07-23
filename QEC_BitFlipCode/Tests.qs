@@ -98,14 +98,14 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             let res = MeasureParity(register);
             
             // check that the returned parity is correct
-            EqualityFactB(res == Zero, parity == 0, $"Failed on {stateStr}.");
+            Fact((res == Zero) == (parity == 0), $"Failed on {stateStr}.");
             
             // check that the state has not been modified
             Adjoint statePrep(register);
             AssertAllZero(register);
 
             let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
-            AssertBoolEqual(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
+            Fact(nm <= 1, $"You are allowed to do at most one measurement, and you did {nm}");
         }
     }
     
