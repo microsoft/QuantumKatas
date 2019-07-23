@@ -29,4 +29,5 @@ RUN ${HOME}/scripts/prebuild-kata.sh SolveSATWithGrover
 RUN ${HOME}/scripts/prebuild-kata.sh SuperdenseCoding
 RUN ${HOME}/scripts/prebuild-kata.sh Superposition
 RUN ${HOME}/scripts/prebuild-kata.sh Teleportation
+RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
