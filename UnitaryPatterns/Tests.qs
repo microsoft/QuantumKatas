@@ -14,6 +14,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
+    open Quantum.Kata.Utils;
     
     
     // ------------------------------------------------------
