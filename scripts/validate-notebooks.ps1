@@ -50,6 +50,7 @@ $not_ready =
     'CHSHGame.ipynb',
     'DeutschJozsaAlgorithm.ipynb',
     'GHZGame.ipynb',
+    'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb'
 )
