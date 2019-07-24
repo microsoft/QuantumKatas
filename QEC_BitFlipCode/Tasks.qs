@@ -36,7 +36,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //         Zero for parity 0 and One for parity 1.
     //         The parity of basis state |x₀x₁x₂⟩ is defined as (x₀ ⊕ x₁ ⊕ x₂).
     // After applying the operation the state of the qubits should not change.
-    // You can use exactly one call to Measure.
+    // You can use exactly one measurement.
     // 
     // Example:
     // |000⟩, |101⟩ and |011⟩ all have parity 0, while |010⟩ and |111⟩ have parity 1.
