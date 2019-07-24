@@ -175,9 +175,24 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+    // ------------------------------------------------------
+    // Task 11*. Hardy State
+    // Input: 2 qubits in |00⟩ state
+    // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11⟩) / sqrt(12) on these qubits.
+    operation Hardy_State_Reference (qs : Qubit[]) : Unit is Adj {
+        // Follow Mariia's answer at https://quantumcomputing.stackexchange.com/questions/6836/how-to-create-quantum-circuits-from-scratch
+
+        // Rotate first qubit to (Sqrt(10.0/12.0) |0⟩ + Sqrt(2.0/12.0) |1⟩)
+        let theta = ArcCos(Sqrt(10.0/12.0));
+        Ry(2.0 * theta, qs[0]);
+
+        (ControlledOnInt(0, Ry))([qs[0]], (2.0 * ArcCos(3.0/Sqrt(10.0)) , qs[1]));
+        (ControlledOnInt(1, Ry))([qs[0]], (2.0 * PI()/4.0 , qs[1]));
+    }
+
 
     // ------------------------------------------------------
-    // Task 11. Superposition of |0...0⟩ and given bit string
+    // Task 12. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -204,7 +219,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 12. Superposition of two bit strings
+    // Task 13. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -255,7 +270,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 13*. Superposition of four bit strings
+    // Task 14*. Superposition of four bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) four bit string represented as Bool[][] bits
@@ -294,7 +309,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 14. W state on 2ᵏ qubits
+    // Task 15. W state on 2ᵏ qubits
     // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -329,7 +344,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 15**. W state on arbitrary number of qubits
+    // Task 16**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -428,20 +443,5 @@ namespace Quantum.Kata.Superposition {
                 }
             }
         }
-    }
-
-    // ------------------------------------------------------
-    // Task 16**. Hardy State
-    // Input: 2 qubits in |00⟩ state
-    // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11>) / sqrt(12) on these qubits.
-    operation Hardy_State_Reference (qs : Qubit[]) : Unit is Adj {
-        // Follow Mariia's answer at https://quantumcomputing.stackexchange.com/questions/6836/how-to-create-quantum-circuits-from-scratch
-
-        // Rotate first qubit to (Sqrt(10.0/12.0) |0⟩ + Sqrt(2.0/12.0) |1⟩)
-        let theta = ArcCos(Sqrt(10.0/12.0));
-        Ry(2.0 * theta, qs[0]);
-
-        (ControlledOnInt(0, Ry))([qs[0]], (2.0 * ArcCos(3.0/Sqrt(10.0)) , qs[1]));
-        (ControlledOnInt(1, Ry))([qs[0]], (2.0 * PI()/4.0 , qs[1]));
     }
 }
