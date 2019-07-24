@@ -21,20 +21,32 @@ namespace Microsoft.Quantum.Katas
         private Dictionary<ICallable, int> _operationsCount = new Dictionary<ICallable, int>();
         private long _qubitsAllocated = 0;
         private long _maxQubitsAllocated = 0;
+        private long _multiQubitOperations = 0;
 
-        #region Counting operations
         /// <param name="throwOnReleasingQubitsNotInZeroState">If set to true, the exception is thrown when trying to release qubits not in zero state.</param>
         /// <param name="randomNumberGeneratorSeed">Seed for the random number generator used by a simulator for measurement outcomes and Primitives.Random operation.</param>
         /// <param name="disableBorrowing">If true, Borrowing qubits will be disabled, and a new qubit will be allocated instead every time borrowing is requested. Performance may improve.</param>
+        /// <param name="countOperations">If true, simulator will count all operation calls (tracked per operation)</param>
+        /// <param name="countMultiQubitOperations">If true, simulator will count multi-qubit operation calls (tracked )</param>
         public CounterSimulator(
             bool throwOnReleasingQubitsNotInZeroState = true, 
             uint? randomNumberGeneratorSeed = null, 
-            bool disableBorrowing = false) : 
+            bool disableBorrowing = false,
+            bool countOperations = true,
+            bool countMultiQubitOperations = true) : 
             base(throwOnReleasingQubitsNotInZeroState, randomNumberGeneratorSeed, disableBorrowing)
         {
-            this.OnOperationStart += CountOperationCalls;
+            if (countOperations)
+            {
+                this.OnOperationStart += CountOperationCalls;
+            }
+            if (countMultiQubitOperations) 
+            {
+                this.OnOperationStart += CountMultiQubitOperations;
+            }
         }
 
+        #region Counting operations
         /// <summary>
         /// Callback method for the OnOperationStart event.
         /// </summary>
@@ -190,6 +202,61 @@ namespace Microsoft.Quantum.Katas
             public override Func<QVoid, long> Body => (__in) =>
             {
                 return _sim._maxQubitsAllocated;
+            };
+        }
+        #endregion
+
+        #region Count multi-qubit operations (except Measure)
+        public void CountMultiQubitOperations(ICallable op, IApplyData data)
+        {
+            int nQubits = 0;
+            using (IEnumerator<Qubit> enumerator = data?.Qubits?.GetEnumerator()) {
+                if (enumerator is null) {
+                    // the operation doesn't have qubit parameters
+                    return;
+                }
+                while (enumerator.MoveNext() && nQubits < 2)
+                    nQubits++;
+            }
+            if (nQubits >= 2) {
+                _multiQubitOperations++;
+            }
+        }
+
+        /// <summary>
+        /// Custom operation to reset the numbers of multi-qubit operations.
+        /// </summary>
+        public class ResetMultiQubitOpCountImpl : ResetMultiQubitOpCount
+        {
+            CounterSimulator _sim;
+
+            public ResetMultiQubitOpCountImpl(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
+
+            public override Func<QVoid, QVoid> Body => (__in) =>
+            {
+                _sim._multiQubitOperations = 0;
+                return QVoid.Instance;
+            };
+        }
+
+        /// <summary>
+        /// Custom operation to get the number of multi-qubit operations.
+        /// </summary>
+        public class GetMultiQubitOpCountImpl : GetMultiQubitOpCount
+        {
+            CounterSimulator _sim;
+
+            public GetMultiQubitOpCountImpl(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
+
+            public override Func<QVoid, long> Body => (__in) =>
+            {
+                return _sim._multiQubitOperations;
             };
         }
         #endregion
