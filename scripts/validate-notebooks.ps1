@@ -31,7 +31,7 @@ function validate {
 
     #  convert %kata to %check_kata. run Jupyter nbconvert to execute the kata.
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
-    jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120
+    jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=300
 
     # if jupyter returns an error code, report that this notebook is invalid:
     if ($LastExitCode -ne 0) {
@@ -48,9 +48,7 @@ $not_ready =
 @(
     'Check.ipynb',
     'CHSHGame.ipynb',
-    'DeutschJozsaAlgorithm.ipynb',
     'GHZGame.ipynb',
-    'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb'
 )
