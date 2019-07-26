@@ -47,7 +47,7 @@ We're always happy to discuss new ideas and to offer advice, be it on the test h
 
 Each kata is a sequence of tasks on the topic progressing from very simple to quite challenging. If you have an idea for a task which fits nicely in the sequence, filling a gap between other tasks or expanding the sequence with harder tasks, bring it forward!
 
-Note that most of the katas have a Jupyter notebook front-end, so if you are modifying a task or adding a new one in the Q# project, you have to update the Jupyter notebook for this kata as well.
+Note that most of the katas have a Jupyter Notebook front-end, so if you are modifying a task or adding a new one in the Q# project, you have to update the Jupyter Notebook for this kata as well.
 
 You are also welcome to browse through the list of issues labeled as ["help wanted"](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and pick up any of them to work on it.
 
@@ -66,7 +66,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Testing the Katas
 
-You can use Jupyter notebook front-end of the kata you're working on to validate the kata (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project.
+You can use Jupyter Notebook front-end of the kata you're working on to validate the kata (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project.
 
 To validate the kata, use the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script. 
 For example, to validate BasicGates kata run the following command from the root directory of the QuantumKatas project:

@@ -275,7 +275,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Hint: you will need to use partial application to test oracles such as Oracle_Kth_Qubit and Oracle_ProductFunction;
         // see task 2.3 for a description of how to do that.
 
-        // Hint: use Fact function to assert that the return value of DJ_Algorithm operation matches the expected value
+        // Hint: use the Fact function to assert that the return value of DJ_Algorithm operation matches the expected value
 
         // DJ_Test appears in the list of unit tests for the solution; run it to verify your code.
 
