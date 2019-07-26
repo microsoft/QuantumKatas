@@ -14,6 +14,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Convert;
     
     
     //////////////////////////////////////////////////////////////////
@@ -255,7 +256,7 @@ namespace Quantum.Kata.GroversAlgorithm {
                 oracle(register, output);
                 if (MResetZ(output) == One) {
                     set correct = true;
-                    set answer = BoolArrFromResultArr(res);
+                    set answer = ResultArrayAsBoolArray(res);
                 }
                 ResetAll(register);
             } until (correct or iter > 100)  // the fail-safe to avoid going into an infinite loop
