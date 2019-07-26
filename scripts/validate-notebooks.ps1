@@ -50,7 +50,7 @@ function Validate {
 
     #  convert %kata to %check_kata. run Jupyter nbconvert to execute the kata.
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
-    jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=300
+    jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120
 
     # if jupyter returns an error code, report that this notebook is invalid:
     if ($LastExitCode -ne 0) {
@@ -66,12 +66,13 @@ function Validate {
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * CHSH and MagicSquare games require implementing two code cells at once before running the test, 
 #    so the first of the cells implemented is guaranteed to fail.
-#  * SolveSATWithGrover has a task for which even a correct solution fails or times out with high probability.
+#  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
 # 
 $not_ready = 
 @(
     'Check.ipynb',
     'CHSHGame.ipynb',
+    'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb'
 )
