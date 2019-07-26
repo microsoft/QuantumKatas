@@ -108,7 +108,8 @@
 
 			// Hide Jupyter Notebooks artifacts.
 			"**/*.ipynb": true,
-			"**/.ipynb_checkpoints": true
+			"**/.ipynb_checkpoints": true,
+			"**/Check.html": true
 		}
 	}
 }
