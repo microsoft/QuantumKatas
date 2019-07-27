@@ -69,7 +69,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 You can use Jupyter Notebook front-end of the kata you're working on to validate the kata (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project.
 
 To validate the kata, use the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script. 
-For example, to validate BasicGates kata run the following command from PowerShell prompt from the root directory of the QuantumKatas project:
+For example, to validate BasicGates kata run the following command from the PowerShell prompt from the root directory of the QuantumKatas project:
 
 ```powershell
    PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
