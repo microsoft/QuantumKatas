@@ -8,11 +8,11 @@ We're so glad you asked!
 
 * [Improving Documentation](#improving-documentation)
 
-* [Contributing New Tasks](#contributing-new-tasks)
-   * [Contributing New Tasks to the Existing Katas](#contributing-new-tasks-to-the-existing-katas)
+* [Contributing Code](#contributing-code)
+   * [Improving Existing Katas](#improving-existing-katas)
    * [Contributing New Katas](#contributing-new-katas)
-
-* [Style Guide](#style-guide)
+   * [Testing the Katas](#testing-the-katas)
+   * [Style Guide](#style-guide)
 
 * [Contributor License Agreement](#contributor-license-agreement)
 
@@ -43,9 +43,11 @@ This will also ensure that you're not working on the same thing as somebody else
 
 We're always happy to discuss new ideas and to offer advice, be it on the test harness implementation or on the best breakdown of a topic into tasks.
 
-#### Contributing New Tasks to the Existing Katas
+#### Improving Existing Katas
 
 Each kata is a sequence of tasks on the topic progressing from very simple to quite challenging. If you have an idea for a task which fits nicely in the sequence, filling a gap between other tasks or expanding the sequence with harder tasks, bring it forward!
+
+Note that most of the katas have a Jupyter Notebook front-end, so if you are modifying a task or adding a new one in the Q# project, you have to update the Jupyter Notebook for this kata as well.
 
 You are also welcome to browse through the list of issues labeled as ["help wanted"](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and pick up any of them to work on it.
 
@@ -61,6 +63,20 @@ This list is by no means complete or final; we will expand it as new topics come
 If you want to create a kata for some topic, start by checking the roadmap to see whether there is anybody already working on it (duplicating work is not fun). 
 If somebody is already working on this topic, you can try to find them (using the repository issues) and coordinate with them.
 If the topic you want is not claimed, or is not on the list, go ahead and let us know you'll be working on it by creating an issue.
+
+### Testing the Katas
+
+You can use Jupyter Notebook front-end of the kata you're working on to validate the kata (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project.
+
+To validate the kata, use the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script. 
+For example, to validate BasicGates kata run the following command from the PowerShell prompt from the root directory of the QuantumKatas project:
+
+```powershell
+   PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
+```
+
+To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/jupyter) 
+and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
 
 ### Style Guide
 
