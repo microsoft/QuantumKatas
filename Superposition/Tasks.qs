@@ -2,32 +2,32 @@
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.Superposition {
-
+    
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
 
-
+    
     //////////////////////////////////////////////////////////////////
     // Welcome!
     //////////////////////////////////////////////////////////////////
-
+    
     // "Superposition" quantum kata is a series of exercises designed
     // to get you familiar with programming in Q#.
     // It covers the following topics:
     //  - basic single-qubit and multi-qubit gates,
     //  - superposition,
     //  - flow control and recursion in Q#.
-
+    
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
     // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
     // with some Q# code to make the failing test pass.
-
+    
     // The tasks are given in approximate order of increasing difficulty; harder ones are marked with asterisks.
-
+    
     // Task 1. Plus state
     // Input: a qubit in the |0⟩ state.
     // Goal: prepare a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
@@ -38,18 +38,18 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 2. Minus state
     // Input: a qubit in the |0⟩ state.
     // Goal: prepare a |-⟩ state on this qubit (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
     operation MinusState (q : Qubit) : Unit {
         // In this task, as well as in all subsequent ones, you have to come up with the solution yourself.
-
+            
         // ...
     }
-
-
+    
+    
     // Task 3*. Unequal superposition
     // Inputs:
     //      1) a qubit in the |0⟩ state.
@@ -61,8 +61,8 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 4. Superposition of all basis vectors on two qubits
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal:  create the following state on these qubits: (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
@@ -73,8 +73,8 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 5. Superposition of basis vectors with phases
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal:  create the following state on these qubits: (|00⟩ + i*|01⟩ - |10⟩ - i*|11⟩) / 2.
@@ -86,16 +86,16 @@ namespace Quantum.Kata.Superposition {
         // Hint: Is this state separable?
         // ...
     }
-
-
+    
+    
     // Task 6. Bell state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
     operation BellState (qs : Qubit[]) : Unit {
         // ...
     }
-
-
+    
+    
     // Task 7. All Bell states
     // Inputs:
     //      1) two qubits in |00⟩ state (stored in an array of length 2)
@@ -108,8 +108,8 @@ namespace Quantum.Kata.Superposition {
     operation AllBellStates (qs : Qubit[], index : Int) : Unit {
         // ...
     }
-
-
+    
+    
     // Task 8. Greenberger–Horne–Zeilinger state
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
@@ -118,8 +118,8 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 9. Superposition of all basis vectors
     // Input: N qubits in |0...0⟩ state.
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
@@ -127,22 +127,29 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectorsSuperposition (qs : Qubit[]) : Unit {
         // ...
     }
+    
+    
+	// Task 10. Superposition of all even numbers
+    // Input: N qubits in |0...0⟩ state.
+	// Goal: create a superposition of all even numbers on n qubits
+	operation EvenNumbersSuperposition (qs : Qubit[]) : Unit is Adj {
+		// ...
+		mutable n = Length(qs);
+		for (i in 0 .. (n-2)) {
+			H(qs[i]);
+		}
+	}
 
 
-    // Task 10. |00⟩ + |01⟩ + |10⟩ state
+    // Task 11. |00⟩ + |01⟩ + |10⟩ state
     // Input: 2 qubits in |00⟩ state.
     // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
     operation ThreeStates_TwoQubits (qs : Qubit[]) : Unit {
         // ...
     }
 
-    // Task 11*. Hardy State
-    // Input: 2 qubits in |00⟩ state
-    // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11⟩) / sqrt(12) on these qubits.
-    operation Hardy_State (qs : Qubit[]) : Unit {
-        // ...
-    }
-
+    
+    
     // Task 12. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
@@ -160,8 +167,8 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 13. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
@@ -176,8 +183,8 @@ namespace Quantum.Kata.Superposition {
     operation TwoBitstringSuperposition (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Unit {
         // ...
     }
-
-
+    
+    
     // Task 14*. Superposition of four bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
@@ -192,11 +199,11 @@ namespace Quantum.Kata.Superposition {
     //          the state you need to prepare is (|010⟩ + |100⟩ + |001⟩ + |110⟩) / 2.
     operation FourBitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         // Hint: remember that you can allocate extra qubits.
-
+        
         // ...
     }
-
-
+    
+    
     // Task 15**. W state on 2ᵏ qubits
     // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
@@ -207,8 +214,8 @@ namespace Quantum.Kata.Superposition {
 
         // ...
     }
-
-
+    
+    
     // Task 16**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
