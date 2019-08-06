@@ -131,7 +131,7 @@ namespace Quantum.Kata.Superposition {
     
 	// Task 10. Superposition of all even numbers
     // Input: N qubits in |0...0⟩ state.
-	// Goal: create a superposition of all even numbers on n qubits
+	// Goal: create a superposition of all even numbers on N qubits.
 	operation EvenNumbersSuperposition (qs : Qubit[]) : Unit is Adj {
 		// ...
 	}
