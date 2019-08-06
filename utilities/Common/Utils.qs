@@ -34,9 +34,4 @@ namespace Quantum.Kata.Utils {
     /// # Summary
     /// Returns the number of multi-qubit operations used by the simulator.
     operation GetMultiQubitOpCount () : Int { body intrinsic; }
-
-    /// # Summary
-    /// Resets the variable that tracks the number of multi-qubit operations
-    /// used by the simulator.
-    operation ResetMultiQubitOpCount () : Unit { body intrinsic; }
 }
