@@ -122,18 +122,26 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T10_ThreeStates_TwoQubits_Test () : Unit {
+    operation T10_EvenNumbersSuperpostion_Test () : Unit {
+        for (n in 1 .. 9) {
+            AssertEqualOnZeroState(n, EvenNumbersSuperposition, EvenNumbersSuperposition_Reference);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T11_ThreeStates_TwoQubits_Test () : Unit {
         AssertEqualOnZeroState(2, ThreeStates_TwoQubits, ThreeStates_TwoQubits_Reference);
     }
 
     
     // ------------------------------------------------------
-    operation T11_Hardy_State_Test () : Unit {
+    operation T12_Hardy_State_Test () : Unit {
         AssertEqualOnZeroState(2, Hardy_State, Hardy_State_Reference);
     }
 
     // ------------------------------------------------------
-    operation T12_ZeroAndBitstringSuperposition_Test () : Unit {
+    operation T13_ZeroAndBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
         AssertEqualOnZeroState(1, ZeroAndBitstringSuperposition(_, [true]), ArrayWrapperOperationA(PlusState_Reference, _));
         AssertEqualOnZeroState(2, ZeroAndBitstringSuperposition(_, [true, true]), BellState_Reference);
@@ -151,7 +159,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T13_TwoBitstringSuperposition_Test () : Unit {
+    operation T14_TwoBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
         AssertEqualOnZeroState(1, TwoBitstringSuperposition(_, [true], [false]), ArrayWrapperOperationA(PlusState_Reference, _));
         AssertEqualOnZeroState(2, TwoBitstringSuperposition(_, [false, false], [true, true]), BellState_Reference);
@@ -180,7 +188,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T14_FourBitstringSuperposition_Test () : Unit {
+    operation T15_FourBitstringSuperposition_Test () : Unit {
 
         // cross-tests
         mutable bits = [[false, false], [false, true], [true, false], [true, true]];
@@ -218,7 +226,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T15_WState_PowerOfTwo_Test () : Unit {
+    operation T16_WState_PowerOfTwo_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         using (qs = Qubit[1]) {
             WState_PowerOfTwo(qs);
@@ -234,7 +242,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T16_WState_Arbitrary_Test () : Unit {
+    operation T17_WState_Arbitrary_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         using (qs = Qubit[1]) {
             WState_Arbitrary_Reference(qs);
