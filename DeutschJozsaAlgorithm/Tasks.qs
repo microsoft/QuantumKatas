@@ -272,10 +272,10 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: use your implementation of Deutsch-Jozsa algorithm from task 3.1 to test
     // each of the oracles you've implemented in part I for being constant or balanced.
     operation DJ_Test () : Unit {
-        // Hint: you will need to use partial application to test ones such as Oracle_Kth_Qubit and Oracle_ProductFunction;
+        // Hint: you will need to use partial application to test oracles such as Oracle_Kth_Qubit and Oracle_ProductFunction;
         // see task 2.3 for a description of how to do that.
 
-        // Hint: use EqualityFactB function to assert that the return value of DJ_Algorithm operation matches the expected value
+        // Hint: use the Fact function to assert that the return value of DJ_Algorithm operation matches the expected value
 
         // DJ_Test appears in the list of unit tests for the solution; run it to verify your code.
 
