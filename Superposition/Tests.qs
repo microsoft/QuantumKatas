@@ -261,5 +261,4 @@ namespace Quantum.Kata.Superposition {
             AssertEqualOnZeroState(i, WState_Arbitrary, WState_Arbitrary_Reference);
         }
     }
-
 }
