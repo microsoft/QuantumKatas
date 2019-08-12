@@ -122,7 +122,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T10_EvenNumbersSuperpostion_Test () : Unit {
+    operation T10_EvenNumbersSuperposition_Test () : Unit {
         for (n in 1 .. 9) {
             AssertEqualOnZeroState(n, EvenNumbersSuperposition, EvenNumbersSuperposition_Reference);
         }
