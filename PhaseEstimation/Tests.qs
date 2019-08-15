@@ -12,6 +12,7 @@ namespace Quantum.Kata.PhaseEstimation {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
+    open Quantum.Kata.Utils;
     
     
     //////////////////////////////////////////////////////////////////
