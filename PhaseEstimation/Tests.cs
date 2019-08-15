@@ -11,6 +11,7 @@ using Microsoft.Quantum.Intrinsic;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 using Quantum.Kata.PhaseEstimation;
+open Quantum.Kata.Utils;
 using System.Diagnostics;
 using Xunit;
 
