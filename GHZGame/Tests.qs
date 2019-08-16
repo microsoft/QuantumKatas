@@ -127,7 +127,9 @@ namespace Quantum.Kata.GHZGame {
     operation T23_PlayQuantumGHZ_Test () : Unit {
         for (i in 0..1000) {
             let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
-            let strategies = [QuantumStrategy(rst[0], _), QuantumStrategy(rst[1], _), QuantumStrategy(rst[2], _)];
+            let strategies = [QuantumStrategy_Reference(rst[0], _), 
+                              QuantumStrategy_Reference(rst[1], _), 
+                              QuantumStrategy_Reference(rst[2], _)];
             let abc = PlayQuantumGHZ(strategies);
             EqualityFactB(WinCondition_Reference(rst, abc), true,
                             $"Quantum strategy lost: for rst={rst} the players returned abc={abc}");

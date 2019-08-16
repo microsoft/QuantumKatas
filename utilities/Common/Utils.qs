@@ -20,6 +20,7 @@ namespace Quantum.Kata.Utils {
     /// is executed back to 0.
     operation ResetOracleCallsCount () : Unit { body intrinsic; }
 
+
     /// # Summary
     /// Returns the max number of qubits allocated at any given point by the simulator.
     operation GetMaxQubitCount () : Int { body intrinsic; }
@@ -28,4 +29,9 @@ namespace Quantum.Kata.Utils {
     /// Resets the variable that tracks the max number of qubits
     /// allocated at any given point by the simulator.
     operation ResetQubitCount () : Unit { body intrinsic; }
+
+
+    /// # Summary
+    /// Returns the number of multi-qubit operations used by the simulator.
+    operation GetMultiQubitOpCount () : Int { body intrinsic; }
 }

@@ -51,8 +51,7 @@ namespace Quantum.Kata.GHZGame {
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1. Entangled triple
-    operation CreateEntangledTriple_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation CreateEntangledTriple_Reference (qs : Qubit[]) : Unit is Adj {
         X(qs[0]);
         X(qs[1]);
 
