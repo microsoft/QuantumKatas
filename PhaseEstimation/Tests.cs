@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////
 
 using Microsoft.Quantum.Intrinsic;
-using Microsoft.Quantum.Katas
+using Microsoft.Quantum.Katas;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 using Quantum.Kata.PhaseEstimation;
