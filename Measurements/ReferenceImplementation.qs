@@ -15,6 +15,8 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Arrays;
 
 
     //////////////////////////////////////////////////////////////////
@@ -129,77 +131,58 @@ namespace Quantum.Kata.Measurements {
     // Inputs:
     //      1) N qubits in |0...0⟩ state which are guaranteed to be
     //         in one of the two superposition states described by the given bit strings.
-    //      2) two arrays of bit string represented as bit strings containing Bool[]s.
-    // Output: 0 if qubits were in the basis state described by the first superpoition bit string,
-    //         1 if they were in the basis state described by the second superpoition bit string.
+    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
+    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
+    //         1 if they were in the basis state(s) described by the second superposition bit string.
     // Bit values false and true correspond to |0⟩ and |1⟩ states.
     // The state of the qubits at the end of the operation does not matter.
-    // You are guaranteed that the both bit strings have the same length as the qubit array,
-    // and that the bit strings will differ in at least one bit.
+    // You are guaranteed that both the arrays of bit strings will have the same length
+    // of either 1, 2 or 4.
+    // You are also guaranteed that each bitstring within each array has the same length.
+    // All bit strings, between both arrays, will differ in at least one bit.
     // You can use exactly one measurement.
-    // Example: for bit strings [false, true, false] and [false, false, true]
-    //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
+    // Example: for bit string arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
+    //          return 0 corresponds to state |010⟩ or |001⟩, and return 1 corresponds to state |111⟩ or |011⟩.
 
-    function FindFirstDiff_SuperPostion_Reference (superpositionArray : Bool[][], startIndex: Int) : Int {
-        mutable numOnes = 0;
+    function CheckSuperposition_Reference (superpositionArray : Bool[][], res : Bool, i : Int) : Int {
+        mutable superposition = superpositionArray;
+        mutable L = Length(superposition);
+        mutable j = 0;
+        mutable noMatch = 0;
 
-        for(i in startIndex .. Length(superpositionArray[0]) - 1)
-        {
-            for (bitString in superpositionArray)
-            {
-                if(bitString[i])
-                {
-                    set numOnes += 1;
-                }
+        while (j < L) {
+            if (superposition[j][i] != res) {
+                set superposition = Exclude([j],superposition);
+                set L -= 1;
+                set j -= 1;
+                set noMatch += 1;
             }
-
-            if (numOnes != 0 or numOnes != Length(superpositionArray[0]) - 1)
-            {
-                return i;
-            }
+            set j += 1;
         }
 
-        return -1;
+        return noMatch;
     }
 
-    function FindFirstDiff_BothSuperPostion_Reference (superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
-        mutable numOnes = 0;
+    operation SuperpositionMeasurement_Reference (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
+        mutable noMatch1 = 0;
+        mutable noMatch2 = 0;
 
-        for(i in 0 .. Length(superposition1Array[0]) - 1)
-        {
-            for (bitString in superposition1Array)
-            {
-                if(bitString[i])
-                {
-                    set numOnes += 1;
-                }
-            }
-
-            for (bitString in superposition2Array)
-            {
-                if(bitString[i])
-                {
-                    set numOnes += 1;
-                }
-            }
-
-            if (numOnes != 0 or numOnes != (Length(superposition1Array) - 1 + Length(superposition2Array) - 1))
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    operation TwoBitstringsMeasurement_Superposition_Reference (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
-        mutable numOnes = 0;
-        let firstDiff = FindFirstDiff_BothSuperPostion_Reference(superposition1Array, superposition2Array);
         // iterate through qubits measuring and comparing with bitstrings
-        for (i in firstDiff .. Length(superposition1Array[0]) - 1) {
-            let res = M (q);
+        for (i in 0 .. Length(superposition1Array[0]) - 1) {
+            let res = ResultAsBool(M (qs[i]));
+
+            set noMatch1 = CheckSuperposition(superposition1Array, res, i);
+            if (noMatch1 == Length(superposition1Array)) {
+                return 1;
+            }
+
+            set noMatch2 = CheckSuperposition(superposition2Array, res, i);
+            if (noMatch2 == Length(superposition2Array)) {
+                return 0;
+            }
 
         }
+        return -1;
     }
 
     // Task 1.9. |0...0⟩ state or W state ?

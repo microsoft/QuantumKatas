@@ -238,6 +238,106 @@ namespace Quantum.Kata.Measurements {
 
 
     // ------------------------------------------------------
+    operation StatePrep_FindFirstDiff (bits1 : Bool[], bits2 : Bool[]) : Int {
+        mutable firstDiff = -1;
+        for (i in 0 .. Length(bits1) - 1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
+                set firstDiff = i;
+            }
+        }
+        return firstDiff;
+    }
+
+
+    operation StatePrep_CreateSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
+        let L = Length(bits);
+
+        if (L == 1) {
+            if (bits[0][0]) {
+                X(qs[0]);
+            }
+        }
+        if (L == 2) {
+            // find the index of the first bit at which the bit strings are different
+            let firstDiff = StatePrep_FindFirstDiff(bits[0], bits[1]);
+
+            // Hadamard corresponding qubit to create superposition
+            H(qs[firstDiff]);
+
+            // iterate through the bit strings again setting the final state of qubits
+            for (i in 0 .. Length(qs) - 1) {
+                if (bits[0][i] == bits[1][i]) {
+                    // if two bits are the same apply X or nothing
+                    if (bits[0][i]) {
+                        X(qs[i]);
+                    }
+                } else {
+                    // if two bits are different, set their difference using CNOT
+                    if (i > firstDiff) {
+                        CNOT(qs[firstDiff], qs[i]);
+                        if (bits[0][i] != bits[1][firstDiff]) {
+                            X(qs[i]);
+                        }
+                    }
+                }
+            }
+        }
+        if (L == 4) {
+            let N = Length(qs);
+
+            using (anc = Qubit[2]) {
+                // Put two ancillas into equal superposition of 2-qubit basis states
+                ApplyToEachA(H, anc);
+
+                // Set up the right pattern on the main qubits with control on ancillas
+                for (i in 0 .. 3) {
+                    for (j in 0 .. N - 1) {
+                        if ((bits[i])[j]) {
+                            (ControlledOnInt(i, X))(anc, qs[j]);
+                        }
+                    }
+                }
+
+                // Uncompute the ancillas, using patterns on main qubits as control
+                for (i in 0 .. 3) {
+                    if (i % 2 == 1) {
+                        (ControlledOnBitString(bits[i], X))(qs, anc[0]);
+                    }
+                    if (i / 2 == 1) {
+                        (ControlledOnBitString(bits[i], X))(qs, anc[1]);
+                    }
+                }
+            }
+        }
+    }
+
+
+    operation StatePrep_CreateSuperpositionMeasurement (qs : Qubit[], b1 : Bool[][], b2 : Bool[][], state : Int) : Unit {
+        let bits = state == 0 ? b1 | b2;
+        StatePrep_CreateSuperposition(qs, bits);
+    }
+
+
+    operation CheckSuperpositionBitstringsMeasurement (b1 : Bool[][], b2 : Bool[][]): Unit {
+        DistinguishStates_MultiQubit(Length(b1[0]), 2, StatePrep_CreateSuperpositionMeasurement(_, b1, b2, _), SuperpositionMeasurement(_, b1, b2), 0);
+    }
+
+
+    operation T108_SuperpositionMeasurement_Test () : Unit {
+        CheckSuperpositionBitstringsMeasurement([[true,false]],
+                                                [[false,true]]);
+        CheckSuperpositionBitstringsMeasurement([[true,false],[true,true]],
+                                                [[false,true],[false,false]]);
+        CheckSuperpositionBitstringsMeasurement([[true,true,true,true],[false,true,true,true]],
+                                                [[false,false,false,false],[true,false,false,false]]);
+        CheckSuperpositionBitstringsMeasurement([[true,true,true,true],[false,true,true,true],[false,true,false,true],[false,false,true,true]],
+                                                [[false,false,false,false],[true,false,false,false],[true,false,true,false],[true,true,false,false]]);
+        CheckSuperpositionBitstringsMeasurement([[true,true,true,true,false],[false,true,true,true,false],[false,true,false,true,false],[false,false,true,true,false]],
+                                                [[false,false,false,false,true],[true,false,false,false,true],[true,false,true,false,true],[true,true,false,false,true]]);
+    }
+
+
+    // ------------------------------------------------------
     operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit
     is Adj + Ctl {
         let N = Length(qs);
@@ -265,10 +365,6 @@ namespace Quantum.Kata.Measurements {
             // prep W state
             WState_Arbitrary_Reference(qs);
         }
-    }
-
-    operation T108_TwoSuperpositionBitstringsMeasurement_Test () : Unit {
-
     }
 
     operation T109_AllZerosOrWState_Test () : Unit {

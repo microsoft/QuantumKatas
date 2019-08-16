@@ -7,6 +7,7 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Arrays;
 
 
     //////////////////////////////////////////////////////////////////
@@ -127,26 +128,64 @@ namespace Quantum.Kata.Measurements {
         return -1;
     }
 
-    // Task 1.8. Distinguish two superpositions of basis states given by bit strings
+// Task 1.8. Distinguish two superposition states given by two arrays of bit strings
     // Inputs:
-    //      1) N qubits (stored in an array) which are guaranteed to be
-    //         in one of the two basis states described by the given bit strings.
-    //      2) two bit string represented as Bool[]s.
-    // Output: 0 if the qubits were in the basis state described by the first bit string,
-    //         1 if they were in the basis state described by the second bit string.
+    //      1) N qubits in |0...0⟩ state which are guaranteed to be
+    //         in one of the two superposition states described by the given bit strings.
+    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
+    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
+    //         1 if they were in the basis state(s) described by the second superposition bit string.
     // Bit values false and true correspond to |0⟩ and |1⟩ states.
     // The state of the qubits at the end of the operation does not matter.
-    // You are guaranteed that both bit strings have the same length as the qubit array,
-    // and that the bit strings differ in at least one bit.
+    // You are guaranteed that both the arrays of bit strings will have the same length
+    // of either 1, 2 or 4.
+    // You are also guaranteed that each bitstring within each array has the same length.
+    // All bit strings, between both arrays, will differ in at least one bit.
     // You can use exactly one measurement.
-    // Example: for bit strings [false, true, false] and [false, false, true]
-    //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
-    operation TwoSuperpositionBitstringsMeasurement (qs : Qubit[], bits1sup1 : Bool[], bits2sup1 : Bool[], bits1sup2 : Bool[], bits2sup2 : Bool[]) : Int {
-        // ...
+    // Example: for bit string arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
+    //          return 0 corresponds to state |010⟩ or |001⟩, and return 1 corresponds to state |111⟩ or |011⟩.
+    function CheckSuperposition (superpositionArray : Bool[][], res : Bool, i : Int) : Int {
+        mutable superposition = superpositionArray;
+        mutable L = Length(superposition);
+        mutable j = 0;
+        mutable noMatch = 0;
+
+        while (j < L) {
+            if (superposition[j][i] != res) {
+                set superposition = Exclude([j],superposition);
+                set L -= 1;
+                set j -= 1;
+                set noMatch += 1;
+            }
+            set j += 1;
+        }
+
+        return noMatch;
+    }
+
+    operation SuperpositionMeasurement (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
+        mutable noMatch1 = 0;
+        mutable noMatch2 = 0;
+
+        // iterate through qubits measuring and comparing with bitstrings
+        for (i in 0 .. Length(superposition1Array[0]) - 1) {
+            let res = ResultAsBool(M (qs[i]));
+
+            set noMatch1 = CheckSuperposition(superposition1Array, res, i);
+            if (noMatch1 == Length(superposition1Array)) {
+                return 1;
+            }
+
+            set noMatch2 = CheckSuperposition(superposition2Array, res, i);
+            if (noMatch2 == Length(superposition2Array)) {
+                return 0;
+            }
+
+        }
         return -1;
     }
 
-    // Task 1.8. |0...0⟩ state or W state ?
+    // Task 1.9. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
     //        either in the |0...0⟩ state
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -159,7 +198,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.9. GHZ state or W state ?
+    // Task 1.10. GHZ state or W state ?
     // Input: N >= 2 qubits (stored in an array) which are guaranteed to be
     //        either in the GHZ state (https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -172,7 +211,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.10. Distinguish four Bell states
+    // Task 1.11. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
     //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
     //         |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
@@ -191,7 +230,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.11. Distinguish four orthogonal 2-qubit states
+    // Task 1.12. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -208,7 +247,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.12*. Distinguish four orthogonal 2-qubit states, part two
+    // Task 1.13*. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
@@ -225,7 +264,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.13**. Distinguish two orthogonal states on three qubits
+    // Task 1.14**. Distinguish two orthogonal states on three qubits
     // Input: Three qubits (stored in an array) which are guaranteed to be in either one of the
     //        following two states:
     //        1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ ),
