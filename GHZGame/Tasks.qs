@@ -118,8 +118,6 @@ namespace Quantum.Kata.GHZGame {
     //        their quantum strategies and given their respective qubits from the entangled triple. 
     //        The players have already been told what their starting bits (r, s and t) are.
     // Goal:  Return an array of players' output bits (a, b and c).
-    //
-    // Note that this task uses QuantumStrategy which you've implemented in task 2.2.
     operation PlayQuantumGHZ (strategies : (Qubit => Bool)[]) : Bool[] {
         // ...
         fail "Task 2.3 not implemented yet";

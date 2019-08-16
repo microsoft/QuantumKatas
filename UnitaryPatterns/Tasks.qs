@@ -76,7 +76,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Task 3. Block diagonal matrix
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
-    //       which has 2x2 blocks of non-zero elements on the main diagonal and zero elements everywhere else.
+    //       which has 2⨯2 blocks of non-zero elements on the main diagonal and zero elements everywhere else.
     // Example: For N = 3, the matrix of the transformation should look as follows:
     //          XX......
     //          XX......
@@ -106,7 +106,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     //          ....XXXX
     //          ....XXXX
     operation Quarters (qs : Qubit[]) : Unit {
-        // Hint: represent this matrix as a tensor product of a 2x2 diagonal matrix and a larger matrix with all non-zero elements.
+        // Hint: represent this matrix as a tensor product of a 2⨯2 diagonal matrix and a larger matrix with all non-zero elements.
 
         // ...
     }
@@ -156,10 +156,10 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
 
 
-    // Task 8. 2x2 chessboard pattern
+    // Task 8. 2⨯2 chessboard pattern
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
-    //       in which zero and non-zero elements form a chessboard pattern with 2x2 squares,
+    //       in which zero and non-zero elements form a chessboard pattern with 2⨯2 squares,
     //       with the top left square occupied by non-zero elements.
     // Example: For N = 3, the matrix of the transformation should look as follows:
     //          XX..XX..
@@ -254,15 +254,15 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
 
 
-    // Task 13. TIE fighter
-    // Input: N qubits in an arbitrary state (2 <= N <= 5).
+    // Task 13*. TIE fighter
+    // Input: N qubits in an arbitrary state (2 ≤ N ≤ 5).
     // Goal: Implement a unitary transformation on N qubits that is represented by a matrix
     //       with non-zero elements in the following positions:
-    //        - the central 2x2 sub-matrix;
-    //        - the diagonals of the top right and bottom left sub-matrices of size 2^(N-1)-1
-    //          that do not overlap with the central 2x2 sub-matrix;
-    //        - the anti-diagonals of the top left and bottom right sub-matrices of size 2^(N-1)-1
-    //          that do not overlap with the central 2x2 sub-matrix.
+    //        - the central 2⨯2 sub-matrix;
+    //        - the diagonals of the top right and bottom left sub-matrices of size 2ᴺ⁻¹-1
+    //          that do not overlap with the central 2⨯2 sub-matrix;
+    //        - the anti-diagonals of the top left and bottom right sub-matrices of size 2ᴺ⁻¹-1
+    //          that do not overlap with the central 2⨯2 sub-matrix.
     // Example: For N = 3, the matrix should look as follows:
     // ..X..X..
     // .X....X.
@@ -277,7 +277,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 14. Creeper
+    // Task 14**. Creeper
     // Input: 3 qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on 3 qubits which is represented by a matrix
     //       with non-zero elements in the following pattern: 
@@ -294,8 +294,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Task 15. Hessenberg matrices  
-    // Input: N qubits in an arbitrary state (2 <= N <= 4).
+    // Task 15**. Hessenberg matrices  
+    // Input: N qubits in an arbitrary state (2 ≤ N ≤ 4).
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix 
     //       with non-zero elements forming an upper diagonal matrix plus the first subdiagonal. 
     //       This is called a 'Hessenberg matrix' https://en.wikipedia.org/wiki/Hessenberg_matrix.

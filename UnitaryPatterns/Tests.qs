@@ -14,6 +14,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
+    open Quantum.Kata.Utils;
     
     
     // ------------------------------------------------------
@@ -299,14 +300,4 @@ namespace Quantum.Kata.UnitaryPatterns {
             AssertOperationMatrixMatchesPattern(n, Hessenberg_Matrix, Hessenberg_Matrix_Pattern);
         }
     }
-
-
-    // ------------------------------------------------------
-    function GetOracleCallsCount<'T> (oracle : 'T) : Int { return 0; }
-    
-    function ResetOracleCallsCount () : Unit { }
-
-    function GetMaxQubitCount () : Int { return 0; }
-    
-    function ResetQubitCount () : Unit { }
 }
