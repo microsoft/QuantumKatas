@@ -144,44 +144,8 @@ namespace Quantum.Kata.Measurements {
     // You can use exactly one measurement.
     // Example: for bit string arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
     //          return 0 corresponds to state |010⟩ or |001⟩, and return 1 corresponds to state |111⟩ or |011⟩.
-    function CheckSuperposition (superpositionArray : Bool[][], res : Bool, i : Int) : Int {
-        mutable superposition = superpositionArray;
-        mutable L = Length(superposition);
-        mutable j = 0;
-        mutable noMatch = 0;
-
-        while (j < L) {
-            if (superposition[j][i] != res) {
-                set superposition = Exclude([j],superposition);
-                set L -= 1;
-                set j -= 1;
-                set noMatch += 1;
-            }
-            set j += 1;
-        }
-
-        return noMatch;
-    }
-
     operation SuperpositionMeasurement (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
-        mutable noMatch1 = 0;
-        mutable noMatch2 = 0;
-
-        // iterate through qubits measuring and comparing with bitstrings
-        for (i in 0 .. Length(superposition1Array[0]) - 1) {
-            let res = ResultAsBool(M (qs[i]));
-
-            set noMatch1 = CheckSuperposition(superposition1Array, res, i);
-            if (noMatch1 == Length(superposition1Array)) {
-                return 1;
-            }
-
-            set noMatch2 = CheckSuperposition(superposition2Array, res, i);
-            if (noMatch2 == Length(superposition2Array)) {
-                return 0;
-            }
-
-        }
+        // ...
         return -1;
     }
 
