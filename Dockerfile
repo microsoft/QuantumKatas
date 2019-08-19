@@ -24,6 +24,7 @@ RUN ${HOME}/scripts/prebuild-kata.sh GroversAlgorithm
 RUN ${HOME}/scripts/prebuild-kata.sh JointMeasurements
 RUN ${HOME}/scripts/prebuild-kata.sh MagicSquareGame
 RUN ${HOME}/scripts/prebuild-kata.sh Measurements
+RUN ${HOME}/scripts/prebuild-kata.sh PhaseEstimation
 RUN ${HOME}/scripts/prebuild-kata.sh QEC_BitFlipCode
 RUN ${HOME}/scripts/prebuild-kata.sh SolveSATWithGrover
 RUN ${HOME}/scripts/prebuild-kata.sh SuperdenseCoding
