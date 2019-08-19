@@ -129,13 +129,19 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 10. Superposition of all even and odd numbers
+    // Task 10. Superposition of all even or all odd numbers
     // Inputs:
     //      1) N qubits in |0...0⟩ state.
-    //      2) A boolean IsEven
-    // Goal: create a superposition of all even numbers on N qubits if IsEven is true,
-    // and a superposition of all odd numbers on N qubits if IsEven is false.
-    operation EvenOddNumbersSuperposition (qs : Qubit[], IsEven : Bool) : Unit {
+    //      2) A boolean isEven.
+    // Goal: create a superposition of all even numbers on N qubits if isEven is true,
+    //       or a superposition of all odd numbers on N qubits if isEven is false.
+    // 
+    // A basis state encodes an integer number using big-endian binary notation: 
+    // state |01⟩ corresponds to the integer 1, and state |10⟩ - to the integer 2. 
+    //
+    // Example: for N = 2 and isEven = true the required state is (|00⟩ + |10⟩) / sqrt(2), 
+    //      and for N = 2 and isEven = false - (|01⟩ + |11⟩) / sqrt(2).
+    operation EvenOddNumbersSuperposition (qs : Qubit[], isEven : Bool) : Unit {
         // ...
     }
 
