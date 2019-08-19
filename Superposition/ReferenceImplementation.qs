@@ -19,6 +19,7 @@ namespace Quantum.Kata.Superposition {
     open Microsoft.Quantum.Math;
 
 
+    // ------------------------------------------------------
     // Task 1. Plus state
     // Input: a qubit in the |0⟩ state.
     // Goal: prepare a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
@@ -27,6 +28,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 2. Minus state
     // Input: a qubit in the |0⟩ state.
     // Goal: prepare a |-⟩ state on this qubit (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
@@ -36,6 +38,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 3. Unequal superposition
     // Inputs:
     //      1) a qubit in the |0⟩ state.
@@ -48,6 +51,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 4. Superposition of all basis vectors on two qubits
     operation AllBasisVectors_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
 
@@ -59,6 +63,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 5. Superposition of basis vectors with phases
     operation AllBasisVectorsWithPhases_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
 
@@ -83,6 +88,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 6. Bell state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: create a Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) on these qubits.
@@ -92,6 +98,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 7. All Bell states
     // Inputs:
     //      1) two qubits in |00⟩ state (stored in an array of length 2)
@@ -117,6 +124,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 8. Greenberger–Horne–Zeilinger state
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
@@ -130,6 +138,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // ------------------------------------------------------
     // Task 9. Superposition of all basis vectors
     // Input: N qubits in |0...0⟩ state.
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
@@ -142,13 +151,20 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 10. Superposition of all even numbers
-    // Input: N qubits in |0...0⟩ state.
-    // Goal: create a superposition of all even numbers on N qubits.
-    operation EvenNumbersSuperposition_Reference (qs : Qubit[]) : Unit is Adj {
+    // ------------------------------------------------------
+    // Task 10. Superposition of all even and odd numbers
+    // Inputs:
+    //      1) N qubits in |0...0⟩ state.
+    //      2) A boolean IsEven
+    // Goal: create a superposition of all even numbers on N qubits if IsEven is true,
+    // and a superposition of all odd numbers on N qubits if IsEven is false.
+    operation EvenOddNumbersSuperposition_Reference (qs : Qubit[], IsEven : Bool) : Unit is Adj {
         mutable n = Length(qs);
         for (i in 0 .. (n-2)) {
             H(qs[i]);
+        }
+        if (IsEven == false) {
+            X(qs[n-1]);
         }
     }
 
