@@ -128,7 +128,26 @@ namespace Quantum.Kata.Measurements {
         return -1;
     }
 
-// Task 1.8. Distinguish two superposition states given by two arrays of bit strings
+    // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
+    // Inputs:
+    //      1) N qubits in |0...0⟩ state which are guaranteed to be
+    //         in one of the two superposition states described by the given bit strings.
+    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
+    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
+    //         1 if they were in the basis state(s) described by the second superposition bit string.
+    // Bit values false and true correspond to |0⟩ and |1⟩ states.
+    // The state of the qubits at the end of the operation does not matter.
+    // You are guaranteed a single bit may be measured between both arrays that will definitvely distinguish
+    // the correct super position. In the example below, this is the second bit.
+    // You can use exactly one measurement.
+    // Example: for bit string arrays [[false, true, false], [false, true, true]] and [[true, false, true], [false, false, true]]
+    //          return 0 corresponds to state |010⟩ or |011⟩, and return 1 corresponds to state |101⟩ or |001⟩.
+    operation SuperpositionOneMeasurement (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
+        // ...
+        return -1;
+    }
+
+    // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state which are guaranteed to be
     //         in one of the two superposition states described by the given bit strings.
@@ -149,7 +168,7 @@ namespace Quantum.Kata.Measurements {
         return -1;
     }
 
-    // Task 1.9. |0...0⟩ state or W state ?
+    // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
     //        either in the |0...0⟩ state
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -162,7 +181,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.10. GHZ state or W state ?
+    // Task 1.11. GHZ state or W state ?
     // Input: N >= 2 qubits (stored in an array) which are guaranteed to be
     //        either in the GHZ state (https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -175,7 +194,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.11. Distinguish four Bell states
+    // Task 1.12. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
     //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
     //         |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
@@ -194,7 +213,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.12. Distinguish four orthogonal 2-qubit states
+    // Task 1.13. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -211,7 +230,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.13*. Distinguish four orthogonal 2-qubit states, part two
+    // Task 1.14*. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
@@ -228,7 +247,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    // Task 1.14**. Distinguish two orthogonal states on three qubits
+    // Task 1.15**. Distinguish two orthogonal states on three qubits
     // Input: Three qubits (stored in an array) which are guaranteed to be in either one of the
     //        following two states:
     //        1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ ),

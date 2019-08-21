@@ -253,8 +253,10 @@ namespace Quantum.Kata.Measurements {
         let L = Length(bits);
 
         if (L == 1) {
-            if (bits[0][0]) {
-                X(qs[0]);
+            for (i in 0 .. Length(qs) - 1) {
+                if (bits[0][i]) {
+                    X(qs[i]);
+                }
             }
         }
         if (L == 2) {
@@ -275,7 +277,7 @@ namespace Quantum.Kata.Measurements {
                     // if two bits are different, set their difference using CNOT
                     if (i > firstDiff) {
                         CNOT(qs[firstDiff], qs[i]);
-                        if (bits[0][i] != bits[1][firstDiff]) {
+                        if (bits[0][i] != bits[0][firstDiff]) {
                             X(qs[i]);
                         }
                     }
@@ -318,22 +320,80 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation CheckSuperpositionBitstringsMeasurement (b1 : Bool[][], b2 : Bool[][]): Unit {
-        DistinguishStates_MultiQubit(Length(b1[0]), 2, StatePrep_CreateSuperpositionMeasurement(_, b1, b2, _), SuperpositionMeasurement(_, b1, b2), 0);
+    operation CheckSuperpositionBitstringsOneMeasurement (Nqubits : Int, b1 : Int[], b2 : Int[]): Unit {
+        mutable barray1 = new Bool[][Length(b1)];
+        mutable barray2 = new Bool[][Length(b2)];
+
+        for (i in 0 .. Length(b1) - 1) {
+            set barray1 w/= i <- IntAsBoolArray(b1[i], Nqubits);
+        }
+
+        for (i in 0 .. Length(b2) - 1) {
+            set barray2 w/= i <- IntAsBoolArray(b2[i], Nqubits);
+        }
+
+        DistinguishStates_MultiQubit(Nqubits, 2, StatePrep_CreateSuperpositionMeasurement(_, barray1, barray2, _), SuperpositionOneMeasurement(_, barray1, barray2), 1);
     }
 
 
-    operation T108_SuperpositionMeasurement_Test () : Unit {
-        CheckSuperpositionBitstringsMeasurement([[true,false]],
-                                                [[false,true]]);
-        CheckSuperpositionBitstringsMeasurement([[true,false],[true,true]],
-                                                [[false,true],[false,false]]);
-        CheckSuperpositionBitstringsMeasurement([[true,true,true,true],[false,true,true,true]],
-                                                [[false,false,false,false],[true,false,false,false]]);
-        CheckSuperpositionBitstringsMeasurement([[true,true,true,true],[false,true,true,true],[false,true,false,true],[false,false,true,true]],
-                                                [[false,false,false,false],[true,false,false,false],[true,false,true,false],[true,true,false,false]]);
-        CheckSuperpositionBitstringsMeasurement([[true,true,true,true,false],[false,true,true,true,false],[false,true,false,true,false],[false,false,true,true,false]],
-                                                [[false,false,false,false,true],[true,false,false,false,true],[true,false,true,false,true],[true,true,false,false,true]]);
+    operation T108_SuperpositionOneMeasurement_Test () : Unit {
+        CheckSuperpositionBitstringsOneMeasurement(2, [2],  // [10]
+                                                      [1]); // [01]
+
+        CheckSuperpositionBitstringsOneMeasurement(2, [2,3],    // [10,11]
+                                                      [1,0]);   // [01,00]
+
+        CheckSuperpositionBitstringsOneMeasurement(2, [2],    // [10]
+                                                      [1,0]); // [01,00]
+
+        CheckSuperpositionBitstringsOneMeasurement(4, [15,7],    // [1111,0111]
+                                                      [0,8]);    // [0000,1000]
+
+        CheckSuperpositionBitstringsOneMeasurement(4, [15,7],       // [1111,0111]
+                                                      [0,8,10,12]); // [0000,1000,1010,1100]
+
+        CheckSuperpositionBitstringsOneMeasurement(5, [30,14,10,6],     // [11110,01110,01010,00110]
+                                                      [1,17,21,25]);    // [00001,10001,10101,11001]
+    }
+
+    // ------------------------------------------------------
+    operation CheckSuperpositionBitstringsMeasurement (Nqubits : Int, b1 : Int[], b2 : Int[]): Unit {
+        mutable barray1 = new Bool[][Length(b1)];
+        mutable barray2 = new Bool[][Length(b2)];
+
+        for (i in 0 .. Length(b1) - 1) {
+            set barray1 w/= i <- IntAsBoolArray(b1[i], Nqubits);
+        }
+
+        Message($"barray1: {barray1}");
+
+        for (i in 0 .. Length(b2) - 1) {
+            set barray2 w/= i <- IntAsBoolArray(b2[i], Nqubits);
+        }
+
+        Message($"barray2: {barray2}");
+
+        DistinguishStates_MultiQubit(Nqubits, 2, StatePrep_CreateSuperpositionMeasurement(_, barray1, barray2, _), SuperpositionMeasurement(_, barray1, barray2), 0);
+    }
+
+    operation T109_SuperpositionMeasurement_Test () : Unit {
+        CheckSuperpositionBitstringsMeasurement(2, [2],  // [10]
+                                                   [1]); // [01]
+
+        CheckSuperpositionBitstringsMeasurement(2, [2,1],  // [10,01]
+                                                   [3,0]); // [11,00]
+
+        CheckSuperpositionBitstringsMeasurement(2, [2],    // [10]
+                                                   [3,0]); // [11,00]
+
+        CheckSuperpositionBitstringsMeasurement(4, [15,6], // [1111,0110]
+                                                   [0,14]); // [0000,1110]
+
+        CheckSuperpositionBitstringsMeasurement(4, [15,7],       // [1111,0111]
+                                                   [0,8,10,13]); // [0000,1000,1010,1101]
+
+        CheckSuperpositionBitstringsMeasurement(5, [30,14,10,6],  // [11110,01110,01010,00110]
+                                                   [1,17,21,27]); // [00001,10001,10101,11011]
     }
 
 
@@ -367,7 +427,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    operation T109_AllZerosOrWState_Test () : Unit {
+    operation T110_AllZerosOrWState_Test () : Unit {
 
         for (i in 2 .. 6) {
             DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState, 0);
@@ -398,7 +458,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation T110_GHZOrWState_Test () : Unit {
+    operation T111_GHZOrWState_Test () : Unit {
         for (i in 2 .. 6) {
             DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState, 0);
         }
@@ -425,7 +485,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation T111_BellState_Test () : Unit {
+    operation T112_BellState_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState, 0);
     }
 
@@ -443,7 +503,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation T112_TwoQubitState_Test () : Unit {
+    operation T113_TwoQubitState_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState, 0);
     }
 
@@ -470,7 +530,7 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation T113_TwoQubitStatePartTwo_Test () : Unit {
+    operation T114_TwoQubitStatePartTwo_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo, 0);
     }
 
@@ -493,7 +553,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    operation T114_ThreeQubitMeasurement_Test () : Unit {
+    operation T115_ThreeQubitMeasurement_Test () : Unit {
         DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement, 0);
     }
 
