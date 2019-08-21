@@ -146,9 +146,6 @@ namespace Quantum.Kata.Measurements {
         mutable val1 = 0;
         mutable val2 = 0;
 
-        Message($"{superposition1}");
-        Message($"{superposition2}");
-
         for (i in 0 .. Nqubits - 1) {
             for (j in 0 .. Length(superposition1) - 1) {
                 if (superposition1[j][i]) {
@@ -160,12 +157,9 @@ namespace Quantum.Kata.Measurements {
                     set val2 += 1;
                 }
             }
-            Message($"{val1}");
-            Message($"{val2}");
             if ((val1 == Length(superposition1) and val2 == 0 ) or (val1 == 0 and val2 == Length(superposition2))) {
                 return i;
             }
-            Message($"hello1");
             set val1 = 0;
             set val2 = 0;
         }
@@ -175,7 +169,6 @@ namespace Quantum.Kata.Measurements {
 
     operation SuperpositionOneMeasurement_Reference (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
         let diff = FindFirstSuperpositionDiff_Reference(superposition1Array, superposition2Array, Length(qs));
-        Message($"{diff}");
 
         let res = ResultAsBool(M(qs[diff]));
 
