@@ -129,21 +129,40 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 10. |00⟩ + |01⟩ + |10⟩ state
+    // Task 10. Superposition of all even or all odd numbers
+    // Inputs:
+    //      1) N qubits in |0...0⟩ state.
+    //      2) A boolean isEven.
+    // Goal: create a superposition of all even numbers on N qubits if isEven is true,
+    //       or a superposition of all odd numbers on N qubits if isEven is false.
+    // 
+    // A basis state encodes an integer number using big-endian binary notation: 
+    // state |01⟩ corresponds to the integer 1, and state |10⟩ - to the integer 2. 
+    //
+    // Example: for N = 2 and isEven = true the required state is (|00⟩ + |10⟩) / sqrt(2), 
+    //      and for N = 2 and isEven = false - (|01⟩ + |11⟩) / sqrt(2).
+    operation EvenOddNumbersSuperposition (qs : Qubit[], isEven : Bool) : Unit {
+        // ...
+    }
+
+
+    // Task 11. |00⟩ + |01⟩ + |10⟩ state
     // Input: 2 qubits in |00⟩ state.
     // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
     operation ThreeStates_TwoQubits (qs : Qubit[]) : Unit {
         // ...
     }
 
-    // Task 11*. Hardy State
+
+    // Task 12*. Hardy State
     // Input: 2 qubits in |00⟩ state
     // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11⟩) / sqrt(12) on these qubits.
     operation Hardy_State (qs : Qubit[]) : Unit {
         // ...
     }
 
-    // Task 12. Superposition of |0...0⟩ and given bit string
+
+    // Task 13. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -162,7 +181,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 13. Superposition of two bit strings
+    // Task 14. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -178,7 +197,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 14*. Superposition of four bit strings
+    // Task 15*. Superposition of four bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) four bit string represented as Bool[][] bits
@@ -197,7 +216,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 15**. W state on 2ᵏ qubits
+    // Task 16**. W state on 2ᵏ qubits
     // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -209,7 +228,7 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // Task 16**. W state on arbitrary number of qubits
+    // Task 17**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
