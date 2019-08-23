@@ -131,9 +131,9 @@ namespace Quantum.Kata.Measurements {
 
     // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
     // Inputs:
-    //      1) N qubits in the |0...0⟩ state which are guaranteed to be
+    //      1) N qubits which are guaranteed to be
     //         in one of the two superposition states described by the given arrays of bit strings.
-    //      2) two arrays of bit strings represented as Bool[]s.
+    //      2) two arrays of bit strings represented as Bool[][]s.
     //         Each of the arrays has a size M ⨯ N and consists of M bit strings of length N
     //         (the first index is the index of the bit string, the second - the index of the qubit).
     //         An array of bit strings [b₁, ..., bₘ] defines a state that is
@@ -163,9 +163,9 @@ namespace Quantum.Kata.Measurements {
 
     // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
     // Inputs:
-    //      1) N qubits in the |0...0⟩ state which are guaranteed to be
+    //      1) N qubits which are guaranteed to be
     //         in one of the two superposition states described by the given arrays of bit strings.
-    //      2) two arrays of bit strings represented as Bool[]s.
+    //      2) two arrays of bit strings represented as Bool[][]s.
     //         The arrays describe the superposition states in the same way as in the previous task.
     //
     // Output: 0 if qubits were in the superposition state described by the first array,
