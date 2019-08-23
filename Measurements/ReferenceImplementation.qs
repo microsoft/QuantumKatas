@@ -127,52 +127,38 @@ namespace Quantum.Kata.Measurements {
         return res == bits1[firstDiff] ? 0 | 1;
     }
 
+
     // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
-    // Inputs:
-    //      1) N qubits in |0...0⟩ state which are guaranteed to be
-    //         in one of the two superposition states described by the given bit strings.
-    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
-    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
-    //         1 if they were in the basis state(s) described by the second superposition bit string.
-    // Bit values false and true correspond to |0⟩ and |1⟩ states.
-    // The state of the qubits at the end of the operation does not matter.
-    // You are guaranteed a single bit may be measured between both arrays that will definitvely distinguish
-    // the correct super position. In the example below, this is the second bit.
-    // You can use exactly one measurement.
-    // Example: for bit string arrays [[false, true, false], [false, true, true]] and [[true, false, true], [false, false, true]]
-    //          return 0 corresponds to state |010⟩ or |011⟩, and return 1 corresponds to state |101⟩ or |001⟩.
-
-    function FindFirstSuperpositionDiff_Reference (superposition1 : Bool[][], superposition2 : Bool[][], Nqubits : Int) : Int {
-        mutable val1 = 0;
-        mutable val2 = 0;
-
+    function FindFirstSuperpositionDiff_Reference (bits1 : Bool[][], bits2 : Bool[][], Nqubits : Int) : Int {
         for (i in 0 .. Nqubits - 1) {
-            for (j in 0 .. Length(superposition1) - 1) {
-                if (superposition1[j][i]) {
+            // count the number of 1s in i-th position in bit strings of both arrays
+            mutable val1 = 0;
+            mutable val2 = 0;
+            for (j in 0 .. Length(bits1) - 1) {
+                if (bits1[j][i]) {
                     set val1 += 1;
                 }
             }
-            for (k in 0 .. Length(superposition2) - 1) {
-                if (superposition2[k][i]) {
+            for (k in 0 .. Length(bits2) - 1) {
+                if (bits2[k][i]) {
                     set val2 += 1;
                 }
             }
-            if ((val1 == Length(superposition1) and val2 == 0 ) or (val1 == 0 and val2 == Length(superposition2))) {
+            if ((val1 == Length(bits1) and val2 == 0) or (val1 == 0 and val2 == Length(bits2))) {
                 return i;
             }
-            set val1 = 0;
-            set val2 = 0;
         }
 
         return -1;
     }
 
-    operation SuperpositionOneMeasurement_Reference (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
-        let diff = FindFirstSuperpositionDiff_Reference(superposition1Array, superposition2Array, Length(qs));
+    operation SuperpositionOneMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // find the position in which the bit strings of two arrays differ
+        let diff = FindFirstSuperpositionDiff_Reference(bits1, bits2, Length(qs));
 
         let res = ResultAsBool(M(qs[diff]));
 
-        if (res == superposition1Array[0][diff]) {
+        if (res == bits1[0][diff]) {
             return 0;
         }
         else {
@@ -180,62 +166,30 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
+
     // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
-    // Inputs:
-    //      1) N qubits in |0...0⟩ state which are guaranteed to be
-    //         in one of the two superposition states described by the given bit strings.
-    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
-    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
-    //         1 if they were in the basis state(s) described by the second superposition bit string.
-    // Bit values false and true correspond to |0⟩ and |1⟩ states.
-    // The state of the qubits at the end of the operation does not matter.
-    // All bit strings, between both arrays, will differ in at least one bit.
-    // Example: for bit string arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
-    //          return 0 corresponds to state |010⟩ or |001⟩, and return 1 corresponds to state |111⟩ or |011⟩.
 
-    // compares all bitstrings within one superposition array and returns indexes of bitstrings that don't match
-    function CheckSuperposition_Reference (superpositionArray : Bool[][], res : Bool, i : Int) : Int[] {
-        mutable noMatch = new Int[0];
-
-        for (j in 0 .. Length(superpositionArray) - 1) {
-            if (superpositionArray[j][i] != res) {
-                set noMatch += [j];
+    function AreBitstringsEqual (bits1 : Bool[], bits2 : Bool[]) : Bool {
+        for (i in 0.. Length(bits1) - 1) {
+            if (bits1[i] != bits2[i]) {
+                return false;
             }
         }
-
-        return noMatch;
+        return true;
     }
 
-    operation SuperpositionMeasurement_Reference (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
-        mutable superposition1 = superposition1Array;
-        mutable superposition2 = superposition2Array;
 
-        // iterate through qubits measuring and comparing with bitstrings
-        for (i in (Length(qs) - 1) .. -1 .. 0) {
-            let res = ResultAsBool(M (qs[i]));
-
-            let noMatch1 = CheckSuperposition_Reference(superposition1, res, i);
-
-            let noMatch2 = CheckSuperposition_Reference(superposition2, res, i);
-
-            // if the length of the no match array matches the length of the superposition array,
-            // this means that none of the bitstrings in the given superposition array have been
-            // measured in res so the other super position array is correct and returned
-            if (Length(noMatch1) == Length(superposition1)) {
-                return 1;
-            }
-            elif (Length(noMatch2) == Length(superposition2)) {
+    operation SuperpositionMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // measure all qubits and check in which array you can find the resulting bit string
+        let meas = ResultArrayAsBoolArray (MultiM(qs));
+        for (i in 0 .. Length(bits1) - 1) {
+            if (AreBitstringsEqual(bits1[i], meas)) {
                 return 0;
             }
-            // we remove the bitstrings from both arrays that don't match res
-            else {
-                set superposition1 = Exclude(noMatch1, superposition1);
-                set superposition2 = Exclude(noMatch2, superposition2);
-            }
-
         }
-        return -1;
+        return 1;
     }
+
 
     // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be

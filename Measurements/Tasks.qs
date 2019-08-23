@@ -128,45 +128,61 @@ namespace Quantum.Kata.Measurements {
         return -1;
     }
 
+
     // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
     // Inputs:
-    //      1) N qubits in |0...0⟩ state which are guaranteed to be
-    //         in one of the two superposition states described by the given bit strings.
-    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
-    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
-    //         1 if they were in the basis state(s) described by the second superposition bit string.
-    // Bit values false and true correspond to |0⟩ and |1⟩ states.
+    //      1) N qubits in the |0...0⟩ state which are guaranteed to be
+    //         in one of the two superposition states described by the given arrays of bit strings.
+    //      2) two arrays of bit strings represented as Bool[]s.
+    //         Each of the arrays has a size M ⨯ N and consists of M bit strings of length N
+    //         (the first index is the index of the bit string, the second - the index of the qubit).
+    //         An array of bit strings [b₁, ..., bₘ] defines a state that is
+    //         an equal superposition of all basis states defined by bit strings b₁, ..., bₘ.
+    //         For example, an array of bit strings [[false, true, false], [false, true, true]]
+    //         defines a superposition state (|010⟩ + |011⟩) / sqrt(2).
+    //         
+    // Output: 0 if qubits were in the superposition state described by the first array,
+    //         1 if they were in the superposition state described by the second array.
     // The state of the qubits at the end of the operation does not matter.
-    // You are guaranteed a single bit may be measured between both arrays that will definitvely distinguish
-    // the correct super position. In the example below, this is the second bit.
-    // You can use exactly one measurement.
-    // Example: for bit string arrays [[false, true, false], [false, true, true]] and [[true, false, true], [false, false, true]]
-    //          return 0 corresponds to state |010⟩ or |011⟩, and return 1 corresponds to state |101⟩ or |001⟩.
-    operation SuperpositionOneMeasurement (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
+    //
+    // You are allowed to use exactly one measurement.
+    // You are guaranteed that there exists an index of a qubit Q for which 
+    //  - all the bit strings in the first array have the same value in this position (all bits1[j][Q] are the same),
+    //  - all the bit strings in the second array have the same value in this position (all bits2[j][Q] are the same),
+    //  - these values are different for the first and the second arrays.
+    // 
+    // Example: for arrays [[false, true, false], [false, true, true]] and [[true, false, true], [false, false, true]]
+    //          return 0 corresponds to state (|010⟩ + |011⟩) / sqrt(2), 
+    //          return 1 corresponds to state (|101⟩ + |001⟩) / sqrt(2),
+    //          and you can distinguish these states perfectly by measuring the second qubit.
+    operation SuperpositionOneMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
         // ...
         return -1;
     }
 
+
     // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
     // Inputs:
-    //      1) N qubits in |0...0⟩ state which are guaranteed to be
-    //         in one of the two superposition states described by the given bit strings.
-    //      2) two arrays of bit strings represented as bit strings containing Bool[]s.
-    // Output: 0 if qubits were in the basis state(s) described by the first superposition bit string,
-    //         1 if they were in the basis state(s) described by the second superposition bit string.
-    // Bit values false and true correspond to |0⟩ and |1⟩ states.
+    //      1) N qubits in the |0...0⟩ state which are guaranteed to be
+    //         in one of the two superposition states described by the given arrays of bit strings.
+    //      2) two arrays of bit strings represented as Bool[]s.
+    //         The arrays describe the superposition states in the same way as in the previous task.
+    //
+    // Output: 0 if qubits were in the superposition state described by the first array,
+    //         1 if they were in the superposition state described by the second array.
     // The state of the qubits at the end of the operation does not matter.
-    // You are guaranteed that both the arrays of bit strings will have the same length
-    // of either 1, 2 or 4.
-    // You are also guaranteed that each bitstring within each array has the same length.
-    // All bit strings, between both arrays, will differ in at least one bit.
-    // You can use exactly one measurement.
-    // Example: for bit string arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
-    //          return 0 corresponds to state |010⟩ or |001⟩, and return 1 corresponds to state |111⟩ or |011⟩.
-    operation SuperpositionMeasurement (qs : Qubit[], superposition1Array : Bool[][], superposition2Array : Bool[][]) : Int {
+    //
+    // You can use as many measurements as you wish.
+    // The only constraint on the bit strings is that all bit strings in the two arrays are distinct. 
+    //
+    // Example: for arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
+    //          return 0 corresponds to state (|010⟩ + |001⟩) / sqrt(2), 
+    //          return 1 corresponds to state (|111⟩ + |011⟩) / sqrt(2)
+    operation SuperpositionMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
         // ...
         return -1;
     }
+
 
     // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be

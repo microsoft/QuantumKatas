@@ -14,6 +14,7 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Arrays;
 
     open Quantum.Kata.Utils;
 
@@ -249,7 +250,8 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation StatePrep_CreateSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
+    // a combination of tasks 14 and 15 from the Superposition kata
+    operation StatePrep_BitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         let L = Length(bits);
 
         if (L == 1) {
@@ -269,7 +271,7 @@ namespace Quantum.Kata.Measurements {
             // iterate through the bit strings again setting the final state of qubits
             for (i in 0 .. Length(qs) - 1) {
                 if (bits[0][i] == bits[1][i]) {
-                    // if two bits are the same apply X or nothing
+                    // if two bits are the same, apply X or nothing
                     if (bits[0][i]) {
                         X(qs[i]);
                     }
@@ -314,25 +316,18 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation StatePrep_CreateSuperpositionMeasurement (qs : Qubit[], b1 : Bool[][], b2 : Bool[][], state : Int) : Unit {
-        let bits = state == 0 ? b1 | b2;
-        StatePrep_CreateSuperposition(qs, bits);
+    operation StatePrep_SuperpositionMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][], state : Int) : Unit {
+        let bits = state == 0 ? bits1 | bits2;
+        StatePrep_BitstringSuperposition(qs, bits);
     }
 
 
-    operation CheckSuperpositionBitstringsOneMeasurement (Nqubits : Int, b1 : Int[], b2 : Int[]): Unit {
-        mutable barray1 = new Bool[][Length(b1)];
-        mutable barray2 = new Bool[][Length(b2)];
+    operation CheckSuperpositionBitstringsOneMeasurement (nQubits : Int, ints1 : Int[], ints2 : Int[]): Unit {
+        let bits1 = Mapped(IntAsBoolArray(_, nQubits), ints1);
+        let bits2 = Mapped(IntAsBoolArray(_, nQubits), ints2);
 
-        for (i in 0 .. Length(b1) - 1) {
-            set barray1 w/= i <- IntAsBoolArray(b1[i], Nqubits);
-        }
-
-        for (i in 0 .. Length(b2) - 1) {
-            set barray2 w/= i <- IntAsBoolArray(b2[i], Nqubits);
-        }
-
-        DistinguishStates_MultiQubit(Nqubits, 2, StatePrep_CreateSuperpositionMeasurement(_, barray1, barray2, _), SuperpositionOneMeasurement(_, barray1, barray2), 1);
+        DistinguishStates_MultiQubit(nQubits, 2, StatePrep_SuperpositionMeasurement(_, bits1, bits2, _), 
+                                     SuperpositionOneMeasurement(_, bits1, bits2), 1);
     }
 
 
@@ -357,23 +352,12 @@ namespace Quantum.Kata.Measurements {
     }
 
     // ------------------------------------------------------
-    operation CheckSuperpositionBitstringsMeasurement (Nqubits : Int, b1 : Int[], b2 : Int[]): Unit {
-        mutable barray1 = new Bool[][Length(b1)];
-        mutable barray2 = new Bool[][Length(b2)];
+    operation CheckSuperpositionBitstringsMeasurement (nQubits : Int, ints1 : Int[], ints2 : Int[]): Unit {
+        let bits1 = Mapped(IntAsBoolArray(_, nQubits), ints1);
+        let bits2 = Mapped(IntAsBoolArray(_, nQubits), ints2);
 
-        for (i in 0 .. Length(b1) - 1) {
-            set barray1 w/= i <- IntAsBoolArray(b1[i], Nqubits);
-        }
-
-        Message($"barray1: {barray1}");
-
-        for (i in 0 .. Length(b2) - 1) {
-            set barray2 w/= i <- IntAsBoolArray(b2[i], Nqubits);
-        }
-
-        Message($"barray2: {barray2}");
-
-        DistinguishStates_MultiQubit(Nqubits, 2, StatePrep_CreateSuperpositionMeasurement(_, barray1, barray2, _), SuperpositionMeasurement(_, barray1, barray2), 0);
+        DistinguishStates_MultiQubit(nQubits, 2, StatePrep_SuperpositionMeasurement(_, bits1, bits2, _), 
+                                     SuperpositionMeasurement(_, bits1, bits2), 0);
     }
 
     operation T109_SuperpositionMeasurement_Test () : Unit {
@@ -392,14 +376,13 @@ namespace Quantum.Kata.Measurements {
         CheckSuperpositionBitstringsMeasurement(4, [15,7],       // [1111,0111]
                                                    [0,8,10,13]); // [0000,1000,1010,1101]
 
-        CheckSuperpositionBitstringsMeasurement(5, [30,14,10,6],  // [11110,01110,01010,00110]
+        CheckSuperpositionBitstringsMeasurement(5, [30,14,10,7],  // [11110,01110,01010,00111]
                                                    [1,17,21,27]); // [00001,10001,10101,11011]
     }
 
 
     // ------------------------------------------------------
-    operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit
-    is Adj + Ctl {
+    operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit is Adj + Ctl {
         let N = Length(qs);
 
         if (N == 1) {
@@ -436,8 +419,7 @@ namespace Quantum.Kata.Measurements {
 
 
     // ------------------------------------------------------
-    operation GHZ_State_Reference (qs : Qubit[]) : Unit
-    is Adj {
+    operation GHZ_State_Reference (qs : Qubit[]) : Unit is Adj {
 
         H(qs[0]);
         for (i in 1 .. Length(qs) - 1) {
@@ -537,8 +519,7 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
 
-    operation StatePrep_ThreeQubitMeasurement (qs : Qubit[], state : Int) : Unit
-    is Adj {
+    operation StatePrep_ThreeQubitMeasurement (qs : Qubit[], state : Int) : Unit is Adj {
 
         WState_Arbitrary_Reference(qs);
 
