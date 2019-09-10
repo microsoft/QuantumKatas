@@ -182,7 +182,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Add an eavesdropper into the BB84 protocol (Task 2.6). 
     // Note that this changes the test for this task: We are able to detect 
     // Eve and therefore we throw out some of our keys!
-    operation Task32 (qs : Qubit[], basis : Int[], state : Int[], p : Double) : Int[] {
+    operation Task32 (qs : Qubit[], p : Double) : Int[] {
         // ...
         return new Int[0];
     }

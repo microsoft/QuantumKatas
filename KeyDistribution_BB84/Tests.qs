@@ -188,8 +188,7 @@ namespace Quantum.Kata.KeyDistribution {
         mutable emptyKeys = 0;
         for (i in 0 .. 9) {
             using (qs = Qubit[7]) {
-                let (basis, state) = GenerateRandomState(7);
-                let key = Task32(qs, basis, state, 0.8);
+                let key = Task32(qs,  0.8);
                 set emptyKeys = emptyKeys + (Length(key) == 0 ? 1 | 0);
 
                 ResetAll(qs);

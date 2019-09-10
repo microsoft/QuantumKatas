@@ -156,18 +156,21 @@ namespace Quantum.Kata.KeyDistribution {
         return res;
     }
     
-    operation Task32_Reference (qs : Qubit[], basis : Int[], state : Int[], p : Double) : Int[] {
-        Task21_PrepareAlice_Reference(qs, basis, state);
+    operation Task32_Reference (qs : Qubit[],  p : Double) : Int[] {
+        let basis = Task21_ChooseBasis_Reference(Length(qs));
+		let bits = Task21_ChooseBasis_Reference(Length(qs));
+		
+		Task22_PrepareAlice_Reference(qs, basis, bits);
 
         for (i in 0 .. Length(qs) - 1) {
             let n = Task31_Reference(qs[i], RandomInt(2));
         }
         
-        let bBob = Task22_ChooseBasis_Reference(Length(qs));
+        let bBob = Task21_ChooseBasis_Reference(Length(qs));
 
         let mBob = Task23_Measure_Reference(qs, bBob);
 
-        let keyA = Task24_GenerateKey_Reference(basis, bBob, state);
+        let keyA = Task24_GenerateKey_Reference(basis, bBob, bits);
         let keyB = Task24_GenerateKey_Reference(basis, bBob, mBob);
 
         if (Task25_CheckKeysMatch_Reference(keyA, keyB, p)) {
