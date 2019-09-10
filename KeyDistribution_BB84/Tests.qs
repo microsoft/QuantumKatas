@@ -9,6 +9,7 @@ namespace Quantum.Kata.KeyDistribution {
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Extensions.Testing;
+	open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
