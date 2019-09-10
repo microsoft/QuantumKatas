@@ -14,52 +14,17 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
-
-    operation Task11_Test () : Unit {
-        using (q = Qubit()) {
-            mutable ones = 0;
-            for (i in 0 .. 5) {
-                Task11(q);
-                if (M(q) == One) {
-                    set ones = ones + 1;
-                }
-                Reset(q);
-            }
-            AssertBoolEqual(ones > 0 and ones < 6, true, $"Invalid: saw {ones} one qubits out of six (should be ~3)");
-
-            Task11(q);
-            H(q);
-            AssertProb([PauliZ], [q], One, 0.5, "Measuring did not give 50/50 results.", 1e-5);
-            Reset(q);
+	operation Task11_Test () : Unit {
+        for (i in 1 .. 5) {
+            AssertOperationsEqualReferenced(Task11, Task11_Reference, i);
         }
     }
 
     operation Task12_Test () : Unit {
-        for (j in 5 .. 10) {
-            using (qs = Qubit[j]) {
-                mutable ones = 0;
-                Task12(qs);
-                for (i in 0 .. Length(qs) - 1) {
-                    if (M(qs[i]) == One) {
-                        set ones = ones + 1;
-                    }
-                }
-                ResetAll(qs);
-                AssertBoolEqual(ones > 0 and ones < Length(qs), true, $"Invalid: saw {ones} one qubits out of {Length(qs)}");
-
-                Task12(qs);
-                for (i in 0..Length(qs) - 1) {
-                    H(qs[i]);
-                    AssertProb([PauliZ], [qs[i]], One, 0.5, "Measuring did not give 50/50 results.", 1e-5);
-                }
-                ResetAll(qs);
-            }
-        }
-    }
-
-    operation Task13_Test () : Unit {
-        for (i in 1 .. 5) {
-            AssertOperationsEqualReferenced(Task13, Task13_Reference, i);
+        using (q = Qubit()) {
+            Task12(q);
+            AssertProb([PauliZ], [q], One, 0.5, "Measuring did not give 50/50 results.", 1e-5);
+            Reset(q);
         }
     }
   
@@ -71,43 +36,14 @@ namespace Quantum.Kata.KeyDistribution {
         mutable state = new Int[N];
 
         for (i in 0..N- 1) {
-            set basis[i] = RandomInt(2);
-            set state[i] = RandomInt(2);
+            set basis w/= i <- RandomInt(2);
+            set state w/= i <- RandomInt(2);
         }
 
         return (basis, state);
     }
-    
-    operation Task21_Test() : Unit {
-        using (qs = Qubit[2]) {
-            mutable basis = [0, 0];
-            mutable state = [0, 0];
-            for (i in 1..16) {
-                Task21_PrepareAlice(qs, basis, state);
-                Adjoint Task21_PrepareAlice_Reference(qs, basis, state);
-                AssertAllZero(qs);
-                
-                if (i % 4 == 0) {
-                    set state[(i / 4) % 2] = (state[(i / 4) % 2] + 1) % 2;
-                }
-                set basis[i % 2] = (basis[i %2] + 1) % 2;
-                ResetAll(qs);
-            }
-        }
 
-        using (qs = Qubit[7]) {
-            let basis = [0, 1, 1, 0, 0, 1, 0];
-            let state = [1, 1, 0, 1, 0, 0, 1];
-
-            Task21_PrepareAlice(qs, basis, state);
-            Adjoint Task21_PrepareAlice_Reference(qs, basis, state);
-            AssertAllZero(qs);
-            
-            ResetAll(qs);
-        }
-    }
-
-    operation CheckElementsInRange0To1(a : Int[]) : Unit {
+	operation CheckElementsInRange0To1(a : Int[]) : Unit {
         for (i in 0..Length(a) - 1) {
             AssertBoolEqual(a[i] <= 1 and a[i] >= 0, true, $"Value at index {i} is not 0 or 1");
         }
@@ -124,22 +60,51 @@ namespace Quantum.Kata.KeyDistribution {
             "Random generation should not return equal arrays. RUn again to see if problem goes away");
     }
 
-    operation Task22_Test() : Unit {
+    operation Task21_Test() : Unit {
         let N = 7;
-        let basis = Task22_ChooseBasis(N);
+        let basis = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
         CheckElementsInRange0To1(basis);
 
-        let basis2 = Task22_ChooseBasis(N);
+        let basis2 = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
         CheckElementsInRange0To1(basis2);
         CheckNotEqual(basis, basis2);
 
-        let basis3 = Task22_ChooseBasis(N);
+        let basis3 = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
         CheckElementsInRange0To1(basis3);
         CheckNotEqual(basis, basis3);
         CheckNotEqual(basis2, basis3);
+    }
+    
+    operation Task22_Test() : Unit {
+        using (qs = Qubit[2]) {
+            mutable basis = [0, 0];
+            mutable state = [0, 0];
+            for (i in 1..16) {
+                Task22_PrepareAlice(qs, basis, state);
+                Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
+                AssertAllZero(qs);
+                
+                if (i % 4 == 0) {
+                    set state w/= (i / 4) % 2 <- (state[(i / 4) % 2] + 1) % 2;
+                }
+                set basis w/= i % 2 <- (basis[i %2] + 1) % 2;
+                ResetAll(qs);
+            }
+        }
+
+        using (qs = Qubit[7]) {
+            let basis = [0, 1, 1, 0, 0, 1, 0];
+            let state = [1, 1, 0, 1, 0, 0, 1];
+
+            Task22_PrepareAlice(qs, basis, state);
+            Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
+            AssertAllZero(qs);
+            
+            ResetAll(qs);
+        }
     }
 
     operation Task23_Test() : Unit {
@@ -149,7 +114,7 @@ namespace Quantum.Kata.KeyDistribution {
             for (iter in 1..5) {
                 let (basis, state) = GenerateRandomState(N);
 
-                Task21_PrepareAlice_Reference(qs, basis, state);
+                Task22_PrepareAlice_Reference(qs, basis, state);
                 let result = Task23_Measure(qs, basis);
                 
                 for (i in 0..N - 1) {
@@ -160,58 +125,31 @@ namespace Quantum.Kata.KeyDistribution {
         }
     }
 
-    operation CreateMisMatchBasis(basis : Int[], matching : Int[]) : Int[] {
-        mutable index = 0;
-        mutable result = new Int[Length(basis)];
-
-        for (i in 0..Length(basis) - 1) {
-            if (i == matching[index]) {
-                set result[i] = basis[i];
-                if (index < Length(matching) - 1) {
-                    set index = index + 1;
-                }
-            } else {
-                set result[i] = (basis[i] + 1) % 2;
-            }
-        }
-
-        return result;
-    }
-
     operation Task24_Test() : Unit {
-        let N = 5;
-        let (basis, state) = GenerateRandomState(N);
-        let matching = [1, 3, 4];
-        let expected = Subarray(matching, state);
-        let basis2 = CreateMisMatchBasis(basis, matching);
-        let result = Task24_GenerateKey(basis2, basis, state);
+		for (i in 5..9) {
+			let (basis1, state) = GenerateRandomState(i);
+			let (basis2, state2) = GenerateRandomState(i);
+			let expected = Task24_GenerateKey_Reference(basis1, basis2, state);
+			let result = Task24_GenerateKey(basis1, basis2, state);
 
-        AssertIntEqual(Length(result), Length(expected), $"key should be length {Length(expected)}");
-        for (i in 0..Length(expected) - 1) {
-            AssertIntEqual(result[i], expected[i], "Unexpected key value");
-        }
+			AssertIntEqual(Length(result), Length(expected), $"key should be length {Length(expected)}");
+		    for (j in 0..Length(expected) - 1) {
+			    AssertIntEqual(result[j], expected[j], "Unexpected key value");
+            }
+		}        
     }
 
     operation Task25_Test() : Unit {
-        mutable keyA = [0, 1, 1, 0 ,1 ,1];
-        mutable keyB = [0, 1, 0, 0, 1, 0];
-        AssertBoolEqual(Task25_CheckKeysMatch(keyA, keyB, 0.66), true, "Should return true");
-        AssertBoolEqual(Task25_CheckKeysMatch(keyA, keyB, 0.45), true, "Should return true");
-        AssertBoolEqual(Task25_CheckKeysMatch(keyA, keyB, 0.75), false, "Should return false");
+		let (p1, p2) = (0.66, 0.75);
 
-        set keyB[2] = 1;
-        AssertBoolEqual(Task25_CheckKeysMatch(keyA, keyB, 0.75), true, "Should return true");
-        AssertBoolEqual(Task25_CheckKeysMatch(keyA, keyB, 1.00), false, "Should return false");
-    }
+		for (i in 5..9) {
+			let (key1, key2) = GenerateRandomState(i);
+			let result1 = Task25_CheckKeysMatch_Reference(key1, key2, p1);
+			let result2 = Task25_CheckKeysMatch_Reference(key1, key2, p2);
 
-    operation Task26_Test() : Unit {
-        using (qs = Qubit[7]) {
-            let (basis, state) = GenerateRandomState(7);
-            let key = Task26_BB84(qs, basis, state, 0.8);
-
-            AssertBoolEqual(Length(key) != 0, true, "Should not return an empty key");
-            ResetAll(qs);
-        }
+			AssertBoolEqual(Task25_CheckKeysMatch(key1, key2, p1), result1, $"Should return {result1}");
+			AssertBoolEqual(Task25_CheckKeysMatch(key1, key2, p2), result2, $"Should return {result2}");
+		}
     }
 
     //////////////////////////////////////////////////////////////////

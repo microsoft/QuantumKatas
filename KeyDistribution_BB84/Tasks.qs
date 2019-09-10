@@ -24,31 +24,24 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
-
-    // Task 1.1. 
-    // Transform the quibit q in a random state 0 or 1. The qubit is 
-    // guaranteed to be in the state |0> and after this operation there 
-    // should be a 50% chance of it remaining 0 and a 50% chance of being 
-    // |1>
-    operation Task11 (q : Qubit) : Unit {
-        // ...
-    }
-
-    // Task 1.2. 
-    // Prepare the bit string of arbitrary length (> 0) such that each 
-    // qubit is in a random state 0 or 1. You may assume that all qubits 
-    // in qs will be in the state |0>.
-    operation Task12 (qs : Qubit[]) : Unit {
-        // ...
-    }
-
-    // Task 1.3.
+	
+	// Task 1.1:
     // Prepare qs with a diagonal polarization. Each bit in qs should be 
     // prepared as follows:
     //		if qs[i] is |0>, should become (|0> + |1>)/sqrt(2)
     //		if qs[i] is |1>, should become (|0> - |1>)/sqrt(2)
     // All qubits in qs will be either |0> or |1>.
-    operation Task13 (qs : Qubit[]) : Unit {
+    operation Task11 (qs : Qubit[]) : Unit {
+        // ...
+    }
+
+    // Task 1.2: 
+    // Apply a transformation that will leave the qubit in a superposition state 
+	// with equal probabilities of measuring 0 and 1. The qubit is 
+    // guaranteed to be in the state |0> and after this operation there 
+    // should be a 50% chance of it remaining 0 and a 50% chance of it being 
+    // |1>
+    operation Task12 (q : Qubit) : Unit {
         // ...
     }
     
@@ -56,7 +49,17 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
     
-    // Task 2.1: Prepare Alice's qubits
+	// Task 2.1: Choosing the basis
+    // Return an Int array where the value at each index represents a randomly
+    // chosen basis. Values should be either 0 (0/1 basis) or 1 (+/- basis)
+    // Inputs: 
+    //	N: length of output array
+    operation Task21_ChooseBasis(N : Int) : Int[] {
+        // ...
+        return new Int[N];
+    }
+
+    // Task 2.2: Prepare Alice's qubits
     // Prepare the qubits that Alice will send to Bob
     // Input:
     //	qs: N qubits in the 0 states
@@ -66,22 +69,12 @@ namespace Quantum.Kata.KeyDistribution {
     //		1: +/- (diagonal) basis
     //	bits: An Int array of length N where the integer at index i indicates
     //	which bit to encode in the ith qubit
-    operation Task21_PrepareAlice(qs : Qubit[], basis : Int[], bits : Int[]) : Unit {
+    operation Task22_PrepareAlice(qs : Qubit[], basis : Int[], bits : Int[]) : Unit {
         // The next two lines are to ensure that the inputs are all the same length
         AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
         AssertIntEqual(Length(qs), Length(bits), "Input arrays should be the same length");
 
         // ...
-    }
-
-    // Task 2.2: Choosing the basis
-    // Return an Int array where the value at each index represents a randomly
-    // chosen basis. Values should be either 0 (0/1 basis) or 1 (+/- basis)
-    // Inputs: 
-    //	N: length of output array
-    operation Task22_ChooseBasis(N : Int) : Int[] {
-        // ...
-        return new Int[N];
     }
 
     // Task 2.3: Bob measures qubits
@@ -144,30 +137,26 @@ namespace Quantum.Kata.KeyDistribution {
     // Let's implement the entire code flow for Quantum Key Distribution 
     // protocol by following the steps of the BB84 protocol.
     // Steps of BB84 Protocol
-    //		1. Alice prepares her qubits in the specified bases and states
-    //		2. Bob chooses randomly between the rectangular and diagonal bases to measure Alice's 
-    //		qubits in
-    //		3. Bob measures Alice's qubits in his chosen bases
-    //		4. Alice and Bob compare bases and use the results from the matching bases to create a 
-    //		shared key
-    //		5. Alice and Bob check to make sure nobody evesdropped by comparing a subset of their keys
-    //		and checking to see if more than a certain percentage of the bits match
-    // Given a qubit register and the states/bases to encode the qubits in, implement the steps of
-    // BB84 protocol. For Step 5, check the percentage on the entire key instead of choosing a subset 
-    // of indicies (in practice only a subset of indicies is chosen to minimize the how much 
-    // information about the key is shared).
+    //		1. Alice chooses a random set of bits to encode in her qubits and a random set of 
+	//         bases to prepare her qubits in
+	//      2. Alice prepares her qubits according to the bits and bases she chose
+    //		3. Bob chooses randomly between the rectangular and diagonal bases to measure Alice's 
+    //		   qubits in
+    //		4. Bob measures Alice's qubits in his chosen bases
+    //		5. Alice and Bob compare bases and use the results from the matching bases to create a 
+    //		   shared key
+    //		6. Alice and Bob check to make sure nobody evesdropped by comparing a subset of their keys
+    //		   and checking to see if more than a certain percentage of the bits match
+    // Given a qubit register, implement the steps of the BB84 protocol. For Step 6, check the 
+	// percentage on the entire key instead of choosing a subset of indicies (in practice only 
+	// a subset of indicies is chosen to minimize how much information about the key is shared).
     // Inputs:
     //	qs: N qubits in the 0 state
-    //	basis: An Int array of length N where the integer at index i indicates
-    //	what basis to prepare the ith qubit in
-    //		0: 0/1 (rectangular) basis
-    //		1: +/- (diagonal) basis
-    //	bits: An Int array of length N where the integer at index i indicates
-    //	which bit to encode i nthe ith qubit
     //	p: Minimum percentage of matching bits
     // Output:
     //	If the percentage of matching bits is below p, return an empty array. Otherwise,
     //	return the shared key
+	// Note: This task is open-ended and therefore does not have a test
     operation Task26_BB84(qs : Qubit[], basis : Int[], bits : Int[], p : Double) : Int[] {
         // ...
         return new Int[0];
