@@ -50,26 +50,26 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     
 	// Task 2.1: Choosing the basis
-    // Return an Int array where the value at each index represents a randomly
-    // chosen basis. Values should be either 0 (0/1 basis) or 1 (+/- basis)
+    // Return a Bool array where the value at each index represents a randomly
+    // chosen basis. Values should be either false (0/1 basis) or true (+/- basis)
     // Inputs: 
     //	N: length of output array
-    operation Task21_ChooseBasis(N : Int) : Int[] {
+    operation Task21_ChooseBasis(N : Int) : Bool[] {
         // ...
-        return new Int[N];
+        return new Bool[N];
     }
 
     // Task 2.2: Prepare Alice's qubits
     // Prepare the qubits that Alice will send to Bob
     // Input:
     //	qs: N qubits in the 0 states
-    //	basis: An Int array of length N where the integer at index i indicates
+    //	basis: A Bool array of length N where the integer at index i indicates
     //	what basis to prepare the ith qubit in
-    //		0: 0/1 (rectangular) basis
-    //		1: +/- (diagonal) basis
-    //	bits: An Int array of length N where the integer at index i indicates
-    //	which bit to encode in the ith qubit
-    operation Task22_PrepareAlice(qs : Qubit[], basis : Int[], bits : Int[]) : Unit {
+    //		false: 0/1 (rectangular) basis
+    //		true: +/- (diagonal) basis
+    //	bits: A Bool array of length N where the value at index i indicates
+    //	which bit to encode in the ith qubit (false = 0, true = 1)
+    operation Task22_PrepareAlice(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit {
         // The next two lines are to ensure that the inputs are all the same length
         AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
         AssertIntEqual(Length(qs), Length(bits), "Input arrays should be the same length");
@@ -81,18 +81,18 @@ namespace Quantum.Kata.KeyDistribution {
     // Measure the given qubits in the bases and return the result of the measurements
     // Inputs:
     //	qs: N qubits in an arbitrary state 
-    //	basis: An Int array of length N where the integer at index i indicates
+    //	basis: A Bool array of length N where the integer at index i indicates
     //	what basis to measure the ith qubit in
-    //		0: 0/1 (rectangular) basis
-    //		1: +/- (diagonal) basis
+    //		false: 0/1 (rectangular) basis
+    //		true: +/- (diagonal) basis
     // Outputs:
-    //	return an Int array of the measurement results
-    operation Task23_Measure(qs : Qubit[], basis : Int[]) : Int[] {
+    //	return a bool array of the measurement results (false = Zero, true = One)
+    operation Task23_Measure(qs : Qubit[], basis : Bool[]) : Bool[] {
         // The following line ensures that the inputs are all the same length
         AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
 
         // ...
-        return new Int[3];
+        return new Bool[3];
     }
 
     // Task 2.4: Generate the key!
@@ -104,14 +104,14 @@ namespace Quantum.Kata.KeyDistribution {
     //	bBob: Bob's basis states
     //	res: Bob's measurement results
     // Ouput:
-    //	return an Int array representing Alice and Bob's shared key
-    operation Task24_GenerateKey(bAlice : Int[], bBob : Int[], res : Int[]) : Int[] {
+    //	return a Bool array representing Alice and Bob's shared key
+    operation Task24_GenerateKey(bAlice : Bool[], bBob : Bool[], res : Bool[]) : Bool[] {
         // The next two lines are to ensure that the inputs are all the same length
         AssertIntEqual(Length(bAlice), Length(bBob), "Input arrays should be the same length");
         AssertIntEqual(Length(bAlice), Length(res), "Input arrays should be the same length");
 
         // ...
-        return new Int[3];
+        return new Bool[3];
     }
 
     // Task 2.5: Was communication secure?
@@ -125,7 +125,7 @@ namespace Quantum.Kata.KeyDistribution {
     // OUtput:
     //	return true if the percentage of matching bits is greater than or equal
     //	to the minimum percentage and false otherwise
-    operation Task25_CheckKeysMatch(keyA : Int[], keyB : Int[], p : Double) : Bool {
+    operation Task25_CheckKeysMatch(keyA : Bool[], keyB : Bool[], p : Double) : Bool {
         // The following line ensures that the inputs are all the same length
         AssertIntEqual(Length(keyA), Length(keyB), "Input arrays should be the same length");
 
@@ -157,9 +157,9 @@ namespace Quantum.Kata.KeyDistribution {
     //	If the percentage of matching bits is below p, return an empty array. Otherwise,
     //	return the shared key
 	// Note: This task is open-ended and therefore does not have a test
-    operation Task26_BB84(qs : Qubit[], basis : Int[], bits : Int[], p : Double) : Int[] {
+    operation Task26_BB84(qs : Qubit[], p : Double) : Bool[] {
         // ...
-        return new Int[0];
+        return new Bool[0];
     }
 
     //////////////////////////////////////////////////////////////////
@@ -169,11 +169,11 @@ namespace Quantum.Kata.KeyDistribution {
     // Task 3.1.
     // Implement an eavsedropper, Eve. Eve will intercept a qubit, q from 
     // the quantum channel that Alice and Bob are using. She will measure 
-    // in the basis defined in the basis parameter, b, (0 for rectangular and 
-    // 1 for diagonal), reconstruct the qubit into the original state q, 
+    // in the basis defined in the basis parameter, basis, (false for rectangular and 
+    // true for diagonal), reconstruct the qubit into the original state q, 
     // and return her measurement. Eve hopes that if she properly 
     // reconstructs the qubit after measurement she won't be caught!
-    operation Task31 (q : Qubit, b : Int) : Int {
+    operation Task31 (q : Qubit, basis : Bool) : Int {
         // ...
         return 0;
     }
@@ -182,8 +182,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Add an eavesdropper into the BB84 protocol (Task 2.6). 
     // Note that this changes the test for this task: We are able to detect 
     // Eve and therefore we throw out some of our keys!
-    operation Task32 (qs : Qubit[], p : Double) : Int[] {
+    operation Task32 (qs : Qubit[], p : Double) : Bool[] {
         // ...
-        return new Int[0];
+        return new Bool[0];
     }
 }

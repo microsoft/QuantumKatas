@@ -10,6 +10,7 @@ namespace Quantum.Kata.KeyDistribution {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Extensions.Testing;
 	open Microsoft.Quantum.Math;
+	open Microsoft.Quantum.Convert;
     
     
     //////////////////////////////////////////////////////////////////
@@ -32,73 +33,53 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
-    operation GenerateRandomState(N : Int) : (Int[], Int[]) {
-        mutable basis = new Int[N];
-        mutable state = new Int[N];
+    operation GenerateRandomState(N : Int) : (Bool[], Bool[]) {
+        mutable basis = new Bool[N];
+        mutable state = new Bool[N];
 
         for (i in 0..N- 1) {
-            set basis w/= i <- RandomInt(2);
-            set state w/= i <- RandomInt(2);
+            set basis w/= i <- RandomInt(2) == 1;
+            set state w/= i <- RandomInt(2) == 1;
         }
 
         return (basis, state);
-    }
-
-	operation CheckElementsInRange0To1(a : Int[]) : Unit {
-        for (i in 0..Length(a) - 1) {
-            AssertBoolEqual(a[i] <= 1 and a[i] >= 0, true, $"Value at index {i} is not 0 or 1");
-        }
-    }
-
-    operation CheckNotEqual(a1 : Int[], a2 : Int[]) : Unit {
-        mutable equal = true;
-        for (i in 0..Length(a1) - 1) {
-            if (a1[i] != a2[i]) {
-                set equal = false;
-            }
-        }
-        AssertBoolEqual(equal, false, 
-            "Random generation should not return equal arrays. RUn again to see if problem goes away");
     }
 
     operation Task21_Test() : Unit {
         let N = 7;
         let basis = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
-        CheckElementsInRange0To1(basis);
 
         let basis2 = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
-        CheckElementsInRange0To1(basis2);
-        CheckNotEqual(basis, basis2);
+        AssertBoolEqual(BoolArrayAsInt(basis) != BoolArrayAsInt(basis2), true, 
+			"Random generation should not return equal arrays. RUn again to see if problem goes away");
 
         let basis3 = Task21_ChooseBasis(N);
         AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
-        CheckElementsInRange0To1(basis3);
-        CheckNotEqual(basis, basis3);
-        CheckNotEqual(basis2, basis3);
+        AssertBoolEqual(BoolArrayAsInt(basis2) != BoolArrayAsInt(basis3), true, 
+		    "Random generation should not return equal arrays. RUn again to see if problem goes away");
+		AssertBoolEqual(BoolArrayAsInt(basis) != BoolArrayAsInt(basis3), true, 
+		    "Random generation should not return equal arrays. RUn again to see if problem goes away");
     }
     
     operation Task22_Test() : Unit {
         using (qs = Qubit[2]) {
-            mutable basis = [0, 0];
-            mutable state = [0, 0];
-            for (i in 1..16) {
-                Task22_PrepareAlice(qs, basis, state);
-                Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
-                AssertAllZero(qs);
-                
-                if (i % 4 == 0) {
-                    set state w/= (i / 4) % 2 <- (state[(i / 4) % 2] + 1) % 2;
-                }
-                set basis w/= i % 2 <- (basis[i %2] + 1) % 2;
+            for (i in 0..3) {
+			    let basis = IntAsBoolArray(i, 2);
+			    for (j in 0..3) {
+				    let state = IntAsBoolArray(j, 2);
+				    Task22_PrepareAlice(qs, basis, state);
+                    Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
+                    AssertAllZero(qs);
+			    }
                 ResetAll(qs);
             }
         }
 
         using (qs = Qubit[7]) {
-            let basis = [0, 1, 1, 0, 0, 1, 0];
-            let state = [1, 1, 0, 1, 0, 0, 1];
+            let basis = [false, true, true, false, false, true, false];
+            let state = [true, true, false, true, false, false, true];
 
             Task22_PrepareAlice(qs, basis, state);
             Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
@@ -119,7 +100,7 @@ namespace Quantum.Kata.KeyDistribution {
                 let result = Task23_Measure(qs, basis);
                 
                 for (i in 0..N - 1) {
-                    AssertIntEqual(result[i], state[i], "Measured in wrong basis");
+                    AssertBoolEqual(result[i], state[i], "Measured in wrong basis");
                 }
                 ResetAll(qs);
             }
@@ -135,13 +116,13 @@ namespace Quantum.Kata.KeyDistribution {
 
 			AssertIntEqual(Length(result), Length(expected), $"key should be length {Length(expected)}");
 		    for (j in 0..Length(expected) - 1) {
-			    AssertIntEqual(result[j], expected[j], "Unexpected key value");
+			    AssertBoolEqual(result[j], expected[j], "Unexpected key value");
             }
 		}        
     }
 
     operation Task25_Test() : Unit {
-		let (p1, p2) = (0.66, 0.75);
+		let (p1, p2) = (0.66, 0.85);
 
 		for (i in 5..9) {
 			let (key1, key2) = GenerateRandomState(i);
@@ -160,26 +141,26 @@ namespace Quantum.Kata.KeyDistribution {
         using (q = Qubit()) {
             mutable res = 0;
             // q = 0, Real value: b = rectangular, Input: b = rectangular
-            set res = Task31(q, 0);
+            set res = Task31(q, false);
             AssertIntEqual(res, 0, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 0, Real value: b = diagonal, Input: b = diagonal 
             H(q);
-            set res = Task31(q, 1);
+            set res = Task31(q, true);
             AssertIntEqual(res, 0, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 1, Real value: b = rectangular, Input: b = rectangular 
             X(q);
-            set res = Task31(q, 0);
+            set res = Task31(q, false);
             AssertIntEqual(res, 1, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 1, Real value: b = diagonal, Input: b = diagonal 
             X(q);
             H(q);
-            set res = Task31(q, 1);
+            set res = Task31(q, true);
             AssertIntEqual(res, 1, $"Incorrect result: {res}");
             Reset(q);
         }
