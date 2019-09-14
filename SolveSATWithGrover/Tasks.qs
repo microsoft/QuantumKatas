@@ -101,7 +101,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // Task 1.5. Evaluate one clause of a SAT formula
     // 
-    // For k-SAT problems, f(x) is represented as a conjunction (an AND operation) of several clauses on N variables, 
+    // For general SAT problems, f(x) is represented as a conjunction (an AND operation) of several clauses on N variables, 
     // and each clause is a disjunction (an OR operation) of one or several variables or negated variables:
     //      clause(x) = ∨ₖ yᵢₖ, where yᵢₖ = either xⱼ or ¬xⱼ for some j in {0, ..., N-1}
     // 
@@ -127,9 +127,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
 
-    // Task 1.6. k-SAT problem oracle
+    // Task 1.6. General SAT problem oracle
     //
-    // For k-SAT problems, f(x) is represented as a conjunction (an AND operation) of M clauses on N variables, 
+    // For SAT problems, f(x) is represented as a conjunction (an AND operation) of M clauses on N variables, 
     // and each clause is a disjunction (an OR operation) of one or several variables or negated variables:
     //      f(x) = ∧ᵢ (∨ₖ yᵢₖ), where yᵢₖ = either xⱼ or ¬xⱼ for some j in {0, ..., N-1}
     //
@@ -160,8 +160,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Part II. Oracles for exactly-1 3-SAT problem
     //////////////////////////////////////////////////////////////////
     
-    // Exactly-1 3-SAT problem (also known as "one-in-three 3-SAT") is a variant of a general 3-SAT problem.
-    // It has a structure similar to 3-SAT problem, but each clause must have exactly one true literal 
+    // The exactly-1 3-SAT problem (also known as "one-in-three 3-SAT") is a variant of a general 3-SAT problem.
+    // It has a structure similar to a 3-SAT problem, but each clause must have exactly one true literal 
     // (while in a normal 3-SAT problem each clause must have at least one true literal).
 
 
@@ -170,7 +170,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      1) 3 qubits in an arbitrary state |x⟩ (input/query register)
     //      2) a qubit in an arbitrary state |y⟩ (target qubit)
     //
-    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
+    // Goal: Transform the state |x, y⟩ into the state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
     //       where f(x) = 1 if exactly one bit of x is in the |1⟩ state, and 0 otherwise.
     //       Leave the query register in the same state it started in.
     // Stretch goal: Can you implement the oracle so that it would work
@@ -212,7 +212,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Goal: Implement Grover's algorithm and use it to find solutions to SAT instances from parts I and II.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
     //
-    // If you want to learn the Grover's algorithm itself, try doing GroversAlgorithm kata first.
+    // If you want to learn Grover's algorithm itself, try doing the GroversAlgorithm kata first.
     operation T31_E2E_GroversAlgorithm_Test () : Unit {
 
         // Hint: Experiment with SAT instances with different number of solutions and the number of algorithm iterations 
