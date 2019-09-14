@@ -36,8 +36,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Task 1.2. The OR oracle: f(x) = x₀ ∨ x₁
     operation Oracle_Or_Reference_2 (queryRegister : Qubit[], target : Qubit) : Unit is Adj {
         // x₀ ∨ x₁ = ¬ (¬x₀ ∧ ¬x₁)
+        // First, flip target if both qubits are in |0⟩ state
         within {
-            // First, flip target if both qubits are in |0⟩ state
             X(queryRegister[0]);
             X(queryRegister[1]);
         }
@@ -141,7 +141,6 @@ namespace Quantum.Kata.GroversAlgorithm {
         for (varIndex in 0 .. Length(clause) - 1) {
             let (index, isTrue) = clause[varIndex];
             // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
-            let qt = queryRegister[index];
             set clauseQubits w/= varIndex <- queryRegister[index];
             // If the negation of the variable is present in the formula, mark the qubit as needing a flip
             set flip w/= varIndex <- not isTrue;
