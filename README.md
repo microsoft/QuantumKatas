@@ -79,6 +79,8 @@ Currently covered topics are:
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
+* **[Ripple Carry Adder](./RippleCarryAdder/)**.
+  This kata walks you through building a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
   This unusual kata offers tasks on implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
