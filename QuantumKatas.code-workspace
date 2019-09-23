@@ -24,7 +24,7 @@
 		},
 		{
 			"path": "Teleportation",
-			"name": "5. Teleportation"	
+			"name": "5. Teleportation"
 		},
 		{
 			"path": "SuperdenseCoding",
@@ -71,8 +71,12 @@
 			"name": "16. QEC: Bit-flip Code"
 		},
 		{
+			"path": "RippleCarryAdder",
+			"name": "17. Ripple-carry Adder"
+		},
+		{
 			"path": "UnitaryPatterns",
-			"name": "17*. Unitary Patterns"
+			"name": "18*. Unitary Patterns"
 		},
 	],
 	"settings": {
