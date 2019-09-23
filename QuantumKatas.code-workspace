@@ -5,80 +5,80 @@
 			"quantum.quantum-devkit-vscode"
 		]
 	},
-  "folders": [
-    {
-      "path": "BasicGates",
-      "name": "1. Basic Gates"
-    },
-    {
-      "path": "Superposition",
-      "name": "2. Superposition"
-    },
-    {
-      "path": "Measurements",
-      "name": "3. Measurements"
-    },
-    {
-      "path": "JointMeasurements",
-      "name": "4. Joint Measurements"
-    },
-    {
-      "path": "Teleportation",
-      "name": "5. Teleportation"
-    },
-    {
-      "path": "SuperdenseCoding",
-      "name": "6. Superdense Coding"
-    },
-    {
-      "path": "DeutschJozsaAlgorithm",
-      "name": "7. Deutsch–Jozsa Algorithm"
-    },
-    {
-      "path": "SimonsAlgorithm",
-      "name": "8. Simon's Algorithm"
-    },
-    {
-      "path": "GroversAlgorithm",
-      "name": "9. Grover's Search Algorithm"
-    },
-    {
-      "path": "SolveSATWithGrover",
-      "name": "10. Solving SAT problems using Grover's algorithm"
-    },
-    {
-      "path": "GraphColoring",
-      "name": "11. Solving graph coloring problems using Grover's algorithm"
-    },
-    {
-      "path": "CHSHGame",
-      "name": "12. CHSH game"
-    },
-    {
-      "path": "GHZGame",
-      "name": "13. GHZ game"
-    },
-    {
-      "path": "MagicSquareGame",
-      "name": "14. Mermin-Peres magic square game"
-    },
-    {
-      "path": "PhaseEstimation",
-      "name": "15. Phase Estimation"
-    },
-    {
-      "path": "QEC_BitFlipCode",
-      "name": "16. QEC: Bit-flip Code"
-    },
-    {
-      "path": "RippleCarryAdder",
-      "name": "17. Ripple-carry Adder"
-    },
-    {
-      "path": "UnitaryPatterns",
-      "name": "18*. Unitary Patterns"
-    }
-  ],
+	"folders": [
+		{
+			"path": "BasicGates",
+			"name": "1. Basic Gates"
+		},
+		{
+			"path": "Superposition",
+			"name": "2. Superposition"
+		},
+		{
+			"path": "Measurements",
+			"name": "3. Measurements"
+		},
+		{
+			"path": "JointMeasurements",
+			"name": "4. Joint Measurements"
+		},
+		{
+			"path": "Teleportation",
+			"name": "5. Teleportation"
+		},
+		{
+			"path": "SuperdenseCoding",
+			"name": "6. Superdense Coding"
+		},
+		{
+			"path": "DeutschJozsaAlgorithm",
+			"name": "7. Deutsch–Jozsa Algorithm"
+		},
+		{
+			"path": "SimonsAlgorithm",
+			"name": "8. Simon's Algorithm"
+		},
+		{
+			"path": "GroversAlgorithm",
+			"name": "9. Grover's Search Algorithm"
+		},
+		{
+			"path": "SolveSATWithGrover",
+			"name": "10. Solving SAT problems using Grover's algorithm"
+		},
+		{
+			"path": "GraphColoring",
+			"name": "11. Solving graph coloring problems using Grover's algorithm"
+		},
+		{
+			"path": "CHSHGame",
+			"name": "12. CHSH game"
+		},
+		{
+			"path": "GHZGame",
+			"name": "13. GHZ game"
+		},
+		{
+			"path": "MagicSquareGame",
+			"name": "14. Mermin-Peres magic square game"
+		},
+		{
+			"path": "PhaseEstimation",
+			"name": "15. Phase Estimation"
+		},
+		{
+			"path": "QEC_BitFlipCode",
+			"name": "16. QEC: Bit-flip Code"
+		},
+		{
+			"path": "RippleCarryAdder",
+			"name": "17. Ripple-carry Adder"
+		},
+		{
+			"path": "UnitaryPatterns",
+			"name": "18*. Unitary Patterns"
+		},
+	],
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,
 		"files.exclude": {
