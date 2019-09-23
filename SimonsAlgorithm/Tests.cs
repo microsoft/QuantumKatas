@@ -46,20 +46,18 @@ namespace Q22
 
             public BooleanVector Kernel => new BooleanVector(kernel);
 
-            public QArray<QArray<long>> Transformation => new QArray<QArray<long>>(
+            public IQArray<IQArray<long>> Transformation => new QArray<IQArray<long>>(
                 transformation.Select(
                     vector => new QArray<long>(vector)));
 
-            public QArray<QArray<long>> ExtendedTransformation
+            public IQArray<IQArray<long>> ExtendedTransformation
             {
                 get
                 {
-                    var array = new QArray<QArray<long>>(
-                        transformation.Select(
-                            vector => new QArray<long>(vector)))
-                    {
-                        new QArray<long>(transformation.Last())
-                    };
+                    var array = (IQArray<IQArray<long>>)new QArray<IQArray<long>>(
+                        transformation.Select(vector => new QArray<long>(vector))
+                    );
+                    array = QArray<IQArray<long>>.Add (array, new QArray<IQArray<long>>(new QArray<long>(transformation.Last())));
                     return array;
                 }
             }
@@ -114,7 +112,7 @@ namespace Q22
             var sim = new OracleCounterSimulator();
             
             var len = instance.Kernel.Count;
-            var saver = new List<QArray<long>>();
+            var saver = new List<IQArray<long>>();
 
             for (int i = 0; i < len * 4; ++i)
             {

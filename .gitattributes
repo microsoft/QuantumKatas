@@ -2,5 +2,5 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
-*.sh text eol=lf
+*.sh text -crlf eol=lf
 

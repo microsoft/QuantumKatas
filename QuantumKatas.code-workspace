@@ -24,7 +24,7 @@
 		},
 		{
 			"path": "Teleportation",
-			"name": "5. Teleportation"	
+			"name": "5. Teleportation"
 		},
 		{
 			"path": "SuperdenseCoding",
@@ -47,16 +47,36 @@
 			"name": "10. Solving SAT problems using Grover's algorithm"
 		},
 		{
+			"path": "GraphColoring",
+			"name": "11. Solving graph coloring problems using Grover's algorithm"
+		},
+		{
+			"path": "CHSHGame",
+			"name": "12. CHSH game"
+		},
+		{
+			"path": "GHZGame",
+			"name": "13. GHZ game"
+		},
+		{
+			"path": "MagicSquareGame",
+			"name": "14. Mermin-Peres magic square game"
+		},
+		{
 			"path": "PhaseEstimation",
-			"name": "11. Phase Estimation"
+			"name": "15. Phase Estimation"
 		},
 		{
 			"path": "QEC_BitFlipCode",
-			"name": "12. QEC: Bit-flip Code"
+			"name": "16. QEC: Bit-flip Code"
+		},
+		{
+			"path": "RippleCarryAdder",
+			"name": "17. Ripple-carry Adder"
 		},
 		{
 			"path": "UnitaryPatterns",
-			"name": "13*. Unitary Patterns"
+			"name": "18*. Unitary Patterns"
 		},
 	],
 	"settings": {
@@ -88,7 +108,12 @@
 			// Hide build artifacts.
 			"**/bin": true,
 			"**/obj": true,
-			"**/.vs": true
+			"**/.vs": true,
+
+			// Hide Jupyter Notebooks artifacts.
+			"**/*.ipynb": true,
+			"**/.ipynb_checkpoints": true,
+			"**/Check.html": true
 		}
 	}
 }
