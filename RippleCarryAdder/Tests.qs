@@ -238,8 +238,12 @@ namespace Quantum.Kata.RippleCarryAdder {
             let testOp = QubitArrayAdderWrapper(i, ArbitraryAdder, _);
             AssertOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i + 1);
         }
-        // Can't compare to the reference operation, because then the challenge solution doesn't pass the test
+        // Can't compare to the reference operation using AssertOperationsEqualReferenced, because then the challenge solution doesn't pass the test
+        // (the challenge solution relies on the target qubits being in the 0 state and the regular solution doesn't).
+        // TODO: Use AssertOperationsEqualReferenced with a workaround: implement a wrapper which is a unitary on inputs a and b 
+        // and allocates qubits in 0 state for target qubits before calling the adder.
     }
+
 
     //////////////////////////////////////////////////////////////////
     // Part II. Simple in-place adder
@@ -343,18 +347,19 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // ------------------------------------------------------
     operation T34_TwoBitMajUmaAdder_Test () : Unit {
-        //Reverted to old test, as opration call counts don't work for counting task operations in notebooks
-        //ResetOracleCallsCount();
+        // Commented out lines check that this task uses a specific number of Majority and UMA gates
+        // (as opposed to using an adder from part II).
+        // Reverted to old test, since operation call counting doesn't work for counting task operations defined in notebooks.
+        // ResetOracleCallsCount();
         let testOp = QubitArrayInPlaceAdderWrapper(2, TwoBitMajUmaAdder, _);
         let refOp = QubitArrayInPlaceAdderWrapper(2, TwoBitMajUmaAdder_Reference, _);
         AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, 2), 4, 2, 3, 1);
-        //let sumCalls = GetOracleCallsCount(HighBitSumInPlace);
-        //let carryCalls = GetOracleCallsCount(HighBitCarry);
-        //let majCalls = GetOracleCallsCount(Majority);
-        //let umaCalls = GetOracleCallsCount(UnMajorityAdd);
-        //Fact((sumCalls == 0) and (carryCalls == 0), "You shouldn't be calling the old sum/carry operations for this task.");
-        //Fact((majCalls > 0) and (umaCalls > 0), "Are you sure you're using the Majority and UMA gates?");
-
+        // let sumCalls = GetOracleCallsCount(HighBitSumInPlace);
+        // let carryCalls = GetOracleCallsCount(HighBitCarry);
+        // let majCalls = GetOracleCallsCount(Majority);
+        // let umaCalls = GetOracleCallsCount(UnMajorityAdd);
+        // Fact((sumCalls == 0) and (carryCalls == 0), "You shouldn't be calling the old sum/carry operations for this task.");
+        // Fact((majCalls > 0) and (umaCalls > 0), "Are you sure you're using the Majority and UMA gates?");
 
         AssertOperationsEqualReferenced(5, testOp, refOp);
     }

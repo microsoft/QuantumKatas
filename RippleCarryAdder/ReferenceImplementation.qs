@@ -33,7 +33,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 1.3. One bit adder
+    // Task 1.3. One-bit adder
     operation OneBitAdder_Reference (a : Qubit, b : Qubit, sum : Qubit, carry : Qubit) : Unit is Adj {
         LowestBitSum_Reference(a, b, sum);
         LowestBitCarry_Reference(a, b, carry);
@@ -55,7 +55,8 @@ namespace Quantum.Kata.RippleCarryAdder {
         CCNOT(b, carryin, carryout);
     }
 
-    // Task 1.6. Two bit adder
+
+    // Task 1.6. Two-bit adder
     operation TwoBitAdder_Reference (a : Qubit[], b : Qubit[], sum : Qubit[], carry : Qubit) : Unit is Adj {
         using (internalCarry = Qubit()) {
             LowestBitSum_Reference(a[0], b[0], sum[0]);
@@ -149,7 +150,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 2.2. In-place one bit adder
+    // Task 2.2. In-place one-bit adder
     operation OneBitAdderInPlace_Reference (a : Qubit, b : Qubit, carry : Qubit) : Unit is Adj {
         LowestBitCarry_Reference(a, b, carry);
         LowestBitSumInPlace_Reference(a, b);
@@ -163,7 +164,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 2.4. In-place two bit adder
+    // Task 2.4. In-place two-bit adder
     operation TwoBitAdderInPlace_Reference (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
         using (internalCarry = Qubit()) {
             // Set up the carry bits
@@ -221,7 +222,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 3.3. One bit majority-UMA adder
+    // Task 3.3. One-bit majority-UMA adder
     operation OneBitMajUmaAdder_Reference (a : Qubit, b : Qubit, carry : Qubit) : Unit is Adj {
         using (tempCarry = Qubit()) {
             Majority_Reference(a, b, tempCarry);
@@ -231,7 +232,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     
-    // Task 3.4. Two bit majority-UMA adder
+    // Task 3.4. Two-bit majority-UMA adder
     operation TwoBitMajUmaAdder_Reference (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
         using (tempCarry = Qubit()) {
             // We only need the extra qubit so we have 3 to pass to the majority gate for the lowest bits

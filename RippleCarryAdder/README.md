@@ -2,16 +2,21 @@
 
 This kata explores ripple-carry addition on a quantum computer.
 
-The simplest quantum adder closely mirrors its classical counterpart,
+* The simplest quantum adder, covered in part I, closely mirrors its classical counterpart,
 using the same basic components and the same algorithm.
-A more complex version covered in part 3 of the kata uses a somewhat different algorithm
+* Part II explores building an in-place adder.
+* A more complex version of an in-place adder covered in part III of the kata uses a different algorithm
 to reduce the number of ancillary qubits needed.
+* Finally, part IV covers building an in-place quantum subtractor.
+
+You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
 
 #### Theory
 
 * [Classical binary adder on Wikipedia](https://en.wikipedia.org/wiki/Adder_(electronics)).
-* [Paper on quantum binary addition](https://arxiv.org/pdf/quant-ph/0008033.pdf) by Thomas G. Draper - part 2 explains how to adapt the classical adder to a quantum environment.
-* [Paper on improved ripple carry addition](https://arxiv.org/pdf/quant-ph/0410184.pdf) by Steven A. Cuccaro, Thomas G. Draper, Samuel A. Kutin, and David Petrie Moulton - explains the principle behind the adder in part 3 of the kata.
+* Part 2 of the [paper on quantum binary addition](https://arxiv.org/pdf/quant-ph/0008033.pdf) by Thomas G. Draper explains how to adapt the classical adder to a quantum environment.
+* [Paper on improved ripple carry addition](https://arxiv.org/pdf/quant-ph/0410184.pdf) by Steven A. Cuccaro, Thomas G. Draper, Samuel A. Kutin, and David Petrie Moulton 
+  explains the principle behind the adder in part III of the kata.
 
 #### Q#
 

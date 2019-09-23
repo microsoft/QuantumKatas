@@ -15,7 +15,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
     
     // The "Ripple Carry Adder" quantum kata is a series of exercises designed
-    // to get you familiar with ripple carry addition on a quantum computer,
+    // to get you familiar with ripple-carry addition on a quantum computer,
     // walking you through the steps to build two different adders.
     // It covers the following topics:
     //  - Adapting a classical adder to a quantum environment
@@ -33,7 +33,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     
     //////////////////////////////////////////////////////////////////
-    // Part I. Simple adder outputting to empty Qubits
+    // Part I. Simple adder outputting to empty qubits
     //////////////////////////////////////////////////////////////////
     
     // This section adapts the classical binary adder to a quantum computer.
@@ -41,16 +41,16 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.1. Summation of two bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "sum" in state |0⟩
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "sum" in state |0⟩.
     // Goal: transform the "sum" qubit into the lowest bit of the binary sum of φ and ψ
     //         |0⟩ + |0⟩ → |0⟩
     //         |0⟩ + |1⟩ → |1⟩
     //         |1⟩ + |0⟩ → |1⟩
     //         |1⟩ + |1⟩ → |0⟩
-    //       any superposition should map appropriately
-    //       for example:
+    //       Any superposition should map appropriately.
+    // Example:
     //         |+⟩ = (|0⟩ + |1⟩) / sqrt(2)
     //         |-⟩ = (|0⟩ - |1⟩) / sqrt(2)
     //         |+⟩ ⨂ |-⟩ ⨂ |0⟩ → (|000⟩ + |101⟩ - |011⟩ - |110⟩) / 2
@@ -62,16 +62,16 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.2. Carry of two bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
-    // Goal: set the "carry" qubit to |1⟩ if the binary sum of φ and ψ produces a carry
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
+    // Goal: set the "carry" qubit to |1⟩ if the binary sum of φ and ψ produces a carry, and leave it in state |0⟩ otherwise.
     //         |0⟩ and |0⟩ → |0⟩
     //         |0⟩ and |1⟩ → |0⟩
     //         |1⟩ and |0⟩ → |0⟩
     //         |1⟩ and |1⟩ → |1⟩
-    //       any superposition should map appropriately
-    //       for example:
+    //       Any superposition should map appropriately.
+    // Example:
     //         |+⟩ ⨂ |-⟩ ⨂ |0⟩ → (|000⟩ + |100⟩ - |010⟩ - |111⟩) / 2
     operation LowestBitCarry (a : Qubit, b : Qubit, carry : Qubit) : Unit is Adj {
         // ...
@@ -79,14 +79,14 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 1.3. One bit adder
+    // Task 1.3. One-bit adder
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) two qubits "sum" and "carry" in state |0⟩
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) two qubits "sum" and "carry" in state |0⟩.
     // Goals:
-    //      1) transform the "sum" qubit into the lowest bit of the binary sum of φ and ψ
-    //      2) transform the "carry" qubit into the carry bit produced by that sum
+    //      1) transform the "sum" qubit into the lowest bit of the binary sum of φ and ψ,
+    //      2) transform the "carry" qubit into the carry bit produced by that sum.
     operation OneBitAdder (a : Qubit, b : Qubit, sum : Qubit, carry : Qubit) : Unit is Adj {
         // ...
 
@@ -95,11 +95,11 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.4. Summation of 3 bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carryin" in an arbitrary state |ω⟩
-    //      4) qubit "sum" in state |0⟩
-    // Goal: transform the "sum" qubit into the lowest bit of the binary sum of φ and ψ and ω
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carryin" in an arbitrary state |ω⟩,
+    //      4) qubit "sum" in state |0⟩.
+    // Goal: transform the "sum" qubit into the lowest bit of the binary sum of φ, ψ and ω.
     operation HighBitSum (a : Qubit, b : Qubit, carryin : Qubit, sum : Qubit) : Unit is Adj {
         // ...
 
@@ -108,32 +108,32 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.5. Carry of 3 bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carryin" in an arbitrary state |ω⟩
-    //      4) qubit "carryout" in state |0⟩
-    // Goal: transform the "carryout" qubit into the carry bit produced by the sum of φ and ψ and ω
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carryin" in an arbitrary state |ω⟩,
+    //      4) qubit "carryout" in state |0⟩.
+    // Goal: transform the "carryout" qubit into the carry bit produced by the sum of φ, ψ and ω.
     operation HighBitCarry (a : Qubit, b : Qubit, carryin : Qubit, carryout : Qubit) : Unit is Adj {
         // ...
 
     }
 
 
-    // Task 1.6. Two bit adder
+    // Task 1.6. Two-bit adder
     // Inputs:
-    //      1) two qubit register "a" in an arbitrary state |φ⟩
-    //      2) two qubit register "b" in an arbitrary state |ψ⟩
-    //      3) two qubit register "sum" in state |00⟩
-    //      4) qubit "carry" in state |0⟩
+    //      1) two-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) two-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) two-qubit register "sum" in state |00⟩,
+    //      4) qubit "carry" in state |0⟩.
     // Goals:
-    //      1) transform the "sum" register into the binary sum of φ and ψ
-    //      2) transform the "carry" qubit into the carry bit produced by that sum
+    //      1) transform the "sum" register into the binary sum of φ and ψ,
+    //      2) transform the "carry" qubit into the carry bit produced by that sum.
     // Note: All qubit registers in this kata are in little-endian order.
     //       This means the least significant bit comes first, then the next least significant, and so on.
     //       In this exercise, for example, 1 would be represented as |10⟩, while 2 would be represented as |01⟩.
     //       The sum of |10⟩ and |11⟩ would be |001⟩, with the last qubit being the carry qubit.
     operation TwoBitAdder (a : Qubit[], b : Qubit[], sum : Qubit[], carry : Qubit) : Unit is Adj {
-        // Hint: don't forget that you can request extra qubits
+        // Hint: don't forget that you can allocate extra qubits.
 
         // ...
 
@@ -142,14 +142,14 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.7. N-bit adder
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩
-    //      3) N qubit register "sum" in state |0...0⟩
-    //      4) qubit "carry" in state |0⟩
+    //      1) N qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) N qubit register "sum" in state |0...0⟩,
+    //      4) qubit "carry" in state |0⟩.
     // Goals:
-    //      1) transform the "sum" register into the binary sum of φ and ψ
-    //      2) transform the "carry" qubit into the carry bit produced by that sum
-    // Challenge: can you do this without requesting extra qubits?
+    //      1) transform the "sum" register into the binary sum of φ and ψ,
+    //      2) transform the "carry" qubit into the carry bit produced by that sum.
+    // Challenge: can you do this without allocating extra qubits?
     operation ArbitraryAdder (a : Qubit[], b : Qubit[], sum : Qubit[], carry : Qubit) : Unit is Adj {
         // ...
 
@@ -161,33 +161,35 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
 
     // The adder from the previous section requires empty qubits to accept the result.
-    // This section adapts the previous adder to mutate the inputs.
-    // That is, one of the numerical inputs is re-used for the output.
+    // This section adapts the previous adder to calculate the sum in-place,
+    // that is, to reuse one of the numerical inputs for storing the output.
     
     // Task 2.1. In-place summation of two bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    // Goal: transform qubit "b" into the lowest bit of the sum of φ and ψ
-    //       leave qubit "a" unchanged
-    // Something to think about: can we re-use one of the input bits for the carry as well?
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩.
+    // Goal: transform qubit "b" into the lowest bit of the sum of φ and ψ.
+    //       Leave qubit "a" unchanged.
     operation LowestBitSumInPlace (a : Qubit, b : Qubit) : Unit is Adj {
         // ...
 
     }
 
 
-    // Task 2.2. In-place one bit adder
+    // Something to think about: can we re-use one of the input bits to calculate the carry in-place as well? Why or why not?
+
+
+    // Task 2.2. In-place one-bit adder
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
     // Goals:
-    //      1) transform the "carry" qubit into the carry bit from the addition of φ and ψ
-    //      2) transform qubit "b" into the lowest bit of φ + ψ
-    //         leave qubit "a" unchanged
+    //      1) transform the "carry" qubit into the carry bit from the addition of φ and ψ,
+    //      2) transform qubit "b" into the lowest bit of φ + ψ.
+    //         Leave qubit "a" unchanged.
     operation OneBitAdderInPlace (a : Qubit, b : Qubit, carry : Qubit) : Unit is Adj {
-        // Hint: think carefully about the order of operations
+        // Hint: think carefully about the order of operations.
 
         // ...
 
@@ -196,26 +198,26 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     // Task 2.3. In-place summation of three bits
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carryin" in an arbitrary state |ω⟩
-    // Goal: transform qubit "b" into the lowest bit from the addition of φ and ψ and ω
-    //       leave qubits "a" and "carryin" unchanged
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carryin" in an arbitrary state |ω⟩.
+    // Goal: transform qubit "b" into the lowest bit from the addition of φ and ψ and ω.
+    //       Leave qubits "a" and "carryin" unchanged.
     operation HighBitSumInPlace (a : Qubit, b : Qubit, carryin : Qubit) : Unit is Adj {
         // ...
 
     }
 
 
-    // Task 2.4. In-place two bit adder
+    // Task 2.4. In-place two-bit adder
     // Inputs:
-    //      1) two qubit register "a" in an arbitrary state |φ⟩
-    //      2) two qubit register "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
+    //      1) two-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) two-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
     // Goals:
-    //      1) transform register "b" into the state |φ + ψ⟩
-    //      2) transform the "carry" qubit into the carry bit from the addition
-    //         leave register "a" unchanged
+    //      1) transform register "b" into the state |φ + ψ⟩,
+    //      2) transform the "carry" qubit into the carry bit from the addition.
+    //         Leave register "a" unchanged.
     operation TwoBitAdderInPlace (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
         // ...
 
@@ -224,13 +226,13 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     // Task 2.5. In-place N-bit adder
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
     // Goals:
-    //      1) transform register "b" into the state |φ + ψ⟩
-    //      2) transform the "carry" qubit into the carry bit from the addition
-    //         leave register "a" unchanged
+    //      1) transform register "b" into the state |φ + ψ⟩,
+    //      2) transform the "carry" qubit into the carry bit from the addition.
+    //         Leave register "a" unchanged.
     operation ArbitraryAdderInPlace (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
         // ...
 
@@ -248,42 +250,42 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 3.1. Majority gate
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "c" in an arbitrary state |ω⟩
-    // Goal: construct the "in-place majority" gate
-    //      1) transform qubit "a" into the carry bit from the addition of φ and ψ and ω
-    //      2) transform qubit "b" into |φ + ψ⟩
-    //      3) transform qubit "c" into |φ + ω⟩
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "c" in an arbitrary state |ω⟩.
+    // Goal: construct the "in-place majority" gate:
+    //      1) transform qubit "a" into the carry bit from the addition of φ, ψ and ω,
+    //      2) transform qubit "b" into |φ + ψ⟩,
+    //      3) transform qubit "c" into |φ + ω⟩.
     operation Majority (a : Qubit, b : Qubit, c : Qubit) : Unit is Adj {
         // ...
 
     }
 
     
-    // Task 3.2. UnMajority and Add gate
+    // Task 3.2. "UnMajority and Add" gate
     // Inputs:
-    //      1) qubit "a" storing the carry bit from the sum φ + ψ + ω
-    //      2) qubit "b" in state |φ + ψ⟩
-    //      3) qubit "c" in state |φ + ω⟩
+    //      1) qubit "a" storing the carry bit from the sum φ + ψ + ω,
+    //      2) qubit "b" in state |φ + ψ⟩,
+    //      3) qubit "c" in state |φ + ω⟩.
     // Goal: construct the "un-majority and add", or "UMA" gate
-    //      1) restore qubit "a" into state |φ⟩
-    //      2) transform qubit "b" into state |φ + ψ + ω⟩
-    //      3) restore qubit "c" into state |ω⟩
+    //      1) restore qubit "a" into state |φ⟩,
+    //      2) transform qubit "b" into state |φ + ψ + ω⟩,
+    //      3) restore qubit "c" into state |ω⟩.
     operation UnMajorityAdd (a : Qubit, b : Qubit, c : Qubit) : Unit is Adj {
         // ...
 
     }
 
 
-    // Task 3.3. One bit majority-UMA adder
+    // Task 3.3. One-bit majority-UMA adder
     // Inputs:
-    //      1) qubit "a" in an arbitrary state |φ⟩
-    //      2) qubit "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
-    // Goal: construct a one bit binary adder from task 2.2 using Majority and UMA gates
+    //      1) qubit "a" in an arbitrary state |φ⟩,
+    //      2) qubit "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
+    // Goal: construct a one-bit binary adder from task 2.2 using Majority and UMA gates.
     operation OneBitMajUmaAdder (a : Qubit, b : Qubit, carry : Qubit) : Unit is Adj {
-        // Hint: Allocate an extra qubit to pass as qubit "c" for the two gates.
+        // Hint: Allocate an extra qubit to hold the carry bit used in Majority and UMA gates during the computation.
         // It's less efficient here, but it will help in the next tasks.
 
         // ...
@@ -291,14 +293,14 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
 
-    // Task 3.4. Two bit majority-UMA adder
+    // Task 3.4. Two-bit majority-UMA adder
     // Inputs:
-    //      1) two qubit register "a" in an arbitrary state |φ⟩
-    //      2) two qubit register "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
-    // Goal: construct a two bit binary adder from task 2.4 using Majority and UMA gates
+    //      1) two qubit register "a" in an arbitrary state |φ⟩,
+    //      2) two qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
+    // Goal: construct a two-bit binary adder from task 2.4 using Majority and UMA gates.
     operation TwoBitMajUmaAdder (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
-        // Hint: think carefully about which qubits you need to pass to the two gates
+        // Hint: think carefully about which qubits you need to pass to the two gates.
 
         // ...
 
@@ -307,10 +309,10 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 3.5. N-bit majority-UMA adder
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩
-    //      3) qubit "carry" in state |0⟩
-    // Goal: construct an N-bit binary adder from task 2.5 using only one extra qubit
+    //      1) N qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "carry" in state |0⟩.
+    // Goal: construct an N-bit binary adder from task 2.5 using only one extra qubit.
     operation ArbitraryMajUmaAdder (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
         // ...
 
@@ -326,16 +328,16 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 4.1. N-bit subtractor
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩
-    //      3) qubit "borrow" in state |0⟩
-    // Goal: construct a binary subtractor
-    //      1) transform register "b" into the state |ψ - φ⟩ 
-    //      2) set the "borrow" qubit to |1⟩ if that subtraction required a borrow
-    //         leave register "a" unchanged
+    //      1) N qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "borrow" in state |0⟩.
+    // Goal: construct a binary subtractor:
+    //      1) transform register "b" into the state |ψ - φ⟩ ,
+    //      2) set the "borrow" qubit to |1⟩ if that subtraction required a borrow.
+    //         Leave register "a" unchanged.
     operation Subtractor (a : Qubit[], b : Qubit[], borrow : Qubit) : Unit is Adj {
-        // Hint: use the adder you already built
-        // experiment with inverting the registers before and after the addition
+        // Hint: use the adder you already built, 
+        // and experiment with inverting the registers before and after the addition.
 
         // ...
 
