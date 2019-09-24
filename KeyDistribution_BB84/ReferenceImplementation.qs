@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 //////////////////////////////////////////////////////////////////////
 // This file contains reference solutions to all tasks.
 // The tasks themselves can be found in Tasks.qs file.
@@ -6,9 +9,9 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     
     
@@ -16,19 +19,15 @@ namespace Quantum.Kata.KeyDistribution {
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
     
-	operation Task11_Reference (qs : Qubit[]) : Unit {
-        body (...) {
-            for (i in 0 .. Length(qs) - 1) {
-                H(qs[i]);
-            }
+	operation Task11_Reference (qs : Qubit[]) : Unit is Adj {
+        for (i in 0 .. Length(qs) - 1) {
+            H(qs[i]);
         }
-        adjoint auto;
     }
 
+
     operation Task12_Reference (q : Qubit) : Unit {
-        body (...) {
-            H(q);
-        }
+        H(q);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -45,23 +44,22 @@ namespace Quantum.Kata.KeyDistribution {
         return basis;
     }
 
-	operation Task22_PrepareAlice_Reference(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit {
-        body(...) {
-            for (i in 0..Length(qs) - 1) {
-                if (bits[i]) {
-                    X(qs[i]);
-                }
-                if (basis[i]) {
-                    H(qs[i]);
-                }
+
+	operation Task22_PrepareAlice_Reference(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit is Adj {
+        for (i in 0..Length(qs) - 1) {
+            if (bits[i]) {
+                X(qs[i]);
+            }
+            if (basis[i]) {
+                H(qs[i]);
             }
         }
-        adjoint auto;
     }
+
 
     operation Task23_Measure_Reference(qs : Qubit[], basis : Bool[]) : Bool[] {
         // The following line ensures that the inputs are all the same length
-        AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
+        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
 
         mutable measurements = new Bool[Length(qs)];
         for (i in 0..Length(qs) - 1) {
@@ -73,10 +71,11 @@ namespace Quantum.Kata.KeyDistribution {
         return measurements;
     }
 
+
     operation Task24_GenerateKey_Reference(bAlice : Bool[], bBob : Bool[], res : Bool[]) : Bool[] {
         // The next two lines are to ensure that the inputs are all the same length
-        AssertIntEqual(Length(bAlice), Length(bBob), "Input arrays should be the same length");
-        AssertIntEqual(Length(bAlice), Length(res), "Input arrays should be the same length");
+        Fact(Length(bAlice) == Length(bBob), "Input arrays should be the same length");
+        Fact(Length(bAlice) == Length(res), "Input arrays should be the same length");
 
         mutable count = 0;
         for (i in 0..Length(bAlice) - 1) {
@@ -97,9 +96,10 @@ namespace Quantum.Kata.KeyDistribution {
         return key;
     }
 
+
     operation Task25_CheckKeysMatch_Reference(keyA : Bool[], keyB : Bool[], p : Double) : Bool {
         // The following line ensures that the inputs are all the same length
-        AssertIntEqual(Length(keyA), Length(keyB), "Input arrays should be the same length");
+        Fact(Length(keyA) == Length(keyB), "Input arrays should be the same length");
 
         mutable count = 0.0;
         for (i in 0..Length(keyA) - 1) {
@@ -108,8 +108,9 @@ namespace Quantum.Kata.KeyDistribution {
             }
         }
 
-        return count / ToDouble(Length(keyA)) >= p;
+        return count / IntAsDouble(Length(keyA)) >= p;
     }
+
 
     operation Task26_BB84_Reference(qs : Qubit[],  p : Double) : Bool[] {
         // 1. Choose random basis and bits to encode
@@ -136,6 +137,7 @@ namespace Quantum.Kata.KeyDistribution {
         return new Bool[0];
     }
 
+
     //////////////////////////////////////////////////////////////////
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
@@ -153,6 +155,7 @@ namespace Quantum.Kata.KeyDistribution {
         }
         return res;
     }
+
     
     operation Task32_Reference (qs : Qubit[],  p : Double) : Bool[] {
         let basis = Task21_ChooseBasis_Reference(Length(qs));

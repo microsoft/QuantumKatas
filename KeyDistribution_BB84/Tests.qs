@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 //////////////////////////////////////////////////////////////////////
 // This file contains testing harness for all tasks.
 // You should not modify anything in this file.
@@ -6,9 +9,8 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Diagnostics;
 	open Microsoft.Quantum.Math;
 	open Microsoft.Quantum.Convert;
     
@@ -18,9 +20,10 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
 	operation Task11_Test () : Unit {
         for (i in 1 .. 5) {
-            AssertOperationsEqualReferenced(Task11, Task11_Reference, i);
+            AssertOperationsEqualReferenced(i, Task11, Task11_Reference);
         }
     }
+
 
     operation Task12_Test () : Unit {
         using (q = Qubit()) {
@@ -30,9 +33,11 @@ namespace Quantum.Kata.KeyDistribution {
         }
     }
   
+
     //////////////////////////////////////////////////////////////////
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
+
     operation GenerateRandomState(N : Int) : (Bool[], Bool[]) {
         mutable basis = new Bool[N];
         mutable state = new Bool[N];
@@ -45,24 +50,26 @@ namespace Quantum.Kata.KeyDistribution {
         return (basis, state);
     }
 
+
     operation Task21_Test() : Unit {
         let N = 7;
         let basis = Task21_ChooseBasis(N);
-        AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
+        Fact(N == Length(basis), "Returned array should be of the given length");
 
         let basis2 = Task21_ChooseBasis(N);
-        AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
-        AssertBoolEqual(BoolArrayAsInt(basis) != BoolArrayAsInt(basis2), true, 
-			"Random generation should not return equal arrays. RUn again to see if problem goes away");
+        Fact(N == Length(basis), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(basis) != BoolArrayAsInt(basis2), 
+			"Random generation should not return equal arrays. Run again to see if problem goes away");
 
         let basis3 = Task21_ChooseBasis(N);
-        AssertIntEqual(N, Length(basis), "Returned array should be of the given length");
-        AssertBoolEqual(BoolArrayAsInt(basis2) != BoolArrayAsInt(basis3), true, 
-		    "Random generation should not return equal arrays. RUn again to see if problem goes away");
-		AssertBoolEqual(BoolArrayAsInt(basis) != BoolArrayAsInt(basis3), true, 
-		    "Random generation should not return equal arrays. RUn again to see if problem goes away");
+        Fact(N == Length(basis), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(basis2) != BoolArrayAsInt(basis3), 
+		    "Random generation should not return equal arrays. Run again to see if problem goes away");
+		Fact(BoolArrayAsInt(basis) != BoolArrayAsInt(basis3), 
+		    "Random generation should not return equal arrays. Run again to see if problem goes away");
     }
     
+
     operation Task22_Test() : Unit {
         using (qs = Qubit[2]) {
             for (i in 0..3) {
@@ -89,6 +96,7 @@ namespace Quantum.Kata.KeyDistribution {
         }
     }
 
+
     operation Task23_Test() : Unit {
         let N = 7;
     
@@ -100,12 +108,13 @@ namespace Quantum.Kata.KeyDistribution {
                 let result = Task23_Measure(qs, basis);
                 
                 for (i in 0..N - 1) {
-                    AssertBoolEqual(result[i], state[i], "Measured in wrong basis");
+                    Fact(result[i] == state[i], "Measured in wrong basis");
                 }
                 ResetAll(qs);
             }
         }
     }
+
 
     operation Task24_Test() : Unit {
 		for (i in 5..9) {
@@ -114,12 +123,13 @@ namespace Quantum.Kata.KeyDistribution {
 			let expected = Task24_GenerateKey_Reference(basis1, basis2, state);
 			let result = Task24_GenerateKey(basis1, basis2, state);
 
-			AssertIntEqual(Length(result), Length(expected), $"key should be length {Length(expected)}");
+			Fact(Length(result) == Length(expected), $"key should be length {Length(expected)}");
 		    for (j in 0..Length(expected) - 1) {
-			    AssertBoolEqual(result[j], expected[j], "Unexpected key value");
+			    Fact(result[j] == expected[j], "Unexpected key value");
             }
 		}        
     }
+
 
     operation Task25_Test() : Unit {
 		let (p1, p2) = (0.66, 0.85);
@@ -129,42 +139,45 @@ namespace Quantum.Kata.KeyDistribution {
 			let result1 = Task25_CheckKeysMatch_Reference(key1, key2, p1);
 			let result2 = Task25_CheckKeysMatch_Reference(key1, key2, p2);
 
-			AssertBoolEqual(Task25_CheckKeysMatch(key1, key2, p1), result1, $"Should return {result1}");
-			AssertBoolEqual(Task25_CheckKeysMatch(key1, key2, p2), result2, $"Should return {result2}");
+			Fact(Task25_CheckKeysMatch(key1, key2, p1) == result1, $"Should return {result1}");
+			Fact(Task25_CheckKeysMatch(key1, key2, p2) == result2, $"Should return {result2}");
 		}
     }
+
 
     //////////////////////////////////////////////////////////////////
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
+
     operation Task31_Test () : Unit {
         using (q = Qubit()) {
             mutable res = 0;
             // q = 0, Real value: b = rectangular, Input: b = rectangular
             set res = Task31(q, false);
-            AssertIntEqual(res, 0, $"Incorrect result: {res}");
+            Fact(res == 0, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 0, Real value: b = diagonal, Input: b = diagonal 
             H(q);
             set res = Task31(q, true);
-            AssertIntEqual(res, 0, $"Incorrect result: {res}");
+            Fact(res == 0, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 1, Real value: b = rectangular, Input: b = rectangular 
             X(q);
             set res = Task31(q, false);
-            AssertIntEqual(res, 1, $"Incorrect result: {res}");
+            Fact(res == 1, $"Incorrect result: {res}");
             Reset(q);
 
             // q = 1, Real value: b = diagonal, Input: b = diagonal 
             X(q);
             H(q);
             set res = Task31(q, true);
-            AssertIntEqual(res, 1, $"Incorrect result: {res}");
+            Fact(res == 1, $"Incorrect result: {res}");
             Reset(q);
         }
     }
+
 
     operation Task32_Test () : Unit {
         mutable emptyKeys = 0;
@@ -177,7 +190,7 @@ namespace Quantum.Kata.KeyDistribution {
             }
         }
         
-        AssertBoolEqual(emptyKeys == 0, false, "Should return some empty keys");
-        AssertBoolEqual(emptyKeys == 10, false, "Should return some nonempty keys");
+        Fact(emptyKeys != 0, "Should return some empty keys");
+        Fact(emptyKeys != 10, "Should return some nonempty keys");
     }
 }

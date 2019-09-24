@@ -1,9 +1,12 @@
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 namespace Quantum.Kata.KeyDistribution {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
     
     
     //////////////////////////////////////////////////////////////////
@@ -21,6 +24,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Your goal is to fill in the blank (marked with // ... comment)
     // with some Q# code to make the failing test pass.
     
+
     //////////////////////////////////////////////////////////////////
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
@@ -28,23 +32,25 @@ namespace Quantum.Kata.KeyDistribution {
 	// Task 1.1:
     // Prepare qs with a diagonal polarization. Each bit in qs should be 
     // prepared as follows:
-    //		if qs[i] is |0>, should become (|0> + |1>)/sqrt(2)
-    //		if qs[i] is |1>, should become (|0> - |1>)/sqrt(2)
-    // All qubits in qs will be either |0> or |1>.
+    //		if qs[i] is |0⟩, should become (|0⟩ + |1⟩)/sqrt(2)
+    //		if qs[i] is |1⟩, should become (|0⟩ - |1⟩)/sqrt(2)
+    // All qubits in qs will be either |0⟩ or |1⟩.
     operation Task11 (qs : Qubit[]) : Unit {
         // ...
     }
 
+
     // Task 1.2: 
     // Apply a transformation that will leave the qubit in a superposition state 
 	// with equal probabilities of measuring 0 and 1. The qubit is 
-    // guaranteed to be in the state |0> and after this operation there 
+    // guaranteed to be in the state |0⟩ and after this operation there 
     // should be a 50% chance of it remaining 0 and a 50% chance of it being 
-    // |1>
+    // |1⟩
     operation Task12 (q : Qubit) : Unit {
         // ...
     }
     
+
     //////////////////////////////////////////////////////////////////
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
@@ -59,41 +65,44 @@ namespace Quantum.Kata.KeyDistribution {
         return new Bool[N];
     }
 
+
     // Task 2.2: Prepare Alice's qubits
     // Prepare the qubits that Alice will send to Bob
     // Input:
     //	qs: N qubits in the 0 states
     //	basis: A Bool array of length N where the integer at index i indicates
-    //	what basis to prepare the ith qubit in
+    //	what basis to prepare the i-th qubit in
     //		false: 0/1 (rectangular) basis
     //		true: +/- (diagonal) basis
     //	bits: A Bool array of length N where the value at index i indicates
-    //	which bit to encode in the ith qubit (false = 0, true = 1)
+    //	which bit to encode in the i-th qubit (false = 0, true = 1)
     operation Task22_PrepareAlice(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit {
         // The next two lines are to ensure that the inputs are all the same length
-        AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
-        AssertIntEqual(Length(qs), Length(bits), "Input arrays should be the same length");
+        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
+        Fact(Length(qs) == Length(bits), "Input arrays should be the same length");
 
         // ...
     }
+
 
     // Task 2.3: Bob measures qubits
     // Measure the given qubits in the bases and return the result of the measurements
     // Inputs:
     //	qs: N qubits in an arbitrary state 
     //	basis: A Bool array of length N where the integer at index i indicates
-    //	what basis to measure the ith qubit in
+    //	what basis to measure the i-th qubit in
     //		false: 0/1 (rectangular) basis
     //		true: +/- (diagonal) basis
     // Outputs:
     //	return a bool array of the measurement results (false = Zero, true = One)
     operation Task23_Measure(qs : Qubit[], basis : Bool[]) : Bool[] {
         // The following line ensures that the inputs are all the same length
-        AssertIntEqual(Length(qs), Length(basis), "Input arrays should be the same length");
-
+        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
+        
         // ...
         return new Bool[3];
     }
+
 
     // Task 2.4: Generate the key!
     // Given Alice's choice of basis states, Bob's choice of basis states, and Bob's 
@@ -103,20 +112,21 @@ namespace Quantum.Kata.KeyDistribution {
     //	bAlice: Alice's basis states
     //	bBob: Bob's basis states
     //	res: Bob's measurement results
-    // Ouput:
+    // Output:
     //	return a Bool array representing Alice and Bob's shared key
     operation Task24_GenerateKey(bAlice : Bool[], bBob : Bool[], res : Bool[]) : Bool[] {
         // The next two lines are to ensure that the inputs are all the same length
-        AssertIntEqual(Length(bAlice), Length(bBob), "Input arrays should be the same length");
-        AssertIntEqual(Length(bAlice), Length(res), "Input arrays should be the same length");
+        Fact(Length(bAlice) == Length(bBob), "Input arrays should be the same length");
+        Fact(Length(bAlice) == Length(res), "Input arrays should be the same length");
 
         // ...
         return new Bool[3];
     }
 
+
     // Task 2.5: Was communication secure?
-    // Given matching subsets of Alice and Bob's keys (ex: indicies 3-10 of Alice's key 
-    // and indicies 3-10 of Bob's key), check to see if at least a given
+    // Given matching subsets of Alice and Bob's keys (ex: indices 3-10 of Alice's key 
+    // and indices 3-10 of Bob's key), check to see if at least a given
     // percentage of these bits match
     // Inputs:
     //	keyA: subset of Alice's key
@@ -127,11 +137,12 @@ namespace Quantum.Kata.KeyDistribution {
     //	to the minimum percentage and false otherwise
     operation Task25_CheckKeysMatch(keyA : Bool[], keyB : Bool[], p : Double) : Bool {
         // The following line ensures that the inputs are all the same length
-        AssertIntEqual(Length(keyA), Length(keyB), "Input arrays should be the same length");
+        Fact(Length(keyA) == Length(keyB), "Input arrays should be the same length");
 
         //...
         return false;
     }
+
 
     // Task 2.6: Put it all together 
     // Let's implement the entire code flow for Quantum Key Distribution 
@@ -145,11 +156,11 @@ namespace Quantum.Kata.KeyDistribution {
     //		4. Bob measures Alice's qubits in his chosen bases
     //		5. Alice and Bob compare bases and use the results from the matching bases to create a 
     //		   shared key
-    //		6. Alice and Bob check to make sure nobody evesdropped by comparing a subset of their keys
+    //		6. Alice and Bob check to make sure nobody eavesdropped by comparing a subset of their keys
     //		   and checking to see if more than a certain percentage of the bits match
     // Given a qubit register, implement the steps of the BB84 protocol. For Step 6, check the 
-	// percentage on the entire key instead of choosing a subset of indicies (in practice only 
-	// a subset of indicies is chosen to minimize how much information about the key is shared).
+	// percentage on the entire key instead of choosing a subset of indices (in practice only 
+	// a subset of indices is chosen to minimize how much information about the key is shared).
     // Inputs:
     //	qs: N qubits in the 0 state
     //	p: Minimum percentage of matching bits
@@ -162,12 +173,13 @@ namespace Quantum.Kata.KeyDistribution {
         return new Bool[0];
     }
 
+
     //////////////////////////////////////////////////////////////////
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
 
     // Task 3.1.
-    // Implement an eavsedropper, Eve. Eve will intercept a qubit, q from 
+    // Implement an eavesdropper, Eve. Eve will intercept a qubit, q from 
     // the quantum channel that Alice and Bob are using. She will measure 
     // in the basis defined in the basis parameter, basis, (false for rectangular and 
     // true for diagonal), reconstruct the qubit into the original state q, 
@@ -177,7 +189,8 @@ namespace Quantum.Kata.KeyDistribution {
         // ...
         return 0;
     }
-        
+    
+
     // Task 3.2.
     // Add an eavesdropper into the BB84 protocol (Task 2.6). 
     // Note that this changes the test for this task: We are able to detect 

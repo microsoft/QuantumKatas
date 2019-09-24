@@ -1,6 +1,6 @@
 # Welcome!
 
-Key Distribution kata covers the BB84 quantum key distribution protocol. This 
+"Key Distribution - BB84" kata covers the BB84 quantum key distribution protocol. This 
 protocol outlines a way for two parties, Alice and Bob, to share a secret
 key and be able to detect eavesdroppers.
 
