@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
+    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Diagnostics;
@@ -41,7 +42,7 @@ namespace Quantum.Kata.KeyDistribution {
     }
 
 
-    // Task 1.2. Equal superposition.
+    // Task 1.2. Equal superposition
     // Input: A qubit in the |0⟩ state.
     // Goal:  Change the qubit state to a superposition state 
     //        that has equal probabilities of measuring 0 and 1.
@@ -56,56 +57,61 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
     
-	// Task 2.1: Choosing the basis
-    // Return a Bool array where the value at each index represents a randomly
-    // chosen basis. Values should be either false (0/1 basis) or true (+/- basis)
-    // Inputs: 
-    //	N: length of output array
-    operation Task21_ChooseBasis(N : Int) : Bool[] {
+	// Task 2.1. Generate random array
+    // Input:  An integer N.
+    // Output: A Bool array of length N, where each element is chosen at random. 
+    // 
+    // This will be used by both Alice and Bob to choose either the sequence of bits to send
+    // or the sequence of bases (false indicates |0⟩/|1⟩ basis, and true indicates |+⟩/|-⟩ basis) to use when encoding/measuring the bits.
+    operation RandomArray (N : Int) : Bool[] {
         // ...
         return new Bool[N];
     }
 
 
-    // Task 2.2: Prepare Alice's qubits
-    // Prepare the qubits that Alice will send to Bob
-    // Input:
-    //	qs: N qubits in the 0 states
-    //	basis: A Bool array of length N where the integer at index i indicates
-    //	what basis to prepare the i-th qubit in
-    //		false: 0/1 (rectangular) basis
-    //		true: +/- (diagonal) basis
-    //	bits: A Bool array of length N where the value at index i indicates
-    //	which bit to encode in the i-th qubit (false = 0, true = 1)
-    operation Task22_PrepareAlice(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit {
-        // The next two lines are to ensure that the inputs are all the same length
-        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
+    // Task 2.2. Prepare Alice's qubits
+    // Inputs:
+    //      1) "qs": an array of N qubits in the |0⟩ states,
+    //	    2) "bases": a Bool array of length N;
+    //         bases[i] indicates the basis to prepare the i-th qubit in:
+    //         - false: use |0⟩/|1⟩ (computational) basis
+    //         - true: use |+⟩/|-⟩ (Hadamard/diagonal) basis
+    //      3) "bits": a Bool array of length N;
+    //         bits[i] indicates the bit to encode in the i-th qubit: false = 0, true = 1.
+    // Goal: Prepare the qubits in the described state.
+    operation PrepareAlicesQubits (qs : Qubit[], bases : Bool[], bits : Bool[]) : Unit {
+        // The following lines enforce the constraints on the input that you are given.
+        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+        Fact(Length(qs) == Length(bases), "Input arrays should be the same length");
         Fact(Length(qs) == Length(bits), "Input arrays should be the same length");
 
         // ...
     }
 
 
-    // Task 2.3: Bob measures qubits
-    // Measure the given qubits in the bases and return the result of the measurements
+    // Task 2.3. Measure Bob's qubits
     // Inputs:
-    //	qs: N qubits in an arbitrary state 
-    //	basis: A Bool array of length N where the integer at index i indicates
-    //	what basis to measure the i-th qubit in
-    //		false: 0/1 (rectangular) basis
-    //		true: +/- (diagonal) basis
-    // Outputs:
-    //	return a bool array of the measurement results (false = Zero, true = One)
-    operation Task23_Measure(qs : Qubit[], basis : Bool[]) : Bool[] {
-        // The following line ensures that the inputs are all the same length
-        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
+    //      1) "qs": an array of N qubits;
+    //         each qubit is in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩.
+    //	    2) "bases": a Bool array of length N;
+    //         bases[i] indicates the basis to prepare the i-th qubit in:
+    //         - false: use |0⟩/|1⟩ (computational) basis
+    //         - true: use |+⟩/|-⟩ (Hadamard/diagonal) basis
+    // Measure the given qubits in the bases and return the result of the measurements
+    // Output: Measure each qubit in the corresponding basis and return an array of results 
+    //         (encoding measurement result Zero as false and One as true).
+    // The state of the qubits at the end of the operation does not matter.
+    operation MeasureBobsQubits (qs : Qubit[], bases : Bool[]) : Bool[] {
+        // The following lines enforce the constraints on the input that you are given.
+        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+        Fact(Length(qs) == Length(bases), "Input arrays should be the same length");
         
         // ...
-        return new Bool[3];
+        return new Bool[Length(qs)];
     }
 
 
-    // Task 2.4: Generate the key!
+    // Task 2.4. Generate the key!
     // Given Alice's choice of basis states, Bob's choice of basis states, and Bob's 
     // measurement results, return the shared key that Alice and Bob will use to
     // communicate.

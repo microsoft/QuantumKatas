@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
+    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
@@ -38,41 +39,39 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
 
-    operation Task21_ChooseBasis_Reference(N : Int) : Bool[] {
-        mutable basis = new Bool[N];
+	// Task 2.1. Generate random array
+    operation RandomArray_Reference (N : Int) : Bool[] {
+        mutable array = new Bool[N];
 
-        for (i in 0..N - 1) {
-            set basis w/= i <- RandomInt(2) == 1;
+        for (i in 0 .. N - 1) {
+            set array w/= i <- RandomInt(2) == 1;
         }
 
-        return basis;
+        return array;
     }
 
 
-	operation Task22_PrepareAlice_Reference(qs : Qubit[], basis : Bool[], bits : Bool[]) : Unit is Adj {
+    // Task 2.2. Prepare Alice's qubits
+	operation PrepareAlicesQubits_Reference(qs : Qubit[], bases : Bool[], bits : Bool[]) : Unit is Adj {
         for (i in 0..Length(qs) - 1) {
             if (bits[i]) {
                 X(qs[i]);
             }
-            if (basis[i]) {
+            if (bases[i]) {
                 H(qs[i]);
             }
         }
     }
 
 
-    operation Task23_Measure_Reference(qs : Qubit[], basis : Bool[]) : Bool[] {
-        // The following line ensures that the inputs are all the same length
-        Fact(Length(qs) == Length(basis), "Input arrays should be the same length");
-
-        mutable measurements = new Bool[Length(qs)];
+    // Task 2.3. Measure Bob's qubits
+    operation MeasureBobsQubits_Reference(qs : Qubit[], bases : Bool[]) : Bool[] {
         for (i in 0..Length(qs) - 1) {
-            if (basis[i]) {
+            if (bases[i]) {
                 H(qs[i]);
             }
-            set measurements w/= i <- M(qs[i]) == One;
         }
-        return measurements;
+        return ResultArrayAsBoolArray(MultiM(qs));
     }
 
 
@@ -118,17 +117,17 @@ namespace Quantum.Kata.KeyDistribution {
 
     operation Task26_BB84_Reference(qs : Qubit[],  p : Double) : Bool[] {
         // 1. Choose random basis and bits to encode
-		let basis = Task21_ChooseBasis_Reference(Length(qs));
-		let bits = Task21_ChooseBasis_Reference(Length(qs));
+		let basis = RandomArray_Reference(Length(qs));
+		let bits = RandomArray_Reference(Length(qs));
 		
 		// 2. Alice prepares her qubits
-		Task22_PrepareAlice_Reference(qs, basis, bits);
+		PrepareAlicesQubits_Reference(qs, basis, bits);
         
 		// 3. Bob chooses random basis to measure in
-        let bBob = Task21_ChooseBasis_Reference(Length(qs));
+        let bBob = RandomArray_Reference(Length(qs));
 
 		// 4. Bob measures Alice's qubits'
-        let mBob = Task23_Measure_Reference(qs, bBob);
+        let mBob = MeasureBobsQubits_Reference(qs, bBob);
 
 		// 5. Generate shared key
         let keyA = Task24_GenerateKey_Reference(basis, bBob, bits);
@@ -162,18 +161,18 @@ namespace Quantum.Kata.KeyDistribution {
 
     
     operation Task32_Reference (qs : Qubit[],  p : Double) : Bool[] {
-        let basis = Task21_ChooseBasis_Reference(Length(qs));
-		let bits = Task21_ChooseBasis_Reference(Length(qs));
+        let basis = RandomArray_Reference(Length(qs));
+		let bits = RandomArray_Reference(Length(qs));
 		
-		Task22_PrepareAlice_Reference(qs, basis, bits);
+		PrepareAlicesQubits_Reference(qs, basis, bits);
 
         for (i in 0 .. Length(qs) - 1) {
             let n = Task31_Reference(qs[i], RandomInt(2) == 1);
         }
         
-        let bBob = Task21_ChooseBasis_Reference(Length(qs));
+        let bBob = RandomArray_Reference(Length(qs));
 
-        let mBob = Task23_Measure_Reference(qs, bBob);
+        let mBob = MeasureBobsQubits_Reference(qs, bBob);
 
         let keyA = Task24_GenerateKey_Reference(basis, bBob, bits);
         let keyB = Task24_GenerateKey_Reference(basis, bBob, mBob);

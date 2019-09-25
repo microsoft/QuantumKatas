@@ -40,78 +40,56 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
 
-    operation GenerateRandomState(N : Int) : (Bool[], Bool[]) {
-        mutable basis = new Bool[N];
-        mutable state = new Bool[N];
-
-        for (i in 0..N- 1) {
-            set basis w/= i <- RandomInt(2) == 1;
-            set state w/= i <- RandomInt(2) == 1;
-        }
-
-        return (basis, state);
-    }
-
-
-    operation Task21_Test() : Unit {
+    operation T21_RandomArray_Test () : Unit {
+        // The test checks that the operation does not return always the same array.
         let N = 7;
-        let basis = Task21_ChooseBasis(N);
-        Fact(N == Length(basis), "Returned array should be of the given length");
+        let arr1 = RandomArray(N);
+        Fact(N == Length(arr1), "Returned array should be of the given length");
 
-        let basis2 = Task21_ChooseBasis(N);
-        Fact(N == Length(basis), "Returned array should be of the given length");
-        Fact(BoolArrayAsInt(basis) != BoolArrayAsInt(basis2), 
+        let arr2 = RandomArray(N);
+        Fact(N == Length(arr2), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(arr1) != BoolArrayAsInt(arr2), 
 			"Random generation should not return equal arrays. Run again to see if problem goes away");
 
-        let basis3 = Task21_ChooseBasis(N);
-        Fact(N == Length(basis), "Returned array should be of the given length");
-        Fact(BoolArrayAsInt(basis2) != BoolArrayAsInt(basis3), 
+        let arr3 = RandomArray(N);
+        Fact(N == Length(arr3), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(arr2) != BoolArrayAsInt(arr3), 
 		    "Random generation should not return equal arrays. Run again to see if problem goes away");
-		Fact(BoolArrayAsInt(basis) != BoolArrayAsInt(basis3), 
+		Fact(BoolArrayAsInt(arr1) != BoolArrayAsInt(arr3), 
 		    "Random generation should not return equal arrays. Run again to see if problem goes away");
     }
     
 
-    operation Task22_Test() : Unit {
-        using (qs = Qubit[2]) {
-            for (i in 0..3) {
-			    let basis = IntAsBoolArray(i, 2);
-			    for (j in 0..3) {
-				    let state = IntAsBoolArray(j, 2);
-				    Task22_PrepareAlice(qs, basis, state);
-                    Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
-                    AssertAllZero(qs);
-			    }
-                ResetAll(qs);
+    // ------------------------------------------------------
+    // Helper operation to generate two random arrays
+    operation GenerateRandomState (N : Int) : (Bool[], Bool[]) {
+        return (RandomArray_Reference(N), RandomArray_Reference(N));
+    }
+
+
+    operation T22_PrepareAlicesQubits_Test() : Unit {
+        for (N in 2 .. 10) {
+            let (bases, state) = GenerateRandomState(N);
+            using (qs = Qubit[N]) {
+				PrepareAlicesQubits(qs, bases, state);
+                Adjoint PrepareAlicesQubits_Reference(qs, bases, state);
+                AssertAllZero(qs);
             }
         }
-
-        using (qs = Qubit[7]) {
-            let basis = [false, true, true, false, false, true, false];
-            let state = [true, true, false, true, false, false, true];
-
-            Task22_PrepareAlice(qs, basis, state);
-            Adjoint Task22_PrepareAlice_Reference(qs, basis, state);
-            AssertAllZero(qs);
-            
-            ResetAll(qs);
-        }
     }
 
 
-    operation Task23_Test() : Unit {
-        let N = 7;
-    
-        using (qs = Qubit[N]) {
-            for (iter in 1..5) {
-                let (basis, state) = GenerateRandomState(N);
-
-                Task22_PrepareAlice_Reference(qs, basis, state);
-                let result = Task23_Measure(qs, basis);
-                
-                for (i in 0..N - 1) {
-                    Fact(result[i] == state[i], "Measured in wrong basis");
-                }
+    // ------------------------------------------------------
+    operation T23_MeasureBobsQubits_Test() : Unit {
+        for (N in 2 .. 10) {
+            let (bases, state) = GenerateRandomState(N);
+            using (qs = Qubit[N]) {
+                // Prepare the input qubits in the given state
+				PrepareAlicesQubits_Reference(qs, bases, state);
+                // Measure the qubits in the bases used for preparation - this should return encoded state
+                let result = MeasureBobsQubits(qs, bases);
+                Fact(N == Length(result), "The returned array should have the same length as the inputs");
+                Fact(BoolArrayAsInt(state) == BoolArrayAsInt(result), "Some of the measurements were done in the wrong basis");
                 ResetAll(qs);
             }
         }
