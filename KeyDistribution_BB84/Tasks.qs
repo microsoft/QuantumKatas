@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
@@ -29,24 +30,24 @@ namespace Quantum.Kata.KeyDistribution {
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
 	
-	// Task 1.1:
-    // Prepare qs with a diagonal polarization. Each bit in qs should be 
-    // prepared as follows:
-    //		if qs[i] is |0⟩, should become (|0⟩ + |1⟩)/sqrt(2)
-    //		if qs[i] is |1⟩, should become (|0⟩ - |1⟩)/sqrt(2)
-    // All qubits in qs will be either |0⟩ or |1⟩.
-    operation Task11 (qs : Qubit[]) : Unit {
+    // Task 1.1. Diagonal polarization
+    // Input: N qubits (stored in an array of length N).
+    //        Each qubit is either in |0⟩ or in |1⟩ state.
+    // Goal:  Convert the qubits to diagonal polarization:
+    //	      if qs[i] was |0⟩, it should become |+⟩ = (|0⟩ + |1⟩) / sqrt(2),
+    //	      if qs[i] was |1⟩, it should become |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
+    operation DiagonalPolarization (qs : Qubit[]) : Unit {
         // ...
     }
 
 
-    // Task 1.2: 
-    // Apply a transformation that will leave the qubit in a superposition state 
-	// with equal probabilities of measuring 0 and 1. The qubit is 
-    // guaranteed to be in the state |0⟩ and after this operation there 
-    // should be a 50% chance of it remaining 0 and a 50% chance of it being 
-    // |1⟩
-    operation Task12 (q : Qubit) : Unit {
+    // Task 1.2. Equal superposition.
+    // Input: A qubit in the |0⟩ state.
+    // Goal:  Change the qubit state to a superposition state 
+    //        that has equal probabilities of measuring 0 and 1.
+    // Note that this is not the same as keeping the qubit in the |0⟩ state with 50% probability
+    // and converting it to the |1⟩ state with 50% probability!
+    operation EqualSuperposition (q : Qubit) : Unit {
         // ...
     }
     

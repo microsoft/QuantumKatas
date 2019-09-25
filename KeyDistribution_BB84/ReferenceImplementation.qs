@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Convert;
@@ -19,15 +20,18 @@ namespace Quantum.Kata.KeyDistribution {
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
     
-	operation Task11_Reference (qs : Qubit[]) : Unit is Adj {
-        for (i in 0 .. Length(qs) - 1) {
-            H(qs[i]);
-        }
+    // Task 1.1. Diagonal polarization
+	operation DiagonalPolarization_Reference (qs : Qubit[]) : Unit is Adj {
+        ApplyToEachA(H, qs);
     }
 
 
-    operation Task12_Reference (q : Qubit) : Unit {
+    // Task 1.2. Equal superposition.
+    operation EqualSuperposition_Reference (q : Qubit) : Unit {
+        // The easiest way to do this is to convert the state of the qubit to |+⟩
         H(q);
+        // Other possible solutions include X(q); H(q); to prepare |-⟩ state,
+        // and anything that adds any relative phase to one of the states.
     }
 
     //////////////////////////////////////////////////////////////////

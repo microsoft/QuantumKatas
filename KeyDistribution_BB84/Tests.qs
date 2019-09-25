@@ -18,17 +18,19 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
-	operation Task11_Test () : Unit {
+
+	operation T11_DiagonalPolarization_Test () : Unit {
         for (i in 1 .. 5) {
-            AssertOperationsEqualReferenced(i, Task11, Task11_Reference);
+            AssertOperationsEqualReferenced(i, DiagonalPolarization, DiagonalPolarization_Reference);
         }
     }
 
 
-    operation Task12_Test () : Unit {
+    operation T12_EqualSuperposition_Test () : Unit {
         using (q = Qubit()) {
-            Task12(q);
-            AssertProb([PauliZ], [q], One, 0.5, "Measuring did not give 50/50 results.", 1e-5);
+            EqualSuperposition(q);
+            DumpMachine(());
+            AssertProb([PauliZ], [q], One, 0.5, "Measuring should produce 0 and 1 with 50/50 chance.", 1e-5);
             Reset(q);
         }
     }
