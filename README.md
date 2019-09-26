@@ -75,6 +75,8 @@ Currently covered topics are:
 * **[Mermin-Peres magic square game](./MagicSquareGame)**.
 
 #### Miscellaneous
+* **[BB84 protocol](./KeyDistribution_BB84/)**.
+  This kata covers BB84 key distribution algorithm.
 * **[Phase estimation](./PhaseEstimation/)**.
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
