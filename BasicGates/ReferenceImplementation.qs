@@ -83,8 +83,9 @@ namespace Quantum.Kata.BasicGates {
 
     // Task 1.7. Global Phase Change
     // Inputs:
-    //     1) Angle alpha, in radians, represented as Double.
-    //     2) A qubit in state β|0⟩ + γ|1⟩.
+    //     1) Pauli operator (μ) represented as Pauli.
+    //     2) Angle alpha, in radians, represented as Double.
+    //     3) A qubit in state β|0⟩ + γ|1⟩.
     // Goal: Change the state of the qubit to - β|0⟩ - γ|1⟩.
     operation GlobalPhaseChange_Reference(pauli: Pauli, alpha: Double, q: Qubit) : Unit is Adj+Ctl{
         R(PauliI,alpha,q);
