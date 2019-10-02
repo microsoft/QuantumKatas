@@ -54,11 +54,10 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T14_AmplitudeChange_Test () : Unit {
-        for (i in 0 .. 36) {
+      for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperOperation(AmplitudeChange(alpha, _), _), ArrayWrapperOperation(AmplitudeChange_Reference(alpha, _), _));
         }
-    }
     
     
     // ------------------------------------------------------
@@ -76,6 +75,12 @@ namespace Quantum.Kata.BasicGates {
     }
     
     
+    // ------------------------------------------------------
+    operation T17_GlobalPhaseChange_Test () : Unit {
+        AssertOperationsEqualReferenced(2, ArrayWrapperOperation(GlobalPhaseChange(PauliI, 2.0*PI() , _), _), ArrayWrapperOperation(GlobalPhaseChange_Reference(PauliI, 2.0*PI(), _), _));
+        }
+    
+
     // ------------------------------------------------------
     // 0 - |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
     // 1 - |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
@@ -119,22 +124,23 @@ namespace Quantum.Kata.BasicGates {
             AssertAllZero(qs);
         }
     }
+
     
-    
+
     // ------------------------------------------------------
-    operation T17_BellStateChange1_Test () : Unit {
+    operation T18_BellStateChange1_Test () : Unit {
         VerifyBellStateConversion(BellStateChange1, 0, 1);
     }
     
     
     // ------------------------------------------------------
-    operation T18_BellStateChange2_Test () : Unit {
+    operation T19_BellStateChange2_Test () : Unit {
         VerifyBellStateConversion(BellStateChange2, 0, 2);
     }
     
     
     // ------------------------------------------------------
-    operation T19_BellStateChange3_Test () : Unit {
+    operation T110_BellStateChange3_Test () : Unit {
         VerifyBellStateConversion(BellStateChange3, 0, 3);
     }
     
