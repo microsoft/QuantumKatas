@@ -108,7 +108,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 2.0. Bell state change - 3
+    // Task 1.10 Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
     operation BellStateChange3_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
