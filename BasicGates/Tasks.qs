@@ -117,7 +117,7 @@ namespace Quantum.Kata.BasicGates {
     //     2) Angle alpha, in radians, represented as Double.
     //     3) A qubit in state β|0⟩ + γ|1⟩.
     // Goal: Change the state of the qubit to - β|0⟩ - γ|1⟩.
-    operation GlobalPhaseChange(pauli: Pauli, alpha: Double, q: Qubit) : Unit is Adj+Ctl{
+    operation GlobalPhaseChange (q: Qubit) : Unit is Adj + Ctl {
         // ...
     }
 
