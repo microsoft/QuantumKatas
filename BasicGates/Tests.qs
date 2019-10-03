@@ -79,7 +79,7 @@ namespace Quantum.Kata.BasicGates {
     // ------------------------------------------------------
     operation T17_GlobalPhaseChange_Test () : Unit {
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(GlobalPhaseChange(PauliI, 2.0*PI() , _), _), ArrayWrapperOperation(GlobalPhaseChange_Reference(PauliI, 2.0*PI(), _), _));
-        }
+    }
     
 
     // ------------------------------------------------------
