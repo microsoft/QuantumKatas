@@ -54,7 +54,7 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T14_AmplitudeChange_Test () : Unit {
-      for (i in 0 .. 36) {
+        for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperOperation(AmplitudeChange(alpha, _), _), ArrayWrapperOperation(AmplitudeChange_Reference(alpha, _), _));
         }
