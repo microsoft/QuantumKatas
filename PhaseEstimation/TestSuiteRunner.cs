@@ -7,6 +7,7 @@
 // The tasks themselves can be found in Tasks.qs file.
 //////////////////////////////////////////////////////////////////////
 
+using Microsoft.Quantum.Katas;
 using Microsoft.Quantum.Simulation.XUnit;
 using System.Diagnostics;
 using Xunit.Abstractions;

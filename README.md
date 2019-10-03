@@ -2,6 +2,10 @@
 
 The Quantum Katas are a series of self-paced tutorials aimed at teaching you elements of quantum computing and Q# programming at the same time.
 
+:new: *(July 2019)* The Quantum Katas are expanding to include Jupyter Notebook tutorials on quantum computing! Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Notebook tutorials and instructions on running them online.
+
+:new: *(April 2019)* The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
+
 Each kata is a separate project which includes:
 
 * A sequence of tasks on the topic progressing from trivial to challenging.
@@ -11,14 +15,13 @@ Each kata is a separate project which includes:
 * Pointers to reference materials you might need to solve the tasks, both on quantum computing and on Q#.
 * Reference solutions, for when all else fails.
 
-:new: The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
-
 
 ## Table of Contents ##
 
-* [List of Katas](#topics)
-* [Running the Katas as Jupyter Notebooks](#kata-as-notebook)
-* [Running the Katas Locally](#kata-locally)
+* [List of Notebook tutorials](#tutorial-topics)
+* [List of Katas](#kata-topics)
+* [Running the Katas and tutorials as Jupyter Notebooks](#run-as-notebook)
+* [Running the Katas locally](#kata-locally)
   * [Downloading the Quantum Katas](#download)
   * [Running a kata as a Q# project](#kata-as-project)
   * [Running kata tests](#tests)
@@ -27,7 +30,13 @@ Each kata is a separate project which includes:
 * [Code of Conduct](#code-of-conduct)
 
 
-## List of Katas <a name="topics" /> ##
+## List of Notebook tutorials <a name="tutorial-topics" /> ##
+
+* **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
+  This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
+  discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
+
+## List of Katas <a name="kata-topics" /> ##
 
 Each kata covers one topic.
 Currently covered topics are:
@@ -57,6 +66,8 @@ Currently covered topics are:
   This kata introduces Grover's search algorithm and writing quantum oracles to be used with it.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
   This kata continues the exploration of Grover's search algorithm, using SAT problems as an example. It covers implementing quantum oracles based on the problem description instead of a hard-coded answer and using Grover's algorithm to solve problems with unknown number of solutions.
+* **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
+  This kata continues the exploration of Grover's search algorithm, using graph coloring problems as an example.
 
 #### Entanglement games
 * **[CHSH game](./CHSHGame/)**.
@@ -64,20 +75,24 @@ Currently covered topics are:
 * **[Mermin-Peres magic square game](./MagicSquareGame)**.
 
 #### Miscellaneous
+* **[BB84 protocol](./KeyDistribution_BB84/)**.
+  This kata covers BB84 key distribution algorithm.
 * **[Phase estimation](./PhaseEstimation/)**.
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
+* **[Ripple-carry adder](./RippleCarryAdder/)**.
+  This kata walks you through building a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
   This unusual kata offers tasks on implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
 
-## Running the Katas as Jupyter Notebooks <a name="kata-as-notebook" /> ##
+## Running the Katas and tutorials as Jupyter Notebooks <a name="run-as-notebook" /> ##
 
-The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
+The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata and tutorial Notebooks and for instructions on running them online.
 
 
-## Running the Katas Locally <a name="kata-locally" /> ##
+## Running the Katas locally <a name="kata-locally" /> ##
 
 To use the Quantum Katas locally, you'll first need to install the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
 Please see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/) if you do not already have the Quantum Development Kit installed.
@@ -173,7 +188,7 @@ docker build -t katas .
 ```
 
 To run the image in the container named `katas-container` with interactive command-line and 
-redirect container port 8888 to local port 8888 (needed to run jupyter):
+redirect container port `8888` to local port `8888` (needed to run jupyter):
 ```
 docker run -it --name katas-container -p 8888:8888 katas /bin/bash
 ```

@@ -42,13 +42,13 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     // Task 5. Even chessboard pattern
     operation EvenChessPattern_Reference (qs : Qubit[]) : Unit {
-        ApplyToEach(H, qs[1 .. Length(qs) - 1]);
+        ApplyToEach(H, Rest(qs));
     }
     
     
     // Task 6. Odd chessboard pattern
     operation OddChessPattern_Reference (qs : Qubit[]) : Unit {
-        ApplyToEach(H, qs[1 .. Length(qs) - 1]);
+        ApplyToEach(H, Rest(qs));
         X(Head(qs));
     }
     
@@ -59,7 +59,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
 
 
-    // Task 8. 2x2 chessboard pattern
+    // Task 8. 2⨯2 chessboard pattern
     operation ChessPattern2x2_Reference (qs : Qubit[]) : Unit {
         H(Head(qs));
         for (i in 2 .. Length(qs) - 1) {
@@ -78,8 +78,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     
     // Task 10. Increasing blocks
-    operation IncreasingBlocks_Reference (qs : Qubit[]) : Unit
-    is Adj + Ctl {
+    operation IncreasingBlocks_Reference (qs : Qubit[]) : Unit is Adj + Ctl {
 
         let N = Length(qs);
         // for N = 1, we need an identity
@@ -168,8 +167,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     // Helper function for Embed_2x2_Operator: performs a Clifford to implement a base change
     // that maps basis states index1 to 111...10 and index2 to 111...11 (in big endian notation, i.e., LSB in qs[n-1]) 
-    operation Embedding_Perm (index1 : Int, index2 : Int, qs : Qubit[]) : Unit
-    is Adj {
+    operation Embedding_Perm (index1 : Int, index2 : Int, qs : Qubit[]) : Unit is Adj {
 
         let n = Length(qs); 
         let bits1 = IntAsBoolArray(index1, n);
@@ -213,7 +211,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     }
     
     
-    // Helper function: apply the 2x2 unitary operator at the sub-matrix given by indices for 2 rows/columns
+    // Helper function: apply the 2⨯2 unitary operator at the sub-matrix given by indices for 2 rows/columns
     operation Embed_2x2_Operator (U : (Qubit => Unit is Ctl), index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
         Embedding_Perm(index1, index2, qs);
         Controlled U(Most(qs), Tail(qs));
@@ -224,7 +222,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Putting everything together: the target pattern is produced by a sequence of controlled H gates. 
     operation Hessenberg_Matrix_Reference (qs : Qubit[]) : Unit {
         let n = Length(qs);
-        for (i in 2^n-2..-1..0) {     
+        for (i in 2^n - 2 .. -1 .. 0) {     
             Embed_2x2_Operator(H, i, i+1, qs);
         }
     }

@@ -12,6 +12,7 @@ namespace Quantum.Kata.PhaseEstimation {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
+    open Quantum.Kata.Utils;
     
     
     //////////////////////////////////////////////////////////////////
@@ -130,14 +131,4 @@ namespace Quantum.Kata.PhaseEstimation {
         Test2BitPEOnOnePair(BoundCA([H, S, H]), BoundCA([X, H]), 0.25);
         Test2BitPEOnOnePair(BoundCA([H, S, Z, H]), BoundCA([X, H]), 0.75);
     }
-
-
-    // ------------------------------------------------------
-    function GetOracleCallsCount<'T> (oracle : 'T) : Int { return 0; }
-    
-    function ResetOracleCallsCount () : Unit { }
-
-    function GetMaxQubitCount () : Int { return 0; }
-    
-    function ResetQubitCount () : Unit { }
 }

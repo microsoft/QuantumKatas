@@ -2,34 +2,35 @@
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.Measurements {
-    
+
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
-    
-    
+    open Microsoft.Quantum.Arrays;
+
+
     //////////////////////////////////////////////////////////////////
     // Welcome!
     //////////////////////////////////////////////////////////////////
-    
+
     // The "Measurements" quantum kata is a series of exercises designed
     // to get you familiar with programming in Q#.
     // It covers the following topics:
     //  - using single-qubit measurements,
     //  - discriminating orthogonal and nonorthogonal states.
-    
+
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
     // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
     // with some Q# code to make the failing test pass.
-    
+
     // The tasks are given in approximate order of increasing difficulty; harder ones are marked with asterisks.
-    
+
     //////////////////////////////////////////////////////////////////
     // Part I. Discriminating Orthogonal States
     //////////////////////////////////////////////////////////////////
-    
+
     // Task 1.1. |0⟩ or |1⟩ ?
     // Input: a qubit which is guaranteed to be in either the |0⟩ or the |1⟩ state.
     // Output: true if the qubit was in the |1⟩ state, or false if it was in the |0⟩ state.
@@ -45,16 +46,16 @@ namespace Quantum.Kata.Measurements {
 
         return false;
     }
-    
-    
+
+
     // Task 1.2. Set qubit to |0⟩ state
     // Input: a qubit in an arbitrary state.
     // Goal:  change the state of the qubit to |0⟩.
     operation InitializeQubit (q : Qubit) : Unit {
         // ...
     }
-    
-    
+
+
     // Task 1.3. |+⟩ or |-⟩ ?
     // Input: a qubit which is guaranteed to be in either the |+⟩ or the |-⟩ state
     //        (|+⟩ = (|0⟩ + |1⟩) / sqrt(2), |-⟩ = (|0⟩ - |1⟩) / sqrt(2)).
@@ -64,8 +65,8 @@ namespace Quantum.Kata.Measurements {
         // ...
         return false;
     }
-    
-    
+
+
     // Task 1.4. |A⟩ or |B⟩ ?
     // Inputs:
     //      1) angle α, in radians, represented as a Double
@@ -78,8 +79,8 @@ namespace Quantum.Kata.Measurements {
         // ...
         return false;
     }
-    
-    
+
+
     // Task 1.5. |00⟩ or |11⟩ ?
     // Input: two qubits (stored in an array of length 2) which are guaranteed to be in either the |00⟩ or the |11⟩ state.
     // Output: 0 if the qubits were in the |00⟩ state,
@@ -89,8 +90,8 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
+
+
     // Task 1.6. Distinguish four basis states
     // Input: two qubits (stored in an array) which are guaranteed to be
     //        in one of the four basis states (|00⟩, |01⟩, |10⟩ or |11⟩).
@@ -106,8 +107,8 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
+
+
     // Task 1.7. Distinguish two basis states given by bit strings
     // Inputs:
     //      1) N qubits (stored in an array) which are guaranteed to be
@@ -126,9 +127,64 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
-    // Task 1.8. |0...0⟩ state or W state ?
+
+
+    // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
+    // Inputs:
+    //      1) N qubits which are guaranteed to be
+    //         in one of the two superposition states described by the given arrays of bit strings.
+    //      2) two arrays of bit strings represented as Bool[][]s.
+    //         Each of the arrays has a size M ⨯ N and consists of M bit strings of length N
+    //         (the first index is the index of the bit string, the second - the index of the qubit).
+    //         An array of bit strings [b₁, ..., bₘ] defines a state that is
+    //         an equal superposition of all basis states defined by bit strings b₁, ..., bₘ.
+    //         For example, an array of bit strings [[false, true, false], [false, true, true]]
+    //         defines a superposition state (|010⟩ + |011⟩) / sqrt(2).
+    //         
+    // Output: 0 if qubits were in the superposition state described by the first array,
+    //         1 if they were in the superposition state described by the second array.
+    // The state of the qubits at the end of the operation does not matter.
+    //
+    // You are allowed to use exactly one measurement.
+    // You are guaranteed that there exists an index of a qubit Q for which 
+    //  - all the bit strings in the first array have the same value in this position (all bits1[j][Q] are the same),
+    //  - all the bit strings in the second array have the same value in this position (all bits2[j][Q] are the same),
+    //  - these values are different for the first and the second arrays.
+    // 
+    // Example: for arrays [[false, true, false], [false, true, true]] and [[true, false, true], [false, false, true]]
+    //          return 0 corresponds to state (|010⟩ + |011⟩) / sqrt(2), 
+    //          return 1 corresponds to state (|101⟩ + |001⟩) / sqrt(2),
+    //          and you can distinguish these states perfectly by measuring the second qubit.
+    operation SuperpositionOneMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // ...
+        return -1;
+    }
+
+
+    // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
+    // Inputs:
+    //      1) N qubits which are guaranteed to be
+    //         in one of the two superposition states described by the given arrays of bit strings.
+    //      2) two arrays of bit strings represented as Bool[][]s.
+    //         The arrays describe the superposition states in the same way as in the previous task.
+    //
+    // Output: 0 if qubits were in the superposition state described by the first array,
+    //         1 if they were in the superposition state described by the second array.
+    // The state of the qubits at the end of the operation does not matter.
+    //
+    // You can use as many measurements as you wish.
+    // The only constraint on the bit strings is that all bit strings in the two arrays are distinct. 
+    //
+    // Example: for arrays [[false, true, false], [false, false, true]] and [[true, true, true], [false, true, true]]
+    //          return 0 corresponds to state (|010⟩ + |001⟩) / sqrt(2), 
+    //          return 1 corresponds to state (|111⟩ + |011⟩) / sqrt(2)
+    operation SuperpositionMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // ...
+        return -1;
+    }
+
+
+    // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
     //        either in the |0...0⟩ state
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -139,9 +195,9 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
-    // Task 1.9. GHZ state or W state ?
+
+
+    // Task 1.11. GHZ state or W state ?
     // Input: N >= 2 qubits (stored in an array) which are guaranteed to be
     //        either in the GHZ state (https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in the W state (https://en.wikipedia.org/wiki/W_state).
@@ -152,9 +208,9 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
-    // Task 1.10. Distinguish four Bell states
+
+
+    // Task 1.12. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
     //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
     //         |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
@@ -167,13 +223,13 @@ namespace Quantum.Kata.Measurements {
     // The state of the qubits at the end of the operation does not matter.
     operation BellState (qs : Qubit[]) : Int {
         // Hint: you need to use 2-qubit gates to solve this task
-        
+
         // ...
         return -1;
     }
-    
-    
-    // Task 1.11. Distinguish four orthogonal 2-qubit states
+
+
+    // Task 1.13. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
     //         |S1⟩ = (|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2
@@ -188,9 +244,9 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
-    // Task 1.12*. Distinguish four orthogonal 2-qubit states, part two
+
+
+    // Task 1.14*. Distinguish four orthogonal 2-qubit states, part two
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
     //         |S0⟩ = ( |00⟩ - |01⟩ - |10⟩ - |11⟩) / 2
     //         |S1⟩ = (-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2
@@ -205,9 +261,9 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
-    // Task 1.13**. Distinguish two orthogonal states on three qubits
+
+
+    // Task 1.15**. Distinguish two orthogonal states on three qubits
     // Input: Three qubits (stored in an array) which are guaranteed to be in either one of the
     //        following two states:
     //        1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ ),
@@ -220,18 +276,18 @@ namespace Quantum.Kata.Measurements {
         // ...
         return -1;
     }
-    
-    
+
+
     //////////////////////////////////////////////////////////////////
     // Part II*. Discriminating Nonorthogonal States
     //////////////////////////////////////////////////////////////////
-    
+
     // The solutions for tasks in this section are validated using the following method.
     // The solution is called on N input states, each of which is picked randomly,
     // with all possible input states equally likely to be generated.
     // The accuracy of state discrimination is estimated as an average of
     // discrimination correctness over all input states.
-    
+
     // Task 2.1*. |0⟩ or |+⟩ ?
     //           (quantum hypothesis testing or state discrimination with minimum error)
     // Input: a qubit which is guaranteed to be in either the |0⟩ or the |+⟩ state with equal probability.
@@ -242,8 +298,8 @@ namespace Quantum.Kata.Measurements {
         // ...
         return true;
     }
-    
-    
+
+
     // Task 2.2**. |0⟩, |+⟩ or inconclusive?
     //             (unambiguous state discrimination)
     // Input: a qubit which is guaranteed to be in either the |0⟩ or the |+⟩ state with equal probability.
@@ -263,7 +319,7 @@ namespace Quantum.Kata.Measurements {
         return -2;
     }
 
-    
+
     // Task 2.3**. Unambiguous state discrimination of 3 non-orthogonal states on one qubit
     //             (a.k.a. the Peres/Wootters game)
     // Input: a qubit which is guaranteed to be in one of the three states with equal probability:

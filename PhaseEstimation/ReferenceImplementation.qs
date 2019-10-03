@@ -84,7 +84,7 @@ namespace Quantum.Kata.PhaseEstimation {
             // Call library
             QuantumPhaseEstimation(oracle, eigenstate, phaseRegisterBE);
             // Read out the phase
-            let phase = IntAsDouble(MeasureIntegerBE(phaseRegisterBE)) / IntAsDouble(1 <<< n);
+            let phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< n);
 
             ResetAll(eigenstate);
             ResetAll(phaseRegister);
@@ -138,8 +138,7 @@ namespace Quantum.Kata.PhaseEstimation {
             } 
             // repeat the loop until we get both Zero and One measurement outcomes
             // or until we're reasonably certain that we won't get a different outcome
-            until (iter == 10 or measuredZero and measuredOne)
-            fixup {}
+            until (iter == 10 or measuredZero and measuredOne);
             Reset(eigenstate);
 
             // all measurements yielded Zero => eigenvalue +1
