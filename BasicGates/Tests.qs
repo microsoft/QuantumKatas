@@ -58,7 +58,7 @@ namespace Quantum.Kata.BasicGates {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperOperation(AmplitudeChange(alpha, _), _), ArrayWrapperOperation(AmplitudeChange_Reference(alpha, _), _));
         }
-    }  
+    }
     
     
     // ------------------------------------------------------
