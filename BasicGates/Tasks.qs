@@ -111,8 +111,22 @@ namespace Quantum.Kata.BasicGates {
         // ...
     }
 
+    // Task 1.7. Global phase change
+    // Input: A qubit in state β|0⟩ + γ|1⟩.
+    // Goal: Change the state of the qubit to - β|0⟩ - γ|1⟩.
+    //
+    // Note: This change on its own is not observable - 
+    // there is no experiment you can do on a standalone qubit 
+    // to figure out whether it acquired the global phase or not. 
+    // However, you can use a controlled version of this operation 
+    // to observe the global phase it introduces. This is used 
+    // in later katas as part of more complicated tasks.
+    operation GlobalPhaseChange (q: Qubit) : Unit is Adj+Ctl {
+        // ...
+    }
 
-    // Task 1.7. Bell state change - 1
+
+    // Task 1.8. Bell state change - 1
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
     operation BellStateChange1 (qs : Qubit[]) : Unit is Adj+Ctl {
@@ -120,7 +134,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 1.8. Bell state change - 2
+    // Task 1.9. Bell state change - 2
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
     operation BellStateChange2 (qs : Qubit[]) : Unit is Adj+Ctl {
@@ -128,7 +142,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 1.9. Bell state change - 3
+    // Task 1.10. Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
     operation BellStateChange3 (qs : Qubit[]) : Unit is Adj+Ctl {
