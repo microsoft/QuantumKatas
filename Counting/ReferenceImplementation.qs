@@ -24,54 +24,20 @@ namespace Quantum.Kata.Counting {
     // Part I. Oracle for Counting
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. The Sprinkler oracle
-	// Let us consider an example inspired by the sprinkler problem of (Pearl 1988): 
-	// we have three Boolean variable, s, r, w representing respectively propositions 
-	// “the sprinkler was on”, "ıt rained last night” and “the grass is wet”. 
-	// We know that if the sprinkler was on the grass is wet (s → w), 
-	// if it rained last night the grass is wet (r → w) 
-	//and that the the sprinkler being on and rain last night cannot be true at the same time (s, r →).
-	// Transformed in conjunctive normal formal we obtain formula (¬s ∨ w) ∧ (¬r ∨ w) ∧ (¬s ∨ ¬r)
-	// Let s,r,w=queryRegister[0],queryRegister[1],queryRegister[2]
-    operation Oracle_Sprinkler_Reference (queryRegister : Qubit[], target : Qubit, ancilla : Qubit[]) : Unit
-    {    
-	       body (...) {
-				X(queryRegister[2]);
-				X(ancilla[0]);
-				X(ancilla[1]);
-				X(ancilla[2]);
-                
-				CCNOT(queryRegister[0],queryRegister[1],ancilla[0]);
-				CCNOT(queryRegister[1],queryRegister[2],ancilla[1]);
-				CCNOT(queryRegister[0],queryRegister[2],ancilla[2]);
-				(Controlled X)([ancilla[0],ancilla[1],ancilla[2]],target);
-				CCNOT(queryRegister[0],queryRegister[2],ancilla[2]);
-				CCNOT(queryRegister[1],queryRegister[2],ancilla[1]);
-				CCNOT(queryRegister[0],queryRegister[1],ancilla[0]);
+	operation Oracle_SolutionCount_Reference (queryRegister : Qubit[], target : Qubit, nSol : Int) : Unit is Ctl+ Adj {
+    // Designate first nSol integers solutions (since we don't really care which ones are solutions)
+		for (i in 0 .. nSol - 1) {
+        (ControlledOnInt(i, X))(queryRegister, target);
+		}
+	}
+    
+    //////////////////////////////////////////////////////////////////
+    // Part II. The Grover iteration
+    //////////////////////////////////////////////////////////////////
+   
 
-				X(ancilla[2]);
-				X(ancilla[1]);
-				X(ancilla[0]);            
-           }
-			adjoint invert;
-			controlled auto;
-			controlled adjoint auto;
-    }
-    
-    
-    
-    
-    // Arbitrary bit pattern oracle
-    operation Oracle_ArbitraryPattern_Reference (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit
-    is Adj+Ctl {        
-        (ControlledOnBitString(pattern, X))(queryRegister, target);
-    }
-    
-    
-    // Oracle converter
-    operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj+Ctl), register : Qubit[]) : Unit
-    is Adj+Ctl {
-        
+    // Helper operation which converts marking oracle into phase oracle using an extra qubit
+    operation ApplyMarkingOracleAsPhaseOracle (markingOracle : ((Qubit[], Qubit) => Unit is Ctl+Adj), register : Qubit[]) : Unit is Adj+Ctl {
         using (target = Qubit()) {
             // Put the target into the |-⟩ state
             X(target);
@@ -87,63 +53,18 @@ namespace Quantum.Kata.Counting {
         }
     }
     
-    
-    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit is Adj+Ctl)) : (Qubit[] => Unit is Adj+Ctl) {
-        return OracleConverterImpl(markingOracle, _);
-    }
-    
-    
-    //////////////////////////////////////////////////////////////////
-    // Part II. The Grover iteration
-    //////////////////////////////////////////////////////////////////
-    
-    // The Hadamard transform
-    operation HadamardTransform (register : Qubit[]) : Unit
-    is Adj+Ctl {
-        
-        // ApplyToEachA(H, register);
-
-        // ApplyToEach is a library routine that is equivalent to the following code:
-        let nQubits = Length(register);
-        for (idxQubit in 0..nQubits - 1) {
-             H(register[idxQubit]);
-        }
-    }
-    
-    
-    // Conditional phase flip
-    operation ConditionalPhaseFlip (register : Qubit[]) : Unit {
-        
-        body (...) {
-            // Define a marking oracle which detects an all zero state
-            let allZerosOracle = Oracle_ArbitraryPattern_Reference(_, _, new Bool[Length(register)]);
-            
-            // Convert it into a phase-flip oracle and apply it
-            let flipOracle = OracleConverter(allZerosOracle);
-            flipOracle(register);
-			R(PauliI, 2.0 * PI(), register[0]);
-        }
-        
-        adjoint self;
-        controlled  auto;
-		controlled adjoint auto;    
-	}
-    
- 
-    
-    
     // The Grover iteration
-    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj+Ctl)) : Unit
+    operation GroverIteration (register : Qubit[], oracle : ((Qubit[],Qubit) => Unit is Ctl+Adj)) : Unit  is Ctl+Adj
     {
-        body (...) {
-			oracle(register);
-			HadamardTransform(register);
-			ConditionalPhaseFlip(register);
-			HadamardTransform(register);
-		}
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
+
+            // apply oracle
+            ApplyMarkingOracleAsPhaseOracle(oracle, register);
+            // apply inversion about the mean
+            ApplyToEachCA(H, register);
+            ApplyToEachCA(X, register);
+            Controlled Z(Most(register), Tail(register));
+            ApplyToEachCA(X, register);
+            ApplyToEachCA(H, register);
 	}
     
     
@@ -151,38 +72,24 @@ namespace Quantum.Kata.Counting {
     // Part III. Putting it all together: Quantum Counting
     //////////////////////////////////////////////////////////////////
     
-    operation UnitaryPowerImpl (U : (Qubit[] => Unit  is Adj+Ctl), power : Int, q : Qubit[]) : Unit {
-        body (...) {
-            for (i in 1..power) {
-                U(q);
-            }
-        }
-        adjoint auto;
-        controlled auto;
-        controlled adjoint auto;
-    }
 
-	operation Counting_Reference() : Double {
+	operation Counting_Reference(n_bit : Int, n_sol: Int, precision: Int) : Double {
         mutable phase = -1.0;
-        let n=4;
-        using ((reg,phaseRegister,ancilla)=(Qubit[3],Qubit[n],Qubit[3]))
-                                           {
-        // Construct a phase estimation oracle from the unitary
-        let phaseOracle = OracleConverter(Oracle_Sprinkler_Reference(_,_,ancilla));
 
-        let oracle = DiscreteOracle(UnitaryPowerImpl(GroverIteration(_, phaseOracle), _, _));
+        using ((reg,phaseRegister)=(Qubit[n_bit],Qubit[precision]))
+        {                                  
+        let oracle = OracleToDiscrete(GroverIteration(_, Oracle_SolutionCount_Reference(_,_,n_sol)));
 
 
         // Allocate qubits to hold the eigenstate of U and the phase in a big endian register 
             
             let phaseRegisterBE = BigEndian(phaseRegister);
             // Prepare the eigenstate of U
-                HadamardTransform(reg);
-//should return 0.5
+                ApplyToEach(H, reg);
             // Call library
             QuantumPhaseEstimation(oracle, reg, phaseRegisterBE);
             // Read out the phase
-            set phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< (n));
+            set phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< (n_bit));
 
             ResetAll(reg);
             ResetAll(phaseRegister);
@@ -190,8 +97,10 @@ namespace Quantum.Kata.Counting {
         let angle = PI()*phase;
         let res = (PowD(Sin(angle),2.0));
 
-        return 8.0*res;
+        return PowD(2.0,IntAsDouble(n_bit))*res;
     }
 
-    
+     operation CR(): Double {
+	   return  Counting_Reference(4, 4, 3);
+	 }
 }

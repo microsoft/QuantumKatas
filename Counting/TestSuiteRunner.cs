@@ -12,7 +12,7 @@ using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
 
-namespace Quantum.Kata.GroversAlgorithm
+namespace Quantum.Kata.Counting
 {
     public class TestSuiteRunner
     {
@@ -25,7 +25,7 @@ namespace Quantum.Kata.GroversAlgorithm
 
         /// <summary>
         /// This driver will run all Q# tests (operations named "...Test") 
-        /// that belong to namespace Quantum.Kata.GroversAlgorithm.
+        /// that belong to namespace Quantum.Kata.Counting.
         /// </summary>
         [OperationDriver(TestNamespace = "Quantum.Kata.Counting")]
         public void TestTarget(TestOperation op)
