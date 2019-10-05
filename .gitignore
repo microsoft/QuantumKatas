@@ -283,3 +283,4 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+/tutorials/ComplexArithmetic/__pycache__
