@@ -23,10 +23,11 @@ namespace Quantum.Kata.Counting {
     
     // ------------------------------------------------------
     operation T11_Counting_Test () : Unit {
-	    let reference=Counting_Reference(4,4,3);
-//		Message(DoubleAsString(reference));
-		let actual=4.0;
-		EqualityWithinToleranceFact(reference,actual,3.0);
+		let n_sol=8;
+		let reference=Counting_Reference(6,n_sol,6);
+		Message(DoubleAsString(reference));
+
+		EqualityWithinToleranceFact(reference,IntAsDouble(n_sol),3.0);
     }
     
 }

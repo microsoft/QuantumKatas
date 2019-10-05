@@ -67,7 +67,12 @@ namespace Quantum.Kata.Counting {
             ApplyToEachCA(H, register);
 	}
     
-    
+	operation UnitaryPowerImpl (U : (Qubit[] => Unit  is Adj+Ctl), power : Int, q : Qubit[]) : Unit is Ctl+Adj 
+	{
+            for (i in 1..power) {
+                U(q);
+            }
+    }    
     //////////////////////////////////////////////////////////////////
     // Part III. Putting it all together: Quantum Counting
     //////////////////////////////////////////////////////////////////
@@ -80,6 +85,9 @@ namespace Quantum.Kata.Counting {
         {                                  
         let oracle = OracleToDiscrete(GroverIteration(_, Oracle_SolutionCount_Reference(_,_,n_sol)));
 
+ //       let phaseOracle = Oracle_SolutionCount_Reference(_,_,n_sol);
+
+//        let oracle = DiscreteOracle(UnitaryPowerImpl(GroverIteration(_, phaseOracle), _, _));
 
         // Allocate qubits to hold the eigenstate of U and the phase in a big endian register 
             
@@ -95,12 +103,9 @@ namespace Quantum.Kata.Counting {
             ResetAll(phaseRegister);
         }
         let angle = PI()*phase;
-        let res = (PowD(Sin(angle),2.0));
+        let res = (PowD(Sin(angle/2.0),2.0));
 
         return PowD(2.0,IntAsDouble(n_bit))*res;
     }
 
-     operation CR(): Double {
-	   return  Counting_Reference(4, 4, 3);
-	 }
 }
