@@ -22,6 +22,7 @@ RUN ${HOME}/scripts/prebuild-kata.sh GHZGame
 RUN ${HOME}/scripts/prebuild-kata.sh GraphColoring
 RUN ${HOME}/scripts/prebuild-kata.sh GroversAlgorithm
 RUN ${HOME}/scripts/prebuild-kata.sh JointMeasurements
+RUN ${HOME}/scripts/prebuild-kata.sh KeyDistribution_BB84
 RUN ${HOME}/scripts/prebuild-kata.sh MagicSquareGame
 RUN ${HOME}/scripts/prebuild-kata.sh Measurements
 RUN ${HOME}/scripts/prebuild-kata.sh PhaseEstimation

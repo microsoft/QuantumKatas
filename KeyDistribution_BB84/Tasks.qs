@@ -36,8 +36,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Input: N qubits (stored in an array of length N).
     //        Each qubit is either in |0⟩ or in |1⟩ state.
     // Goal:  Convert the qubits to diagonal polarization:
-    //	      if qs[i] was |0⟩, it should become |+⟩ = (|0⟩ + |1⟩) / sqrt(2),
-    //	      if qs[i] was |1⟩, it should become |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
+    //	      if qs[i] was in state |0⟩, it should become |+⟩ = (|0⟩ + |1⟩) / sqrt(2),
+    //	      if qs[i] was in state |1⟩, it should become |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
     operation DiagonalPolarization (qs : Qubit[]) : Unit {
         // ...
     }
@@ -95,10 +95,9 @@ namespace Quantum.Kata.KeyDistribution {
     //      1) "qs": an array of N qubits;
     //         each qubit is in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩.
     //	    2) "bases": a Bool array of length N;
-    //         bases[i] indicates the basis to prepare the i-th qubit in:
+    //         bases[i] indicates the basis used to prepare the i-th qubit:
     //         - false: use |0⟩/|1⟩ (computational) basis
     //         - true: use |+⟩/|-⟩ (Hadamard/diagonal) basis
-    // Measure the given qubits in the bases and return the result of the measurements
     // Output: Measure each qubit in the corresponding basis and return an array of results 
     //         (encoding measurement result Zero as false and One as true).
     // The state of the qubits at the end of the operation does not matter.
@@ -194,8 +193,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Eve hopes that if she properly reconstructs the qubit after measurement she won't be caught!
     //
     // Inputs:
-    //      1) "q" - a qubit in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩,
-    //      2) "basis" - Eve's guess of the basis she should use for measuring.
+    //      1) "q": a qubit in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩,
+    //      2) "basis": Eve's guess of the basis she should use for measuring.
     // Output: the bit encoded in the qubit (false for |0⟩/|+⟩ states, true for |1⟩/|-⟩ states).
     // Note: in this task you are guaranteed that the basis you're given matches 
     //       the one in which the qubit is encoded.
