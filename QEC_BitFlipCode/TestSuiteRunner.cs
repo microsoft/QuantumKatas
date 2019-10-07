@@ -8,9 +8,10 @@
 //////////////////////////////////////////////////////////////////////
 
 using Microsoft.Quantum.Simulation.XUnit;
-using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
+
+using Microsoft.Quantum.Katas;
 
 namespace Quantum.Kata.QEC_BitFlipCode
 {
@@ -30,7 +31,7 @@ namespace Quantum.Kata.QEC_BitFlipCode
         [OperationDriver(TestNamespace = "Quantum.Kata.QEC_BitFlipCode")]
         public void TestTarget(TestOperation op)
         {
-            using (var sim = new QuantumSimulator())
+            using (var sim = new CounterSimulator())
             {
                 // OnLog defines action(s) performed when Q# test calls function Message
                 sim.OnLog += (msg) => { output.WriteLine(msg); };

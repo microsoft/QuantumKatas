@@ -3,9 +3,10 @@
 
 namespace Quantum.Kata.GroversAlgorithm {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -18,7 +19,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // It covers the following topics:
     //  - writing oracles for Grover's search,
     //  - performing steps of the algorithm, and
-    //	- putting it all together: Grover's search algorithm.
+    //  - putting it all together: Grover's search algorithm.
     
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -88,13 +89,13 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        Leave the state of the target qubit unchanged if the query register is in any other state.
     //        Leave the query register in the same state it started in.
     // Example:
-    //        If the bit patterns is [true, false], you need to flip the target qubit if and only if the qubits are in the |10⟩ state.
+    //        If the bit pattern is [true, false], you need to flip the target qubit if and only if the qubits are in the |10⟩ state.
     operation Oracle_ArbitraryPattern (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit {
         
         body (...) {
             // The following line enforces the constraint on the input arrays.
             // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-            AssertIntEqual(Length(queryRegister), Length(pattern), "Arrays should have the same length");
+            EqualityFactI(Length(queryRegister), Length(pattern), "Arrays should have the same length");
 
             // ...
         }
@@ -113,7 +114,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // but it is often easier to write a marking oracle for a given condition. This transformation
     // allows to convert one type of oracle into the other. The transformation is described at
     // https://en.wikipedia.org/wiki/Grover%27s_algorithm, section "Description of Uω".
-    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit : Adjoint)) : (Qubit[] => Unit : Adjoint) {
+    function OracleConverter (markingOracle : ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         
         // Hint: Remember that you can define auxiliary operations.
         
@@ -135,13 +136,9 @@ namespace Quantum.Kata.GroversAlgorithm {
     //
     // Note:  If the register started in the |0...0⟩ state, this operation
     //        will prepare an equal superposition of all 2^N basis states.
-    operation HadamardTransform (register : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation HadamardTransform (register : Qubit[]) : Unit
+    is Adj {
+        // ...
     }
     
     
@@ -152,19 +149,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        If the register is in state |0...0⟩, leave it unchanged.
     //        If the register is in any other basis state, multiply its phase by -1.
     // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
-    operation ConditionalPhaseFlip (register : Qubit[]) : Unit {
-        
-        body (...) {
-            // Hint 1: Note that quantum states are defined up to a global phase.
-            // Thus the state obtained as a result of this operation is the same
-            // as the state obtained by flipping the sign of only the |0...0⟩ state.
+    operation ConditionalPhaseFlip (register : Qubit[]) : Unit
+    is Adj {
+    
+        // Hint 1: Note that quantum states are defined up to a global phase.
+        // Thus the state obtained as a result of this operation is the same
+        // as the state obtained by flipping the sign of only the |0...0⟩ state.
             
-            // Hint 2: You can use the same trick as in the oracle converter task.
+        // Hint 2: You can use the same trick as in the oracle converter task.
             
-            // ...
-        }
-        
-        adjoint invert;
+        // ...
     }
     
     
@@ -174,19 +168,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      2) a phase-flipping oracle that takes an N-qubit register and flips
     //         the phase of the state if the register is in the desired state.
     // Goal:  Perform one Grover iteration.
-    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit : Adjoint)) : Unit {
+    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit
+    is Adj {
         
-        body (...) {
-            // Hint: A Grover iteration consists of 4 steps:
-            //    1) apply the oracle
-            //    2) apply the Hadamard transform
-            //    3) perform a conditional phase shift
-            //    4) apply the Hadamard transform again
+        // Hint: A Grover iteration consists of 4 steps:
+        //    1) apply the oracle
+        //    2) apply the Hadamard transform
+        //    3) perform a conditional phase shift
+        //    4) apply the Hadamard transform again
             
-            // ...
-        }
-        
-        adjoint invert;
+        // ...
     }
     
     
@@ -204,8 +195,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     //
     // Note: The number of iterations is passed as a parameter because it is defined by the nature of the problem
     // and is easier to configure/calculate outside the search algorithm itself (for example, in the driver).
-    operation GroversSearch (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit : Adjoint), iterations : Int) : Unit {
-            // ...
+    operation GroversSearch (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
+        // ...
     }
     
     
@@ -214,16 +205,17 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       to find the marked elements of the search space.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
     operation E2E_GroversSearch_Test () : Unit {
-            // Hint 1: To check whether the algorithm found the correct answer (i.e., an answer marked as 1 by the oracle), 
-            // you can apply the oracle once more to the register after you've measured it and an ancilla qubit,
-            // which will calculate the function of the answer found by the algorithm.
 
-            // Hint 2: Experiment with the number of iterations to see how it affects
-            // the probability of the algorithm finding the correct answer.
+        // Hint 1: To check whether the algorithm found the correct answer (i.e., an answer marked as 1 by the oracle), 
+        // you can apply the oracle once more to the register after you've measured it and an ancilla qubit,
+        // which will calculate the function of the answer found by the algorithm.
 
-            // Hint 3: You can use the Message function to write the results to the console.
+        // Hint 2: Experiment with the number of iterations to see how it affects
+        // the probability of the algorithm finding the correct answer.
 
-            // ...
+        // Hint 3: You can use the Message function to write the results to the console.
+
+        // ...
     }
     
 }

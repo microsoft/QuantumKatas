@@ -9,9 +9,9 @@
 
 namespace Quantum.Kata.Teleportation {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Diagnostics;
     
     
     // ------------------------------------------------------
@@ -79,7 +79,7 @@ namespace Quantum.Kata.Teleportation {
     // which makes testing easier.
     operation TeleportTestHelper (
         teleportOp : ((Qubit, Qubit, Qubit) => Unit), 
-        setupPsiOp : (Qubit => Unit : Adjoint)) : Unit {
+        setupPsiOp : (Qubit => Unit is Adj)) : Unit {
         
         using (qs = Qubit[3]) {
             let qMessage = qs[0];
@@ -141,7 +141,7 @@ namespace Quantum.Kata.Teleportation {
     
     
     // Test the full Teleport operation
-    operation T14_Teleport_Test () : Unit {
+    operation T14_StandardTeleport_Test () : Unit {
         TeleportTestLoop(StandardTeleport);
     }
     
@@ -169,7 +169,7 @@ namespace Quantum.Kata.Teleportation {
                     StatePrep_BellState(qAlice, qBob, 0);
                     let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
                     let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
-                    AssertBoolEqual(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
+                    EqualityFactB(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
                     ResetAll([qAlice, qBob]);
                 }
             }
@@ -271,7 +271,7 @@ namespace Quantum.Kata.Teleportation {
                     setupPsiOps[i](qMessage);
                     EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
                     let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
-                    let b3 = BoolFromResult(M(qBob));
+                    let b3 = ResultAsBool(M(qBob));
                     ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
                     Adjoint setupPsiOps[i](qCharlie);
                     AssertQubit(Zero, qCharlie);
