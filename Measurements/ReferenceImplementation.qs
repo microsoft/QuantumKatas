@@ -243,6 +243,13 @@ namespace Quantum.Kata.Measurements {
     }
 
 
+    // Alternate reference implementation for task 1.11
+    operation GHZOrWState_Alternate (qs : Qubit[]) : Int {
+        let m = ResultArrayAsInt(MultiM(qs));
+        return (m == 0 or m == (1 <<< Length(qs))-1) ? 0 | 1;
+    }
+
+
     // Task 1.12. Distinguish four Bell states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four Bell states:
     //         |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)
