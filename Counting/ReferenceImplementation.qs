@@ -97,7 +97,7 @@ namespace Quantum.Kata.Counting {
             // Call library
             QuantumPhaseEstimation(oracle, reg, phaseRegisterBE);
             // Read out the phase
-            set phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< (n_bit));
+            set phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< (precision));
 
             ResetAll(reg);
             ResetAll(phaseRegister);
