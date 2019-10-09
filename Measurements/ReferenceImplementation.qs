@@ -191,6 +191,20 @@ namespace Quantum.Kata.Measurements {
     }
 
 
+    // Alternate reference implementation for task 1.9
+    // Slightly more expensive, but uses built-in functions
+    operation SuperpositionMeasurement_Alternate (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
+        let measuredState = ResultArrayAsInt(MultiM(qs));
+        for (s in bits1) {
+            if (BoolArrayAsInt(s) == measuredState) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+
     // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
     //        either in |0...0⟩ state
