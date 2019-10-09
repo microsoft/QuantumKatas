@@ -218,7 +218,8 @@ namespace Quantum.Kata.Measurements {
 
     // Alternate reference implementation for task 1.10
     operation AllZerosOrWState_Alternate (qs : Qubit[]) : Int {
-        // if we get 0 then the state is |0...0⟩
+        // measure all qubits and convert the result into an integer;
+        // if we get 0 then the state is |0...0⟩, any non-0 integer indicates W state
         return ResultArrayAsInt(MultiM(qs)) == 0 ? 0 | 1;
     }
 
