@@ -64,6 +64,7 @@ namespace Quantum.Kata.Counting {
             ApplyToEachCA(X, register);
             Controlled Z(Most(register), Tail(register));
             ApplyToEachCA(X, register);
+            R(PauliI, 2.0 * PI(), register[0]);
             ApplyToEachCA(H, register);
 	}
     
@@ -93,7 +94,7 @@ namespace Quantum.Kata.Counting {
             
             let phaseRegisterBE = BigEndian(phaseRegister);
             // Prepare the eigenstate of U
-                ApplyToEach(H, reg);
+               ApplyToEach(H, reg);
             // Call library
             QuantumPhaseEstimation(oracle, reg, phaseRegisterBE);
             // Read out the phase
@@ -103,7 +104,7 @@ namespace Quantum.Kata.Counting {
             ResetAll(phaseRegister);
         }
         let angle = PI()*phase;
-        let res = (PowD(Sin(angle/2.0),2.0));
+        let res = (PowD(Sin(angle),2.0));
 
         return PowD(2.0,IntAsDouble(n_bit))*res;
     }
