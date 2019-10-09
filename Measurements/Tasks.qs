@@ -167,7 +167,7 @@ namespace Quantum.Kata.Measurements {
     //         in one of the two superposition states described by the given arrays of bit strings.
     //      2) two arrays of bit strings represented as Bool[][]s.
     //         The arrays describe the superposition states in the same way as in the previous task,
-    //         i.e. they have dimensions M₁ ⨯ N and M₂ ⨯ N respectively, N being the number of qubits.
+    //         i.e., they have dimensions M₁ ⨯ N and M₂ ⨯ N respectively, N being the number of qubits.
     //
     // Output: 0 if qubits were in the superposition state described by the first array,
     //         1 if they were in the superposition state described by the second array.
