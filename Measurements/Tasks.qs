@@ -135,8 +135,7 @@ namespace Quantum.Kata.Measurements {
     //         in one of the two superposition states described by the given arrays of bit strings.
     //      2) two arrays of bit strings represented as Bool[][]s.
     //         The arrays have dimensions M₁ ⨯ N and M₂ ⨯ N respectively, where N is the number of
-    // 	       qubits and M₁ and M₂ can be different (the first index is the index of
-    // 	       the bit string, the second - the index of the qubit).
+    //         qubits and M₁ and M₂ are the numbers of bit strings in each array. Note that in general M₁ ≠ M₂.
     //         An array of bit strings [b₁, ..., bₘ] defines a state that is
     //         an equal superposition of all basis states defined by bit strings b₁, ..., bₘ.
     //         For example, an array of bit strings [[false, true, false], [false, true, true]]
