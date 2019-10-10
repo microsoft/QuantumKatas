@@ -36,40 +36,23 @@ namespace Quantum.Kata.Counting {
     // Part I. Oracle for Counting
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. The Sprinkler oracle
-	// Let us consider an example inspired by the sprinkler problem of (Pearl 1988): 
-	// we have three Boolean variable, s, r, w representing respectively propositions 
-	// “the sprinkler was on”, "ıt rained last night” and “the grass is wet”. 
-	// We know that if the sprinkler was on the grass is wet (s → w), 
-	// if it rained last night the grass is wet (r → w) 
-	// and that the the sprinkler being on and rain last night cannot be true at the same time (s, r →).
-	// Transformed in conjunctive normal formal we obtain formula (¬s ∨ w) ∧ (¬r ∨ w) ∧ (¬s ∨ ¬r)
-	// Let s,r,w=queryRegister[0],queryRegister[1],queryRegister[2]
-	// Hint: to solve this task you also need to use ancilla qubits
-	// This formula has 4 models out of 8 possible worlds
+    // Task 1.1. The solution count oracle
+    // Designate first nSol integers solutions (since we don't really care which ones are solutions)
 
-	operation Oracle_Sprinkler (queryRegister : Qubit[], target : Qubit, ancilla : Qubit[]) : Unit
-    {    
-	        body (...) {
-			// ...
-            }
-			adjoint invert;
-			controlled auto;
-			controlled adjoint auto;
-    }
+	operation Oracle_Solution_Count  (queryRegister : Qubit[], target : Qubit, nSol : Int) : Unit is Ctl+ Adj {
+	//
+	}
 
     //////////////////////////////////////////////////////////////////
     // Part I. Counting
     //////////////////////////////////////////////////////////////////
 	// Implement counting using operations from ReferenceImplementation.qs
-	// - UnitaryPowerImpl, for computing powers of a unitary operation
 	// - GroverIteration for the Grover operator
 	// - QuantumPhaseEstimation, for estimating the phase
-	// Counting should return the number of models, 4 in this case
-   operation Counting() : Double {
-
+	// Counting should return the number of models, n_sol 
+	operation Counting(n_bit : Int, n_sol: Int, precision: Int) : Double {
 		// ....
-		return 4.0;
+		return 0.0;
     }
     
     

@@ -24,7 +24,7 @@ namespace Quantum.Kata.Counting {
     // Part I. Oracle for Counting
     //////////////////////////////////////////////////////////////////
     
-	operation Oracle_SolutionCount_Reference (queryRegister : Qubit[], target : Qubit, nSol : Int) : Unit is Ctl+ Adj {
+	operation Oracle_Solution_Count_Reference (queryRegister : Qubit[], target : Qubit, nSol : Int) : Unit is Ctl+ Adj {
     // Designate first nSol integers solutions (since we don't really care which ones are solutions)
 		for (i in 0 .. nSol - 1) {
         (ControlledOnInt(i, X))(queryRegister, target);
@@ -68,12 +68,7 @@ namespace Quantum.Kata.Counting {
             ApplyToEachCA(H, register);
 	}
     
-	operation UnitaryPowerImpl (U : (Qubit[] => Unit  is Adj+Ctl), power : Int, q : Qubit[]) : Unit is Ctl+Adj 
-	{
-            for (i in 1..power) {
-                U(q);
-            }
-    }    
+
     //////////////////////////////////////////////////////////////////
     // Part III. Putting it all together: Quantum Counting
     //////////////////////////////////////////////////////////////////
@@ -82,25 +77,21 @@ namespace Quantum.Kata.Counting {
 	operation Counting_Reference(n_bit : Int, n_sol: Int, precision: Int) : Double {
         mutable phase = -1.0;
 
-        using ((reg,phaseRegister)=(Qubit[n_bit],Qubit[precision]))
-        {                                  
-        let oracle = OracleToDiscrete(GroverIteration(_, Oracle_SolutionCount_Reference(_,_,n_sol)));
-
- //       let phaseOracle = Oracle_SolutionCount_Reference(_,_,n_sol);
-
-//        let oracle = DiscreteOracle(UnitaryPowerImpl(GroverIteration(_, phaseOracle), _, _));
-
+        using ((register,phaseRegister)=(Qubit[n_bit],Qubit[precision]))
         // Allocate qubits to hold the eigenstate of U and the phase in a big endian register 
+        {                                  
+        let oracle = OracleToDiscrete(GroverIteration(_, Oracle_Solution_Count_Reference(_,_,n_sol)));
+
             
             let phaseRegisterBE = BigEndian(phaseRegister);
             // Prepare the eigenstate of U
-               ApplyToEach(H, reg);
+               ApplyToEach(H, register);
             // Call library
-            QuantumPhaseEstimation(oracle, reg, phaseRegisterBE);
+            QuantumPhaseEstimation(oracle, register, phaseRegisterBE);
             // Read out the phase
             set phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< (precision));
 
-            ResetAll(reg);
+            ResetAll(register);
             ResetAll(phaseRegister);
         }
         let angle = PI()*phase;

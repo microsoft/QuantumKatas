@@ -24,7 +24,7 @@ namespace Quantum.Kata.Counting {
 
 		for (i in 1..iterations)
 		{
-			let reference=Counting_Reference(n_bit,n_sol,precision);
+			let reference=Counting(n_bit,n_sol,precision);
 			Message(DoubleAsString(reference));
 			set sum=sum+reference;
 	    }
