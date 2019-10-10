@@ -47,8 +47,10 @@ namespace Quantum.Kata.Counting {
     // Part I. Counting
     //////////////////////////////////////////////////////////////////
 	// Implement counting using operations from ReferenceImplementation.qs
-	// - GroverIteration for the Grover operator
-	// - QuantumPhaseEstimation, for estimating the phase
+	// - GroverIteration (register : Qubit[], oracle : ((Qubit[],Qubit) => Unit is Ctl+Adj)) : Unit  is Ctl+Ad
+	//   for the Grover operator
+	// - QuantumPhaseEstimation (oracle : Microsoft.Quantum.Oracles.DiscreteOracle, targetState : Qubit[], controlRegister : Microsoft.Quantum.Arithmetic.BigEndian) : Unit
+	//   from Microsoft.Quantum.Characterization, for estimating the phase
 	// Counting should return the number of models, n_sol 
 	operation Counting(n_bit : Int, n_sol: Int, precision: Int) : Double {
 		// ....

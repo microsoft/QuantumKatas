@@ -32,9 +32,6 @@ namespace Quantum.Kata.Counting {
 		Message("Expected :"+IntAsString(n_sol)+" Found (average): "+DoubleAsString(average));
 		EqualityWithinToleranceFact(average,IntAsDouble(n_sol),tolerance);
 	}
-
-   
-  
     
     // ------------------------------------------------------
     operation T7_16_5_Counting_Test () : Unit {
