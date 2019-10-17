@@ -10,8 +10,13 @@ ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
 # Required for mybinder.org
 COPY . ${HOME}
 USER root
+
+# Install Python dependencies for the Python visualization notebooks
+RUN pip install "matplotlib"
+
 RUN chown -R ${USER} ${HOME} && \
     chmod +x ${HOME}/scripts/*.sh
+
 USER ${USER}
 
 # Pre-exec notebooks to improve first-use start time
@@ -34,3 +39,5 @@ RUN ${HOME}/scripts/prebuild-kata.sh Superposition
 RUN ${HOME}/scripts/prebuild-kata.sh Teleportation
 RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm VisualizingGroversAlgorithm.ipynb
