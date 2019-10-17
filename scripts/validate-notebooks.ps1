@@ -81,7 +81,8 @@ $not_ready =
     'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
-    'ExploringGroversAlgorithm'
+    'ExploringGroversAlgorithmTutorial.ipynb',
+    'VisualizingGroversAlgorithm.ipynb'
 )
 
 $errors = $false

@@ -40,4 +40,3 @@ RUN ${HOME}/scripts/prebuild-kata.sh Teleportation
 RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
-RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm VisualizingGroversAlgorithm.ipynb
