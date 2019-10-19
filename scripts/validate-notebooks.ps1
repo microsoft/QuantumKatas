@@ -83,7 +83,7 @@ $not_ready =
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
-    'VisualizingGroversAlgorithm.ipynb'
+    'VisualizingGroversAlgorithm.ipynb',
     'ComplexArithmetic.ipynb'
 )
 
