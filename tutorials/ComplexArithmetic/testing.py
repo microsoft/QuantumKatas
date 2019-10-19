@@ -67,8 +67,8 @@ def imaginary_power_ref(n):
 
 @test
 def imaginary_power_test(fun):
-    for i in range(25):
-        n = 2 * r.randint(0, 10)
+    for i in range(-25, 25):
+        n = 2 * i
         expected = imaginary_power_ref(n)
         actual = fun(n)
         if actual == None:
