@@ -2,13 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <IsPackable>false</IsPackable>
-    <RootNamespace>Quantum.Kata.QEC_BitFlipCode</RootNamespace>
+    <RootNamespace>Quantum.Kata.ExploringGroversAlgorithm</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Standard" Version="0.9.1909.3002" />
     <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.9.1909.3002" />
@@ -16,9 +12,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\utilities\Common\Common.csproj" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>
