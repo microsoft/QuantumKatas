@@ -35,6 +35,7 @@ def prep_random_polar():
 def assert_tuple(result):
     if result == None: return "Your function must return a value!"
     if not type(result) is tuple: return "Your function must return a tuple, returned " + type(result).__name__ + "."
+    if result[0] == ... or result[1] == ...: return "You should not return an ellipsis (...) as part of your answer."
     if len(result) != 2:
         return "Your function must return a tuple of length 2, but returned tuple is of length " + str(len(result))
 
