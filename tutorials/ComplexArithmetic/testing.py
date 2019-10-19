@@ -15,7 +15,7 @@ def test(fun):
     return fun
 
 # ------------------------------------------------------
-# Generates a random complex number in cartesian form
+# Generates a random complex number in Cartesian form
 def prep_random_complex():
     real = (r.random() - 0.5) * r.randint(0, 100)
     imag = (r.random() - 0.5) * r.randint(0, 100)
