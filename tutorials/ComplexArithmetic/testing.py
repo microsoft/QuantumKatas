@@ -53,7 +53,7 @@ def assert_polar(expected, actual, message):
 
 # ------------------------------------------------------
 # Formats a complex number in Cartesian form neatly
-def format_complex(x):
+def format_cartesian(x):
     return "{0:.3f}".format(x[0]) + (" + " if x[1] >= 0 else " - ") + "{0:.3f}i".format(abs(x[1]))
 
 # Formats a complex number in polar form neatly
@@ -96,13 +96,13 @@ def complex_add_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Sum doesn't seem to match expected value: expected ("
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ") + ("
-                             + format_complex(y)
+                             + format_cartesian(y)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -125,13 +125,13 @@ def complex_mult_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Product doesn't seem to match expected value: expected ("
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ") * ("
-                             + format_complex(y)
+                             + format_cartesian(y)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -153,11 +153,11 @@ def conjugate_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Conjugate doesn't seem to match expected value: expected conjugate of "
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + " to be "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -185,13 +185,13 @@ def complex_div_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Quotient doesn't seem to match expected value: expected ("
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ") / ("
-                             + format_complex(y)
+                             + format_cartesian(y)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -215,7 +215,7 @@ def modulus_test(fun):
             return
         if actual != approx(expected):
             print("Modulus doesn't seem to match expected value: expected |"
-                  + format_complex(x)
+                  + format_cartesian(x)
                   + "| = {0:.3f}, got {1:.3f}".format(expected, actual))
             return
     print("Success!")
@@ -237,11 +237,11 @@ def complex_exp_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Result of exponentiation doesn't seem to match expected value: expected e^("
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -269,11 +269,11 @@ def complex_exp_real_test(fun):
         msg = assert_complex(expected, actual,
                              "Result of exponentiation doesn't seem to match expected value: "
                              + "expected {0:.3f}^(".format(base)
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -297,7 +297,7 @@ def polar_convert_test(fun):
             return
         msg = assert_polar(expected, actual,
                            "Polar conversion doesn't seem to match expected value: expected "
-                           + format_complex(x)
+                           + format_cartesian(x)
                            + " to be converted to "
                            + format_polar(expected)
                            + ", got "
@@ -325,9 +325,9 @@ def rect_convert_test(fun):
                              "Cartesian conversion doesn't seem to match expected value: expected "
                              + format_polar(x)
                              + " to be converted to "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
@@ -391,13 +391,13 @@ def complex_exp_arbitrary_test(fun):
             return
         msg = assert_complex(expected, actual,
                              "Result of exponentiation doesn't seem to match expected value: expected ("
-                             + format_complex(x)
+                             + format_cartesian(x)
                              + ")^("
-                             + format_complex(y)
+                             + format_cartesian(y)
                              + ") = "
-                             + format_complex(expected)
+                             + format_cartesian(expected)
                              + ", got "
-                             + format_complex(actual))
+                             + format_cartesian(actual))
         if msg != None:
             print(msg)
             return
