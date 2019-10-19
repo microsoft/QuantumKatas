@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.BasicGates {
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Math;
 
 
     //////////////////////////////////////////////////////////////////
@@ -81,8 +82,14 @@ namespace Quantum.Kata.BasicGates {
         R1(alpha, q);
     }
 
+    // Task 1.7. Global Phase Change
+    // Input: A qubit in state β|0⟩ + γ|1⟩.
+    // Goal: Change the state of the qubit to - β|0⟩ - γ|1⟩.
+    operation GlobalPhaseChange_Reference (q: Qubit) : Unit is Adj+Ctl {
+        R(PauliI, 2.0 * PI(), q);
+    }
 
-    // Task 1.7. Bell state change - 1
+    // Task 1.8. Bell state change - 1
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2).
     operation BellStateChange1_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
@@ -91,7 +98,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 1.8. Bell state change - 2
+    // Task 1.9. Bell state change - 2
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2).
     operation BellStateChange2_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
@@ -100,7 +107,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 1.9. Bell state change - 3
+    // Task 1.10. Bell state change - 3
     // Input: Two entangled qubits in Bell state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2).
     // Goal:  Change the two-qubit state to |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2).
     operation BellStateChange3_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
