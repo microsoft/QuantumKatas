@@ -16,7 +16,7 @@ def test(fun):
 
 # ------------------------------------------------------
 # Generates a random complex number in Cartesian form
-def prep_random_complex():
+def prep_random_cartesian():
     real = (r.random() - 0.5) * r.randint(0, 100)
     imag = (r.random() - 0.5) * r.randint(0, 100)
     return (real, imag)
@@ -29,17 +29,18 @@ def prep_random_polar():
 
 # ------------------------------------------------------
 # Assert that checks if the result is a tuple of length 2
-def tuple_assert(result):
+def assert_tuple(result):
     if result == None: return "Your function must return a value!"
     if not type(result) is tuple: return "Your function must return a tuple, returned " + type(result).__name__ + "."
-    if len(result) != 2: return "Your function must return a tuple of length 2, but returned tuple is of length " + str(len(result))
+    if len(result) != 2:
+        return "Your function must return a tuple of length 2, but returned tuple is of length " + str(len(result))
 
 # Assert that verifies the output is a valid complex tuple, and checks that it matches expected output
-def complex_assert(expected, actual, message):
+def assert_complex(expected, actual, message):
     if actual != approx(expected): return message
 
 # Assert that verifies the output is a valid polar tuple, and checks that it matches expected output
-def polar_assert(expected, actual, message):
+def assert_polar(expected, actual, message):
     (ar, atheta) = actual
     if ar == 0:
         if ar != approx(expected[0]): return message
@@ -70,7 +71,8 @@ def imaginary_power_test(fun):
             print("Your function must return a value!")
             return
         if expected != actual:
-            print("Result of exponentiation doesn't seem to match expected value: expected (i)^{0} = {1}, got {2}".format(n, expected, actual))
+            message = "Result of exponentiation doesn't seem to match expected value: expected (i)^{0} = {1}, got {2}"
+            print(message.format(n, expected, actual))
             return
     print("Success!")
 
@@ -81,15 +83,23 @@ def complex_add_ref(x, y):
 @test
 def complex_add_test(fun):
     for i in range(25):
-        x = prep_random_complex()
-        y = prep_random_complex()
+        x = prep_random_cartesian()
+        y = prep_random_cartesian()
         expected = complex_add_ref(x, y)
         actual = fun(x, y)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Sum doesn't seem to match expected value: expected (" + format_complex(x) + ") + (" + format_complex(y) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Sum doesn't seem to match expected value: expected ("
+                             + format_complex(x)
+                             + ") + ("
+                             + format_complex(y)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -102,15 +112,23 @@ def complex_mult_ref(x, y):
 @test
 def complex_mult_test(fun):
     for i in range(25):
-        x = prep_random_complex()
-        y = prep_random_complex()
+        x = prep_random_cartesian()
+        y = prep_random_cartesian()
         expected = complex_mult_ref(x, y)
         actual = fun(x, y)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Product doesn't seem to match expected value: expected (" + format_complex(x) + ") * (" + format_complex(y) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Product doesn't seem to match expected value: expected ("
+                             + format_complex(x)
+                             + ") * ("
+                             + format_complex(y)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -123,14 +141,20 @@ def conjugate_ref(x):
 @test
 def conjugate_test(fun):
     for i in range(25):
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         expected = conjugate_ref(x)
         actual = fun(x)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Conjugate doesn't seem to match expected value: expected conjugate of " + format_complex(x) + " to be " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Conjugate doesn't seem to match expected value: expected conjugate of "
+                             + format_complex(x)
+                             + " to be "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -146,17 +170,25 @@ def complex_div_ref(x, y):
 @test
 def complex_div_test(fun):
     for i in range(25):
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         y = (0, 0)
         while y == (0, 0):
-            y = prep_random_complex()
+            y = prep_random_cartesian()
         expected = complex_div_ref(x, y)
         actual = fun(x, y)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Quotient doesn't seem to match expected value: expected (" + format_complex(x) + ") / (" + format_complex(y) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Quotient doesn't seem to match expected value: expected ("
+                             + format_complex(x)
+                             + ") / ("
+                             + format_complex(y)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -169,7 +201,7 @@ def modulus_ref(x):
 @test
 def modulus_test(fun):
     for i in range(25):
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         expected = modulus_ref(x)
         actual = fun(x)
         if actual == None:
@@ -179,7 +211,9 @@ def modulus_test(fun):
             print("Your function must return a number, returned " + type(actual).__name__ + ".")
             return
         if actual != approx(expected):
-            print("Modulus doesn't seem to match expected value: expected |" + format_complex(x) + "| = {0:.3f}, got {1:.3f}".format(expected, actual))
+            print("Modulus doesn't seem to match expected value: expected |"
+                  + format_complex(x)
+                  + "| = {0:.3f}, got {1:.3f}".format(expected, actual))
             return
     print("Success!")
 
@@ -191,14 +225,20 @@ def complex_exp_ref(x):
 @test
 def complex_exp_test(fun):
     for i in range(25):
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         expected = complex_exp_ref(x)
         actual = fun(x)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Result of exponentiation doesn't seem to match expected value: expected e^(" + format_complex(x) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Result of exponentiation doesn't seem to match expected value: expected e^("
+                             + format_complex(x)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -216,14 +256,21 @@ def complex_exp_real_test(fun):
         base = r.random() * r.randint(1, 100)
         if i == 0:
             base = 0
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         expected = complex_exp_real_ref(base, x)
         actual = fun(base, x)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Result of exponentiation doesn't seem to match expected value: expected {0:.3f}^(".format(base) + format_complex(x) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Result of exponentiation doesn't seem to match expected value: "
+                             + "expected {0:.3f}^(".format(base)
+                             + format_complex(x)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -236,16 +283,22 @@ def polar_convert_ref(x):
 @test
 def polar_convert_test(fun):
     for i in range(25):
-        x = prep_random_complex()
+        x = prep_random_cartesian()
         if i == 0:
             x = (0, 0)
         expected = polar_convert_ref(x)
         actual = fun(x)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = polar_assert(expected, actual, "Polar conversion doesn't seem to match expected value: expected " + format_complex(x) + " to be converted to " + format_polar(expected) + ", got " + format_polar(actual))
+        msg = assert_polar(expected, actual,
+                           "Polar conversion doesn't seem to match expected value: expected "
+                           + format_complex(x)
+                           + " to be converted to "
+                           + format_polar(expected)
+                           + ", got "
+                           + format_polar(actual))
         if msg != None:
             print(msg)
             return
@@ -261,11 +314,17 @@ def rect_convert_test(fun):
         x = prep_random_polar()
         expected = rect_convert_ref(x)
         actual = fun(x)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Cartesian conversion doesn't seem to match expected value: expected " + format_polar(x) + " to be converted to " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Cartesian conversion doesn't seem to match expected value: expected "
+                             + format_polar(x)
+                             + " to be converted to "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
@@ -291,11 +350,19 @@ def polar_mult_test(fun):
             y = x
         expected = polar_mult_ref(x, y)
         actual = fun(x, y)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = polar_assert(expected, actual, "Product doesn't seem to match expected value: expected (" + format_polar(x) + ") * (" + format_polar(y) + ") = " + format_polar(expected) + ", got " + format_polar(actual))
+        msg = assert_polar(expected, actual,
+                           "Product doesn't seem to match expected value: expected ("
+                           + format_polar(x)
+                           + ") * ("
+                           + format_polar(y)
+                           + ") = "
+                           + format_polar(expected)
+                           + ", got "
+                           + format_polar(actual))
         if msg != None:
             print(msg)
             return
@@ -309,17 +376,25 @@ def complex_exp_arbitrary_ref(x, y):
 @test
 def complex_exp_arbitrary_test(fun):
     for i in range(25):
-        x = prep_random_complex()
-        y = prep_random_complex()
+        x = prep_random_cartesian()
+        y = prep_random_cartesian()
         if i == 0:
             x = (0, 0)
         expected = complex_exp_arbitrary_ref(x, y)
         actual = fun(x, y)
-        msg = tuple_assert(actual)
+        msg = assert_tuple(actual)
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Result of exponentiation doesn't seem to match expected value: expected (" + format_complex(x) + ")^(" + format_complex(y) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = assert_complex(expected, actual,
+                             "Result of exponentiation doesn't seem to match expected value: expected ("
+                             + format_complex(x)
+                             + ")^("
+                             + format_complex(y)
+                             + ") = "
+                             + format_complex(expected)
+                             + ", got "
+                             + format_complex(actual))
         if msg != None:
             print(msg)
             return
