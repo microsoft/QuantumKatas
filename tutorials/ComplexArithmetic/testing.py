@@ -48,7 +48,7 @@ def polar_assert(expected, actual, message):
     if actual != approx(expected): return message
 
 # ------------------------------------------------------
-# Formats a complex number in tuple form neatly
+# Formats a complex number in Cartesian form neatly
 def format_complex(x):
     return "{0:.3f}".format(x[0]) + (" + " if x[1] >= 0 else " - ") + "{0:.3f}i".format(abs(x[1]))
 
@@ -223,7 +223,7 @@ def complex_exp_real_test(fun):
         if msg != None:
             print(msg)
             return
-        msg = complex_assert(expected, actual, "Result of exponentiation doesn's seem to match expected value: expected {0:.3f}^(".format(base) + format_complex(x) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
+        msg = complex_assert(expected, actual, "Result of exponentiation doesn't seem to match expected value: expected {0:.3f}^(".format(base) + format_complex(x) + ") = " + format_complex(expected) + ", got " + format_complex(actual))
         if msg != None:
             print(msg)
             return
