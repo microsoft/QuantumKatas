@@ -72,7 +72,8 @@ function Validate {
 #  * CHSH and MagicSquare games require implementing two code cells at once before running the test, 
 #    so the first of the cells implemented is guaranteed to fail.
 #  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
-#  * ExploringGroversAlgorithm which has tasks with deliberately invalid code.
+#  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
+#  * ComplexArithmetic has tasks with deliberately invalid Python code.
 # 
 $not_ready = 
 @(
@@ -82,7 +83,8 @@ $not_ready =
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
-    'VisualizingGroversAlgorithm.ipynb'
+    'VisualizingGroversAlgorithm.ipynb',
+    'ComplexArithmetic.ipynb'
 )
 
 $errors = $false
