@@ -33,7 +33,7 @@ Each kata is a separate project which includes:
 ## List of Notebook tutorials <a name="tutorial-topics" /> ##
 
 * **[Complex Arithmetic](./tutorials/ComplexArithmetic/)**.
-  This tutorial teaches you how to work with complex numbers,
+  This tutorial introduces you to complex numbers,
   explaining the mathematics required to work with quantum computing.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
