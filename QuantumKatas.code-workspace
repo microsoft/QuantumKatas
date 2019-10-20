@@ -79,10 +79,6 @@
 			"name": "18. Ripple-carry Adder"
 		},
 		{
-			"path": "RippleCarryAdder",
-			"name": "17. Ripple-carry Adder"
-		},
-		{
 			"path": "UnitaryPatterns",
 			"name": "19*. Unitary Patterns"
 		},
