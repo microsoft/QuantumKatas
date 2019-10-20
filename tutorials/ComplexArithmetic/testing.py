@@ -309,14 +309,14 @@ def polar_convert_test(fun):
     print("Success!")
 
 # ------------------------------------------------------
-def rect_convert_ref(x):
+def cartesian_convert_ref(x):
     return (x[0] * m.cos(x[1]), x[0] * m.sin(x[1]))
 
 @test
-def rect_convert_test(fun):
+def cartesian_convert_test(fun):
     for i in range(25):
         x = prep_random_polar()
-        expected = rect_convert_ref(x)
+        expected = cartesian_convert_ref(x)
         actual = fun(x)
         msg = assert_tuple(actual)
         if msg != None:
