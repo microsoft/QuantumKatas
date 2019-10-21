@@ -91,6 +91,10 @@ def gen_matrix_message(matrices, strings):
 def format_row(row):
     ans = ""
     for num in row:
+        if num == ...:
+            ans += "     ...     "
+            continue
+        
         if num.real >= 0:
             ans += ' '
         
@@ -123,6 +127,8 @@ def gen_labeled_message(matrices, labels):
     return ans
 
 def format_matrix(matrix, label):
+    if matrix == ...:
+        return label + "..."
     n = len(matrix)
     lsize = len(label)
     ans = ""
@@ -138,6 +144,9 @@ def format_matrix(matrix, label):
 # ------------------------------------------------------
 # Checks that two matrices are (approximately) equal to each other
 def matrix_equal(act, exp):
+    if act == ... or exp == ...:
+        return False
+    
     h = len(act)
     w = len(act[0])
     # Check that sizes match
@@ -145,7 +154,7 @@ def matrix_equal(act, exp):
         return False
     
     for i in range(h):
-        if act[i] != approx(exp[i]):
+        if act[i] != exp[i] or act[i] != approx(exp[i]):
             return False
     return True
 
@@ -421,7 +430,7 @@ def inner_prod_test(fun):
         w = gen_complex_matrix(len(v), 1)
         expected = inner_prod_ref(v, w)
         actual = fun(v, w)
-        if actual == None:
+        if actual == None or actual == ...:
             print("Your function must return a value!")
             return
         if actual != approx(expected):
@@ -616,7 +625,7 @@ def find_eigenvalue_test(fun):
             (a, expected) = gen_eigenmatrix()
             v = find_eigenvector_ref(a, expected)
         actual = fun(a, v)
-        if actual == None:
+        if actual == None or actual == ...:
             print("Your function must return a value!")
             return
         if actual != approx(expected):
@@ -635,7 +644,7 @@ def find_eigenvector_test(fun):
             (a, x) = gen_eigenmatrix(2)
         
         result = fun(a, x)
-        if result == None:
+        if result == None or result == ...:
             print("Your function must return a value!")
             return
         if result == [[0], [0]]:
