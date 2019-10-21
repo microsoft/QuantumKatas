@@ -195,7 +195,10 @@ def matrix_add_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected results of addition: \n" + gen_labeled_message([a, b, expected, actual], ["A: ", "B: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected results of addition: \n"
+                  + gen_labeled_message([a, b, expected, actual],
+                                        ["A: ", "B: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -220,7 +223,10 @@ def scalar_mult_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected results of scalar multiplication: \nScalar: {0:.3f}\n\n".format(x) + gen_labeled_message([a, expected, actual], ["A: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected results of scalar multiplication: \nScalar: {0:.3f}\n\n".format(x)
+                  + gen_labeled_message([a, expected, actual],
+                                        ["A: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -246,7 +252,10 @@ def matrix_mult_test(fun):
         if actual == None:
             print("Your function must return a value!")
         if not matrix_equal(actual, expected):
-            print("Unexpected results of matrix multiplication: \n" + gen_labeled_message([a, b, expected, actual], ["A: ", "B: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected results of matrix multiplication: \n"
+                  + gen_labeled_message([a, b, expected, actual],
+                                        ["A: ", "B: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -272,7 +281,10 @@ def matrix_inverse_test(fun):
         if actual == None:
             print("Your function must return a value!")
         if not matrix_equal(actual, expected):
-            print("Inverse doesn't seem to match expected:\n" + gen_labeled_message([a, expected, actual], ["A: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Inverse doesn't seem to match expected:\n"
+                  + gen_labeled_message([a, expected, actual],
+                                        ["A: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -298,7 +310,10 @@ def transpose_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of a transpose:\n" + gen_labeled_message([a, expected, actual], ["A: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected result of a transpose:\n"
+                  + gen_labeled_message([a, expected, actual],
+                                        ["A: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -322,7 +337,10 @@ def conjugate_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of matrix conjugate:\n" + gen_labeled_message([a, expected, actual], ["A: ","Expected: ","You returned: "]) + "Try again!")
+            print("Unexpected result of matrix conjugate:\n"
+                  + gen_labeled_message([a, expected, actual],
+                                        ["A: ","Expected: ","You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -340,7 +358,10 @@ def adjoint_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of adjoint operation:\n" + gen_labeled_message([a, expected, actual], ["A: ","Expected: ","You returned: "]) + "Try again!")
+            print("Unexpected result of adjoint operation:\n"
+                  + gen_labeled_message([a, expected, actual],
+                                        ["A: ","Expected: ","You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -415,7 +436,11 @@ def is_matrix_unitary_test(fun):
             print("Your function must return a value!")
             return
         if actual != expected:
-            print("Unexpected result:\n" + gen_matrix_message([a], ["Matrix ", (" is " if expected else " is not ") + "unitary, but misidentified as " + ("unitary" if actual else "not unitary")]))
+            print("Unexpected result:\n"
+                  + gen_matrix_message([a],
+                                       ["Matrix ", (" is " if expected else " is not ")
+                                                   + "unitary, but misidentified as " 
+                                                   + ("unitary" if actual else "not unitary")]))
             return
     print("Success!")
 
@@ -434,7 +459,10 @@ def inner_prod_test(fun):
             print("Your function must return a value!")
             return
         if actual != approx(expected):
-            print("Unexpected result of inner product:\n" + gen_labeled_message([v, w], ["V: ", "W: "]) + "Expected: {0:.3f}\n\n".format(expected) + "You returned: {0:.3f}\n\nTry again!".format(actual))
+            print("Unexpected result of inner product:\n"
+                  + gen_labeled_message([v, w], ["V: ", "W: "])
+                  + "Expected: {0:.3f}\n\n".format(expected)
+                  + "You returned: {0:.3f}\n\nTry again!".format(actual))
             return
     print("Success!")
 
@@ -456,7 +484,9 @@ def normalize_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of normalization:\n" + gen_labeled_message([v, expected, actual], ["V: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected result of normalization:\n"
+                  + gen_labeled_message([v, expected, actual], ["V: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -475,7 +505,10 @@ def outer_prod_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of outer product:\n" + gen_labeled_message([v, w, expected, actual], ["V: ", "W: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected result of outer product:\n"
+                  + gen_labeled_message([v, w, expected, actual],
+                                        ["V: ", "W: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -512,7 +545,10 @@ def tensor_product_test(fun):
             print("Your function must return a value!")
             return
         if not matrix_equal(actual, expected):
-            print("Unexpected result of tensor product:\n" + gen_labeled_message([a, b, expected, actual], ["A: ", "B: ", "Expected: ", "You returned: "]) + "Try again!")
+            print("Unexpected result of tensor product:\n"
+                  + gen_labeled_message([a, b, expected, actual],
+                                        ["A: ", "B: ", "Expected: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
@@ -547,7 +583,8 @@ def determinant(mat):
             coeff *= -1
         return ans
 
-# Generates a matrix and an eigenvalue by generating a square matrix, taking the top right element as the eigenvalue, and solving for what to replace it with
+# Generates a matrix and an eigenvalue by generating a square matrix,
+# taking the top right element as the eigenvalue, and solving for what to replace it with
 def gen_eigenmatrix(n = -1):
     if n == -1: n = r.randint(2, 5)
     
@@ -629,7 +666,12 @@ def find_eigenvalue_test(fun):
             print("Your function must return a value!")
             return
         if actual != approx(expected):
-            print("Wrong eigenvalue!\n" + gen_labeled_message([a, v], ["A: ", "V: "]) + "Expected " + "{0:.3f}\n\n".format(expected) + "You returned: {0:.3f}\n\n".format(actual) + "Try again!")
+            print("Wrong eigenvalue!\n"
+                  + gen_labeled_message([a, v], ["A: ", "V: "])
+                  + "Expected "
+                  + "{0:.3f}\n\n".format(expected)
+                  + "You returned: {0:.3f}\n\n".format(actual)
+                  + "Try again!")
             return
     print("Success!")
 
@@ -651,7 +693,9 @@ def find_eigenvector_test(fun):
             print("The eigenvector must be non-zero!")
             return
         if not matrix_equal(matrix_mult_ref(a, result), scalar_mult_ref(x, result)):
-            print("Wrong eigenvector!\nEigenvalue: {0:.3f}\n\n".format(x) + gen_labeled_message([a, result], ["A: ", "You returned: "]) + "Try again!")
+            print("Wrong eigenvector!\nEigenvalue: {0:.3f}\n\n".format(x)
+                  + gen_labeled_message([a, result], ["A: ", "You returned: "])
+                  + "Try again!")
             return
     print("Success!")
 
