@@ -253,7 +253,7 @@ namespace Quantum.Kata.Measurements {
     // a combination of tasks 14 and 15 from the Superposition kata
     operation StatePrep_BitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         let L = Length(bits);
-
+        Fact(L == 1 or L == 2 or L == 4, "State preparation only supports arrays of 1, 2 or 4 bit strings");
         if (L == 1) {
             for (i in 0 .. Length(qs) - 1) {
                 if (bits[0][i]) {
@@ -355,11 +355,6 @@ namespace Quantum.Kata.Measurements {
         CheckSuperpositionBitstringsMeasurement(3, [7,5],       // [111,101]
                                                    [2]); // [010]
 
-        CheckSuperpositionBitstringsMeasurement(4, [13,11,7,3], // [1101,1011,0111,0011]
-                                                   [5,2]); // [0101,0010]
-
-        CheckSuperpositionBitstringsMeasurement(5, [14,17,9], // [01110,10001,01001]
-                                                   [25,18]); // [11001,10010]
     }
 
     // ------------------------------------------------------
@@ -398,12 +393,6 @@ namespace Quantum.Kata.Measurements {
 
         CheckSuperpositionBitstringsMeasurement(3, [7,5],       // [111,101]
                                                    [2]); // [010]
-
-        CheckSuperpositionBitstringsMeasurement(4, [13,11,7,3], // [1101,1011,0111,0011]
-                                                   [5,2]); // [0101,0010]
-
-        CheckSuperpositionBitstringsMeasurement(5, [14,17,9], // [01110,10001,01001]
-                                                   [25,18]); // [11001,10010]
 
     }
 
