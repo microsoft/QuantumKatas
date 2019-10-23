@@ -349,12 +349,15 @@ namespace Quantum.Kata.Measurements {
 
         CheckSuperpositionBitstringsOneMeasurement(5, [30,14,10,6],     // [11110,01110,01010,00110]
                                                       [1,17,21,25]);    // [00001,10001,10101,11001]
-        CheckSuperpositionBitstringsMeasurement(2, [1,2],       // [01,10]
-                                                   [1]); // [01]
 
-        CheckSuperpositionBitstringsMeasurement(3, [7,5],       // [111,101]
-                                                   [2]); // [010]
+        CheckSuperpositionBitstringsOneMeasurement(2, [1,2],       // [01,10]
+                                                      [3]); // [11]
 
+        CheckSuperpositionBitstringsOneMeasurement(3, [5,7],       // [101,111]
+                                                      [2]); // [010]
+
+        CheckSuperpositionBitstringsOneMeasurement(4, [13,11,7,3], // [1101,1011,0111,0011]
+                                                      [2,4]); // [0010,0100]
     }
 
     // ------------------------------------------------------
@@ -386,14 +389,13 @@ namespace Quantum.Kata.Measurements {
                                                    [1,17,21,27]); // [00001,10001,10101,11011]
 
         CheckSuperpositionBitstringsMeasurement(2, [2,1],       // [10,01]
-                                                   [1]); // [01]
-
-        CheckSuperpositionBitstringsMeasurement(2, [1,2],       // [01,10]
-                                                   [1]); // [01]
+                                                   [3]); // [11]
 
         CheckSuperpositionBitstringsMeasurement(3, [7,5],       // [111,101]
                                                    [2]); // [010]
-
+                                                   
+        CheckSuperpositionBitstringsMeasurement(4, [13,11,7,3], // [1101,1011,0111,0011]
+                                                   [5,2]); // [0101,0010]
     }
 
 
