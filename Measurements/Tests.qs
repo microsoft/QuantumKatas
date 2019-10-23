@@ -350,7 +350,7 @@ namespace Quantum.Kata.Measurements {
         CheckSuperpositionBitstringsOneMeasurement(5, [30,14,10,6],     // [11110,01110,01010,00110]
                                                       [1,17,21,25]);    // [00001,10001,10101,11001]
 
-        CheckSuperpositionBitstringsOneMeasurement(2, [1,2],       // [01,10]
+        CheckSuperpositionBitstringsOneMeasurement(2, [0,2],       // [00,10]
                                                       [3]); // [11]
 
         CheckSuperpositionBitstringsOneMeasurement(3, [5,7],       // [101,111]
