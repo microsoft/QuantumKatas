@@ -195,9 +195,14 @@ namespace Quantum.Kata.KeyDistribution {
     // Inputs:
     //      1) "q": a qubit in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩,
     //      2) "basis": Eve's guess of the basis she should use for measuring.
+    //         Recall that false indicates |0⟩/|1⟩ basis and true indicates |+⟩/|-⟩ basis.
     // Output: the bit encoded in the qubit (false for |0⟩/|+⟩ states, true for |1⟩/|-⟩ states).
     // Note: in this task you are guaranteed that the basis you're given matches 
-    //       the one in which the qubit is encoded.
+    //       the one in which the qubit is encoded, that is, if you are given a qubit in state
+    //       |0⟩ or |1⟩, you will be given basis = false, and if you are given a qubit in state
+    //       |+⟩ or |-⟩, you will be given basis = true. This is different from a real
+    //       eavesdropping scenario, in which you have to guess the basis yourself.
+
     operation Eavesdrop (q : Qubit, basis : Bool) : Bool {
         // ...
         return false;
