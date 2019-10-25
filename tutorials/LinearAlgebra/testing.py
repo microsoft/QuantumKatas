@@ -455,6 +455,9 @@ def inner_prod_test(fun):
         w = gen_complex_matrix(len(v), 1)
         expected = inner_prod_ref(v, w)
         actual = fun(v, w)
+        if type(actual) == list:
+            print("You should return a number, not a matrix")
+            return
         if actual == None or actual == ...:
             print("Your function must return a value!")
             return
