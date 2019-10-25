@@ -107,7 +107,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // Input: An array of 4 qubits in the |0000⟩ state.
     // Goal:
     //     Create the entangled state
-    //     |ϕ⟩ = ((|+⟩₀ ⊗ |+⟩₂ + |-⟩₀ ⊗ |-⟩₂) / sqrt(2)) ⊗ ((|+⟩₁ ⊗ |+⟩₃ + |-⟩₁ ⊗ |-⟩₃) / sqrt(2)),
+    //     |ψ⟩ = ((|+⟩₀ ⊗ |+⟩₂ + |-⟩₀ ⊗ |-⟩₂) / sqrt(2)) ⊗ ((|+⟩₁ ⊗ |+⟩₃ + |-⟩₁ ⊗ |-⟩₃) / sqrt(2)),
     //     where |ψ⟩₀ and |ψ⟩₁ are Alice's qubits and |ψ⟩₂ and |ψ⟩₃ are Bob's qubits.
     operation CreateEntangledState (qs : Qubit[]) : Unit {
         // Hint: Can you represent this state as a combination of Bell pairs?

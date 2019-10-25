@@ -9,12 +9,14 @@
 
 namespace Quantum.Kata.JointMeasurements {
     
+    open Microsoft.Quantum.Characterization;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     
+    open Quantum.Kata.Utils;
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
@@ -165,6 +167,15 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
+    // An operation to fine-tune universal CounterSimulator
+    // for the purposes of the last two tasks: prohibiting all multi-qubit operations,
+    // except the two that are allowed to be used for solving this task
+    operation GetMultiQubitNonMeasurementOpCount () : Int {
+        return GetMultiQubitOpCount() - GetOracleCallsCount(Measure) - GetOracleCallsCount(MeasureAllZ);
+    }
+    
+    
+    // ------------------------------------------------------
     operation T06_ControlledX_Test () : Unit {
         // Note that the way the problem is formulated, we can't just compare two unitaries,
         // we need to create an input state |A⟩ and check that the output state is correct
@@ -176,9 +187,15 @@ namespace Quantum.Kata.JointMeasurements {
                 // prepare A state
                 StatePrep_A(alpha, qs[0]);
                 
+                ResetOracleCallsCount();
+
                 // apply operation that needs to be tested
                 ControlledX(qs);
                 
+                // the 1 in the following condition is the task operation itself being called
+                Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
+                     "You are not allowed to use multi-qubit gates in this task.");
+
                 // apply adjoint reference operation and adjoint of state prep
                 CNOT(qs[0], qs[1]);
                 Adjoint StatePrep_A(alpha, qs[0]);
@@ -205,6 +222,27 @@ namespace Quantum.Kata.JointMeasurements {
         // In this task the gate is supposed to work on all inputs, so we can compare the unitary to CNOT.
         AssertOperationsEqualReferenced(2, CNOTWrapper, ControlledX_General_Reference);
         AssertOperationsEqualReferenced(2, ControlledX_General, ControlledX_General_Reference);
+
+        // Check that the implementation of ControlledX_General doesn't call multi-qubit gates (other than itself)
+        using (qs = Qubit[2]) {
+            // prepare a non-trivial input state
+            ApplyToEach(H, qs);
+
+            ResetOracleCallsCount();
+            
+            ControlledX_General(qs);
+
+            // the 1 in the following condition is the task operation itself being called
+            Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
+                 "You are not allowed to use multi-qubit gates in this task.");
+ 
+            // apply adjoint reference operation and adjoint of state prep
+            CNOT(qs[0], qs[1]);
+            ApplyToEach(H, qs);
+
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
     }
     
 }

@@ -14,39 +14,35 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // ------------------------------------------------------
-    operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
-        using (qs = Qubit[N]) {
-            // apply operation that needs to be tested
-            taskImpl(qs);
-            
-            // apply adjoint reference operation and check that the result is |0^N⟩
-            Adjoint refImpl(qs);
-            
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
-    }
-    
-    
+        
     operation T1_CreateEntangledPair_Test () : Unit {
-        // We only check for 2 qubits.
-        AssertEqualOnZeroState(2, CreateEntangledPair, CreateEntangledPair_Reference);
+        using ((q1, q2) = (Qubit(), Qubit())) {
+
+            // apply operation that needs to be tested
+            CreateEntangledPair(q1, q2);
+
+            // apply adjoint reference operation and check that the result is |0^N⟩
+            Adjoint CreateEntangledPair_Reference(q1, q2);
+
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero([q1, q2]);
+        }
     }
     
     
     // ------------------------------------------------------
     // Helper operation that runs superdense coding protocol using two building blocks
     // specified as first two parameters.
-    operation ComposeProtocol (encodeOp : ((Qubit, Bool[]) => Unit), decodeOp : ((Qubit, Qubit) => Bool[]), message : Bool[]) : Bool[] {
+    operation ComposeProtocol (
+		encodeOp : ((Qubit, ProtocolMessage) => Unit), 
+		decodeOp : ((Qubit, Qubit) => ProtocolMessage), 
+		message : ProtocolMessage
+	) : ProtocolMessage {
         
         using (qs = Qubit[2]) {
-            CreateEntangledPair_Reference(qs);
+            CreateEntangledPair_Reference(qs[0], qs[1]);
             encodeOp(qs[0], message);
-            let result = decodeOp(qs[1], qs[0]);
-            
-            // Make sure that we return qubits back in 0 state.
-            ResetAll(qs);
-            return result;
+            return decodeOp(qs[0], qs[1]);            
         }
     }
     
@@ -54,17 +50,18 @@ namespace Quantum.Kata.SuperdenseCoding {
     // ------------------------------------------------------
     // Helper operation that runs superdense coding protocol (specified by protocolOp)
     // on all possible input values and verifies that decoding result matches the inputs
-    operation TestProtocol (protocolOp : (Bool[] => Bool[])) : Unit {
+    operation TestProtocol (protocolOp : (ProtocolMessage => ProtocolMessage)) : Unit {
         
         // Loop over the 4 possible combinations of two bits
         for (n in 0 .. 3) {
-            let data = [1 == n / 2, 1 == n % 2];
+            let data = ProtocolMessage(1 == n / 2, 1 == n % 2);
             
             for (iter in 1 .. 100) {
                 let result = protocolOp(data);
                 
                 // Now test if the bits were transfered correctly.
-                AllEqualityFactB(result, data, $"The message {data} was transfered incorrectly as {result}");
+                Fact(result::Bit1 == data::Bit1 and result::Bit2 == data::Bit2, 
+                    $"{data} was transfered incorrectly as {result}");
             }
         }
     }

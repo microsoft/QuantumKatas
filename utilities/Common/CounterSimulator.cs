@@ -21,8 +21,8 @@ namespace Microsoft.Quantum.Katas
         private Dictionary<ICallable, int> _operationsCount = new Dictionary<ICallable, int>();
         private long _qubitsAllocated = 0;
         private long _maxQubitsAllocated = 0;
+        private long _multiQubitOperations = 0;
 
-        #region Counting operations
         /// <param name="throwOnReleasingQubitsNotInZeroState">If set to true, the exception is thrown when trying to release qubits not in zero state.</param>
         /// <param name="randomNumberGeneratorSeed">Seed for the random number generator used by a simulator for measurement outcomes and Primitives.Random operation.</param>
         /// <param name="disableBorrowing">If true, Borrowing qubits will be disabled, and a new qubit will be allocated instead every time borrowing is requested. Performance may improve.</param>
@@ -35,11 +35,13 @@ namespace Microsoft.Quantum.Katas
             this.OnOperationStart += CountOperationCalls;
         }
 
+        #region Counting operations
         /// <summary>
         /// Callback method for the OnOperationStart event.
         /// </summary>
         public void CountOperationCalls(ICallable op, IApplyData data)
         {
+            // Count all operations, grouped by operation
             if (_operationsCount.ContainsKey(op))
             {
                 _operationsCount[op]++;
@@ -47,6 +49,23 @@ namespace Microsoft.Quantum.Katas
             else
             {
                 _operationsCount[op] = 1;
+            }
+
+            // Check if the operation has multiple qubit parameters, if yes, count it
+            int nQubits = 0;
+            using (IEnumerator<Qubit> enumerator = data?.Qubits?.GetEnumerator())
+            {
+                if (enumerator is null)
+                {
+                    // The operation doesn't have qubit parameters
+                    return;
+                }
+                while (enumerator.MoveNext() && nQubits < 2)
+                    nQubits++;
+            }
+            if (nQubits >= 2)
+            {
+                _multiQubitOperations++;
             }
         }
 
@@ -65,6 +84,7 @@ namespace Microsoft.Quantum.Katas
             public override Func<QVoid, QVoid> Body => (__in) =>
             {
                 _sim._operationsCount.Clear();
+                _sim._multiQubitOperations = 0;
                 return QVoid.Instance;
             };
         }
@@ -92,6 +112,24 @@ namespace Microsoft.Quantum.Katas
                 var actual = _sim._operationsCount.ContainsKey(op) ? _sim._operationsCount[op] : 0;
                 
                 return actual;
+            };
+        }
+
+        /// <summary>
+        /// Custom operation to get the number of multi-qubit operations.
+        /// </summary>
+        public class GetMultiQubitOpCountImpl : GetMultiQubitOpCount
+        {
+            CounterSimulator _sim;
+
+            public GetMultiQubitOpCountImpl(CounterSimulator m) : base(m)
+            {
+                _sim = m;
+            }
+
+            public override Func<QVoid, long> Body => (__in) =>
+            {
+                return _sim._multiQubitOperations;
             };
         }
         #endregion

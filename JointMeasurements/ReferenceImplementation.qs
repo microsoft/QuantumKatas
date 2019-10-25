@@ -12,6 +12,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     open Microsoft.Quantum.Characterization;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Measurement;
     
     
     // Task 1. Single-qubit measurement
@@ -80,7 +81,7 @@ namespace Quantum.Kata.JointMeasurements {
                 let p2 = MeasureAllZ([a, t]);
                 H(a);
                 H(t);
-                let m = M(a);
+                let m = MResetZ(a);
                 
                 // apply fixups
                 if (p2 == One) {
@@ -88,11 +89,6 @@ namespace Quantum.Kata.JointMeasurements {
                 }
                 if (p1 != m) {
                     X(t);
-                }
-                
-                // reset ancilla qubit
-                if (m == One) {
-                    X(a);
                 }
             }
         }

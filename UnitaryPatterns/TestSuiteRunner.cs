@@ -8,9 +8,10 @@
 //////////////////////////////////////////////////////////////////////
 
 using Microsoft.Quantum.Simulation.XUnit;
-using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
+
+using Microsoft.Quantum.Katas;
 
 namespace Quantum.Kata.UnitaryPatterns
 {
