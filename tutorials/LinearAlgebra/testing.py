@@ -402,7 +402,7 @@ def gen_unitary_matrix(n = -1):
     
     return ans
 
-edge_matrices = [[[0, 0], [0, 0]], [[1/sqrt(2), 1/sqrt(2)], [1/sqrt(2), 1/sqrt(2)]]]
+edge_unitary_matrices = [[[0, 0], [0, 0]], [[1/sqrt(2), 1/sqrt(2)], [1/sqrt(2), 1/sqrt(2)]]]
 
 def is_matrix_unitary_ref(a):
     n = len(a)
@@ -424,7 +424,7 @@ def is_matrix_unitary_test(fun):
         a = []
         if i > 0:
             --i
-            a = edge_matrices[i]
+            a = edge_unitary_matrices[i]
         elif result:
             a = gen_unitary_matrix()
         else:
@@ -560,8 +560,8 @@ edge_matrices = [
     [[4, -6, 6], [3, -5, 3], [3, -3, 1]], 
     [[1, 5, 0], [2, -6, 0], [1, 2, 3]],
     [[3, -2], [-3, 2]],
-    [[0,0],[0,2]],
-    [[2,0],[0,0]]]
+    [[0,0], [0,2]],
+    [[2,0], [0,0]]]
     
 edge_values = [-2, 3, 0, 2, 2]
 edge_vectors = [[[0], [1], [1]], [[0], [0], [-2]], [[2], [3]], [[0], [-1]], [[1], [0]]]
