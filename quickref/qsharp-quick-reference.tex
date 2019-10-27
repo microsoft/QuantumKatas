@@ -11,8 +11,8 @@
 \usepackage{color,graphicx,overpic}
 
 % https://tex.stackexchange.com/a/192067
-\usepackage{fontawesome}
-  \newfontfamily{\FA}{[FontAwesome.otf]}
+%\usepackage{fontawesome}
+ %\newfontfamily{\FA}{[FontAwesome.otf]}
 
 % Known issue in {fontspec}: https://github.com/wspr/fontspec/issues/312#issuecomment-342125206
 % Since {fontspec} is included only when compiling with XeTeX, we guard
@@ -21,8 +21,8 @@
     \ifxetex
         \let\latinencoding\relax
         \usepackage{fontspec}
-        \setmainfont{Segoe UI}
-        \setmonofont{Consolas}
+        %\setmainfont{Segoe UI}
+        %\setmonofont{Consolas}
     \fi
 
 % \usepackage[T1]{fontenc}
@@ -139,13 +139,14 @@
   \end{keysref}
 
   \begin{keysref}{Derived Types}
-    Arrays                  & \texttt{\emph{elementType}[]} \\
+    Arrays                  & \texttt{\emph{elementType}[]} \newline
+    							\texttt{(elementType,elementType)[][] } \\
     Tuples                  & \texttt{(\emph{type0}, \emph{type1}, ...)} \newline
                               e.g.: \texttt{(Int, Qubit)} \\
     Functions               & \texttt{\emph{input} -> \emph{output}} \newline
                               e.g.: \texttt{ArcCos : (Double) -> Double} \\
     Operations              & \texttt{\emph{input} => \emph{output} : \emph{variants}} \newline
-                              e.g.: \texttt{H : (Qubit => Unit : \newline Adjoint, Controlled)} \\
+                              e.g.: \texttt{H : (Qubit => Unit : \newline Adj, Ctl)} \\
   \end{keysref}
 
   \begin{keysref}{Functions, Operations and Types}
@@ -170,6 +171,10 @@
     Declare immutable \newline symbol & \texttt{let \emph{name} = \emph{value}} \\
     Declare mutable \newline symbol (variable)  & \texttt{mutable \emph{name} = \emph{initialValue}} \\
     Update mutable \newline symbol (variable)   & \texttt{set \emph{name} = \emph{newValue}} \\
+    Apply-and-Reassign & \texttt{mutable \emph{name} = \emph{initialValue}} \newline
+    \texttt{for (\emph{index} in \emph{range}) \{ } \newline
+    \texttt{ set counter += \emph{index};} \newline
+    \texttt{\}} \\ 
   \end{keysref}
 
   \columnbreak%\
@@ -180,7 +185,10 @@
     k-th element         & \texttt{\emph{name}[k]} \newline NB: indices are 0-based  \\
     Array literal        & \texttt{[\emph{value0}, \emph{value1}, ...]} \newline
                            e.g.: \texttt{[true, false, true]} \\
-    Slicing (subarray)   & \texttt{\emph{name}[\emph{start}..\emph{end}]} \\
+    Slicing (subarray)   & \texttt{\emph{name}[\emph{start}...\emph{end}]} \newline
+    								\texttt{\emph{name}[\emph{start}...]} \newline
+    								\texttt{\emph{name}[...\emph{end}]} \newline
+    								\texttt{\emph{name}[...]} \\
   \end{keysref}
 
   \begin{keysref}{Control Flow}
@@ -198,7 +206,14 @@
     Return a value     & \texttt{return \emph{value}} \\
     Stop with an error & \texttt{fail "\emph{Error message}"} \\
   \end{keysref}
-
+   
+   \begin{keysref}{Conjugations}
+	ApplyWith & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+                 \texttt{\hphantom{....}within \{ ... \}} \newline
+                 \texttt{\hphantom{....}apply \{ ... \}} \newline
+                 \texttt{\}} \\ 
+   \end{keysref}
+  
   \begin{keysref}{Debugging}
     Print a string     & \texttt{Message("Hello Quantum!")} \\
     Print an \newline interpolated string   
