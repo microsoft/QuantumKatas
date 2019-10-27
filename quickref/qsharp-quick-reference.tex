@@ -4,7 +4,7 @@
 %!TEX program=xelatex
 % This cheatsheet is based on the template
 % provided at https://gist.github.com/alexander-yakushev/c773543bf9a957749f79.
-\documentclass[10pt,english,landscape]{article}
+\documentclass[8pt,english,landscape]{article}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage[landscape]{geometry}
@@ -47,7 +47,7 @@
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}
 
-\geometry{top=-0.5cm,left=1cm,right=1cm,bottom=1cm}
+\geometry{top=-0.1cm,left=0.3cm,right=0.3cm,bottom=0.3cm}
 
 \pagestyle{empty} % Turn off header and footer
 
@@ -72,7 +72,7 @@
 
 \setcounter{secnumdepth}{0} % Don't print section numbers
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt plus 0.5ex}
+\setlength{\parskip}{0pt plus 0.25ex}
 
 \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
 \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
@@ -84,7 +84,7 @@
       \rowcolors{1}{}{TableRow}
 
       \node (tbl) [inner sep=0pt] {
-        \begin{tabular}{p{2.5cm}p{5.05cm}}
+        \begin{tabular}{p{2.5cm}p{4.75cm}}
           \rowcolor{TableHead}
           \multicolumn{2}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
           \BODY
@@ -148,6 +148,15 @@
     Operations              & \texttt{\emph{input} => \emph{output} : \emph{variants}} \newline
                               e.g.: \texttt{H : (Qubit => Unit : \newline Adj, Ctl)} \\
   \end{keysref}
+  
+  \begin{keysref}{User-Defined Types}
+  newtype  & \texttt{newtype Name = (Type, Type);} \newline
+            \texttt{e.g. newtype Complex = (Double, Double);} \\
+  nested newtype & \texttt{newtype Name1 = (type, (Name2 : type, type)); } \newline
+            \texttt{e.g. newtype Nested = (Double, (ItemName : Int, String));} \\
+  
+  \end{keysref}
+  
 
   \begin{keysref}{Functions, Operations and Types}
     Define function \newline (classical routine)
@@ -166,18 +175,14 @@
     Call adjoint \newline operation & \texttt{Adjoint \emph{Name}(\emph{parameters})} \\
     Call controlled \newline operation & \texttt{Controlled \emph{Name}(\emph{controlQubits}, \emph{parameters})} \\
   \end{keysref}
-
   \begin{keysref}{Symbols and Variables}
     Declare immutable \newline symbol & \texttt{let \emph{name} = \emph{value}} \\
     Declare mutable \newline symbol (variable)  & \texttt{mutable \emph{name} = \emph{initialValue}} \\
     Update mutable \newline symbol (variable)   & \texttt{set \emph{name} = \emph{newValue}} \\
     Apply-and-Reassign & \texttt{mutable \emph{name} = \emph{initialValue}} \newline
     \texttt{for (\emph{index} in \emph{range}) \{ } \newline
-    \texttt{ set counter += \emph{index};} \newline
-    \texttt{\}} \\ 
+    \texttt{ set counter += \emph{index};} \texttt{\}} \\ 
   \end{keysref}
-
-  \columnbreak%\
 
   \begin{keysref}{Arrays}
     Allocation           & \texttt{mutable \emph{name} = new \emph{Type}[\emph{length}]} \\
@@ -221,7 +226,7 @@
     Assert that a qubit is in $\ket{0}$ or $\ket{1}$ state   & \texttt{AssertQubit(Zero, \emph{oneQubit})}\\
     Print amplitudes \newline of wave function & \texttt{DumpMachine("dump.txt")} \\
   \end{keysref}
-    
+  
   \begin{keysref}{Qubit Allocation}
     Allocate qubits      & \texttt{using (\emph{reg} = Qubit[\emph{length}]) \{} \newline
                            \texttt{\hphantom{....}//} Qubits in \texttt{\emph{reg}} start in $\ket{0}$. \newline
@@ -230,7 +235,6 @@
                            \texttt{\}} \\
     Allocate one qubit   & \texttt{using (\emph{one} = Qubit()) \{ ... \} } \\
   \end{keysref}
-
   \begin{keysref}{Measurements}
     Measure qubit in Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
     Reset qubit to $\ket{0}$     & \texttt{Reset(\emph{oneQubit})} \\
@@ -253,9 +257,9 @@
     Apply several gates \newline (Bell pair example)  & \texttt{H(\emph{qubit1});} \newline 
                                                         \texttt{CNOT(\emph{qubit1}, \emph{qubit2});} \\
   \end{keysref}
-
+ 
   \section{Resources}
-
+  
   \begin{keysref}{Documentation}
     Quantum \newline Development Kit & \url{https://docs.microsoft.com/quantum} \\
     \qs~Language \newline Reference & \url{https://docs.microsoft.com/quantum/language/} \\
@@ -283,6 +287,6 @@
     Run all unit tests                & \texttt{dotnet test} \\
   \end{keysref}
 
-\end{multicols}
+ \end{multicols}
 
 \end{document} 
