@@ -73,7 +73,7 @@ function Validate {
 #    so the first of the cells implemented is guaranteed to fail.
 #  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
 #  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
-#  * ComplexArithmetic has tasks with deliberately invalid Python code.
+#  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
 # 
 $not_ready = 
 @(
@@ -84,7 +84,8 @@ $not_ready =
     'SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
     'VisualizingGroversAlgorithm.ipynb',
-    'ComplexArithmetic.ipynb'
+    'ComplexArithmetic.ipynb',
+    'LinearAlgebra.ipynb'
 )
 
 $errors = $false
