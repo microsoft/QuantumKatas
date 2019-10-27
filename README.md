@@ -32,14 +32,16 @@ Each kata is a separate project which includes:
 
 ## List of Notebook tutorials <a name="tutorial-topics" /> ##
 
+* **[Complex Arithmetic](./tutorials/ComplexArithmetic/)**.
+  This tutorial introduces you to complex numbers,
+  explaining the mathematics required to work with quantum computing.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
+* **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
+  This tutorial offers you a high-level exploration of Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
 
 ## List of Katas <a name="kata-topics" /> ##
-
-Each kata covers one topic.
-Currently covered topics are:
 
 #### Quantum computing concepts
 * **[Basic quantum computing gates](./BasicGates/)**.

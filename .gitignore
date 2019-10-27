@@ -283,3 +283,6 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+# Python build files
+__pycache__
