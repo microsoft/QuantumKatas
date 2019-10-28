@@ -4,7 +4,7 @@
 %!TEX program=xelatex
 % This cheatsheet is based on the template
 % provided at https://gist.github.com/alexander-yakushev/c773543bf9a957749f79.
-\documentclass[8pt,english,landscape]{article}
+\documentclass[10pt,english,landscape]{article}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage[landscape]{geometry}
@@ -72,7 +72,7 @@
 
 \setcounter{secnumdepth}{0} % Don't print section numbers
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt plus 0.25ex}
+\setlength{\parskip}{0pt plus 0.5ex}
 
 \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
 \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
@@ -84,7 +84,7 @@
       \rowcolors{1}{}{TableRow}
 
       \node (tbl) [inner sep=0pt] {
-        \begin{tabular}{p{2.5cm}p{4.75cm}}
+        \begin{tabular}{p{2.5cm}p{5.05cm}}
           \rowcolor{TableHead}
           \multicolumn{2}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
           \BODY
@@ -116,7 +116,7 @@
 \raggedright\
 
 % \begin{center}
-  \Large{\qs~0.3 Language Quick Reference}
+  \Large{\qs~0.10 Language Quick Reference}
 % \end{center}
 
 \footnotesize
@@ -139,21 +139,33 @@
   \end{keysref}
 
   \begin{keysref}{Derived Types}
-    Arrays                  & \texttt{\emph{elementType}[]} \newline
-    							\texttt{(elementType,elementType)[][] } \\
+    Arrays                  & \texttt{\emph{elementType}[]} \\
     Tuples                  & \texttt{(\emph{type0}, \emph{type1}, ...)} \newline
                               e.g.: \texttt{(Int, Qubit)} \\
     Functions               & \texttt{\emph{input} -> \emph{output}} \newline
                               e.g.: \texttt{ArcCos : (Double) -> Double} \\
-    Operations              & \texttt{\emph{input} => \emph{output} : \emph{variants}} \newline
-                              e.g.: \texttt{H : (Qubit => Unit : \newline Adj, Ctl)} \\
+     Operations               & \texttt{\emph{input} => \emph{output} \emph{variants}} \newline
+                              e.g.: \texttt{H : (Qubit => Unit : \newline Adj + Ctl)} \\
   \end{keysref}
   
   \begin{keysref}{User-Defined Types}
-  newtype  & \texttt{newtype Name = (Type, Type);} \newline
-            \texttt{e.g. newtype Complex = (Double, Double);} \\
-  nested newtype & \texttt{newtype Name1 = (type, (Name2 : type, type)); } \newline
-            \texttt{e.g. newtype Nested = (Double, (ItemName : Int, String));} \\
+  Declare UDT with anonymous items & \texttt{UDTName \emph{Name} = (Type, Type);} \newline
+            e.g.:\texttt{ newtype \emph{Complex} = (Double, Double);} \\
+  Declare UDTwith named items &  \texttt{newtype \emph{Name} = (\emph{Name1}: Type, \emph{Name2}: Type);} \newline
+  e.g.: \texttt{newtype Complex = (Re : Double, Im : Double);} \\
+  Advantage of named items & \texttt{Access directly via the access operator ::} \newline
+ e.g.: \texttt{function Addition (c1 : Complex, c2 : Complex) : Complex {
+    return Complex(c1::Re + c2::Re, c1::Im + c2::Im);}
+} \\
+  nested UDT & \texttt{newtype \emph{UDTName} = (type, (\emph{Name2} : type, type)); } \newline
+            e.g.: \texttt{\emph{newtype}  Nested = (Double, (ItemName : Int, String));} \\
+ Unwrap operator ! & \texttt{Used for unnamed newtypes} \\
+ Unwrap operator usage & \texttt{newtype WrapInt = Int;} \newline
+\texttt{newtype TwoWrapInt = WrapInt;} \newline
+    \texttt{let x = TwoWrapInt(WrapInt(6));} \newline
+    \texttt{let y = x!;} \newline \texttt{y is WrapInt(6).} \newline
+    \texttt{let z = x!!;} \newline \texttt{z is 6.} \newline
+    \texttt{let c = x!! + 5;} \newline \texttt{c is 11.}\\
   
   \end{keysref}
   
@@ -179,9 +191,9 @@
     Declare immutable \newline symbol & \texttt{let \emph{name} = \emph{value}} \\
     Declare mutable \newline symbol (variable)  & \texttt{mutable \emph{name} = \emph{initialValue}} \\
     Update mutable \newline symbol (variable)   & \texttt{set \emph{name} = \emph{newValue}} \\
-    Apply-and-Reassign & \texttt{mutable \emph{name} = \emph{initialValue}} \newline
-    \texttt{for (\emph{index} in \emph{range}) \{ } \newline
-    \texttt{ set counter += \emph{index};} \texttt{\}} \\ 
+    Apply-and-Reassign & \texttt{set \emph{name}  \emph{operator} = \emph{expression}} \newline
+    e.g.: \texttt{mutable \emph{counter} = \emph{0};} \newline
+    \texttt{ set counter += \emph{someValue};} \\ 
   \end{keysref}
 
   \begin{keysref}{Arrays}
@@ -190,10 +202,17 @@
     k-th element         & \texttt{\emph{name}[k]} \newline NB: indices are 0-based  \\
     Array literal        & \texttt{[\emph{value0}, \emph{value1}, ...]} \newline
                            e.g.: \texttt{[true, false, true]} \\
-    Slicing (subarray)   & \texttt{\emph{name}[\emph{start}...\emph{end}]} \newline
-    								\texttt{\emph{name}[\emph{start}...]} \newline
-    								\texttt{\emph{name}[...\emph{end}]} \newline
-    								\texttt{\emph{name}[...]} \\
+    Slicing (subarray)   & \texttt{\emph{name}[\emph{start}...\emph{end}]} \\
+    
+    \texttt{\emph{name}[\emph{start}...]} &
+    \texttt{let arr = [1,2,3,4,5,6];} \newline
+    \texttt{let slice1  = arr[3...];} \newline \texttt{slice1 is [4,5,6];} \\
+    \texttt{\emph{name}[...\emph{end}]} & 
+    \texttt{let slice3  = arr[...2];} \newline \texttt{slice3 is [1,2,3];} \\
+    \texttt{\emph{name}[...index...]} & \texttt{let arr = [1,2,3,4,5,6];} \newline 
+    \texttt{let slice5  = arr[...2...];} \newline \texttt{slice5 is [1,3,5];} \\
+    \texttt{\emph{name}[...-index...]} & \texttt{let arr = [1,2,3,4,5,6];} \newline 
+    \texttt{let slice9  = arr[...-1...];} \newline \texttt{slice9 is [6,5,4,3,2,1];}  \\    								
   \end{keysref}
 
   \begin{keysref}{Control Flow}
@@ -201,22 +220,25 @@
                          \texttt{\hphantom{....}//} Use integer \texttt{\emph{index}} \newline
                          \texttt{\}} \newline
                          e.g.: \texttt{for (i in 0..N-1) \{ ... \}} \\
+    While loop  & \texttt{while ( ... )} \newline
+    						\texttt{{...}} \\
     Iterate over \newline an array & \texttt{for (\emph{val} in \emph{array}) \{ }\newline 
                                      \texttt{\hphantom{....}//} Use value \texttt{\emph{val}} \newline
                                      \texttt{\}} \newline
-                                     e.g.: \texttt{for (q in register) \{ ... \}} \\
+                                     e.g.: \texttt{for (q in register) \{ ... \}} \\                                
     Repeat-until-success loop  & \texttt{repeat \{ ... \} \newline until (\emph{condition}) \newline fixup \{ ... \}} \\
     Conditional \newline statement      & \texttt{if (\emph{cond1}) \{ ... \} \newline elif (\emph{cond2}) \{ ... \} \newline else \{ ... \}}\\
     Ternary operator   & \texttt{\emph{condition} ? \emph{caseTrue} | \emph{caseFalse} } \\
     Return a value     & \texttt{return \emph{value}} \\
-    Stop with an error & \texttt{fail "\emph{Error message}"} \\
+    Stop with an error & \texttt{fail "\emph{Error message}"}\\
   \end{keysref}
    
    \begin{keysref}{Conjugations}
-	ApplyWith & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+	Apply ... Within & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
                  \texttt{\hphantom{....}within \{ ... \}} \newline
                  \texttt{\hphantom{....}apply \{ ... \}} \newline
-                 \texttt{\}} \\ 
+                 \texttt{\}} \newline 
+                 i.e. \texttt{withinBlock - applyBlock - Adjoint withinBlock sequence} \\
    \end{keysref}
   
   \begin{keysref}{Debugging}
