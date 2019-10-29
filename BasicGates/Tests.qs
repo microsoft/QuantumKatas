@@ -162,15 +162,16 @@ namespace Quantum.Kata.BasicGates {
             for (i in 0 .. 36) {
                 let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
-                // prepare A state
-                StatePrep_A(alpha, qs[0]);
-                
-                // apply operation that needs to be tested
-                TwoQubitGate1(qs);
-                
-                // apply adjoint reference operation and adjoint of state prep
-                Adjoint TwoQubitGate1_Reference(qs);
-                Adjoint StatePrep_A(alpha, qs[0]);
+				within{
+					// prepare A state
+					StatePrep_A(alpha, qs[0]);
+				}
+				apply{
+					// apply operation that needs to be tested
+					TwoQubitGate1(qs);
+					// apply adjoint reference operation
+					Adjoint TwoQubitGate1_Reference(qs);
+				}
                 
                 // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
