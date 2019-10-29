@@ -33,13 +33,13 @@ namespace Quantum.DumpUnitary
                     // The complex number that represents the amplitude is tab-separated from the rest of the fields, 
                     // and the real and imaginary components within are separated with spaces.
                     string[] parts = line.Split('\t');
-                    // drop the index and store real and complex parts
+                    // drop the index and store real and imaginary parts
                     string amplitude = parts[1];
-                    string[] amplitude_parts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    string real = amplitude_parts[0];
-                    string imag_sign = amplitude_parts[1];
-                    string imag = amplitude_parts[2]; 
-                    string complex = imag_sign + imag;
+                    string[] amplitudeParts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string real = amplitudeParts[0];
+                    string imagSign = amplitudeParts[1];
+                    string imag = amplitudeParts[2]; 
+                    string complex = imagSign + imag;
 
                     // write the number to the matrix as a string "(real, complex)"
                     unitary[row, column] = $"({real}, {complex})";
