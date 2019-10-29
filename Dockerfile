@@ -42,3 +42,4 @@ RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb
