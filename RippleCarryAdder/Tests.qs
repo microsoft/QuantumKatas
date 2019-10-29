@@ -85,6 +85,13 @@ namespace Quantum.Kata.RippleCarryAdder {
         op(splits[0], splits[1], Tail(arr));
     }
 
+	operation QubitArrayAllocateAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit[], Qubit) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
+        using (qArr = Qubit[N * 3 + 1]){
+			let splits = Partitioned([N, N, N, 1], qArr);
+			op(splits[0], splits[1], splits[2], Tail(qArr));
+		}        
+    }
+
     // ------------------------------------------------------
     // Helper operations to prepare qubits from an input and compare them to the output
     operation PrepareRegister (register : Qubit[], state : Int) : Bool[] {
@@ -235,15 +242,15 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation T17_ArbitraryAdder_Test () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
         for (i in 1 .. 4){
-            let testOp = QubitArrayAdderWrapper(i, ArbitraryAdder, _);
-            AssertOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i + 1);
-        }
-        // Can't compare to the reference operation using AssertOperationsEqualReferenced, because then the challenge solution doesn't pass the test
-        // (the challenge solution relies on the target qubits being in the 0 state and the regular solution doesn't).
-        // TODO: Use AssertOperationsEqualReferenced with a workaround: implement a wrapper which is a unitary on inputs a and b 
-        // and allocates qubits in 0 state for target qubits before calling the adder.
-    }
+			let testOp1 = QubitArrayAdderWrapper(i, ArbitraryAdder, _);
 
+            let testOp2 = QubitArrayAllocateAdderWrapper(i, ArbitraryAdder, _);
+			let refOp = QubitArrayAllocateAdderWrapper(i, ArbitraryAdder_Reference, _);
+
+			AssertOperationImplementsBinaryFunction(testOp1, BinaryAdder(_, i), 2 * i, i + 1);
+            AssertOperationsEqualReferenced(i, testOp2, refOp);
+        }
+    }
 
     //////////////////////////////////////////////////////////////////
     // Part II. Simple in-place adder
