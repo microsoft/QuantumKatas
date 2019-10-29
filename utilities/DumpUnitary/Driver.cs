@@ -29,11 +29,18 @@ namespace Quantum.DumpUnitary
                 for (int row = 0; row < size; ++row) {
                     // skip the first line of the file (header)
                     string line = fileContent[row + 1];
-                    // split the line into 3 space-separated elements: index, real part and complex part
+
+                    // The complex number that represents the amplitude is tab-separated from the rest of the fields, 
+                    // and the real and imaginary components within are separated with spaces.
                     string[] parts = line.Split('\t');
                     // drop the index and store real and complex parts
-                    string real = parts[1];
-                    string complex = parts[2];
+                    string amplitude = parts[1];
+                    string[] amplitude_parts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string real = amplitude_parts[0];
+                    string imag_sign = amplitude_parts[1];
+                    string imag = amplitude_parts[2]; 
+                    string complex = imag_sign + imag;
+
                     // write the number to the matrix as a string "(real, complex)"
                     unitary[row, column] = $"({real}, {complex})";
                     // for a pattern, convert real and complex parts into doubles and add them up
