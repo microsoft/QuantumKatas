@@ -151,7 +151,7 @@
   \begin{keysref}{User-Defined Types}
   Declare UDT with anonymous items & \texttt{UDTName \emph{Name} = (Type, Type);} \newline
             e.g.:\texttt{ newtype \emph{Complex} = (Double, Double);} \\
-  Declare UDTwith named items &  \texttt{newtype \emph{Name} = (\emph{Name1}: Type, \emph{Name2}: Type);} \newline
+  Declare UDT with named items &  \texttt{newtype \emph{Name} = (\emph{Name1}: Type, \emph{Name2}: Type);} \newline
   e.g.: \texttt{newtype Complex = (Re : Double, Im : Double);} \\
   Advantage of named items & \texttt{Access directly via the access operator ::} \newline
  e.g.: \texttt{function Addition (c1 : Complex, c2 : Complex) : Complex {
@@ -165,12 +165,18 @@
     \texttt{let x = TwoWrapInt(WrapInt(6));} \newline
     \texttt{let y = x!;} \newline \texttt{y is WrapInt(6).} \newline
     \texttt{let z = x!!;} \newline \texttt{z is 6.} \newline
-    \texttt{let c = x!! + 5;} \newline \texttt{c is 11.}\\
-  
+    \texttt{let c = x!! + 5;} \newline \texttt{c is 11.} \\Update-and-reassign & \textt{newtype Complex = (Re : Double);} \newline
+\texttt{function \emph{AddAll} (\emph{reals} : Double[])} : \texttt{Complex[]} {\}} \newline 
+    \texttt{mutable \emph{res} = Complex(0.);} \newline
+    \texttt{for (\emph{r} in \emph{reals})  \{ } \newline
+        \texttt{set \emph{res} w/= \emph{Re} <- \emph{res}::\emph{Re} + \emph{r}; // update-and-reassign statement} \newline
+   {\}} \newline
+    \texttt{return res;} \newline
+{\}}  \\
   \end{keysref}
   
 
-  \begin{keysref}{Functions, Operations and Types}
+  \begin{keysref}{Functions and Operations}
     Define function \newline (classical routine)
               & \texttt{function \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
                 \texttt{\hphantom{....}// \emph{function body}} \newline
@@ -182,10 +188,10 @@
                  \texttt{\hphantom{....}controlled \{ ... \}} \newline
                  \texttt{\hphantom{....}adjoint controlled \{ ... \}} \newline
                  \texttt{\}} \\
-    Define \newline user-defined type & \texttt{newtype \emph{TypeName} = \emph{BaseType}} \newline
-                                        e.g.: \texttt{newtype TermList = \newline (Int, Int -> (Double, Double))} \\
     Call adjoint \newline operation & \texttt{Adjoint \emph{Name}(\emph{parameters})} \\
     Call controlled \newline operation & \texttt{Controlled \emph{Name}(\emph{controlQubits}, \emph{parameters})} \\
+    Call automatically adjoint and controlled operation & \texttt{operation \emph{PrepareEntangledPair}(\emph{here}: Qubit, \emph{there} : Qubit) : Unit is Adj+Ctl} \newline
+                                                                                              \texttt{\hphantom{....}body \{ ... \}} \\
   \end{keysref}
   \begin{keysref}{Symbols and Variables}
     Declare immutable \newline symbol & \texttt{let \emph{name} = \emph{value}} \\
@@ -207,7 +213,7 @@
     \texttt{\emph{name}[\emph{start}...]} &
     \texttt{let arr = [1,2,3,4,5,6];} \newline
     \texttt{let slice1  = arr[3...];} \newline \texttt{slice1 is [4,5,6];} \\
-    \texttt{\emph{name}[...\emph{end}]} & 
+    \texttt{\emph{name}[...\emph{end}]} & \texttt{let arr = [1,2,3,4,5,6];} \newline
     \texttt{let slice3  = arr[...2];} \newline \texttt{slice3 is [1,2,3];} \\
     \texttt{\emph{name}[...index...]} & \texttt{let arr = [1,2,3,4,5,6];} \newline 
     \texttt{let slice5  = arr[...2...];} \newline \texttt{slice5 is [1,3,5];} \\
@@ -256,6 +262,8 @@
                            \texttt{\hphantom{....}//} Qubits must be returned to $\ket{0}$. \newline
                            \texttt{\}} \\
     Allocate one qubit   & \texttt{using (\emph{one} = Qubit()) \{ ... \} } \\
+    Allocate multiple qubits & \texttt{using (\emph{x}, \emph{y}, .... )} = \texttt{(Qubit[N], Qubit(), ... )}, \newline
+                                                 \texttt{where N is a arbitrary number of qubits} \\
   \end{keysref}
   \begin{keysref}{Measurements}
     Measure qubit in Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
