@@ -6,7 +6,7 @@ namespace Quantum.DumpUnitary
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
-
+	open Microsoft.Quantum.Convert;
     
     operation DumpUnitaryToFiles (N : Int, unitary : (Qubit[] => Unit)) : Unit {
         let size = 1 <<< N;
@@ -14,7 +14,7 @@ namespace Quantum.DumpUnitary
         using (qs = Qubit[N]) {
             for (k in 0 .. size - 1) {                
                 // Prepare k-th basis vector
-                let binary = BoolArrFromPositiveInt(k, N);
+                let binary = IntAsBoolArray(k, N);
                 
                 //Message($"{k}/{N} = {binary}");
                 // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0
@@ -35,6 +35,19 @@ namespace Quantum.DumpUnitary
     operation CallDumpUnitary (N : Int) : Unit {
         // make sure the operation passed to DumpUnitaryToFiles matches the number of qubits set in Driver.cs
         let unitary = ApplyToEach(I, _);
+
+        DumpUnitaryToFiles(N, unitary);
+    }
+
+    operation TestUnitary (qs : Qubit[]) : Unit {
+        S(qs[2]);
+        S(qs[1]);
+        H(qs[0]);
+    }
+
+    operation Test (N : Int) : Unit {
+        // make sure the operation passed to DumpUnitaryToFiles matches the number of qubits set in Driver.cs
+        let unitary = TestUnitary;
 
         DumpUnitaryToFiles(N, unitary);
     }

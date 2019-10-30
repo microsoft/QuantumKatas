@@ -16,7 +16,7 @@ namespace Quantum.DumpUnitary
             int N = 3;                  // the number of qubits on which the unitary acts
             using (var qsim = new QuantumSimulator())
             {
-                CallDumpUnitary.Run(qsim, N).Wait();
+                Test.Run(qsim, N).Wait();
             }
 
             // read the content of the files and store it in a single unitary
@@ -37,14 +37,12 @@ namespace Quantum.DumpUnitary
                     string amplitude = parts[1];
                     string[] amplitudeParts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     string real = amplitudeParts[0];
-                    string imagSign = amplitudeParts[1];
                     string imag = amplitudeParts[2]; 
-                    string complex = imagSign + imag;
 
                     // write the number to the matrix as a string "(real, complex)"
-                    unitary[row, column] = $"({real}, {complex})";
+                    unitary[row, column] = $"({real}, {imag})";
                     // for a pattern, convert real and complex parts into doubles and add them up
-                    double amplitudeSquare = Math.Pow(double.Parse(real), 2) + Math.Pow(double.Parse(complex), 2);
+                    double amplitudeSquare = Math.Pow(double.Parse(real), 2) + Math.Pow(double.Parse(imag), 2);
                     unitaryPattern[row] += (amplitudeSquare > eps) ? 'X' : '.';
                 }
                 // clean up the file with individual amplitudes
