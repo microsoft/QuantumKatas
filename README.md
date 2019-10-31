@@ -38,6 +38,8 @@ Each kata is a separate project which includes:
 * **[Linear Algebra](./tutorials/LinearAlgebra/)**.
   This tutorial walks you through working with matrices and vectors,
   which are used to represent quantum states and quantum operations.
+* **[The Qubit](./tutorials/Qubit/)**.
+  This tutorial introduces you to the concept of a qubit.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
