@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Standard" Version="0.9.1908.2906" />
-    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.9.1908.2906" />
+    <PackageReference Include="Microsoft.Quantum.Standard" Version="0.9.1909.3002" />
+    <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.9.1909.3002" />
   </ItemGroup>
 </Project>

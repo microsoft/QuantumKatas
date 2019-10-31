@@ -191,6 +191,20 @@ namespace Quantum.Kata.Measurements {
     }
 
 
+    // Alternate reference implementation for task 1.9
+    // Slightly more expensive, but uses built-in functions
+    operation SuperpositionMeasurement_Alternate (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
+        let measuredState = ResultArrayAsInt(MultiM(qs));
+        for (s in bits1) {
+            if (BoolArrayAsInt(s) == measuredState) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+
     // Task 1.10. |0...0⟩ state or W state ?
     // Input: N qubits (stored in an array) which are guaranteed to be
     //        either in |0...0⟩ state
@@ -213,6 +227,14 @@ namespace Quantum.Kata.Measurements {
             fail "Impossible to get multiple Ones when measuring W state";
         }
         return countOnes == 0 ? 0 | 1;
+    }
+
+
+    // Alternate reference implementation for task 1.10
+    operation AllZerosOrWState_Alternate (qs : Qubit[]) : Int {
+        // measure all qubits and convert the result into an integer;
+        // if we get 0 then the state is |0...0⟩, any non-0 integer indicates W state
+        return ResultArrayAsInt(MultiM(qs)) == 0 ? 0 | 1;
     }
 
 
@@ -240,6 +262,15 @@ namespace Quantum.Kata.Measurements {
             fail $"Impossible to get {countOnes} Ones when measuring W state or GHZ state on {N} qubits";
         }
         return countOnes == 1 ? 1 | 0;
+    }
+
+
+    // Alternate reference implementation for task 1.11
+    operation GHZOrWState_Alternate (qs : Qubit[]) : Int {
+        // measure all qubits and convert the measurement results into an integer;
+        // measuring GHZ state will produce either a 0...0 result or a 1...1 result, which correspond to integers 0 and 2ᴺ-1, respectively
+        let m = ResultArrayAsInt(MultiM(qs));
+        return (m == 0 or m == (1 <<< Length(qs))-1) ? 0 | 1;
     }
 
 
