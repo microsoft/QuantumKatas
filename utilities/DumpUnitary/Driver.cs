@@ -73,5 +73,11 @@ namespace Quantum.DumpUnitary
             System.IO.File.WriteAllLines("DumpUnitary.txt", outputLines);
             System.IO.File.WriteAllLines("DumpUnitaryPattern.txt", unitaryPattern);
         }
+
+        public static void runTest(ref string[] unitaryPattern)
+        {
+            string[] outputLines = null;
+            runSim(Test.Run, ref outputLines, ref unitaryPattern);
+        }
     }
 }
