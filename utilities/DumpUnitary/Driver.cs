@@ -7,26 +7,31 @@ using Microsoft.Quantum.Simulation.Simulators;
 
 namespace Quantum.DumpUnitary
 {
-    class Driver
+    public class Driver
     {
-        static void Main(string[] args)
-        {
-            double eps = 1E-5;          // the square of the absolute value of the amplitude has to be less than or equal to eps to be considered 0
+        const double eps = 1E-5;          // the square of the absolute value of the amplitude has to be less than or equal to eps to be considered 0
 
+        public static void runSim(
+            Func<QuantumSimulator, Int64, System.Threading.Tasks.Task> run,
+            ref string[] unitaryPattern,
+            ref string[] outputLines)
+        {
             int N = 3;                  // the number of qubits on which the unitary acts
             using (var qsim = new QuantumSimulator())
             {
-                Test.Run(qsim, N).Wait();
+                run(qsim, N).Wait();
             }
 
             // read the content of the files and store it in a single unitary
             int size = 1 << N;
             string[,] unitary = new string[size, size];
-            string[] unitaryPattern = new string[size];
-            for (int column = 0; column < size; ++column) {
+            unitaryPattern = new string[size];
+            for (int column = 0; column < size; ++column)
+            {
                 string fileName = $"DU_{N}_{column}.txt";
                 string[] fileContent = System.IO.File.ReadAllLines(fileName);
-                for (int row = 0; row < size; ++row) {
+                for (int row = 0; row < size; ++row)
+                {
                     // skip the first line of the file (header)
                     string line = fileContent[row + 1];
 
@@ -37,7 +42,7 @@ namespace Quantum.DumpUnitary
                     string amplitude = parts[1];
                     string[] amplitudeParts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     string real = amplitudeParts[0];
-                    string imag = amplitudeParts[2]; 
+                    string imag = amplitudeParts[2];
 
                     // write the number to the matrix as a string "(real, complex)"
                     unitary[row, column] = $"({real}, {imag})";
@@ -50,15 +55,22 @@ namespace Quantum.DumpUnitary
             }
 
             // print the combined unitary to a file
-            string[] outputLines = new string[size];
-            for (int row = 0; row < size; ++row) {
+            outputLines = new string[size];
+            for (int row = 0; row < size; ++row)
+            {
                 outputLines[row] = unitary[row, 0];
-                for (int col = 1; col < size; ++col) {
+                for (int col = 1; col < size; ++col)
+                {
                     outputLines[row] += "\t" + unitary[row, col];
                 }
             }
+        }
+        static void Main(string[] args)
+        {
+            string[] outputLines = null;
+            string[] unitaryPattern = null;
+            runSim(CallDumpUnitary.Run, ref outputLines, ref unitaryPattern);
             System.IO.File.WriteAllLines("DumpUnitary.txt", outputLines);
-
             System.IO.File.WriteAllLines("DumpUnitaryPattern.txt", unitaryPattern);
         }
     }
