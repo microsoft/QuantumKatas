@@ -32,14 +32,23 @@ Each kata is a separate project which includes:
 
 ## List of Notebook tutorials <a name="tutorial-topics" /> ##
 
+* **[Complex Arithmetic](./tutorials/ComplexArithmetic/)**.
+  This tutorial introduces you to complex numbers,
+  explaining the mathematics required to work with quantum computing.
+* **[Linear Algebra](./tutorials/LinearAlgebra/)**.
+  This tutorial walks you through working with matrices and vectors,
+  which are used to represent quantum states and quantum operations.
+* **[The Qubit](./tutorials/Qubit/)**.
+  This tutorial introduces you to the concept of a qubit.
+* **[Single-Qubit Gates](./tutorials/SingleQubitGates/)**.
+  This tutorial introduces the concept of a quantum gate and walks you through the most common single-qubit gates.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
+* **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
+  This tutorial offers you a high-level exploration of Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
 
 ## List of Katas <a name="kata-topics" /> ##
-
-Each kata covers one topic.
-Currently covered topics are:
 
 #### Quantum computing concepts
 * **[Basic quantum computing gates](./BasicGates/)**.
@@ -75,10 +84,14 @@ Currently covered topics are:
 * **[Mermin-Peres magic square game](./MagicSquareGame)**.
 
 #### Miscellaneous
+* **[BB84 protocol](./KeyDistribution_BB84/)**.
+  This kata covers BB84 key distribution algorithm.
 * **[Phase estimation](./PhaseEstimation/)**.
   This kata covers phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   This kata introduces a 3-qubit error correcting code for protecting against bit-flip errors.
+* **[Ripple-carry adder](./RippleCarryAdder/)**.
+  This kata walks you through building a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
   This unusual kata offers tasks on implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
