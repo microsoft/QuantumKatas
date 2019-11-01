@@ -44,3 +44,4 @@ RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozs
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb

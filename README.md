@@ -40,6 +40,8 @@ Each kata is a separate project which includes:
   which are used to represent quantum states and quantum operations.
 * **[The Qubit](./tutorials/Qubit/)**.
   This tutorial introduces you to the concept of a qubit.
+* **[Single-Qubit Gates](./tutorials/SingleQubitGates/)**.
+  This tutorial introduces the concept of a quantum gate and walks you through the most common single-qubit gates.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
