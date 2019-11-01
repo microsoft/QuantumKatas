@@ -12,42 +12,43 @@ namespace Quantum.Kata.SingleQubitGates {
     open Microsoft.Quantum.Math;
     
     // Exercise 1.
-    operation ApplyY (q : Qubit) : Unit is Adj {
+    operation ApplyY (q : Qubit) : Unit is Adj+Ctl {
         // ...
 
     }
 
     // Exercise 2.
-    operation ApplyZ (q : Qubit) : Unit is Adj {
+    operation GlobalPhaseI (q : Qubit) : Unit is Adj+Ctl {
         // ...
 
     }
 
     // Exercise 3.
-    operation ZeroFlip (q : Qubit) : Unit is Adj+Ctl {
+    operation SignFlipOnZero (q : Qubit) : Unit is Adj+Ctl {
         // ...
         
     }
 
     // Exercise 4.
-    operation PrepareMinus (q : Qubit) : Unit is Adj {
+    operation PrepareMinus (q : Qubit) : Unit is Adj+Ctl {
         // ...
 
     }
 
     // Exercise 5.
-    operation ThreePiPhase (q : Qubit) : Unit is Adj+Ctl {
+    operation ThreeQuatersPiPhase (q : Qubit) : Unit is Adj+Ctl {
         // ...
         
     }
 
-    operation RotatedState (alpha : Double, beta : Double, q : Qubit) : Unit is Adj {
+    // Exercise 5.
+    operation PrepareRotatedState (alpha : Double, beta : Double, q : Qubit) : Unit is Adj+Ctl {
         // ...
         
     }
 
     // Exercise 7.
-    operation ArbitraryState (alpha : Double, beta : Double, theta : Double, q : Qubit) : Unit is Adj {
+    operation PrepareArbitraryState (alpha : Double, beta : Double, theta : Double, q : Qubit) : Unit is Adj+Ctl {
         // ...
         
     }

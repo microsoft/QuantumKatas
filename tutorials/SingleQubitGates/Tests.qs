@@ -26,46 +26,65 @@ namespace Quantum.Kata.SingleQubitGates {
         Controlled op([qs[0]], qs[1]);
     }
 
-    operation ArrayWrapperOperation (op : (Qubit => Unit is Adj), qs : Qubit[]) : Unit is Adj {
-        op(qs[0]);
+
+    // ------------------------------------------------------
+    operation AssertEqualOnZeroState (testImpl : (Qubit => Unit is Ctl), refImpl : (Qubit => Unit is Adj+Ctl)) : Unit {
+        using (qs = Qubit[2]) {
+            within {
+                H(qs[0]);
+            }
+            apply {
+                // apply operation that needs to be tested
+                Controlled testImpl([qs[0]], qs[1]);
+
+                // apply adjoint reference operation
+                Adjoint Controlled refImpl([qs[0]], qs[1]);
+            }
+
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
     }
 
     // Exercise 1.
     operation T1_ApplyY_Test () : Unit {
-        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(ApplyY, _), ArrayWrapperOperation(Y, _));
+        AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(ApplyY, _), ControlledArrayWrapperOperation(Y, _));
     }
 
     // Exercise 2.
-    operation T2_ApplyZ_Test () : Unit {
-        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(ApplyZ, _), ArrayWrapperOperation(Z, _));
+    operation T2_GlobalPhaseI_Test () : Unit {
+        AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(GlobalPhaseI, _), ControlledArrayWrapperOperation(GlobalPhaseI_Reference, _));
     }
 
     // Exercise 3.
-    operation T3_ZeroFlip_Test () : Unit {
-        AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(ZeroFlip, _), ControlledArrayWrapperOperation(ZeroFlip_Reference, _));
+    operation T3_SignFlipOnZero_Test () : Unit {
+        AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(SignFlipOnZero, _), ControlledArrayWrapperOperation(SignFlipOnZero_Reference, _));
     }
 
     // Exercise 4.
     operation T4_PrepareMinus_Test () : Unit {
-        AssertOperationsEqualReferenced(1, ArrayWrapperOperation(PrepareMinus, _), ArrayWrapperOperation(PrepareMinus_Reference, _));
+        AssertEqualOnZeroState(PrepareMinus, PrepareMinus_Reference);
     }
 
     // Exercise 5.
-    operation T5_ThreePiPhase_Test () : Unit {
-        AssertOperationsEqualReferenced(2, ArrayWrapperOperation(ThreePiPhase, _), ArrayWrapperOperation(ThreePiPhase_Reference, _));
+    operation T5_ThreeQuatersPiPhase_Test () : Unit {
+        AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(ThreeQuatersPiPhase, _), ControlledArrayWrapperOperation(ThreeQuatersPiPhase_Reference, _));
     }
 
-    operation T6_RotatedState_Test () : Unit {
+    // Exercise 6.
+    operation T6_PrepareRotatedState_Test () : Unit {
         for (i in 0 .. 10) {
-            AssertOperationsEqualReferenced(1, ArrayWrapperOperation(RotatedState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _), _), ArrayWrapperOperation(RotatedState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _), _));
+            AssertEqualOnZeroState(PrepareRotatedState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _),  
+                                   PrepareRotatedState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _));
         }
     }
 
     // Exercise 7.
-    operation T7_ArbitraryState_Test () : Unit {
+    operation T7_PrepareArbitraryState_Test () : Unit {
         for (i in 0 .. 10) {
             for (j in 0 .. 10) {
-                AssertOperationsEqualReferenced(1, ArrayWrapperOperation(ArbitraryState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _), _), ArrayWrapperOperation(ArbitraryState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _), _));
+                AssertEqualOnZeroState(PrepareArbitraryState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _), 
+                                       PrepareArbitraryState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _));
             }
         }
     }

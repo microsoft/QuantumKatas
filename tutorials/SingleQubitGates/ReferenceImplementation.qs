@@ -13,42 +13,44 @@ namespace Quantum.Kata.SingleQubitGates {
     open Microsoft.Quantum.Math;
     
     // Exercise 1.
-    operation ApplyY_Reference (q : Qubit) : Unit is Adj {
+    operation ApplyY_Reference (q : Qubit) : Unit is Adj+Ctl {
         Y(q);
     }
 
     // Exercise 2.
-    operation ApplyZ_Reference (q : Qubit) : Unit is Adj {
+    operation GlobalPhaseI_Reference (q : Qubit) : Unit is Adj+Ctl {
+        X(q);
         Z(q);
+        Y(q);
     }
 
     // Exercise 3.
-    operation ZeroFlip_Reference (q : Qubit) : Unit is Adj+Ctl {
+    operation SignFlipOnZero_Reference (q : Qubit) : Unit is Adj+Ctl {
         X(q);
         Z(q);
         X(q);
     }
 
     // Exercise 4.
-    operation PrepareMinus_Reference (q : Qubit) : Unit is Adj {
+    operation PrepareMinus_Reference (q : Qubit) : Unit is Adj+Ctl {
         X(q);
         H(q);
     }
 
     // Exercise 5.
-    operation ThreePiPhase_Reference (q : Qubit) : Unit is Adj+Ctl {
+    operation ThreeQuatersPiPhase_Reference (q : Qubit) : Unit is Adj+Ctl {
         S(q);
         T(q);
     }
 
     // Exercise 6.
-    operation RotatedState_Reference (alpha : Double, beta : Double, q : Qubit) : Unit is Adj {
+    operation PrepareRotatedState_Reference (alpha : Double, beta : Double, q : Qubit) : Unit is Adj+Ctl {
         let phi = ArcTan2(beta, alpha);
         Rx(2.0 * phi, q);
     }
 
     // Exercise 7.
-    operation ArbitraryState_Reference (alpha : Double, beta : Double, theta : Double, q : Qubit) : Unit is Adj {
+    operation PrepareArbitraryState_Reference (alpha : Double, beta : Double, theta : Double, q : Qubit) : Unit is Adj+Ctl {
         let phi = ArcTan2(beta, alpha);
         Ry(2.0 * phi, q);
         R1(theta, q);
