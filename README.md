@@ -32,16 +32,18 @@ Each kata is a separate project which includes:
 
 ## List of Notebook tutorials <a name="tutorial-topics" /> ##
 
-* **[Complex Arithmetic](./tutorials/ComplexArithmetic/)**.
+* **[Complex arithmetic](./tutorials/ComplexArithmetic/)**.
   This tutorial introduces you to complex numbers,
   explaining the mathematics required to work with quantum computing.
-* **[Linear Algebra](./tutorials/LinearAlgebra/)**.
+* **[Linear algebra](./tutorials/LinearAlgebra/)**.
   This tutorial walks you through working with matrices and vectors,
   which are used to represent quantum states and quantum operations.
-* **[The Qubit](./tutorials/Qubit/)**.
+* **[The qubit](./tutorials/Qubit/)**.
   This tutorial introduces you to the concept of a qubit.
-* **[Single-Qubit Gates](./tutorials/SingleQubitGates/)**.
+* **[Single-qubit gates](./tutorials/SingleQubitGates/)**.
   This tutorial introduces the concept of a quantum gate and walks you through the most common single-qubit gates.
+* **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
+  This tutorial discusses the representation of multi-qubit systems.
 * **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
