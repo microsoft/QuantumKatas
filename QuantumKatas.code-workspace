@@ -24,7 +24,7 @@
 		},
 		{
 			"path": "Teleportation",
-			"name": "5. Teleportation"	
+			"name": "5. Teleportation"
 		},
 		{
 			"path": "SuperdenseCoding",
@@ -63,16 +63,24 @@
 			"name": "14. Mermin-Peres magic square game"
 		},
 		{
+			"path": "KeyDistribution_BB84",
+			"name": "15. BB84 protocol"
+		},
+		{
 			"path": "PhaseEstimation",
-			"name": "15. Phase Estimation"
+			"name": "16. Phase Estimation"
 		},
 		{
 			"path": "QEC_BitFlipCode",
-			"name": "16. QEC: Bit-flip Code"
+			"name": "17. QEC: Bit-flip Code"
+		},
+		{
+			"path": "RippleCarryAdder",
+			"name": "18. Ripple-carry Adder"
 		},
 		{
 			"path": "UnitaryPatterns",
-			"name": "17*. Unitary Patterns"
+			"name": "19*. Unitary Patterns"
 		},
 	],
 	"settings": {
