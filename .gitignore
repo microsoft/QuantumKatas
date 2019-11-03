@@ -283,5 +283,3 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
-/tutorials/ComplexArithmetic/__pycache__
-/tutorials/LinearAlgebra/__pycache__
