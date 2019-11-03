@@ -1,4 +1,13 @@
-﻿using Microsoft.Quantum.Simulation.XUnit;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+//////////////////////////////////////////////////////////////////////
+// This file contains parts of the testing harness. 
+// You should not modify anything in this file.
+// The tasks themselves can be found in Tasks.qs file.
+//////////////////////////////////////////////////////////////////////
+
+using Microsoft.Quantum.Simulation.XUnit;
 using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
