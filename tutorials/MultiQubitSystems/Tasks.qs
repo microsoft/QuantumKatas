@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////
-// This file is a back end for the tasks in Basic Gates tutorial.
+// This file is a back end for the tasks in the tutorial.
 // We strongly recommend to use the Notebook version of the tutorial
 // to enjoy the full experience.
 //////////////////////////////////////////////////////////////////
