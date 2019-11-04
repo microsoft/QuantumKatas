@@ -1,35 +1,45 @@
-﻿namespace Quantum.Kata.MultiQubitGates {
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+//////////////////////////////////////////////////////////////////////
+// This file contains testing harness for all tasks.
+// You should not modify anything in this file.
+//////////////////////////////////////////////////////////////////////
+
+namespace Quantum.Kata.MultiQubitGates {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
 
-    operation ArrayOperationWrapper (op : ((Qubit, Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {
-        op(qs[0], qs[1]);
-    }
-
-    operation ArrayOperationWrapper3 (op : ((Qubit, Qubit, Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {
-        op(qs[0], qs[1], qs[2]);
-    }
-    
-    operation ArrayControlledOperationWrapper (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {
-        op(Most(qs), Tail(qs));
-    }
-
     operation T1_CompoundGate_Test () : Unit {
-        AssertOperationsEqualReferenced(3, ArrayOperationWrapper3(CompoundGate, _), ArrayOperationWrapper3(CompoundGate_Reference, _));
+        AssertOperationsEqualReferenced(3, CompoundGate, CompoundGate_Reference);
+    }
+
+
+    operation AssertEqualOnZeroState (testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
+        using (qs = Qubit[2]) {
+            // apply operation that needs to be tested
+            testImpl(qs);
+
+            // apply adjoint reference operation
+            Adjoint refImpl(qs);
+
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
     }
 
     operation T2_BellState_Test () : Unit {
-        AssertOperationsEqualReferenced(2, ArrayOperationWrapper(BellState, _), ArrayOperationWrapper(BellState_Reference, _));
+        AssertEqualOnZeroState(BellState, BellState_Reference);
     }
 
     operation T3_QubitSwap_Test () : Unit {
-        for (i in 2 .. 5) {
-            for (j in 0 .. i-2) {
-                for (k in j+1 .. i-1) {
-                    AssertOperationsEqualReferenced(i, QubitSwap(_, j, k), QubitSwap_Reference(_, j, k));
+        for (N in 2 .. 5) {
+            for (j in 0 .. N-2) {
+                for (k in j+1 .. N-1) {
+                    AssertOperationsEqualReferenced(N, QubitSwap(_, j, k), QubitSwap_Reference(_, j, k));
                 }
             }
         }
@@ -38,8 +48,13 @@
     operation T4_ControlledRotation_Test () : Unit {
         for (i in 0 .. 20) {
             let angle = IntAsDouble(i) / 10.0;
-            AssertOperationsEqualReferenced(2, ArrayOperationWrapper(ControlledRotation(_, _, angle), _), ArrayOperationWrapper(ControlledRotation_Reference(_, _, angle), _));
+            AssertOperationsEqualReferenced(2, ControlledRotation(_, angle), ControlledRotation_Reference(_,angle));
         }
+    }
+
+
+    operation ArrayControlledOperationWrapper (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {
+        op(Most(qs), Tail(qs));
     }
 
     operation T5_MultiControls_Test () : Unit {
