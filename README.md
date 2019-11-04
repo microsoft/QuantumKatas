@@ -44,7 +44,7 @@ Each kata is a separate project which includes:
   This tutorial introduces the concept of a quantum gate and walks you through the most common single-qubit gates.
 * **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
   This tutorial discusses the representation of multi-qubit systems.
-* **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
+* **[Exploring Deutsch–Jozsa algorithm](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
   This tutorial teaches you to implement classical functions and equivalent quantum oracles, 
   discusses the classical solution to the Deutsch–Jozsa problem, and introduces the Deutsch and Deutsch–Jozsa algorithms.
 * **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
