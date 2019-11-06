@@ -15,7 +15,7 @@ Each kata is a separate project that includes:
 * Links to quantum computing and Q# reference material you might need to solve the tasks.
 * Reference solutions when all else fails.
 
-## Table of Contents ##
+## Table of contents ##
 
 * [List of notebook tutorials](#tutorial-topics)
 * [List of katas](#kata-topics)
@@ -31,15 +31,22 @@ Each kata is a separate project that includes:
 ## List of notebook tutorials <a name="tutorial-topics" /> ##
 
 * **[Complex arithmetic](./tutorials/ComplexArithmetic/)**.
-  Introduces complex numbers and explains the mathematics used in quantum computing.
+  Learn about complex numbers and the mathematics required to work with quantum computing.
 * **[Linear algebra](./tutorials/LinearAlgebra/)**.
-  Work with matrices and vectors that represent quantum states and quantum operations.
+  Learn about about matrices and vectors used to represent quantum states and quantum operations.
 * **[The qubit](./tutorials/Qubit/)**.
-  Learn about qubits.
-* **[Deutsch–Jozsa algorithm](./tutorials/DeutschJozsaAlgorithm/)**.
-  Implement classical functions and the equivalent quantum oracles. Discusses the classical solution to the Deutsch–Jozsa problem and introduces the Deutsch and Deutsch–Jozsa algorithms.
-* **[Explore Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
-  A high-level exploration of Grover's search algorithm that picks up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
+  Learn what a quibit is.
+* **[Single-qubit gates](./tutorials/SingleQubitGates/)**.
+  Learn what a quantum gate is and about the most common single-qubit gates.
+* **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
+  Learn about the representation of multi-qubit systems.
+* **[Multi-qubit gates](./tutorials/MultiQubitGates/)**.
+  Learn about the most common multi-qubit gates.
+* **[Exploring Deutsch–Jozsa algorithm](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
+  Learn how to implement classical functions and equivalent quantum oracles, about the classical
+  solution to the Deutsch–Jozsa problem, and get an introduction to the Deutsch and Deutsch–Jozsa algorithms.
+* **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
+  Learn more about Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
 
 ## List of Katas <a name="kata-topics" /> ##
 
@@ -48,31 +55,31 @@ Each kata is a separate project that includes:
 * **[Basic quantum computing gates](./BasicGates/)**.
   Learn about the single-qubit and multi-qubit gates used in quantum computing.
 * **[Superposition](./Superposition/)**.
-  Prepare a superposition state on one or more qubits.
+  Learn about preparing a superposition state on one or more qubits.
 * **[Measurements](./Measurements/)**.
-  Distinguish quantum states using measurements.
+  Learn to distinguish quantum states using measurements.
 * **[Joint measurements](./JointMeasurements/)**.
-  Use joint (parity) measurements to distinguish quantum states and performing gates.
+  Learn about using joint (parity) measurements to distinguish quantum states and performing gates.
 
 #### Simple algorithms
 
 * **[Teleportation](./Teleportation/)**.
-  Standard teleportation protocol and variations.
+  Learn about standard teleportation protocol and variations.
 * **[Superdense coding](./SuperdenseCoding/)**.
-  Introduces the Superdense coding protocol.
+  Learn about the Superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
-  Write quantum oracles which implement classical functions. Introduces the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+  Learn about quantum oracles which implement classical functions, and get an introduction to the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
 * **[Simon's algorithm](./SimonsAlgorithm/)**.
-  Introduces Simon's algorithm.
+  Learn about Simon's algorithm.
 
 #### Grover's algorithm
 
 * **[Grover's algorithm](./GroversAlgorithm/)**.
-  Grover's search algorithm. Write quantum oracles to use with it.
+  Learn about Grover's search algorithm and how to write quantum oracles to use with it.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
-  Continues the exploration of Grover's search algorithm, using SAT problems as an example. Covers implementing quantum oracles based on the problem description instead of a hard-coded answer. Uses Grover's algorithm to solve problems with an unknown number of solutions.
+  Continue the exploration of Grover's search algorithm, using SAT problems as an example. Learn about implementing quantum oracles based on the problem description instead of a hard-coded answer. Use Grover's algorithm to solve problems with an unknown number of solutions.
 * **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
-  Continues the exploration of Grover's search algorithm, using graph coloring problems as an example.
+  Continue the exploration of Grover's search algorithm, using graph coloring problems as an example.
 
 #### Entanglement games
 
@@ -83,15 +90,15 @@ Each kata is a separate project that includes:
 #### Miscellaneous
 
 * **[BB84 protocol](./KeyDistribution_BB84/)**.
-  BB84 key distribution algorithm.
+  Learn about the BB84 key distribution algorithm.
 * **[Phase estimation](./PhaseEstimation/)**.
-  Phase estimation algorithms.
+  Learn about Phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
-  Examine a 3-qubit error correcting code for protecting against bit-flip errors.
+  Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
 * **[Ripple-carry adder](./RippleCarryAdder/)**.
-  Build a ripple-carry adder on a quantum computer.
+  Learn how to build a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
-  Implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
+  Learn about implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
 ## Run the katas and tutorials as Jupyter Notebooks <a name="run-as-notebook" /> ##
 
@@ -112,7 +119,8 @@ If you have Git installed, clone the Microsoft/QuantumKatas repository:
 $ git clone https://github.com/Microsoft/QuantumKatas.git
 ```
 
-> **TIP**: Both Visual Studio 2017 and Visual Studio Code make it easy to clone repositories from within your development environment.
+> [!TIP]
+> Both Visual Studio 2017 and Visual Studio Code make it easy to clone repositories from within your development environment.
 > For details, see the [Visual Studio 2017](https://docs.microsoft.com/en-us/vsts/git/tutorial/clone?view=vsts&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/master.zip.
@@ -141,10 +149,11 @@ To open the **BasicGates** kata in Visual Studio 2017, open the **QuantumKatas/B
 To open the **BasicGates** kata in Visual Studio Code, open the **QuantumKatas/BasicGates/** folder.
 Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the **Command Palette**. Type **Open Folder** on Windows 10 or Linux or **Open** on macOS.
 
-> **TIP**: Almost all commands available in Visual Studio Code are in the Command Palette.
+> [!TIP]
+> Almost all commands available in Visual Studio Code are in the Command Palette.
 > If you get stuck, press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) and start typing to search through all available commands.
-
-> **TIP**: You can also launch Visual Studio Code from the command line:
+>
+> You can also launch Visual Studio Code from the command line:
 > ```bash
 > $ code QuantumKatas/BasicGates/
 > ```
