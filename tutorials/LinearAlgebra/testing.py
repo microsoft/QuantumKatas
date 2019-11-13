@@ -417,15 +417,12 @@ def is_matrix_unitary_ref(a):
 
 @test
 def is_matrix_unitary_test(fun):
-    results = [True] * 5 + [False] * 5
-    r.shuffle(results)
-    i = 2
-    for result in results:
+    for testId in range(12):
         a = []
-        if i > 0:
-            --i
-            a = edge_unitary_matrices[i]
-        elif result:
+        # The first two tests are edge cases, after that unitary and non-unitary matrices alternate
+        if testId < 2:
+            a = edge_unitary_matrices[testId]
+        elif testId % 2 == 0:
             a = gen_unitary_matrix()
         else:
             n = r.randint(1,5)
