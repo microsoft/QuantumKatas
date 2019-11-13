@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.9.1909.3002
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.10.1911.307
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -40,6 +40,10 @@ RUN ${HOME}/scripts/prebuild-kata.sh Superposition
 RUN ${HOME}/scripts/prebuild-kata.sh Teleportation
 RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb
-RUN ${HOME}/scripts/prebuild-kata.sh tutorials/DeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb
+RUN ${HOME}/scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb
