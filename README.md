@@ -1,25 +1,25 @@
 # Introduction
 
-The Quantum Katas are a series of self-paced tutorials to help you learn about quantum computing and Q# programming.
+The Quantum Katas are a series of self-paced tutorials to help you learn quantum computing and Q# programming.
 
-:new: *(July 2019)* The Quantum Katas now include Jupyter Notebook tutorials on quantum computing! Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Notebook tutorials and instructions to run them online.
+:new: *(July 2019)* The Quantum Katas now include Jupyter Notebook tutorials on quantum computing! Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all tutorials and instructions on running them online.
 
 :new: *(April 2019)* The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
 
 Each kata is a separate project that includes:
 
 * A sequence of tasks progressing from easy to hard.
-  Each task requires you to fill in some code. The first task might require just one line, and the last one might require many lines of code.
+  Each task requires you to fill in some code. The first task might require just one line, and the last one might require rather compicated code.
 * A testing framework that sets up, runs, and validates your solutions.
-  Each task is covered by a [unit test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing) which initially fails. When you provide the code to make it pass, move on to the next task.
+  Each task is covered by a [unit test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing) which initially fails. Once you write the code to make the test pass, you can move on to the next task.
 * Links to quantum computing and Q# reference material you might need to solve the tasks.
-* Reference solutions when all else fails.
+* Hints and reference solutions to help you if you're stuck.
 
 ## Table of contents ##
 
-* [List of notebook tutorials](#tutorial-topics)
+* [List of tutorials](#tutorial-topics)
 * [List of katas](#kata-topics)
-* [Run the katas and tutorials as Jupyter Notebooks](#run-as-notebook)
+* [Run the katas and tutorials online](#run-as-notebook)
 * [Run the katas locally](#kata-locally)
   * [Download the Quantum Katas](#download)
   * [Run a kata as a Q# project](#kata-as-project)
@@ -28,23 +28,23 @@ Each kata is a separate project that includes:
 * [Contributing](#contributing)
 * [Code of Conduct](#code-of-conduct)
 
-## List of notebook tutorials <a name="tutorial-topics" /> ##
+## List of tutorials <a name="tutorial-topics" /> ##
 
 * **[Complex arithmetic](./tutorials/ComplexArithmetic/)**.
   Learn about complex numbers and the mathematics required to work with quantum computing.
 * **[Linear algebra](./tutorials/LinearAlgebra/)**.
-  Learn about about matrices and vectors used to represent quantum states and quantum operations.
+  Learn about vectors and matrices used to represent quantum states and quantum operations.
 * **[The qubit](./tutorials/Qubit/)**.
   Learn what a quibit is.
 * **[Single-qubit gates](./tutorials/SingleQubitGates/)**.
   Learn what a quantum gate is and about the most common single-qubit gates.
 * **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
-  Learn about the representation of multi-qubit systems.
+  Learn to represent multi-qubit systems.
 * **[Multi-qubit gates](./tutorials/MultiQubitGates/)**.
   Learn about the most common multi-qubit gates.
 * **[Exploring Deutsch–Jozsa algorithm](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
-  Learn how to implement classical functions and equivalent quantum oracles, about the classical
-  solution to the Deutsch–Jozsa problem, and get an introduction to the Deutsch and Deutsch–Jozsa algorithms.
+  Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
+  solution to the Deutsch–Jozsa problem to a classical one.
 * **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
   Learn more about Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
 
@@ -53,22 +53,22 @@ Each kata is a separate project that includes:
 #### Quantum computing concepts
 
 * **[Basic quantum computing gates](./BasicGates/)**.
-  Learn about the single-qubit and multi-qubit gates used in quantum computing.
+  Learn to apply the main gates used in quantum computing.
 * **[Superposition](./Superposition/)**.
-  Learn about preparing a superposition state on one or more qubits.
+  Learn to prepare superposition states.
 * **[Measurements](./Measurements/)**.
   Learn to distinguish quantum states using measurements.
 * **[Joint measurements](./JointMeasurements/)**.
-  Learn about using joint (parity) measurements to distinguish quantum states and performing gates.
+  Learn about using joint (parity) measurements to distinguish quantum states and to perform state transformations.
 
 #### Simple algorithms
 
 * **[Teleportation](./Teleportation/)**.
-  Learn about standard teleportation protocol and variations.
+  Implement standard teleportation protocol and its variations.
 * **[Superdense coding](./SuperdenseCoding/)**.
-  Learn about the Superdense coding protocol.
+  Implement the superdense coding protocol.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
-  Learn about quantum oracles which implement classical functions, and get an introduction to the Bernstein–Vazirani and Deutsch–Jozsa algorithms.
+  Learn about quantum oracles which implement classical functions, and implement Bernstein–Vazirani and Deutsch–Jozsa algorithms.
 * **[Simon's algorithm](./SimonsAlgorithm/)**.
   Learn about Simon's algorithm.
 
@@ -77,7 +77,7 @@ Each kata is a separate project that includes:
 * **[Grover's algorithm](./GroversAlgorithm/)**.
   Learn about Grover's search algorithm and how to write quantum oracles to use with it.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
-  Continue the exploration of Grover's search algorithm, using SAT problems as an example. Learn about implementing quantum oracles based on the problem description instead of a hard-coded answer. Use Grover's algorithm to solve problems with an unknown number of solutions.
+  Explore Grover's search algorithm, using SAT problems as an example. Learn to implement quantum oracles based on the problem description instead of a hard-coded answer. Use Grover's algorithm to solve problems with an unknown number of solutions.
 * **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
   Continue the exploration of Grover's search algorithm, using graph coloring problems as an example.
 
@@ -90,23 +90,23 @@ Each kata is a separate project that includes:
 #### Miscellaneous
 
 * **[BB84 protocol](./KeyDistribution_BB84/)**.
-  Learn about the BB84 key distribution algorithm.
+  Implement the BB84 key distribution algorithm.
 * **[Phase estimation](./PhaseEstimation/)**.
-  Learn about Phase estimation algorithms.
+  Learn about phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
 * **[Ripple-carry adder](./RippleCarryAdder/)**.
-  Learn how to build a ripple-carry adder on a quantum computer.
+  Build a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
-  Learn about implementing unitaries with matrices that follow certain patterns of zero and non-zero elements.
+  Learn to implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
-## Run the katas and tutorials as Jupyter Notebooks <a name="run-as-notebook" /> ##
+## Run the katas and tutorials online <a name="run-as-notebook" /> ##
 
-The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas, tutorial notebooks, and instructions to run them online.
+The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions to run them online.
 
 ## Run katas locally <a name="kata-locally" /> ##
 
-To use the Quantum Katas locally, first install the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
+To use the Quantum Katas locally, you'll need the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
 If you don't already have the Quantum Development Kit installed, see [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
 
 For a quick Q# programming language reference sheet, see [Q# Language Quick Reference](./quickref/qsharp-quick-reference.pdf).
@@ -120,14 +120,14 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 ```
 
 > [!TIP]
-> Both Visual Studio 2017 and Visual Studio Code make it easy to clone repositories from within your development environment.
-> For details, see the [Visual Studio 2017](https://docs.microsoft.com/en-us/vsts/git/tutorial/clone?view=vsts&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
+> Both Visual Studio 2019 and Visual Studio Code make it easy to clone repositories from within your development environment.
+> For details, see the [Visual Studio 2019](https://docs.microsoft.com/en-us/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/master.zip.
 
 ### Run a kata as a Q# project <a name="kata-as-project" /> ###
 
-Each kata is in its own directory as a self-contained Q# solution and project pair.
+Each kata is in its own directory as a self-contained Q# project, solution and Jupyter Notebook triplet.
 For instance, the BasicGates directory structure is:
 
 ```bash
@@ -135,8 +135,9 @@ QuantumKatas/
   BasicGates/
     README.md                  # Instructions specific to this kata.
     .vscode/                   # Metadata used by Visual Studio Code.
-    BasicGates.sln             # Visual Studio 2017 solution file.
+    BasicGates.sln             # Visual Studio 2019 solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
+    BasicGates.ipynb           # Jupyter Notebook frontend for this kata.
 
     Tasks.qs                   # Q# source code that you will fill as you solve each task.
     Tests.qs                   # Q# tests that verify your solutions.
@@ -144,7 +145,7 @@ QuantumKatas/
     ReferenceImplementation.qs # Q# source code containing solutions to the tasks.
 ```
 
-To open the **BasicGates** kata in Visual Studio 2017, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
+To open the **BasicGates** kata in Visual Studio 2019, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
 
 To open the **BasicGates** kata in Visual Studio Code, open the **QuantumKatas/BasicGates/** folder.
 Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the **Command Palette**. Type **Open Folder** on Windows 10 or Linux or **Open** on macOS.
@@ -164,7 +165,7 @@ Once you have a kata open, it's time to run the tests using the following instru
 Initially all tests will fail. Don't panic!
 Open **Tasks.qs** and start filling in the code to complete the tasks. Each task is covered by a unit test. Once you fill in the correct code for a task, rebuild the project and re-run the tests, and the corresponding unit test will pass.
 
-#### Visual Studio 2017
+#### Visual Studio 2019
 
 1. Build the solution.
 2. From the main menu, open **Test Explorer** (**Test** > **Windows**) and select **Run All** to run all unit tests at once.
@@ -174,7 +175,7 @@ Open **Tasks.qs** and start filling in the code to complete the tasks. Each task
 #### Visual Studio Code
 
 1. Press **Ctrl + \`** (or **⌘ + \`** on macOS) to open the integrated terminal.
-   The terminal should open to the kata directory. If it doesn't, navigate to the folder containing the *.csproj file for the kata.
+   The terminal should open to the kata directory. If it doesn't, navigate to the folder containing the *.csproj file for the kata using `cd` command.
 2. Run `dotnet test` in the integrated terminal.
    This should build the kata project and run all of the unit tests. All of the unit tests should fail.
 3. Work on the tasks in the **Tasks.qs** file.
@@ -185,9 +186,9 @@ Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the Palette
 
 ## Run katas locally with Docker <a name="docker" /> ##
 
-You can use the included [Dockerfile](./Dockerfile) to create a docker image with all the necessary libraries to run the katas from the command line or Jupyter.
+You can use the included [Dockerfile](./Dockerfile) to create a docker image with all the necessary tools to run the katas from the command line or Jupyter.
 
-1. First, install [Docker](https://docs.docker.com/install/).
+1. Install [Docker](https://docs.docker.com/install/).
 2. Build the docker image and tag it `katas`:
 
 ```bash
