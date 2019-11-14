@@ -9,7 +9,7 @@ The Quantum Katas are a series of self-paced tutorials to help you learn quantum
 Each kata is a separate project that includes:
 
 * A sequence of tasks progressing from easy to hard.
-  Each task requires you to fill in some code. The first task might require just one line, and the last one might require rather compicated code.
+  Each task requires you to fill in some code. The first task might require just one line, and the last one might require rather complicated code.
 * A testing framework that sets up, runs, and validates your solutions.
   Each task is covered by a [unit test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing) which initially fails. Once you write the code to make the test pass, you can move on to the next task.
 * Links to quantum computing and Q# reference material you might need to solve the tasks.
@@ -35,7 +35,7 @@ Each kata is a separate project that includes:
 * **[Linear algebra](./tutorials/LinearAlgebra/)**.
   Learn about vectors and matrices used to represent quantum states and quantum operations.
 * **[The qubit](./tutorials/Qubit/)**.
-  Learn what a quibit is.
+  Learn what a qubit is.
 * **[Single-qubit gates](./tutorials/SingleQubitGates/)**.
   Learn what a quantum gate is and about the most common single-qubit gates.
 * **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
@@ -53,7 +53,7 @@ Each kata is a separate project that includes:
 #### Quantum computing concepts
 
 * **[Basic quantum computing gates](./BasicGates/)**.
-  Learn to apply the main gates used in quantum computing.
+  Learn to apply the most common gates used in quantum computing.
 * **[Superposition](./Superposition/)**.
   Learn to prepare superposition states.
 * **[Measurements](./Measurements/)**.
@@ -137,7 +137,7 @@ QuantumKatas/
     .vscode/                   # Metadata used by Visual Studio Code.
     BasicGates.sln             # Visual Studio 2019 solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
-    BasicGates.ipynb           # Jupyter Notebook frontend for this kata.
+    BasicGates.ipynb           # Jupyter Notebook front-end for this kata.
 
     Tasks.qs                   # Q# source code that you will fill as you solve each task.
     Tests.qs                   # Q# tests that verify your solutions.
