@@ -38,7 +38,8 @@ RUN ${HOME}/scripts/prebuild-kata.sh SolveSATWithGrover
 RUN ${HOME}/scripts/prebuild-kata.sh SuperdenseCoding
 RUN ${HOME}/scripts/prebuild-kata.sh Superposition
 RUN ${HOME}/scripts/prebuild-kata.sh Teleportation
-RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
+# Exclude Unitary patterns, since it times out in Binder prebuild
+# RUN ${HOME}/scripts/prebuild-kata.sh UnitaryPatterns
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb
 RUN ${HOME}/scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb
