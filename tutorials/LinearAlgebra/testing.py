@@ -154,7 +154,7 @@ def matrix_equal(act, exp):
         return False
     
     for i in range(h):
-        if act[i] != exp[i] or act[i] != approx(exp[i]):
+        if act[i] != approx(exp[i]):
             return False
     return True
 
@@ -692,9 +692,11 @@ def find_eigenvector_test(fun):
         if result == [[0], [0]]:
             print("The eigenvector must be non-zero!")
             return
-        if not matrix_equal(matrix_mult_ref(a, result), scalar_mult_ref(x, result)):
+        matrix_product = matrix_mult_ref(a, result)
+        scalar_product = scalar_mult_ref(x, result)
+        if not matrix_equal(matrix_product, scalar_product):
             print("Wrong eigenvector!\nEigenvalue: {0:.3f}\n\n".format(x)
-                  + gen_labeled_message([a, result], ["A: ", "You returned: "])
+                  + gen_labeled_message([a, result, matrix_product, scalar_product], ["A: ", "You returned V: ", "Matrix product AV:", "Scalar product xV: "])
                   + "Try again!")
             return
     print("Success!")
