@@ -11,10 +11,10 @@ namespace Quantum.DumpUnitary
     {
         const double eps = 1E-5;          // the square of the absolute value of the amplitude has to be less than or equal to eps to be considered 0
 
-        public static void runSim(
+        public static void RunDumpUnitary(
             Func<QuantumSimulator, Int64, System.Threading.Tasks.Task> run,
             ref string[] unitaryPattern,
-            ref string[] outputLines)
+            ref string[] matrixElements)
         {
             int N = 3;                  // the number of qubits on which the unitary acts
             using (var qsim = new QuantumSimulator())
@@ -54,30 +54,30 @@ namespace Quantum.DumpUnitary
                 System.IO.File.Delete(fileName);
             }
 
-            // print the combined unitary to a file
-            outputLines = new string[size];
+            // Concatenate the elements of the unitary into a matrix representation
+            matrixElements = new string[size];
             for (int row = 0; row < size; ++row)
             {
-                outputLines[row] = unitary[row, 0];
+                matrixElements[row] = unitary[row, 0];
                 for (int col = 1; col < size; ++col)
                 {
-                    outputLines[row] += "\t" + unitary[row, col];
+                    matrixElements[row] += "\t" + unitary[row, col];
                 }
             }
         }
         static void Main(string[] args)
         {
-            string[] outputLines = null;
+            string[] matrixElements = null;
             string[] unitaryPattern = null;
-            runSim(CallDumpUnitary.Run, ref unitaryPattern, ref outputLines);
-            System.IO.File.WriteAllLines("DumpUnitary.txt", outputLines);
+            RunDumpUnitary(CallDumpUnitary.Run, ref unitaryPattern, ref matrixElements);
+            System.IO.File.WriteAllLines("DumpUnitary.txt", matrixElements);
             System.IO.File.WriteAllLines("DumpUnitaryPattern.txt", unitaryPattern);
         }
 
-        public static void runTest(ref string[] unitaryPattern)
+        public static void RunTest(ref string[] unitaryPattern)
         {
-            string[] outputLines = null;
-            runSim(Test.Run, ref unitaryPattern, ref outputLines);
+            string[] matrixElements = null;
+            RunDumpUnitary(Test.Run, ref unitaryPattern, ref matrixElements);
         }
     }
 }

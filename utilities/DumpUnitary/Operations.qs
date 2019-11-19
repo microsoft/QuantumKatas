@@ -39,12 +39,16 @@ namespace Quantum.DumpUnitary
         DumpUnitaryToFiles(N, unitary);
     }
 
+    // The operation below is part of the unit test;
+    // you do not need to modify it to run the tool on your unitary!
     operation TestUnitary (qs : Qubit[]) : Unit {
         S(qs[2]);
         S(qs[1]);
         H(qs[0]);
     }
-
+    
+    // The operation below is part of the unit test;
+    // you do not need to modify it to run the tool on your unitary!
     operation Test (N : Int) : Unit {
         // make sure the operation passed to DumpUnitaryToFiles matches the number of qubits set in Driver.cs
         let unitary = TestUnitary;
