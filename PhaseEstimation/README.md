@@ -26,5 +26,5 @@ Iterative phase estimation:
 #### Q# materials
 
 * [Quantum phase estimation tests](https://github.com/microsoft/QuantumLibraries/blob/master/Standard/tests/QuantumPhaseEstimationTests.qs)
-* [Bayesian (iterative) phase estimation sample](https://github.com/Microsoft/Quantum/blob/master/Samples/src/PhaseEstimation/BayesianPhaseEstimation.qs)
+* [Bayesian (iterative) phase estimation sample](https://github.com/microsoft/Quantum/tree/master/samples/characterization/phase-estimation)
 
