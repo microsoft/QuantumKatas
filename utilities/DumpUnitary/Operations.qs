@@ -6,7 +6,7 @@ namespace Quantum.DumpUnitary
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
-	open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Convert;
     
     operation DumpUnitaryToFiles (N : Int, unitary : (Qubit[] => Unit)) : Unit {
         let size = 1 <<< N;
