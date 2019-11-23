@@ -286,14 +286,12 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |Ψ⁻⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BellState_Reference (qs : Qubit[]) : Int {
+        CNOT(qs[0], qs[1]);
         H(qs[0]);
-        H(qs[1]);
-        CNOT(qs[1], qs[0]);
-        H(qs[1]);
 
         // these changes brought the state back to one of the 2-qubit basis states from task 1.6 (but in different order)
         let m1 = M(qs[0]) == Zero ? 0 | 1;
-        let  m2 = M(qs[1]) == Zero ? 0 | 1;
+        let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
 
