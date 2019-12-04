@@ -1,15 +1,5 @@
 $ver = $args[0]
 Write-Host $ver
-try
-{
-    git | Out-Null
-   Write-Host "Git is installed"
-   git submodule update --init
-}
-catch [System.Management.Automation.CommandNotFoundException]
-{
-    Write-Host "No git"
-}
 
 $pkgs=@(
 "Microsoft.Quantum.Standard",
@@ -29,20 +19,25 @@ $pkgs=@(
 
 #Look at the first package and find its version
 $i = 0
-$full_string = 'Include="{0}" Version=' -f $pkgs[$i]
-Write-Host  $full_string
+$csproj_string = 'Include="{0}" Version=' -f $pkgs[$i]
+Write-Host $csproj_string
 $file = (Get-ChildItem -recurse -Name -include "BasicGates/*.csproj")
 Write-Host $file
-$sentence = (Get-ChildItem -recurse | Select-String -pattern $full_string -Context 0).Line
+$sentence = (Get-ChildItem -recurse | Select-String -pattern $csproj_string -Context 0).Line
 Write-Host (($sentence -split 'Version=')[1] | %{$_.split('"')[1]})
-$old_version = (($sentence -split 'Version=')[1] | %{$_.split('"')[1]})
-Write-Host  "Changing Version from $old_version to $ver"
+$csproj_old = (($sentence -split 'Version=')[1] | %{$_.split('"')[1]})
+Write-Host  "Changing Version from $csproj_old to $ver"
+
+for .csproj files - <PackageReference Include="Microsoft.Quantum.???" Version="___" />
+for .ipynb files - "%package Microsoft.Quantum.???::___"
+for Dockerfile - FROM mcr.microsoft.com/quantum/iqsharp-base:___
+for install-iqsharp.ps1 - dotnet tool install Microsoft.Quantum.IQSharp --version ___ --tool-path $Env:TOOLS_DIR
 
 $configFiles = (Get-ChildItem -recurse -include "*.csproj", "*.ipynb", "install-iqsharp.ps1","Dockerfile")
 foreach ($file in $configFiles)
 {
     (Get-Content $file.PSPath) |
-    Foreach-Object { $_ -replace $old_version, $ver } |
+    Foreach-Object { $_ -replace $csproj_old, $ver } |
     Set-Content $file.PSPath
 }
 
