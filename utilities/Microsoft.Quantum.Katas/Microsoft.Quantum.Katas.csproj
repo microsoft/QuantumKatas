@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Jupyter.Core" Version="1.1.18837" />
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.10.1912.1220-beta" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.10.1912.1303-beta" />
   </ItemGroup>
 
   <ItemGroup>
