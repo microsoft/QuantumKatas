@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.RippleCarryAdder {
     
+    open Microsoft.Quantum.Preparation;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
@@ -85,12 +86,6 @@ namespace Quantum.Kata.RippleCarryAdder {
         op(splits[0], splits[1], Tail(arr));
     }
 
-	operation QubitArrayAllocateAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit[], Qubit) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
-        using (qArr = Qubit[N * 3 + 1]){
-			let splits = Partitioned([N, N, N, 1], qArr);
-			op(splits[0], splits[1], splits[2], Tail(qArr));
-		}        
-    }
 
     // ------------------------------------------------------
     // Helper operations to prepare qubits from an input and compare them to the output
@@ -241,14 +236,22 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     operation T17_ArbitraryAdder_Test () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
-        for (i in 1 .. 4){
-			let testOp1 = QubitArrayAdderWrapper(i, ArbitraryAdder, _);
+        for (nQubitsInRegister in 1 .. 4) {
+            let testOp1 = QubitArrayAdderWrapper(nQubitsInRegister, ArbitraryAdder, _);
 
-            let testOp2 = QubitArrayAllocateAdderWrapper(i, ArbitraryAdder, _);
-			let refOp = QubitArrayAllocateAdderWrapper(i, ArbitraryAdder_Reference, _);
+            AssertOperationImplementsBinaryFunction(testOp1, BinaryAdder(_, nQubitsInRegister), 2 * nQubitsInRegister, nQubitsInRegister + 1);
 
-			AssertOperationImplementsBinaryFunction(testOp1, BinaryAdder(_, i), 2 * i, i + 1);
-            AssertOperationsEqualReferenced(i, testOp2, refOp);
+            using ((reference, target, sum) = (Qubit[2 * nQubitsInRegister + 1], Qubit[2 * nQubitsInRegister + 1], Qubit[nQubitsInRegister])) {
+                let a = target[0 .. nQubitsInRegister - 1];
+                let b = target[nQubitsInRegister .. 2 * nQubitsInRegister - 1];
+                let carry = Tail(target);
+
+                PrepareEntangledState(reference, target);
+                ArbitraryAdder(a, b, sum, carry);
+                Adjoint ArbitraryAdder_Reference(a, b, sum, carry);
+                Adjoint PrepareEntangledState(reference, target);
+                AssertAllZero(reference + target);
+            }
         }
     }
 
