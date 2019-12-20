@@ -77,6 +77,262 @@
 \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
 \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
 
+% Work arround for not correctly rendering brackets https://tex.stackexchange.com/questions/520847/left-matrix-bracket-not-rendered-properly
+
+\newbox\matrixadditionleft
+\sbox\matrixadditionleft{\parbox{\textwidth}{
+	\footnotesize
+	Addition \linebreak
+	\(\begin{bmatrix} 
+ 		a & b \\ 
+		c & d 
+		\end{bmatrix} \) + 
+	\(\begin{bmatrix}
+		e & f \\
+		g & h
+	\end{bmatrix} \) 
+}}
+
+\newbox\matrixadditionright
+\sbox\matrixadditionright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}  
+		a + e & b + f \\
+		c + g & d + h 
+	\end{bmatrix} \)
+}}
+
+\newbox\matrixscalarleft
+\sbox\matrixscalarleft{\parbox{\textwidth}{
+	\footnotesize
+	Scalar multiplication \newline
+	 \( a  \cdot \begin{bmatrix} 
+		b & c \\
+		d & e
+	\end{bmatrix} \)
+}}
+
+\newbox\matrixscalarright
+\sbox\matrixscalarright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}
+		a \cdot b & a \cdot c \\
+		a \cdot d & a \cdot e
+	\end{bmatrix} \) 
+}}
+
+\newbox\matrixmultiplicationleft
+\sbox\matrixmultiplicationleft{\parbox{\textwidth}{
+	\footnotesize
+	Matrix \newline multiplication \newline
+	\( \begin{bmatrix} 
+		a & b & c \\
+		d & e & f
+	\end{bmatrix} \cdot
+	\begin{bmatrix} 
+		x \\
+		y \\
+		z
+	\end{bmatrix} \)
+}}
+
+\newbox\matrixmultiplicationright
+\sbox\matrixmultiplicationright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} 
+		a \cdot x & b \cdot y & c \cdot z \\
+		d \cdot x & e \cdot y & f \cdot z 
+	\end{bmatrix} \)
+}}
+
+\newbox\matrixtransposeleft
+\sbox\matrixtransposeleft{\parbox{\textwidth}{
+	\footnotesize
+	Transpose \newline 
+	\( \begin{bmatrix}
+		a & b \\
+		c & d \\
+		e & f
+	\end{bmatrix}^T \)
+}}
+
+\newbox\matrixtransposeright
+\sbox\matrixtransposeright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}
+ 		a & c & e \\
+		b & d & f
+	\end{bmatrix} \) 
+}}
+
+\newbox\matrixadjointleft
+\sbox\matrixadjointleft{\parbox{\textwidth}{
+	\footnotesize
+	Adjoint \newline	
+	\( \begin{bmatrix}
+		a & b \\
+		c & d \\
+		e & f
+	\end{bmatrix}^\dagger \) 
+}}
+
+\newbox\matrixadjointright
+\sbox\matrixadjointright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}
+ 		\overline{a} & \overline{c} & \overline{e} \\
+		\overline{b} & \overline{d} & \overline{f}
+	\end{bmatrix} \) 
+}}
+
+\newbox\outerproductleft
+\sbox\outerproductleft{\parbox{\textwidth}{
+	\footnotesize
+	Outer Product \newline
+	\( \begin{bmatrix} 
+		a \\
+		b
+	\end{bmatrix} \)  and \(
+	\begin{bmatrix} 
+		x \\ 
+		y \\
+		z 
+    \end{bmatrix} \)
+}}
+
+\newbox\innerproductleft
+\sbox\innerproductleft{\parbox{\textwidth}{
+	\footnotesize
+	Inner Product \newline		
+	\( \langle 
+		\begin{bmatrix}\
+			a \\
+		 	b
+		\end{bmatrix} ,
+		\begin{bmatrix}	
+			c \\
+			d
+		\end{bmatrix} 
+	\rangle \) 
+}}
+
+\newbox\innerproductright
+\sbox\innerproductright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}
+		a \\
+		b
+	\end{bmatrix}^\dagger
+	\begin{bmatrix}
+		c \\
+		d
+	\end{bmatrix} =
+	\begin{bmatrix} 
+		\overline{a} &  \overline{b} 
+	\end{bmatrix}  
+	\begin{bmatrix}
+		c \\
+		d
+	\end{bmatrix} = \) \newline
+	\( \overline{a} * c + \onverline{b} * d \)
+}}
+
+\newbox\outerproductright
+\sbox\outerproductright{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix}
+		a \\
+		b
+	\end{bmatrix} 
+	\begin{bmatrix}
+		x\\
+		y\\
+		z
+	\end{bmatrix}^\dagger =
+	\begin{bmatrix}
+		a \\
+		b  
+	\end{bmatrix}
+	\begin{bmatrix}
+		\overline{x} & \overline{y} & \overline{z}
+	\end{bmatrix} = \) \newline
+	\( \begin{bmatrix} 
+		a \cdot \overline{x} & a \cdot \overline{y} & a \cdot \overline{z} \\
+		b \cdot \overline{x} & b \cdot \overline{y} & b \cdot \overline{z} \\
+ \end{bmatrix} \) 
+}}
+
+\newbox\xgate
+\sbox\xgate{\parbox{\textwidth}{
+	\footnotesize
+	 \( \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \) 
+}}
+
+\newbox\ygate
+\sbox\ygate{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix} \)
+}}
+
+\newbox\zgate
+\sbox\zgate{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix} \)
+}}
+
+\newbox\igate
+\sbox\igate{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \)
+}}
+
+\newbox\hgate
+\sbox\hgate{\parbox{\textwidth}{
+	\footnotesize
+	\( \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \)
+}}
+
+\newbox\sgate
+\sbox\sgate{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix} \)
+}}
+
+\newbox\tgate
+\sbox\tgate{\parbox{\textwidth}{
+	\footnotesize
+	 \( \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix} \) 
+}}
+
+\newbox\rxgate
+\sbox\rxgate{\parbox{\textwidth}{
+	\footnotesize
+	 \(\begin{bmatrix} \cos\frac{\theta}{2} & -i\sin\frac{\theta}{2} \\ -i\sin\frac{\theta}{2} &  \cos\frac{\theta}{2} \end{bmatrix} \) 
+}}
+
+\newbox\rygate
+\sbox\rygate{\parbox{\textwidth}{
+	\footnotesize
+	 \( \begin{bmatrix} \cos\frac{\theta}{2}  & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{bmatrix} \)
+}}
+
+\newbox\rzgate
+\sbox\rzgate{\parbox{\textwidth}{
+	\footnotesize
+	\( \begin{bmatrix} e^{-i\theta/2} & 0 \\ 0 & e^{i\theta/2} \end{bmatrix} \) 
+}}
+
+
+\newbox\rgate
+\sbox\rgate{\parbox{\textwidth}{
+	\footnotesize
+	 \( \begin{bmatrix} 1 & 0 \\ 0 & e^{i\theta} \end{bmatrix} \)
+}}
+
+
+
+
+
 \NewEnviron{keysref}[1]{
   % \begin{center}
   \smallskip
@@ -100,6 +356,30 @@
   % \end{center}
 }
 
+\NewEnviron{keysrefQbits}[1]{
+  % \begin{center}
+  \smallskip
+  \begin{tikzpicture}
+      \rowcolors{1}{}{TableRow}
+
+      \node (tbl) [inner sep=0pt] {
+        \begin{tabular}{p{0.85cm}p{3.85cm}p{3.05cm}p{5.05cm}p{2.95cm}p{2.95cm}p{2.95cm}}
+          \rowcolor{TableHead}
+          \multicolumn{7}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
+          \BODY
+          \arrayrulecolor{TableHead}\specialrule{.17em}{0em}{.2em}
+        \end{tabular}};
+      \begin{pgfonlayer}{background}
+        \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+        ($(tbl.north west)-(0,-0.05)$) rectangle ($(tbl.north east)-(0.0,0.15)$);
+        \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+        ($(tbl.south west)-(0.0,-0.11)$) rectangle ($(tbl.south east)-(-0.0,-0.02)$);
+      \end{pgfonlayer}
+    \end{tikzpicture}
+  % \end{center}
+}
+
+
 % https://tex.stackexchange.com/a/102523
 \newcommand{\forceindent}[1]{\leavevmode{\parindent=#1\indent}}
 
@@ -110,6 +390,8 @@
 \newcommand{\ctrllike}{\hfill\faWindows\faLinux}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 \begin{document}
 
@@ -298,24 +580,9 @@
                                                                \texttt{AssertQubit(One, \emph{oneQubit})} \\
   \end{keysref}
 
-  \columnbreak
+  
 
-  \begin{keysref}{Basic Quantum Gates}
-    Pauli gates          & \texttt{X(\emph{qubit})} : \newline
-                           $\ket{0} \mapsto \ket{1}$, $\ket{1} \mapsto \ket{0}$ \newline
-                           \texttt{Y(\emph{qubit})} : \newline
-                           $\ket{0} \mapsto i \ket{1}$, $\ket{1} \mapsto -i \ket{0}$ \newline
-                           \texttt{Z(\emph{qubit})} : \newline
-                           $\ket{0} \mapsto \ket{0}$, $\ket{1} \mapsto -\ket{1}$ \\
-    Hadamard             & \texttt{H(\emph{qubit})} : \newline
-                           $\ket{0} \mapsto \ket{+} = \frac{1}{\sqrt{2}} ( \ket{0} + \ket{1} )$, \newline
-                           $\ket{1} \mapsto \ket{-} = \frac{1}{\sqrt{2}} ( \ket{0} - \ket{1} )$ \\
-    Controlled-NOT       & \texttt{CNOT(\emph{controlQubit}, \emph{targetQubit})} \newline
-                           $\ket{00} \mapsto \ket{00}$, $\ket{01} \mapsto \ket{01}$, \newline
-                           $\ket{10} \mapsto \ket{11}$, $\ket{11} \mapsto \ket{10}$ \\
-    Apply several gates \newline (Bell pair example)  & \texttt{H(\emph{qubit1});} \newline 
-                                                        \texttt{CNOT(\emph{qubit1}, \emph{qubit2});} \\
-  \end{keysref}
+
  
   \begin{keysref}{Measurements}
     Measure qubit in Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
@@ -323,7 +590,7 @@
     Reset an array of \newline qubits to $\ket{0..0}$ & \texttt{ResetAll(\emph{register})} \\
   \end{keysref}
 
-  \columnbreak
+  
 
   \section{Working with \qs~from command line}
 
@@ -341,6 +608,73 @@
     Build project                     & \texttt{dotnet build} \\
     Run all unit tests                & \texttt{dotnet test} \\
   \end{keysref}
+
+	\columnbreak
+	\section{Math reference}
+
+	\begin{keysref}{Complex Arithmetic}
+    	\(i^2 \) & \(-1\) \\
+	\( (a + bi) + (c + di) \) & \( (a + c ) + (b + d)i \) \\
+	\( (a + bi)  (c + di) \) & \( a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 \) \newline
+		\(  a \cdot b + a \cdot di + c \cdot bi - (b \cdot d) \) \\
+
+	Complex Conjugate \newline \(x = a + bi \) & \( \overline{x} = a - bi \) \\
+ 	Complex division \newline \( \frac{a +bi}{c+di} \) & \( \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} \) \newline
+		\( = \frac{(a+bi)(c-di) }{c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} \) \\
+	Modulus \newline \( x = a + bi \) & \( |x| = \sqrt{a^2 + b^2} \) \\
+	\(e^{i\theta} \) & \( \cos(\theta)  + i \sin(\theta) \) \\ 
+ 	\( e^{a + bi} \) & \( e^a + e^{bi} = e^a(\cos(b) + i\sin(b)) \)  \\
+	\( r^{a+bi} \) & \( c^a \cdot c^{bi} = c^a \cdot e^{bi\ln(c)} \) \newline \(= c^a((\cos(b\ln(c)) + i\sin(b\ln(c))) \)\\
+	Polar form \newline \(a+bi \) & \( re^{i\theta} = r(\cos(\theta) + i\sin(\theta))  \) \newline
+		\( r =  \sqrt{a^2 + b^2} \) \newline \( \theta = \tan^{-1}(\frac{b}{a}) \) \\
+	\end{keysref}
+
+	\begin{keysref}{Linear Algebra}
+	\usebox\matrixadditionleft & \usebox\matrixadditionright \\
+	
+	\usebox\matrixscalarleft &\usebox\matrixscalarright \\
+	
+	\usebox\matrixmultiplicationleft & \usebox\matrixmultiplicationright \\
+
+	\usebox\matrixtransposeleft & \usebox\matrixtransposeright \\	 
+	
+	\usebox\matrixadjointleft & \usebox\matrixadjointright \\
+
+	\usebox\innerproductleft & \usebox\innerproductright \\ 	
+	
+	\usebox\outerproductleft & \usebox\outerproductright \\
+	
+\end{keysref}
+
+\newpage
+
+\section{Gates reference}
+
+
+\begin{keysrefQbits}{Single Qubit gates}
+
+	Gate & Matrix representation    & Ket-Bra & Applying to \( |\psi\rangle = \alpha|0\rangle + \beta|1\rangle \) & Applying to basis states & & \\
+	
+	 X & \usebox\xgate & \( |0\rangle\langle1| + |1\rangle\langle0|\) & \( |\psi\rangle = \alpha|1\rangle + \beta|0\rangle \) & \( X|0\rangle = |1\rangle \newline X|1\rangle = |0\rangle \) & \(
+		 X|+\rangle = |+\rangle \newline   X|-\rangle = -|-\rangle  \) & \( X|i\rangle = i|-i\rangle \newline X|-i\rangle = -i|i\rangle \)  	\\
+	Y & \usebox\ygate & \( i(|1\rangle\langle0| - |0\rangle\langle1|)\) & \(Y|\psi\rangle = i\big(\alpha|1\rangle - \beta|0\rangle\big)\) & \(Y|0\rangle = i|1\rangle \newline Y|1\rangle = -i|0\rangle \) & \( Y|+\rangle = -i|-\rangle  \newline
+		 Y|-\rangle = i|+\rangle \) & \( Y|i\rangle = |i\rangle \newline Y|-i\rangle = -|-i\rangle\)   \\
+	Z & \usebox\zgate & \( |0\rangle\langle0| - |1\rangle\langle1| \) & \( Z|\psi\rangle = \alpha|0\rangle - \beta|1\rangle \) & \( Z|0\rangle = |0\rangle \newline Z|1\rangle = -|1\rangle \) & \(  Z|+\rangle = |-\rangle \newline
+		 Z|-\rangle = |+\rangle \) & \( Z|i\rangle = |-i\rangle \newline Z|-i\rangle = |i\rangle \)  \\
+	I & \usebox\igate & \( |0\rangle\langle0| + |1\rangle\langle1| \)  & \( I|\psi\rangle = |\psi\rangle \) & & & \\
+	H & \usebox\hgate & \( |0\rangle\langle+| + |1\rangle\langle-| \) & \( H|\psi\rangle = \alpha|+\rangle + \beta|-\rangle = \newline \frac{\alpha + \beta}{\sqrt{2}}|0\rangle + \frac{\alpha - \beta}{\sqrt{2}}|1\rangle \) & 
+		\( H|0\rangle = |+\rangle 	\newline H|1\rangle = |-\rangle \) & \( H|+\rangle = |0\rangle \newline H|-\rangle = |1\rangle \) & \( H|i\rangle = e^{i\pi/4}|-i\rangle \newline H|-i\rangle = e^{-i\pi/4}|i\rangle \) \\
+	S & \usebox\sgate & \( |0\rangle\langle0| + i|1\rangle\langle1| \) & \( S|\psi\rangle = \alpha|0\rangle + i\beta|1\rangle \) & \( S|0\rangle = |0\rangle \newline S|1\rangle = i|1\rangle \) & \( S|+\rangle = |i\rangle 
+		\newline S|-\rangle = |-i\rangle \) & \( S|i\rangle = |-\rangle \newline S|-i\rangle = |+\rangle \)  \\
+	T & \usebox\tgate & \(|0\rangle\langle0| + e^{i\pi/4}|1\rangle$$\langle1| \) & \( T|\psi\rangle = \alpha|0\rangle + e^{i\pi/4} \beta |1\rangle \) & \( T|0\rangle = |0\rangle \newline T|1\rangle = e^{i\pi/4}|1\rangle \) & &  \\
+	\( R_x(\theta) \) & \usebox\rxgate & & \( R_x(\theta)|\psi\rangle = \ (\alpha\cos\frac{\theta}{2} - i\beta\sin\frac{\theta}{2})|0\rangle + (\beta\cos\frac{\theta}{2} - i\alpha\sin\frac{\theta}{2})|1\rangle \) & 
+		\(R_x(\theta)|0\rangle = \newline \cos\frac{\theta}{2}|0\rangle - i\sin\frac{\theta}{2}|1\rangle \) & \( R_x(\theta)|1\rangle = \newline \cos\frac{\theta}{2}|1\rangle - i\sin\frac{\theta}{2}|0\rangle \) & \\ 
+	\( R_y(\theta) \) & \usebox\rygate   & & \( R_y(\theta)|\psi\rangle =  (\alpha\cos\frac{\theta}{2} - \beta\sin\frac{\theta}{2})|0\rangle + (\beta\cos\frac{\theta}{2} + \alpha\sin\frac{\theta}{2})|1\rangle \) & 
+		\( R_y(\theta)|0\rangle = \newline \cos\frac{\theta}{2}|0\rangle + \sin\frac{\theta}{2}|1\rangle \) & \( R_y(\theta)|1\rangle = \newline \cos\frac{\theta}{2}|1\rangle - \sin\frac{\theta}{2}|0\rangle \)  &  \\
+	\( R_z(\theta) \) & \usebox\rzgate & & \( R_z(\theta)|\psi\rangle = \newline \alpha e^{-i\theta/2}|0\rangle + \beta e^{i\theta/2}|1\rangle \) & \( R_z(\theta)|0\rangle =  e^{-i\theta/2}|0\rangle \) & \( R_z(\theta)|1\rangle = e^{i\theta/2}|1\rangle \)  &  \\
+	\( R_1(\theta) \) & \usebox\rgate & & \( R_1(\theta)|\psi\rangle =  \alpha|0\rangle + \beta e^{i\theta}|1\rangle \) &  \( R_1(\theta)|0\rangle = |0\rangle \) & \( R_1(\theta)|1\rangle = e^{i\theta}|1\rangle \)  &  \\
+
+\end{keysrefQbits}
 
 \end{multicols}
 
