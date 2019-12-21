@@ -22,9 +22,10 @@ namespace Quantum.Kata.Measurements {
 
     // "Framework" operation for testing single-qubit tasks for distinguishing states of one qubit
     // with Bool return
-    operation DistinguishTwoStates_OneQubit (statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Bool)) : Unit {
+    operation DistinguishTwoStates_OneQubit (statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Bool), str1 : String, str_aim : String) : Unit {
         let nTotal = 100;
-        mutable nOk = 0;
+        mutable nNOTOk0as1 = 0;
+        mutable nNOTOk1as0 = 0;
 
         using (qs = Qubit[1]) {
             for (i in 1 .. nTotal) {
@@ -36,10 +37,15 @@ namespace Quantum.Kata.Measurements {
                 // do state prep: convert |0⟩ to outcome with false return or to outcome with true return depending on state
                 statePrep(qs[0], state);
 
-                // get the solution's answer and verify that it's a match
+                // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
                 let ans = testImpl(qs[0]);
-                if (ans == (state == 1)) {
-                    set nOk += 1;
+                if (ans != (state == 1)) {
+                    if (state == 1) {
+                        set nNOTOk1as0 += 1;
+                    }
+                    else {
+                        set nNOTOk0as1 += 1;
+                    }
                 }
 
                 // we're not checking the state of the qubit after the operation
@@ -47,7 +53,12 @@ namespace Quantum.Kata.Measurements {
             }
         }
 
-        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        // This Check will tell the # of Failed clasifications
+        // EqualityFactI((nNOTOk0as1 + nNOTOk1as0), 0, $"{nNOTOk0as1 + nNOTOk1as0} test runs out of {nTotal} returned incorrect state.");
+        
+        // This Check will give more granularity telling the # of misclasifications by type (0->1) vs (1->0)
+        // Gets two strings as input of what are the two states to be clasified, str_aim being the target state. 
+        EqualityFactI((nNOTOk0as1 + nNOTOk1as0), 0, $"'Misclassified' {str1} as {str_aim} in {nNOTOk0as1} test runs, and {str_aim} as {str1} in {nNOTOk1as0} test runs out of {nTotal} total runs.");
     }
 
 
@@ -61,7 +72,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T101_IsQubitOne_Test () : Unit {
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne);
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne,"|0⟩","|1⟩");
     }
 
 
@@ -96,7 +107,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T103_IsQubitPlus_Test () : Unit {
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus);
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus,"|-⟩","|+⟩");
     }
 
 
@@ -119,14 +130,14 @@ namespace Quantum.Kata.Measurements {
         // cross-test
         // alpha = 0.0 or PI() => !isQubitOne
         // alpha = PI() / 2.0 => isQubitOne
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitA(PI() / 2.0, _));
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitA(PI() / 2.0, _),"|B⟩","|A⟩");
 
         // alpha = PI() / 4.0 => isQubitPlus
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitA(PI() / 4.0, _));
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitA(PI() / 4.0, _),"|B⟩","|A⟩");
 
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
-            DistinguishTwoStates_OneQubit(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _));
+            DistinguishTwoStates_OneQubit(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _),"|B⟩","|A⟩");
         }
     }
 
