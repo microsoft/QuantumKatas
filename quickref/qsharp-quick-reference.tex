@@ -84,49 +84,49 @@
 \sbox\matrixadditionleft{\parbox{\textwidth}{
 	\footnotesize
 	Addition \linebreak
-	\(\begin{bmatrix} 
+	$\begin{bmatrix} 
  		a & b \\ 
 		c & d 
-		\end{bmatrix} \) + 
-	\(\begin{bmatrix}
+		\end{bmatrix} $ + 
+	$\begin{bmatrix}
 		e & f \\
 		g & h
-	\end{bmatrix} \) 
+	\end{bmatrix} $ 
 }}
 
 \newbox\matrixadditionright
 \sbox\matrixadditionright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}  
+	$ \begin{bmatrix}  
 		a + e & b + f \\
 		c + g & d + h 
-	\end{bmatrix} \)
+	\end{bmatrix} $
 }}
 
 \newbox\matrixscalarleft
 \sbox\matrixscalarleft{\parbox{\textwidth}{
 	\footnotesize
 	Scalar multiplication \newline
-	 \( a  \cdot \begin{bmatrix} 
+	 $ a  \cdot \begin{bmatrix} 
 		b & c \\
 		d & e
-	\end{bmatrix} \)
+	\end{bmatrix} $
 }}
 
 \newbox\matrixscalarright
 \sbox\matrixscalarright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}
+	$ \begin{bmatrix}
 		a \cdot b & a \cdot c \\
 		a \cdot d & a \cdot e
-	\end{bmatrix} \) 
+	\end{bmatrix} $ 
 }}
 
 \newbox\matrixmultiplicationleft
 \sbox\matrixmultiplicationleft{\parbox{\textwidth}{
 	\footnotesize
 	Matrix \newline multiplication \newline
-	\( \begin{bmatrix} 
+	$ \begin{bmatrix} 
 		a & b & c \\
 		d & e & f
 	\end{bmatrix} \cdot
@@ -134,78 +134,78 @@
 		x \\
 		y \\
 		z
-	\end{bmatrix} \)
+	\end{bmatrix} $
 }}
 
 \newbox\matrixmultiplicationright
 \sbox\matrixmultiplicationright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} 
+	$ \begin{bmatrix} 
 		a \cdot x + b \cdot y + c \cdot z \\
 		d \cdot x + e \cdot y + f \cdot z 
-	\end{bmatrix} \)
+	\end{bmatrix} $
 }}
 
 \newbox\matrixtransposeleft
 \sbox\matrixtransposeleft{\parbox{\textwidth}{
 	\footnotesize
 	Transpose \newline 
-	\( \begin{bmatrix}
-		a & b \\
-		c & d \\
-		e & f
-	\end{bmatrix}^T \)
+	$ \begin{bmatrix}
+		a & b & c\\
+		d & e & f 
+	\end{bmatrix}^T $
 }}
 
 \newbox\matrixtransposeright
 \sbox\matrixtransposeright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}
- 		a & c & e \\
-		b & d & f
-	\end{bmatrix} \) 
+	$ \begin{bmatrix}
+ 		a & d \\
+		b & e \\
+		c & f
+	\end{bmatrix} $ 
 }}
 
 \newbox\matrixadjointleft
 \sbox\matrixadjointleft{\parbox{\textwidth}{
 	\footnotesize
 	Adjoint \newline	
-	\( \begin{bmatrix}
-		a & b \\
-		c & d \\
-		e & f
-	\end{bmatrix}^\dagger \) 
+	$ \begin{bmatrix}
+		a & b & c \\
+		d & e & f
+	\end{bmatrix}^\dagger $ 
 }}
 
 \newbox\matrixadjointright
 \sbox\matrixadjointright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}
- 		\overline{a} & \overline{c} & \overline{e} \\
-		\overline{b} & \overline{d} & \overline{f}
-	\end{bmatrix} \) 
+	$ \begin{bmatrix}
+ 		\overline{a} & \overline{e} \\
+		\overline{b} & \overline{d} \\
+ 		\overline{c} & \overline{f}
+	\end{bmatrix} $ 
 }}
 
 \newbox\outerproductleft
 \sbox\outerproductleft{\parbox{\textwidth}{
 	\footnotesize
 	Outer product \newline
-	\( \begin{bmatrix} 
+	$ \begin{bmatrix} 
 		a \\
 		b
-	\end{bmatrix} \)  and \(
+	\end{bmatrix} $  and $
 	\begin{bmatrix} 
 		x \\ 
 		y \\
 		z 
-    \end{bmatrix} \)
+    \end{bmatrix} $
 }}
 
 \newbox\innerproductleft
 \sbox\innerproductleft{\parbox{\textwidth}{
 	\footnotesize
 	Inner product \newline
-	\( \left\langle 
+	$ \left\langle 
 		\begin{bmatrix}\
 			a \\
 		 	b
@@ -214,13 +214,13 @@
 			c \\
 			d
 		\end{bmatrix} 
-	\right\rangle \) 
+	\right\rangle $ 
 }}
 
 \newbox\innerproductright
 \sbox\innerproductright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}
+	$ \begin{bmatrix}
 		a \\
 		b
 	\end{bmatrix}^\dagger
@@ -234,14 +234,14 @@
 	\begin{bmatrix}
 		c \\
 		d
-	\end{bmatrix} = \) \newline
-	\( \overline{a} * c + \onverline{b} * d \)
+	\end{bmatrix} = $ \newline 
+	$ \overline{a} \cdot c + \overline{b} \cdot d $
 }}
 
 \newbox\outerproductright
 \sbox\outerproductright{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix}
+	$ \begin{bmatrix}
 		a \\
 		b
 	\end{bmatrix} 
@@ -256,78 +256,78 @@
 	\end{bmatrix}
 	\begin{bmatrix}
 		\overline{x} & \overline{y} & \overline{z}
-	\end{bmatrix} = \) \newline
-	\( \begin{bmatrix} 
+	\end{bmatrix} = $ \newline
+	$ \begin{bmatrix} 
 		a \cdot \overline{x} & a \cdot \overline{y} & a \cdot \overline{z} \\
 		b \cdot \overline{x} & b \cdot \overline{y} & b \cdot \overline{z} \\
- \end{bmatrix} \) 
+ \end{bmatrix} $ 
 }}
 
 \newbox\xgate
 \sbox\xgate{\parbox{\textwidth}{
 	\footnotesize
-	 \( \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \) 
+	 $ \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} $ 
 }}
 
 \newbox\ygate
 \sbox\ygate{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix} \)
+	$ \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix} $
 }}
 
 \newbox\zgate
 \sbox\zgate{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix} \)
+	$ \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix} $
 }}
 
 \newbox\igate
 \sbox\igate{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \)
+	$ \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} $
 }}
 
 \newbox\hgate
 \sbox\hgate{\parbox{\textwidth}{
 	\footnotesize
-	\( \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \)
+	$ \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} $
 }}
 
 \newbox\sgate
 \sbox\sgate{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix} \)
+	$ \begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix} $
 }}
 
 \newbox\tgate
 \sbox\tgate{\parbox{\textwidth}{
 	\footnotesize
-	 \( \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix} \) 
+	 $ \begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix} $ 
 }}
 
 \newbox\rxgate
 \sbox\rxgate{\parbox{\textwidth}{
 	\footnotesize
-	 \(\begin{bmatrix} \cos\frac{\theta}{2} & -i\sin\frac{\theta}{2} \\ -i\sin\frac{\theta}{2} &  \cos\frac{\theta}{2} \end{bmatrix} \) 
+	 $\begin{bmatrix} \cos\frac{\theta}{2} & -i\sin\frac{\theta}{2} \\ -i\sin\frac{\theta}{2} &  \cos\frac{\theta}{2} \end{bmatrix} $ 
 }}
 
 \newbox\rygate
 \sbox\rygate{\parbox{\textwidth}{
 	\footnotesize
-	 \( \begin{bmatrix} \cos\frac{\theta}{2}  & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{bmatrix} \)
+	 $ \begin{bmatrix} \cos\frac{\theta}{2}  & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{bmatrix} $
 }}
 
 \newbox\rzgate
 \sbox\rzgate{\parbox{\textwidth}{
 	\footnotesize
-	\( \begin{bmatrix} e^{-i\theta/2} & 0 \\ 0 & e^{i\theta/2} \end{bmatrix} \) 
+	$ \begin{bmatrix} e^{-i\theta/2} & 0 \\ 0 & e^{i\theta/2} \end{bmatrix} $ 
 }}
 
 
 \newbox\rgate
 \sbox\rgate{\parbox{\textwidth}{
 	\footnotesize
-	 \( \begin{bmatrix} 1 & 0 \\ 0 & e^{i\theta} \end{bmatrix} \)
+	 $ \begin{bmatrix} 1 & 0 \\ 0 & e^{i\theta} \end{bmatrix} $
 }}
 
 
@@ -357,7 +357,7 @@
   % \end{center}
 }
 
-\NewEnviron{keysrefQbits}[1]{
+\NewEnviron{keysrefGates}[1]{
   % \begin{center}
   \smallskip
   \begin{tikzpicture}
@@ -614,20 +614,20 @@
 	\section{Math reference}
 
 	\begin{keysref}{Complex Arithmetic}
-    	\(i^2 \) & \(-1\) \\
-	\( (a + bi) + (c + di) \) & \( (a + c ) + (b + d)i \) \\
-	\( (a + bi)  (c + di) \) & \( a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 \) = \newline
-		\(  a \cdot b - b \cdot d + (a \cdot d + c \cdot b)i \) \\
+    	$i^2 $ & $-1$ \\
+	$ (a + bi) + (c + di) $ & $ (a + c ) + (b + d)i $ \\
+	$ (a + bi)  (c + di) $ & $ a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 $ = \newline
+		$  a \cdot b - b \cdot d + (a \cdot d + c \cdot b)i $ \\
 
-	Complex conjugate \newline \(x = a + bi \) & \( \overline{x} = a - bi \) \\
- 	Complex division \newline \( \frac{a +bi}{c+di} \) & \( \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} \) = \newline
-		\( = \frac{(a+bi)(c-di) }{(c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} \) \\
-	Modulus \newline \( x = a + bi \) & \( |x| = \sqrt{a^2 + b^2} \) \\
-	\(e^{i\theta} \) & \( \cos(\theta)  + i \sin(\theta) \) \\ 
- 	\( e^{a + bi} \) & \( e^a \cdot e^{bi} = e^a(\cos(b) + i\sin(b)) \)  \\
-	\( r^{a+bi} \) & \( c^a \cdot c^{bi} = c^a \cdot e^{bi\ln c} = \) \newline \(= c^a(\cos(b\ln c) + i\sin(b\ln c)) \)\\
-	Polar form \newline \(a+bi \) & \( re^{i\theta} = r(\cos(\theta) + i\sin(\theta))  \) \newline
-		\( r =  \sqrt{a^2 + b^2} \) \newline \( \theta = \arctan(\frac{b}{a}) \) \\
+	Complex conjugate \newline $x = a + bi $ & $ \overline{x} = a - bi $ \\
+ 	Complex division \newline $ \frac{a +bi}{c+di} $ & $ \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} $ = \newline
+		$ = \frac{(a+bi)(c-di) }{(c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} $ \\
+	Modulus \newline $ x = a + bi $ & $ |x| = \sqrt{a^2 + b^2} $ \\
+	$e^{i\theta} $ & $ \cos(\theta)  + i \sin(\theta) $ \\ 
+ 	$ e^{a + bi} $ & $ e^a \cdot e^{bi} = e^a(\cos(b) + i\sin(b)) $  \\
+	$ r^{a+bi} $ & $ c^a \cdot c^{bi} = c^a \cdot e^{bi\ln c} = $ \newline $= c^a(\cos(b\ln c) + i\sin(b\ln c)) $\\
+	Polar form \newline $a+bi $ & $ re^{i\theta} = r(\cos(\theta) + i\sin(\theta))  $ \newline
+		$ r =  \sqrt{a^2 + b^2} $ \newline $ \theta = \arctan(\frac{b}{a}) $ \\
 	\end{keysref}
 
 	\begin{keysref}{Linear Algebra}
@@ -652,30 +652,84 @@
 \section{Gates reference}
 
 
-\begin{keysrefQbits}{Single Qubit gates}
+\begin{keysrefGates}{Single Qubit gates}
 
-	Gate & Matrix representation    & Ket-bra representation & Applying to \( \ket{\psi} = \alpha\ket{0} + \beta\ket{1} \) & Applying to basis states: & $\ket{0},\: \ket{1},\: \ket{+},\: \ket{-}\:$ and  & $\ket{\pm i} = \frac{1}{\sqrt2}(\ket{0} \pm i\ket{1})$ \\
+	Gate & Matrix representation    & Ket-bra representation & Applying to $ \ket{\psi} = \alpha\ket{0} + \beta\ket{1} $ & Applying to basis states: & $\ket{0},\: \ket{1},\: \ket{+},\: \ket{-}\:$ and  & $\ket{\pm i} = \frac{1}{\sqrt2}(\ket{0} \pm i\ket{1})$ \\
 	
-	 X & \usebox\xgate & \( |0\rangle\langle1| + |1\rangle\langle0|\) & \( |\psi\rangle = \alpha|1\rangle + \beta|0\rangle \) & \( X|0\rangle = |1\rangle \newline X|1\rangle = |0\rangle \) & \(
-		 X|+\rangle = |+\rangle \newline   X|-\rangle = -|-\rangle  \) & \( X|i\rangle = i|-i\rangle \newline X|-i\rangle = -i|i\rangle \)  	\\
-	Y & \usebox\ygate & \( i(|1\rangle\langle0| - |0\rangle\langle1|)\) & \(Y|\psi\rangle = i\big(\alpha|1\rangle - \beta|0\rangle\big)\) & \(Y|0\rangle = i|1\rangle \newline Y|1\rangle = -i|0\rangle \) & \( Y|+\rangle = -i|-\rangle  \newline
-		 Y|-\rangle = i|+\rangle \) & \( Y|i\rangle = |i\rangle \newline Y|-i\rangle = -|-i\rangle\)   \\
-	Z & \usebox\zgate & \( |0\rangle\langle0| - |1\rangle\langle1| \) & \( Z|\psi\rangle = \alpha|0\rangle - \beta|1\rangle \) & \( Z|0\rangle = |0\rangle \newline Z|1\rangle = -|1\rangle \) & \(  Z|+\rangle = |-\rangle \newline
-		 Z|-\rangle = |+\rangle \) & \( Z|i\rangle = |-i\rangle \newline Z|-i\rangle = |i\rangle \)  \\
-	I & \usebox\igate & \( |0\rangle\langle0| + |1\rangle\langle1| \)  & \( I|\psi\rangle = |\psi\rangle \) & & & \\
-	H & \usebox\hgate & \( |0\rangle\langle+| + |1\rangle\langle-| \) & \( H|\psi\rangle = \alpha|+\rangle + \beta|-\rangle = \newline \frac{\alpha + \beta}{\sqrt{2}}|0\rangle + \frac{\alpha - \beta}{\sqrt{2}}|1\rangle \) & 
-		\( H|0\rangle = |+\rangle 	\newline H|1\rangle = |-\rangle \) & \( H|+\rangle = |0\rangle \newline H|-\rangle = |1\rangle \) & \( H|i\rangle = e^{i\pi/4}|-i\rangle \newline H|-i\rangle = e^{-i\pi/4}|i\rangle \) \\
-	S & \usebox\sgate & \( |0\rangle\langle0| + i|1\rangle\langle1| \) & \( S|\psi\rangle = \alpha|0\rangle + i\beta|1\rangle \) & \( S|0\rangle = |0\rangle \newline S|1\rangle = i|1\rangle \) & \( S|+\rangle = |i\rangle 
-		\newline S|-\rangle = |-i\rangle \) & \( S|i\rangle = |-\rangle \newline S|-i\rangle = |+\rangle \)  \\
-	T & \usebox\tgate & \(|0\rangle\langle0| + e^{i\pi/4}|1\rangle$$\langle1| \) & \( T|\psi\rangle = \alpha|0\rangle + e^{i\pi/4} \beta |1\rangle \) & \( T|0\rangle = |0\rangle \newline T|1\rangle = e^{i\pi/4}|1\rangle \) & &  \\
-	\( R_x(\theta) \) & \usebox\rxgate & & \( R_x(\theta)|\psi\rangle = \ (\alpha\cos\frac{\theta}{2} - i\beta\sin\frac{\theta}{2})|0\rangle + (\beta\cos\frac{\theta}{2} - i\alpha\sin\frac{\theta}{2})|1\rangle \) & 
-		\(R_x(\theta)|0\rangle = \newline \cos\frac{\theta}{2}|0\rangle - i\sin\frac{\theta}{2}|1\rangle \) & \( R_x(\theta)|1\rangle = \newline \cos\frac{\theta}{2}|1\rangle - i\sin\frac{\theta}{2}|0\rangle \) & \\ 
-	\( R_y(\theta) \) & \usebox\rygate   & & \( R_y(\theta)|\psi\rangle =  (\alpha\cos\frac{\theta}{2} - \beta\sin\frac{\theta}{2})|0\rangle + (\beta\cos\frac{\theta}{2} + \alpha\sin\frac{\theta}{2})|1\rangle \) & 
-		\( R_y(\theta)|0\rangle = \newline \cos\frac{\theta}{2}|0\rangle + \sin\frac{\theta}{2}|1\rangle \) & \( R_y(\theta)|1\rangle = \newline \cos\frac{\theta}{2}|1\rangle - \sin\frac{\theta}{2}|0\rangle \)  &  \\
-	\( R_z(\theta) \) & \usebox\rzgate & & \( R_z(\theta)|\psi\rangle = \newline \alpha e^{-i\theta/2}|0\rangle + \beta e^{i\theta/2}|1\rangle \) & \( R_z(\theta)|0\rangle =  e^{-i\theta/2}|0\rangle \) & \( R_z(\theta)|1\rangle = e^{i\theta/2}|1\rangle \)  &  \\
-	\( R_1(\theta) \) & \usebox\rgate & & \( R_1(\theta)|\psi\rangle =  \alpha|0\rangle + \beta e^{i\theta}|1\rangle \) &  \( R_1(\theta)|0\rangle = |0\rangle \) & \( R_1(\theta)|1\rangle = e^{i\theta}|1\rangle \)  &  \\
+	 X & 
+	\usebox\xgate & $ \ket{0}\bra{1} + \ket{1}\bra{0}$ & 
+	$ \ket{\psi} = \alpha\ket{1} + \beta\ket{0} $ & 
+	$ X\ket{0} = \ket{1} \newline X\ket{1} = \ket{0} $ & 
+	$ X\ket{+} = \ket{+} \newline   X\ket{-} = -\ket{-}  $ &
+	$ X\ket{i} = i\ket{-i} \newline X\ket{-i} = -i\ket{i} $  	\\
 
-\end{keysrefQbits}
+	Y & 
+	\usebox\ygate & 
+	$ i(\ket{1}\bra{0} - \ket{0}\bra{1})$ & 
+	$ Y\ket{\psi} = i\big(\alpha\ket{1} - \beta\ket{0}\big)$ & 
+	$Y\ket{0} = i\ket{1} \newline Y\ket{1} = -i\ket{0} $ & 
+	$ Y\ket{+} = -i\ket{-}  \newline Y\ket{-} = i\ket{+} $ & 
+	$ Y\ket{i} = \ket{i} \newline Y\ket{-i} = -\ket{-i}$   \\
+
+	Z & 
+	\usebox\zgate & 
+	$ \ket{0}\bra{0} - \ket{1}\bra{1} $ & 
+	$ Z\ket{\psi} = \alpha\ket{0} - \beta\ket{1} $ & 
+	$ Z\ket{0} = \ket{0} \newline Z\ket{1} = -\ket{1} $ & 
+	$  Z\ket{+} = \ket{-} \newline Z\ket{-} = \ket{+} $ & 
+	$ Z\ket{i} = \ket{-i} \newline Z\ket{-i} = \ket{i} $  \\
+
+	I & 
+	\usebox\igate & 
+	$ \ket{0}\bra{0} + \ket{1}\bra{1} $  & 
+	$ I\ket{\psi} = \ket{\psi} $ & & & \\
+
+	H & 
+	\usebox\hgate & 
+	$ \ket{0}\bra{+} + \ket{1}\bra{-} $ & 
+	$ H\ket{\psi} = \alpha\ket{+} + \beta\ket{-} = \newline \frac{\alpha + \beta}{\sqrt{2}}\ket{0} + \frac{\alpha - \beta}{\sqrt{2}}\ket{1} $ & 
+	$ H\ket{0} = \ket{+} 	\newline H\ket{1} = \ket{-} $ & 
+	$ H\ket{+} = \ket{0} \newline H\ket{-} = \ket{1} $ & 
+	$ H\ket{i} = e^{i\pi/4}\ket{-i} \newline H\ket{-i} = e^{-i\pi/4}\ket{i} $ \\
+
+	S & 
+	\usebox\sgate & 
+	$ \ket{0}\bra{0} + i\ket{1}\bra{1} $ & 
+	$ S\ket{\psi} = \alpha\ket{0} + i\beta\ket{1} $ & 
+	$ S\ket{0} = \ket{0} \newline S\ket{1} = i\ket{1} $ & 
+	$ S\ket{+} = \ket{i} \newline S\ket{-} = \ket{-i} $ & 
+	$ S\ket{i} = \ket{-} \newline S\ket{-i} = \ket{+} $  \\
+
+	T & 
+	\usebox\tgate & 
+	$ \ket{0}\bra{0} + e^{i\pi/4}\ket{1} \bra{1} $ & 
+	$ T\ket{\psi} = \alpha\ket{0} + e^{i\pi/4} \beta \ket{1} $ & 
+	$ T\ket{0} = \ket{0} \newline T\ket{1} = e^{i\pi/4}\ket{1} $ & &  \\
+
+	$ R_x(\theta) $ & 
+	\usebox\rxgate & & 
+	$ R_x(\theta)\ket{\psi} = \ (\alpha\cos\frac{\theta}{2} - i\beta\sin\frac{\theta}{2})\ket{0} + \newline + (\beta\cos\frac{\theta}{2} - i\alpha\sin\frac{\theta}{2})\ket{1} $ & 
+	$R_x(\theta)\ket{0} = \newline \cos\frac{\theta}{2}\ket{0} - i\sin\frac{\theta}{2}\ket{1} $ & 
+	$ R_x(\theta)\ket{1} = \newline \cos\frac{\theta}{2}\ket{1} - i\sin\frac{\theta}{2}\ket{0} $ & \\ 
+
+	$ R_y(\theta) $ & 
+	\usebox\rygate   & & 
+	$ R_y(\theta)\ket{\psi} =  (\alpha\cos\frac{\theta}{2} - \beta\sin\frac{\theta}{2})\ket{0} + \newline + (\beta\cos\frac{\theta}{2} + \alpha\sin\frac{\theta}{2})\ket{1} $ & 
+	$ R_y(\theta)\ket{0} = \newline \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1} $ & 
+	$ R_y(\theta)\ket{1} = \newline \cos\frac{\theta}{2}\ket{1} - \sin\frac{\theta}{2}\ket{0} $  &  \\
+
+	$ R_z(\theta) $ & \usebox\rzgate & & 
+	$ R_z(\theta)\ket{\psi} = \newline \alpha e^{-i\theta/2}\ket{0} + \beta e^{i\theta/2}\ket{1} $ & 
+	$ R_z(\theta)\ket{0} =  e^{-i\theta/2}\ket{0} $ & 
+	$ R_z(\theta)\ket{1} = e^{i\theta/2}\ket{1} $  &  \\
+
+	$ R_1(\theta) $ & 
+	\usebox\rgate & & 
+	$ R_1(\theta)\ket{\psi} =  \alpha\ket{0} + \beta e^{i\theta}\ket{1} $ &  
+	$ R_1(\theta)\ket{0} = \ket{0} $ & 
+	$ R_1(\theta)\ket{1} = e^{i\theta}\ket{1} $  &  \\
+
+\end{keysrefGates}
 
 \end{multicols}
 
