@@ -77,7 +77,8 @@
 \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
 \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
 
-% Work arround for not correctly rendering brackets https://tex.stackexchange.com/questions/520847/left-matrix-bracket-not-rendered-properly
+% Workaround for left brackets not rendering
+% https://tex.stackexchange.com/questions/520847/left-matrix-bracket-not-rendered-properly
 
 \newbox\matrixadditionleft
 \sbox\matrixadditionleft{\parbox{\textwidth}{
@@ -140,8 +141,8 @@
 \sbox\matrixmultiplicationright{\parbox{\textwidth}{
 	\footnotesize
 	\( \begin{bmatrix} 
-		a \cdot x & b \cdot y & c \cdot z \\
-		d \cdot x & e \cdot y & f \cdot z 
+		a \cdot x + b \cdot y + c \cdot z \\
+		d \cdot x + e \cdot y + f \cdot z 
 	\end{bmatrix} \)
 }}
 
@@ -188,7 +189,7 @@
 \newbox\outerproductleft
 \sbox\outerproductleft{\parbox{\textwidth}{
 	\footnotesize
-	Outer Product \newline
+	Outer product \newline
 	\( \begin{bmatrix} 
 		a \\
 		b
@@ -203,8 +204,8 @@
 \newbox\innerproductleft
 \sbox\innerproductleft{\parbox{\textwidth}{
 	\footnotesize
-	Inner Product \newline		
-	\( \langle 
+	Inner product \newline
+	\( \left\langle 
 		\begin{bmatrix}\
 			a \\
 		 	b
@@ -213,7 +214,7 @@
 			c \\
 			d
 		\end{bmatrix} 
-	\rangle \) 
+	\right\rangle \) 
 }}
 
 \newbox\innerproductright
@@ -615,18 +616,18 @@
 	\begin{keysref}{Complex Arithmetic}
     	\(i^2 \) & \(-1\) \\
 	\( (a + bi) + (c + di) \) & \( (a + c ) + (b + d)i \) \\
-	\( (a + bi)  (c + di) \) & \( a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 \) \newline
-		\(  a \cdot b + a \cdot di + c \cdot bi - (b \cdot d) \) \\
+	\( (a + bi)  (c + di) \) & \( a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 \) = \newline
+		\(  a \cdot b - b \cdot d + (a \cdot d + c \cdot b)i \) \\
 
-	Complex Conjugate \newline \(x = a + bi \) & \( \overline{x} = a - bi \) \\
- 	Complex division \newline \( \frac{a +bi}{c+di} \) & \( \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} \) \newline
-		\( = \frac{(a+bi)(c-di) }{c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} \) \\
+	Complex conjugate \newline \(x = a + bi \) & \( \overline{x} = a - bi \) \\
+ 	Complex division \newline \( \frac{a +bi}{c+di} \) & \( \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} \) = \newline
+		\( = \frac{(a+bi)(c-di) }{(c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} \) \\
 	Modulus \newline \( x = a + bi \) & \( |x| = \sqrt{a^2 + b^2} \) \\
 	\(e^{i\theta} \) & \( \cos(\theta)  + i \sin(\theta) \) \\ 
- 	\( e^{a + bi} \) & \( e^a + e^{bi} = e^a(\cos(b) + i\sin(b)) \)  \\
-	\( r^{a+bi} \) & \( c^a \cdot c^{bi} = c^a \cdot e^{bi\ln(c)} \) \newline \(= c^a((\cos(b\ln(c)) + i\sin(b\ln(c))) \)\\
+ 	\( e^{a + bi} \) & \( e^a \cdot e^{bi} = e^a(\cos(b) + i\sin(b)) \)  \\
+	\( r^{a+bi} \) & \( c^a \cdot c^{bi} = c^a \cdot e^{bi\ln c} = \) \newline \(= c^a(\cos(b\ln c) + i\sin(b\ln c)) \)\\
 	Polar form \newline \(a+bi \) & \( re^{i\theta} = r(\cos(\theta) + i\sin(\theta))  \) \newline
-		\( r =  \sqrt{a^2 + b^2} \) \newline \( \theta = \tan^{-1}(\frac{b}{a}) \) \\
+		\( r =  \sqrt{a^2 + b^2} \) \newline \( \theta = \arctan(\frac{b}{a}) \) \\
 	\end{keysref}
 
 	\begin{keysref}{Linear Algebra}
@@ -653,7 +654,7 @@
 
 \begin{keysrefQbits}{Single Qubit gates}
 
-	Gate & Matrix representation    & Ket-Bra & Applying to \( |\psi\rangle = \alpha|0\rangle + \beta|1\rangle \) & Applying to basis states & & \\
+	Gate & Matrix representation    & Ket-bra representation & Applying to \( \ket{\psi} = \alpha\ket{0} + \beta\ket{1} \) & Applying to basis states: & $\ket{0},\: \ket{1},\: \ket{+},\: \ket{-}\:$ and  & $\ket{\pm i} = \frac{1}{\sqrt2}(\ket{0} \pm i\ket{1})$ \\
 	
 	 X & \usebox\xgate & \( |0\rangle\langle1| + |1\rangle\langle0|\) & \( |\psi\rangle = \alpha|1\rangle + \beta|0\rangle \) & \( X|0\rangle = |1\rangle \newline X|1\rangle = |0\rangle \) & \(
 		 X|+\rangle = |+\rangle \newline   X|-\rangle = -|-\rangle  \) & \( X|i\rangle = i|-i\rangle \newline X|-i\rangle = -i|i\rangle \)  	\\
