@@ -22,11 +22,12 @@ namespace Quantum.Kata.Measurements {
 
     // "Framework" operation for testing single-qubit tasks for distinguishing states of one qubit
     // with Bool return
-    operation DistinguishTwoStates_OneQubit (statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Bool), str1 : String, str_aim : String) : Unit {
+    operation DistinguishTwoStates_OneQubit (statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Bool), stateName : String[]) : Unit {
         let nTotal = 100;
-        mutable nNOTOk0as1 = 0;
-        mutable nNOTOk1as0 = 0;
-
+        let Nstate = Length(stateName);
+        mutable misclassifications = new Int[Nstate];
+        mutable Totalmisclassifications = 0;
+        
         using (qs = Qubit[1]) {
             for (i in 1 .. nTotal) {
                 // get a random bit to define whether qubit will be in a state corresponding to true return (1) or to false one (0)
@@ -40,25 +41,23 @@ namespace Quantum.Kata.Measurements {
                 // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
                 let ans = testImpl(qs[0]);
                 if (ans != (state == 1)) {
-                    if (state == 1) {
-                        set nNOTOk1as0 += 1;
-                    }
-                    else {
-                        set nNOTOk0as1 += 1;
-                    }
+                    set misclassifications w/= state <-  misclassifications[state]+1;
                 }
 
                 // we're not checking the state of the qubit after the operation
                 Reset(qs[0]);
             }
         }
-
-        // This Check will tell the # of Failed clasifications
-        // EqualityFactI((nNOTOk0as1 + nNOTOk1as0), 0, $"{nNOTOk0as1 + nNOTOk1as0} test runs out of {nTotal} returned incorrect state.");
         
-        // This Check will give more granularity telling the # of misclasifications by type (0->1) vs (1->0)
-        // Gets two strings as input of what are the two states to be clasified, str_aim being the target state. 
-        EqualityFactI((nNOTOk0as1 + nNOTOk1as0), 0, $"'Misclassified' {str1} as {str_aim} in {nNOTOk0as1} test runs, and {str_aim} as {str1} in {nNOTOk1as0} test runs out of {nTotal} total runs.");
+        for (i in 0 .. Nstate-1) {
+            if (misclassifications[i] != 0) {
+                set Totalmisclassifications += misclassifications[i];
+                Message($"'Misclassified' {stateName[i]} as {stateName[(i+1)%Nstate]} in {misclassifications[i]} test runs.");   
+            }
+        }
+        
+        // This Check will tell the # of Failed clasifications
+        EqualityFactI(Totalmisclassifications, 0, $"{Totalmisclassifications} test runs out of {nTotal} returned incorrect state (see output for details).");
     }
 
 
@@ -72,7 +71,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T101_IsQubitOne_Test () : Unit {
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne,"|0⟩","|1⟩");
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne,["|0⟩","|1⟩"]);
     }
 
 
@@ -107,7 +106,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T103_IsQubitPlus_Test () : Unit {
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus,"|-⟩","|+⟩");
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus,["|-⟩","|+⟩"]);
     }
 
 
@@ -130,14 +129,14 @@ namespace Quantum.Kata.Measurements {
         // cross-test
         // alpha = 0.0 or PI() => !isQubitOne
         // alpha = PI() / 2.0 => isQubitOne
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitA(PI() / 2.0, _),"|B⟩","|A⟩");
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitA(PI() / 2.0, _),[$"|B⟩=(-sin(π/{DoubleAsString(2.0)})|0⟩ + cos(π/{DoubleAsString(2.0)})|1⟩)",$"|A⟩=(cos(π/{DoubleAsString(2.0)})|0⟩ + sin(π/{DoubleAsString(2.0)})|1⟩)"]);
 
         // alpha = PI() / 4.0 => isQubitPlus
-        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitA(PI() / 4.0, _),"|B⟩","|A⟩");
+        DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitA(PI() / 4.0, _),[$"|B⟩=(-sin(π/{DoubleAsString(4.0)})|0⟩ + cos(π/{DoubleAsString(4.0)})|1⟩)",$"|A⟩=(cos(π/{DoubleAsString(4.0)})|0⟩ + sin(π/{DoubleAsString(4.0)})|1⟩)"]);
 
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
-            DistinguishTwoStates_OneQubit(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _),"|B⟩","|A⟩");
+            DistinguishTwoStates_OneQubit(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _),[$"|B⟩=(-sin({IntAsString(i)}π/10)|0⟩ + cos({IntAsString(i)}π/10)|1⟩)",$"|A⟩=(cos({IntAsString(i)}π/10)|0⟩ + sin({IntAsString(i)}π/10)|1⟩)"]);
         }
     }
 
