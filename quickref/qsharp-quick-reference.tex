@@ -30,6 +30,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{url}
 \usepackage{amsfonts}
+\usepackage{amsmath}
 \usepackage{array,booktabs}
 \usepackage{textcomp}
 \usepackage[usenames,dvipsnames,table]{xcolor}
@@ -77,54 +78,46 @@
 \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
 \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
 
+% Turn off warnings about slightly overfull boxes
+% https://tex.stackexchange.com/questions/50830/do-i-have-to-care-about-bad-boxes/50850
+
+\hfuzz=10pt
+
 % Workaround for left brackets not rendering
 % https://tex.stackexchange.com/questions/520847/left-matrix-bracket-not-rendered-properly
-
-\newbox\matrixrepresentationleft
-\sbox\matrixrepresentationleft{\parbox{\textwidth}{
-  \footnotesize
-  N X M Matrix
-}}
 
 \newbox\matrixrepresentationright
 \sbox\matrixrepresentationright{\parbox{\textwidth}{
   \footnotesize
-  $\qquad \underrightarrow{\text{n columns}} $\\
-  $\rotatebox[origin=c]{270}{\underrightarrow{\text{m rows}}}$    
-  $\begin{bmatrix} 
-    a_{1,1} & a_{1,2} & a_{1,3} & \cdots \\ 
-    a_{2,1} & a_{2,2} & a_{2,3} & \cdots \\ 
-    a_{3,1} & a_{3,2} & a_{3,3} & \cdots \\ 
-    \vdots & \vdots & \vdots & \ddots 
+  $\qquad \underrightarrow{n \text{ columns}} \\
+  \rotatebox[origin=c]{270}{\underrightarrow{m \text{ rows}}}
+  \begin{bmatrix} 
+    a_{0,0}   & \cdots & a_{0,n-1} \\ 
+    \vdots    & \ddots & \vdots \\
+    a_{m-1,0} & \cdots & a_{m-1,n-1} 
   \end{bmatrix}$
 }}
 
-\newbox\vectorrepresentationleft
-\sbox\vectorrepresentationleft{\parbox{\textwidth}{
-  \footnotesize
-  Vector of size N
-}}
-
 \newbox\vectorrepresentationright
-\sbox\vectorrepresentationright{\parbox{\textwidth}{
+\sbox\vectorrepresentationright{
   \footnotesize
   $\begin{bmatrix}
-    a_1 & a_2 & a_3
-  \end{bmatrix}$ 
-}}
+    a_0 \\ \vdots \\ a_{n-1}
+  \end{bmatrix}$
+}
 
 \newbox\matrixadditionleft
 \sbox\matrixadditionleft{\parbox{\textwidth}{
   \footnotesize
   Addition \linebreak
   $\begin{bmatrix} 
-     a & b \\ 
+    a & b \\ 
     c & d 
-    \end{bmatrix} $ + 
-  $\begin{bmatrix}
+    \end{bmatrix} + 
+  \begin{bmatrix}
     e & f \\
     g & h
-  \end{bmatrix} $ 
+  \end{bmatrix}$ 
 }}
 
 \newbox\matrixadditionright
@@ -139,8 +132,8 @@
 \newbox\matrixscalarleft
 \sbox\matrixscalarleft{\parbox{\textwidth}{
   \footnotesize
-  Scalar multiplication \newline
-   $ a  \cdot \begin{bmatrix} 
+  Scalar product \newline
+  $ a  \cdot \begin{bmatrix} 
     b & c \\
     d & e
   \end{bmatrix} $
@@ -158,7 +151,7 @@
 \newbox\matrixmultiplicationleft
 \sbox\matrixmultiplicationleft{\parbox{\textwidth}{
   \footnotesize
-  Matrix \newline multiplication \newline
+  Matrix product \newline
   $ \begin{bmatrix} 
     a & b & c \\
     d & e & f
@@ -239,9 +232,9 @@
   \footnotesize
   Inner product \newline
   $ \left\langle 
-    \begin{bmatrix}\
+    \begin{bmatrix}
       a \\
-       b
+      b
     \end{bmatrix} ,
     \begin{bmatrix}  
       c \\
@@ -267,8 +260,8 @@
   \begin{bmatrix}
     c \\
     d
-  \end{bmatrix} = $ \newline 
-  $ \overline{a} \cdot c + \overline{b} \cdot d $
+  \end{bmatrix} = 
+  \overline{a} c + \overline{b} d $
 }}
 
 \newbox\outerproductright
@@ -279,8 +272,8 @@
     b
   \end{bmatrix} 
   \begin{bmatrix}
-    x\\
-    y\\
+    x \\
+    y \\
     z
   \end{bmatrix}^\dagger =
   \begin{bmatrix}
@@ -290,10 +283,10 @@
   \begin{bmatrix}
     \overline{x} & \overline{y} & \overline{z}
   \end{bmatrix} = $ \newline
-  $ \begin{bmatrix} 
-    a \cdot \overline{x} & a \cdot \overline{y} & a \cdot \overline{z} \\
-    b \cdot \overline{x} & b \cdot \overline{y} & b \cdot \overline{z} \\
- \end{bmatrix} $ 
+  $ = \begin{bmatrix} 
+        a \cdot \overline{x} & a \cdot \overline{y} & a \cdot \overline{z} \\
+        b \cdot \overline{x} & b \cdot \overline{y} & b \cdot \overline{z} \\
+      \end{bmatrix} $ 
 }}
 
 \newbox\xgate
@@ -438,7 +431,7 @@
 
   \begin{keysref}{Primitive Types}
     64-bit integers         & \texttt{Int} \\
-    Double-precision floats & \texttt{Double} \\
+    Double-precision \newline floats & \texttt{Double} \\
     Booleans                & \texttt{Bool}   \newline 
                               e.g.: \texttt{true} or \texttt{false} \\
     Qubits                  & \texttt{Qubit}  \\
@@ -464,18 +457,18 @@
   \end{keysref}
   
   \begin{keysref}{User-Defined Types}
-  Declare UDT with anonymous items & \texttt{newtype \emph{Name} = (Type, Type);} \newline
+  Declare UDT with \newline anonymous items & \texttt{newtype \emph{Name} = (Type, Type);} \newline
                                      e.g.: \texttt{newtype \emph{Pair} = (Int, Int);} \\
   Define UDT literal               & \texttt{\emph{Name}(\emph{baseTupleLiteral})} \newline
                                      e.g.: \texttt{let origin = Pair(0, 0);} \\
   Unwrap operator \texttt{!} \newline (convert UDT to \newline underlying type) 
                                    & \texttt{\emph{VarName}!} \newline
                                      e.g.: \texttt{let originTuple = origin!;} \newline \hphantom{..........}(now \texttt{originTuple = (0, 0)}) \\
-  Declare UDT with named items     & \texttt{newtype \emph{Name} =}   \newline \texttt{\hphantom{....}(\emph{Name1}: Type, \emph{Name2}: Type);} \newline
+  Declare UDT with \newline named items     & \texttt{newtype \emph{Name} =}   \newline \texttt{\hphantom{....}(\emph{Name1}: Type, \emph{Name2}: Type);} \newline
                                      e.g.: \texttt{newtype Complex =} \newline \texttt{\hphantom{....}(Re : Double, Im : Double);} \\
-  Accessing named items of UDTs    & \texttt{\emph{VarName}::\emph{ItemName}} \newline
+  Accessing named \newline items of UDTs    & \texttt{\emph{VarName}::\emph{ItemName}} \newline
                                      e.g.: \texttt{complexVariable::Re} \\
-  Update-and-reassign for named UDT items & \texttt{set \emph{VarName} w/= \emph{ItemName} <- \emph{val};} \newline
+  Update-and-\newline reassign for named \newline UDT items & \texttt{set \emph{VarName} w/= \emph{ItemName} <- \emph{val};} \newline
                                             e.g.: \texttt{mutable p = Complex(0., 0.);} \newline
                                                   \texttt{\hphantom{....}set p w/= Re <- 1.0;} \\
   \end{keysref}
@@ -492,20 +485,23 @@
 
   \begin{keysref}{Functions and Operations}
     Define function \newline (classical routine)
-              & \texttt{function \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+              & \texttt{function \emph{Name}(\emph{in0} : \emph{type0}, ...) \newline
+                : \emph{returnType} \{} \newline
                 \texttt{\hphantom{....}// \emph{function body}} \newline
                 \texttt{\}} \\
     Call function & \texttt{\emph{Name}(\emph{parameters})} \newline
                     e.g.: \texttt{let two = Sqrt(4.0);} \\
     Define operation \newline (quantum routine) \newline with explicitly \newline specified body, \newline controlled and \newline adjoint variants
-               & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+               & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) \newline 
+                 : \emph{returnType} \{} \newline
                  \texttt{\hphantom{....}body \{ ... \}} \newline
                  \texttt{\hphantom{....}adjoint \{ ... \}} \newline
                  \texttt{\hphantom{....}controlled \{ ... \}} \newline
                  \texttt{\hphantom{....}adjoint controlled \{ ... \}} \newline
                  \texttt{\}} \\
     Define operation \newline with automatically \newline generated adjoint \newline and controlled \newline variants
-               & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} is Adj + Ctl \{} \newline
+               & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) \newline 
+                 : \emph{returnType} is Adj + Ctl \{} \newline
                  \texttt{\hphantom{....}... \newline
                  \} } \\
     Call operation & \texttt{\emph{Name}(\emph{parameters})} \newline
@@ -532,7 +528,7 @@
                                      \texttt{\hphantom{....}...} \newline
                                      \texttt{\}} \newline
                                      e.g.: \texttt{for (q in register) \{ ... \}} \\
-    Repeat-until-success loop      & \texttt{repeat \{ ... \} \newline until (\emph{condition}) \newline fixup \{ ... \}} \\
+    Repeat-until- \newline success loop      & \texttt{repeat \{ ... \} \newline until (\emph{condition}) \newline fixup \{ ... \}} \\
     Conditional \newline statement & \texttt{if (\emph{cond1}) \{ ... \}} \newline 
                                      \texttt{elif (\emph{cond2}) \{ ... \}} \newline
                                      \texttt{else \{ ... \}} \\
@@ -547,7 +543,7 @@
   \columnbreak
 
   \begin{keysref}{Arrays}
-    Allocate array       & \texttt{mutable \emph{name} = new \emph{Type}[\emph{length}]} \
+    Allocate array       & \texttt{mutable \emph{name} = new \emph{Type}[\emph{length}]} \newline
                            e.g.: \texttt{mutable b = new Bool[2];} \\
     Get array length     & \texttt{Length(\emph{name})} \\
     Access k-th element  & \texttt{\emph{name}[k]} \newline NB: indices are 0-based  \\
@@ -619,7 +615,7 @@
 
  
   \begin{keysref}{Measurements}
-    Measure qubit in Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
+    Measure qubit in \newline Pauli $Z$ basis & \texttt{M(\emph{oneQubit})} \newline yields a \texttt{Result} (\texttt{Zero} or \texttt{One}) \\
     Reset qubit to $\ket{0}$     & \texttt{Reset(\emph{oneQubit})} \\
     Reset an array of \newline qubits to $\ket{0..0}$ & \texttt{ResetAll(\emph{register})} \\
   \end{keysref}
@@ -637,39 +633,40 @@
   \end{keysref}
 
   \begin{keysref}{Working with \qs~Projects}
-    Create new project & \texttt{dotnet new console -lang Q\# --output \emph{project-dir}} \\
+    Create new project & \texttt{dotnet new console -lang Q\# \newline 
+                         --output \emph{project-dir}} \\
     Change directory to \newline project directory & \texttt{cd \emph{project-dir}} \\
     Build project                     & \texttt{dotnet build} \\
     Run all unit tests                & \texttt{dotnet test} \\
   \end{keysref}
 
-  \section{Math reference}
   \columnbreak
   
+  \section{Math reference}
 
   \begin{keysref}{Complex Arithmetic}
-    $i^2 $ & $-1$ \\
-    $ (a + bi) + (c + di) $ & $ (a + c ) + (b + d)i $ \\
-    $ (a + bi)  (c + di) $ & $ a \cdot b + a \cdot di + c \cdot bi + (b \cdot d)i^2 $ = \newline
-    $  a \cdot b - b \cdot d + (a \cdot d + c \cdot b)i $ \\
-	Complex conjugate \newline $x = a + bi $ & $ \overline{x} = a - bi $ \\
-    Complex division \newline $ \frac{a +bi}{c+di} $ & $ \frac{x}{y} =  \frac{x}{y} \cdot 1 = \frac{x}{y} \cdot \frac{\overline{y}}{\overline{y}} $ = \newline
-    $ = \frac{(a+bi)(c-di) }{(c+di)(c-di)} = \frac{(a+bi)(c+di)}{c^2 + d^2} $ \\
-    Modulus \newline $ x = a + bi $ & $ |x| = \sqrt{a^2 + b^2} $ \\
-    $e^{i\theta} $ & $ \cos(\theta)  + i \sin(\theta) $ \\ 
-    $ e^{a + bi} $ & $ e^a \cdot e^{bi} = e^a(\cos(b) + i\sin(b)) $  \\
-    $ r^{a+bi} $ & $ c^a \cdot c^{bi} = c^a \cdot e^{bi\ln c} = $ \newline $= c^a(\cos(b\ln c) + i\sin(b\ln c)) $\\
-    Polar form \newline $ re^{i\theta} $ &  Cartesian form \newline $  r(\cos(\theta) + i\sin(\theta)) \newline a +bi $ \\
-    Cartesian form \newline $ a + bi $ & Polar form \newline $ re^{i\theta} \newline r =  \sqrt{a^2 + b^2}  \newline  \theta = \arctan(\frac{b}{a}) $ \\
+    $i^2 $                         & $-1$ \\
+    $ (a + bi) + (c + di) $        & $ (a + c) + (b + d)i $ \\
+    $ (a + bi)  (c + di) $         & $ a \cdot c + a \cdot di + b \cdot ci + (b \cdot d)i^2 =$ \newline
+                                     $ = (a \cdot c - b \cdot d) + (a \cdot d + b \cdot c)i $ \\
+	  Complex conjugate              & $ \overline{a + bi} = a - bi $ \\
+    Division $ \frac{a+bi}{c+di} $ & $ \frac{a+bi}{c+di} \cdot 1 = \frac{a+bi}{c+di} \cdot \frac{c-di}{c-di} = \frac{(a+bi)(c+di)}{c^2 + d^2} $ \\
+    Modulus $|a + bi|$             & $ \sqrt{a^2 + b^2} $ \\
+    $e^{i\theta} $                 & $ \cos \theta + i \sin \theta $ \\ 
+    $ e^{a + bi} $                 & $ e^a \cdot e^{bi} = e^a \cos b  + i e^a \sin b $  \\
+    $ r^{a+bi} $                   & $ r^a \cdot r^{bi} = r^a \cdot e^{bi\ln r} = $ \newline 
+                                     $ = r^a \cos(b\ln r) + i \cdot r^a \sin(b\ln r) $ \\
+    Polar form $re^{i\theta}$ to \newline Cartesian form $a + bi$ & $ a = r \cos \theta \newline b = r \sin \theta $ \\
+    Cartesian form $a + bi$ \newline to polar form $re^{i\theta}$ & $ r = \sqrt{a^2 + b^2}  \newline  \theta = \arctan(\frac{b}{a}) $ \\
   \end{keysref}
 
 
 
   \begin{keysref}{Linear Algebra}
 
-    \usebox\matrixrepresentationleft & \usebox\matrixrepresentationright \\
+    $m \times n$ matrix & \usebox\matrixrepresentationright \\
 
-    \usebox\vectorrepresentationleft & \usebox\vectorrepresentationright \\
+    Vector of size $n$ & \usebox\vectorrepresentationright \\
     
     \usebox\matrixadditionleft & \usebox\matrixadditionright \\
     
@@ -694,7 +691,12 @@
 
   \begin{keysrefGates}{Single Qubit gates}
 
-    Gate & Matrix representation    & Ket-bra representation & Applying to $ \ket{\psi} = \alpha\ket{0} + \beta\ket{1} $ & Applying to basis states: & $\ket{0},\: \ket{1},\: \ket{+},\: \ket{-}\:$ and  & $\ket{\pm i} = \frac{1}{\sqrt2}(\ket{0} \pm i\ket{1})$ \\
+    Gate & 
+    Matrix representation  & 
+    Ket-bra representation & 
+    Applying to $ \ket{\psi} = \alpha\ket{0} + \beta\ket{1} $ & 
+    Applying to basis states: & $\ket{0},\: \ket{1},\: \ket{+},\: \ket{-}\:$ and  & 
+    $\ket{\pm i} = \frac{1}{\sqrt2}(\ket{0} \pm i\ket{1})$ \\
     
     X & 
     \usebox\xgate & $ \ket{0}\bra{1} + \ket{1}\bra{0}$ & 
@@ -727,7 +729,8 @@
     H & 
     \usebox\hgate & 
     $ \ket{0}\bra{+} + \ket{1}\bra{-} $ & 
-    $ H\ket{\psi} = \alpha\ket{+} + \beta\ket{-} = \newline \frac{\alpha + \beta}{\sqrt{2}}\ket{0} + \frac{\alpha - \beta}{\sqrt{2}}\ket{1} $ & 
+    $ H\ket{\psi} = \alpha\ket{+} + \beta\ket{-} = \newline 
+      = \frac{\alpha + \beta}{\sqrt{2}}\ket{0} + \frac{\alpha - \beta}{\sqrt{2}}\ket{1} $ & 
     $ H\ket{0} = \ket{+}   \newline H\ket{1} = \ket{-} $ & 
     $ H\ket{+} = \ket{0} \newline H\ket{-} = \ket{1} $ & 
     $ H\ket{i} = e^{i\pi/4}\ket{-i} \newline H\ket{-i} = e^{-i\pi/4}\ket{i} $ \\
@@ -748,22 +751,31 @@
 
     $ R_x(\theta) $ & 
     \usebox\rxgate & 
-    $ \cos\frac{\theta}{2}\ket{0}\bra{0}  -i\sin\frac{\theta}{2}\ket{1}\bra{0}  \newline -i\sin\frac{\theta}{2}\ket{0} \bra{1} + \cos\frac{\theta}{2}\ket{1}\bra{1} $ & 
-    $ R_x(\theta)\ket{\psi} = \ (\alpha\cos\frac{\theta}{2} - i\beta\sin\frac{\theta}{2})\ket{0} + \newline + (\beta\cos\frac{\theta}{2} - i\alpha\sin\frac{\theta}{2})\ket{1} $ & 
-    $R_x(\theta)\ket{0} = \newline \cos\frac{\theta}{2}\ket{0} - i\sin\frac{\theta}{2}\ket{1} $ & 
-    $ R_x(\theta)\ket{1} = \newline \cos\frac{\theta}{2}\ket{1} - i\sin\frac{\theta}{2}\ket{0} $ & \\ 
+    $ \cos\frac{\theta}{2}\ket{0}\bra{0}  -i\sin\frac{\theta}{2}\ket{1}\bra{0} - \newline 
+      -i\sin\frac{\theta}{2}\ket{0} \bra{1} + \cos\frac{\theta}{2}\ket{1}\bra{1} $ & 
+    $ R_x(\theta)\ket{\psi} = \ (\alpha\cos\frac{\theta}{2} - i\beta\sin\frac{\theta}{2})\ket{0} + \newline 
+      + (\beta\cos\frac{\theta}{2} - i\alpha\sin\frac{\theta}{2})\ket{1} $ & 
+    $ R_x(\theta)\ket{0} = \newline
+      = \cos\frac{\theta}{2}\ket{0} - i\sin\frac{\theta}{2}\ket{1} $ & 
+    $ R_x(\theta)\ket{1} = \newline
+      = \cos\frac{\theta}{2}\ket{1} - i\sin\frac{\theta}{2}\ket{0} $ & \\ 
 
     $ R_y(\theta) $ & 
     \usebox\rygate   & 
-    $\cos\frac{\theta}{2}\ket{0}\bra{0} + \sin\frac{\theta}{2} \ket{1}\bra{0} \newline  -\sin\frac{\theta}{2}\ket{0}\bra{1} + \cos\frac{\theta}{2}\ket{1}\bra{1}$ & 
-    $ R_y(\theta)\ket{\psi} =  (\alpha\cos\frac{\theta}{2} - \beta\sin\frac{\theta}{2})\ket{0} + \newline + (\beta\cos\frac{\theta}{2} + \alpha\sin\frac{\theta}{2})\ket{1} $ & 
-    $ R_y(\theta)\ket{0} = \newline \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1} $ & 
-    $ R_y(\theta)\ket{1} = \newline \cos\frac{\theta}{2}\ket{1} - \sin\frac{\theta}{2}\ket{0} $  &  \\
+    $ \cos\frac{\theta}{2}\ket{0}\bra{0} + \sin\frac{\theta}{2} \ket{1}\bra{0} - \newline 
+      -\sin\frac{\theta}{2}\ket{0}\bra{1} + \cos\frac{\theta}{2}\ket{1}\bra{1}$ & 
+    $ R_y(\theta)\ket{\psi} =  (\alpha\cos\frac{\theta}{2} - \beta\sin\frac{\theta}{2})\ket{0} + \newline 
+      + (\beta\cos\frac{\theta}{2} + \alpha\sin\frac{\theta}{2})\ket{1} $ & 
+    $ R_y(\theta)\ket{0} = \newline 
+      = \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1} $ & 
+    $ R_y(\theta)\ket{1} = \newline 
+      = \cos\frac{\theta}{2}\ket{1} - \sin\frac{\theta}{2}\ket{0} $  &  \\
 
     $ R_z(\theta) $ & \usebox\rzgate & 
     $  e^{-i\theta/2}\ket{0}\bra{0} + e^{i\theta/2}\ket{1} \bra{1} $ & 
-    $ R_z(\theta)\ket{\psi} = \newline \alpha e^{-i\theta/2}\ket{0} + \beta e^{i\theta/2}\ket{1} $ & 
-    $ R_z(\theta)\ket{0} =  e^{-i\theta/2}\ket{0} $ & 
+    $ R_z(\theta)\ket{\psi} = \newline 
+      = \alpha e^{-i\theta/2}\ket{0} + \beta e^{i\theta/2}\ket{1} $ & 
+    $ R_z(\theta)\ket{0} = e^{-i\theta/2}\ket{0} $ & 
     $ R_z(\theta)\ket{1} = e^{i\theta/2}\ket{1} $  &  \\
 
     $ R_1(\theta) $ & 
