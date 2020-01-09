@@ -2,16 +2,24 @@
 
 The Quantum Katas are a series of self-paced tutorials to help you learn quantum computing and Q# programming.
 
-:new: *(July 2019)* The Quantum Katas now include Jupyter Notebook tutorials on quantum computing! Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all tutorials and instructions on running them online.
+:new: *(November 2019)* We've added a set of tutorials that introduce the learner to the most basic concepts used in quantum computing, 
+starting with the necessary math (complex numbers and linear algebra). 
+Read more about the new tutorials [here](https://devblogs.microsoft.com/qsharp/new-tutorials-learn-the-basic-concepts-of-quantum-computing/)
+or head to the [list of tutorials](./index.ipynb) to get started!
 
-:new: *(April 2019)* The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
+:new: *(July 2019)* The Quantum Katas now include Jupyter Notebook tutorials on quantum computing! 
+Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. 
+See [index.ipynb](./index.ipynb) for the list of all tutorials and instructions on running them online.
+
+:new: *(April 2019)* The Quantum Katas are now available as Jupyter Notebooks! 
+See [index.ipynb](./index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
 
 Each kata is a separate project that includes:
 
 * A sequence of tasks progressing from easy to hard.
   Each task requires you to fill in some code. The first task might require just one line, and the last one might require rather complicated code.
 * A testing framework that sets up, runs, and validates your solutions.
-  Each task is covered by a [unit test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing) which initially fails. Once you write the code to make the test pass, you can move on to the next task.
+  Each task is covered by a [unit test](https://docs.microsoft.com/visualstudio/test/getting-started-with-unit-testing) which initially fails. Once you write the code to make the test pass, you can move on to the next task.
 * Links to quantum computing and Q# reference material you might need to solve the tasks.
 * Hints and reference solutions to help you if you're stuck.
 
@@ -19,9 +27,11 @@ Each kata is a separate project that includes:
 
 * [List of tutorials](#tutorial-topics)
 * [List of katas](#kata-topics)
-* [Run the katas and tutorials online](#run-as-notebook)
+* [Run the katas and tutorials online](#run-online)
 * [Run the katas locally](#kata-locally)
+  * [Quantum Development Kit installation](#install)
   * [Download the Quantum Katas](#download)
+  * [Run a kata as a Jupyter Notebook](#kata-as-notebook)
   * [Run a kata as a Q# project](#kata-as-project)
   * [Run kata tests](#tests)
   * [Run katas locally with Docker](#docker)
@@ -100,16 +110,32 @@ Each kata is a separate project that includes:
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
   Learn to implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
-## Run the katas and tutorials online <a name="run-as-notebook" /> ##
+> For a Q# programming language quick reference sheet, see [Q# Language Quick Reference](./quickref/qsharp-quick-reference.pdf).
 
-The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions to run them online.
+## Run the katas and tutorials online <a name="run-online" /> ##
 
-## Run katas locally <a name="kata-locally" /> ##
+The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
+
+## Run the katas locally <a name="kata-locally" /> ##
+
+### Quantum Development Kit Installation <a name="install" /> ###
 
 To use the Quantum Katas locally, you'll need the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
 If you don't already have the Quantum Development Kit installed, see [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
 
-For a quick Q# programming language reference sheet, see [Q# Language Quick Reference](./quickref/qsharp-quick-reference.pdf).
+**If you want to run the katas and tutorials locally as Jupyter Notebooks**:
+1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/install-guide/#develop-with-python) 
+  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/install-guide/#develop-with-jupyter-notebooks).
+2. Several tutorials require installing additional Python packages:
+   * "Complex arithmetic" and "Linear algebra" require [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
+   * "Exploring Grover's search algorithm" requires [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
+
+**If you want to run the katas and tutorials locally as Q# projects**:
+
+Follow the steps in the QDK install guide [for Visual Studio](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-on-windows-using-visual-studio), 
+[for Visual Studio Code](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-using-visual-studio-code) or 
+[for command line with other editors](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-using-the-dotnet-command-line-tool).
+
 
 ### Download the Quantum Katas <a name="download" /> ###
 
@@ -124,6 +150,26 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 > For details, see the [Visual Studio 2019](https://docs.microsoft.com/en-us/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/master.zip.
+
+
+### Run a kata as a Jupyter Notebook <a name="kata-as-notebook" /> ###
+
+The best way to run the katas as Jupyter Notebooks is to navigate to the root folder of the repository and to open `index.ipynb` using Jupyter:
+
+> ```bash
+> $ cd QuantumKatas/
+> $ jupyter notebook index.ipynb
+> ```
+
+This will open the notebook that contains a list of all katas and tutorials, and you will be able to navigate to the one you want using links.
+
+You can also open an individual notebook directly, but this might render internal links invalid:
+
+> ```bash
+> $ cd QuantumKatas/tutorials/ComplexArithmetic
+> $ jupyter notebook ComplexArithmetic.ipynb
+> ```
+
 
 ### Run a kata as a Q# project <a name="kata-as-project" /> ###
 
