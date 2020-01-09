@@ -121,14 +121,14 @@ The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](http
 ### Quantum Development Kit Installation <a name="install" /> ###
 
 To use the Quantum Katas locally, you'll need the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
-If you don't already have the Quantum Development Kit installed, see [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
+If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
 
 **If you want to run the katas and tutorials locally as Jupyter Notebooks**:
 1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/install-guide/#develop-with-python) 
   and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/install-guide/#develop-with-jupyter-notebooks).
 2. Several tutorials require installing additional Python packages:
-   * "Complex arithmetic" and "Linear algebra" require [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
-   * "Exploring Grover's search algorithm" requires [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
+   * "Complex arithmetic" and "Linear algebra" require the [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
+   * "Exploring Grover's search algorithm" requires the [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
