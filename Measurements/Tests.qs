@@ -152,10 +152,13 @@ namespace Quantum.Kata.Measurements {
                                             Nstate : Int,
                                             statePrep : ((Qubit[], Int) => Unit),
                                             testImpl : (Qubit[] => Int),
-                                            measurementsPerRun : Int) : Unit {
+                                            measurementsPerRun : Int,
+                                            stateName : String[]) : Unit {
         let nTotal = 100;
-        mutable nOk = 0;
-
+        // misclassifications will store the number of misclasifications of each of the possible pairs of states (dimension Nstate^2)
+        mutable misclassifications = new Int[Nstate * Nstate];
+        mutable unknownmisclassifications = new Int[Nstate];
+                
         using (qs = Qubit[Nqubit]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
@@ -167,10 +170,15 @@ namespace Quantum.Kata.Measurements {
                 if (measurementsPerRun > 0) {
                     ResetOracleCallsCount();
                 }
-                // get the solution's answer and verify that it's a match
+                // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
                 let ans = testImpl(qs);
-                if (ans == state) {
-                    set nOk += 1;
+                if ((ans >= 0) and (ans <= Nstate)) {
+                    if (ans != state) {
+                        set misclassifications w/= ((state * Nstate) + ans) <- (misclassifications[(state * Nstate) + ans] + 1);
+                    }
+                }
+                else {
+                        set unknownmisclassifications w/= state <- (unknownmisclassifications[state] + 1);  
                 }
                 // if we have a max number of measurements per solution run specified, check that it is not exceeded
                 if (measurementsPerRun > 0) {
@@ -182,8 +190,22 @@ namespace Quantum.Kata.Measurements {
                 ResetAll(qs);
             }
         }
-
-        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        
+        mutable totalMisclassifications = 0;
+        for (i in 0 .. Nstate - 1) {
+            for (j in 0 .. Nstate - 1) {
+                if (misclassifications[(i * Nstate) + j] != 0) {
+                    set totalMisclassifications += misclassifications[i*Nstate+j];
+                    Message($"Misclassified {stateName[i]} as {stateName[j]} in {misclassifications[(i * Nstate) + j]} test runs.");
+                }
+            }
+            if (unknownmisclassifications[i] != 0) {
+                set totalMisclassifications += unknownmisclassifications[i];
+                Message($"Misclassified {stateName[i]} as Unknown State in {unknownmisclassifications[i]} test runs.");
+            }
+        }
+        // This check will tell the total number of failed classifications
+        Fact(totalMisclassifications == 0, $"{totalMisclassifications} test runs out of {nTotal} returned incorrect state (see output for details).");
     }
 
 
@@ -198,7 +220,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T105_ZeroZeroOrOneOne_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne, 0);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne, 0, ["|00⟩", "|11⟩"]);
     }
 
 
@@ -218,7 +240,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T106_BasisStateMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement, 0);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement, 0, ["|00⟩", "|01⟩", "|10⟩", "|11⟩"]);
     }
 
 
@@ -231,6 +253,56 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
+    // Helper function to move from boolean array to its String State Representation
+    function BoolArrayAsStateName (b1 : Bool[]) : String {
+        mutable statename = "|";
+        for (i in 0 .. Length(b1) - 1) {
+            let next = b1[i] ? "1" | "0";
+            set statename += next;
+        }
+        return (statename + "⟩");
+    }
+
+    // Helper function to move from Int length of qbits to the all 'bit' (0 or 1) String State Representation
+    function AllSameBitStateName (length : Int, bit : String) : String {
+        mutable statename = "|";
+        for (i in 0 .. length - 1) {
+            set statename += bit;
+        }
+        return (statename + "⟩");
+    }
+
+    // Helper function to move from Int length of qbits to the String "W" State Representation
+    function WStateName (length : Int) : String {
+        mutable statename = "(|";
+        for (i in 0 .. length - 1) {
+            for (j in 0 .. length - 1) {
+                set statename += (i == j) ? "1" | "0";
+            }
+            if (i != (length - 1)){
+                set statename += "⟩ + |";
+            }
+        }
+        return (statename + "⟩ / sqrt(" + IntAsString(length) + "))");
+    }
+    
+    // Helper function to move from Int length of qbits to the String "GHZ" State Representation
+    function GHZStateName (length : Int) : String {
+        return ("(" + AllSameBitStateName(length, "0") + " + " + AllSameBitStateName(length, "1") + " / sqrt(2))");
+    }
+
+    // Helper function to move from array superposition of qbits (represented by Ints) to the String State Representation
+    function IntArrayAsStateName (qubits : Int, ints1 : Int[]) : String {
+        let length = Length(ints1);
+        mutable statename = "";
+        for (i in 0 .. length - 1) {
+            set statename += BoolArrayAsStateName(Reversed(IntAsBoolArray (ints1[i], qubits)));
+            if (i != (length - 1)){
+                set statename += " + ";
+            }
+        }
+        return statename;
+    }
 
     operation StatePrep_TwoBitstringsMeasurement (qs : Qubit[], bits1 : Bool[], bits2 : Bool[], state : Int) : Unit {
         let bits = state == 0 ? bits1 | bits2;
@@ -238,16 +310,27 @@ namespace Quantum.Kata.Measurements {
     }
 
 
-    operation CheckTwoBitstringsMeasurement (b1 : Bool[], b2 : Bool[]) : Unit {
-        DistinguishStates_MultiQubit(Length(b1), 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2), 1);
+    operation CheckTwoBitstringsMeasurement (b1 : Bool[], b2 : Bool[], stateName : String[]) : Unit {
+        DistinguishStates_MultiQubit(Length(b1), 2, StatePrep_TwoBitstringsMeasurement(_, b1, b2, _), TwoBitstringsMeasurement(_, b1, b2), 1, stateName);
     }
 
 
     operation T107_TwoBitstringsMeasurement_Test () : Unit {
-        CheckTwoBitstringsMeasurement([false, true], [true, false]);
-        CheckTwoBitstringsMeasurement([true, true, false], [false, true, true]);
-        CheckTwoBitstringsMeasurement([false, true, true, false], [false, true, true, true]);
-        CheckTwoBitstringsMeasurement([true, false, false, false], [true, false, true, true]);
+        mutable b1 = [false, true];
+        mutable b2 = [true, false];
+        CheckTwoBitstringsMeasurement(b1,b2, [BoolArrayAsStateName(b1), BoolArrayAsStateName(b2)]);
+
+        set b1 = [true, true, false];
+        set b2 = [false, true, true];
+        CheckTwoBitstringsMeasurement(b1,b2, [BoolArrayAsStateName(b1), BoolArrayAsStateName(b2)]);
+
+        set b1 = [false, true, true, false];
+        set b2 = [false, true, true, true];
+        CheckTwoBitstringsMeasurement(b1,b2, [BoolArrayAsStateName(b1), BoolArrayAsStateName(b2)]);
+        
+        set b1 = [true, false, false, false];
+        set b2 = [true, false, true, true];
+        CheckTwoBitstringsMeasurement(b1,b2, [BoolArrayAsStateName(b1), BoolArrayAsStateName(b2)]);
     }
 
 
@@ -340,7 +423,7 @@ namespace Quantum.Kata.Measurements {
         let bits2 = Mapped(IntAsBoolArray(_, nQubits), ints2);
 
         DistinguishStates_MultiQubit(nQubits, 2, StatePrep_SuperpositionMeasurement(_, bits1, bits2, _), 
-                                     SuperpositionOneMeasurement(_, bits1, bits2), 1);
+                                     SuperpositionOneMeasurement(_, bits1, bits2), 1, [IntArrayAsStateName(nQubits,ints1), IntArrayAsStateName(nQubits,ints2)]);
     }
 
 
@@ -379,7 +462,7 @@ namespace Quantum.Kata.Measurements {
         let bits2 = Mapped(IntAsBoolArray(_, nQubits), ints2);
 
         DistinguishStates_MultiQubit(nQubits, 2, StatePrep_SuperpositionMeasurement(_, bits1, bits2, _), 
-                                     SuperpositionMeasurement(_, bits1, bits2), 0);
+                                     SuperpositionMeasurement(_, bits1, bits2), 0, [IntArrayAsStateName(nQubits,ints1), IntArrayAsStateName(nQubits,ints2)]);
     }
 
     operation T109_SuperpositionMeasurement_Test () : Unit {
@@ -444,7 +527,7 @@ namespace Quantum.Kata.Measurements {
     operation T110_AllZerosOrWState_Test () : Unit {
 
         for (i in 2 .. 6) {
-            DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState, 0);
+            DistinguishStates_MultiQubit(i, 2, StatePrep_AllZerosOrWState, AllZerosOrWState, 0, [AllSameBitStateName(i,"0"), WStateName(i)]);
         }
     }
 
@@ -473,7 +556,7 @@ namespace Quantum.Kata.Measurements {
 
     operation T111_GHZOrWState_Test () : Unit {
         for (i in 2 .. 6) {
-            DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState, 0);
+            DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState, 0, [GHZStateName(i), WStateName(i)]);
         }
     }
 
@@ -499,9 +582,11 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T112_BellState_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState, 0);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState, 0, ["|Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)", 
+                                                                               "|Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)", 
+                                                                               "|Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)", 
+                                                                               "|Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)"]);
     }
-
 
     // ------------------------------------------------------
     // 0 - (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2
@@ -517,7 +602,10 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T113_TwoQubitState_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState, 0);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState, 0, ["(|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2", 
+                                                                                       "(|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2", 
+                                                                                       "(|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2", 
+                                                                                       "(|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2"]);
     }
 
 
@@ -544,7 +632,10 @@ namespace Quantum.Kata.Measurements {
 
 
     operation T114_TwoQubitStatePartTwo_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo, 0);
+        DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo, 0, ["(+|00⟩ - |01⟩ - |10⟩ - |11⟩) / 2", 
+                                                                                                     "(-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2", 
+                                                                                                     "(-|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2", 
+                                                                                                     "(-|00⟩ - |01⟩ - |10⟩ + |11⟩) / 2"]);
     }
 
 
@@ -566,7 +657,8 @@ namespace Quantum.Kata.Measurements {
     }
 
     operation T115_ThreeQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement, 0);
+        DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement, 0, ["1/sqrt(3) (|100⟩ + ω |010⟩ + ω² |001⟩)", 
+                                                                                                       "1/sqrt(3) (|100⟩ + ω² |010⟩ + ω |001⟩)"]);
     }
 
 
