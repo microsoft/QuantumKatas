@@ -7,4 +7,9 @@ $ErrorActionPreference = 'Stop'
 
 & "$PSScriptRoot/validate-unicode.ps1"
 
-& "$PSScriptRoot/validate-notebooks.ps1"
+# All katas projects might be disable with the ENABLE_KATAS 
+if ($Env:ENABLE_KATAS -ne "false") {
+  & "$PSScriptRoot/validate-notebooks.ps1"
+} else {
+  Write-Host "##vso[task.logissue type=warning;]Skipping testing Katas notebooks. Env:ENABLE_KATAS is '$Env:ENABLE_KATAS'."
+}
