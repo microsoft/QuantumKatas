@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 
 & "$PSScriptRoot/validate-unicode.ps1"
 
-# All katas projects might be disable with the ENABLE_KATAS 
+# Validating all katas projects can be disables with the ENABLE_KATAS 
 if ($Env:ENABLE_KATAS -ne "false") {
   & "$PSScriptRoot/validate-notebooks.ps1"
 } else {

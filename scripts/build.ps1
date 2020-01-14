@@ -25,7 +25,7 @@ function Build-One {
 # Microsoft.Quantum.Katas.sln should always be built:
 Build-One '..\utilities\Microsoft.Quantum.Katas\Microsoft.Quantum.Katas.sln'
 
-# All katas projects might be disable with the ENABLE_KATAS 
+# Building all katas projects can be disabled with the ENABLE_KATAS 
 if ($Env:ENABLE_KATAS -ne "false") {
     Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
         | ForEach-Object { Build-One $_.FullName }
