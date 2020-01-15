@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.JointMeasurements {    
-    open Microsoft.Quantum.Characterization;
+    open Microsoft.Quantum.Characterization as Characterization;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Measurement;
     
