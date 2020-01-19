@@ -154,8 +154,12 @@ def matrix_equal(act, exp):
         return False
     
     for i in range(h):
-        if act[i] != approx(exp[i]):
+        # Check that the length of each row matches the expectation
+        if w != len(act[i]):
             return False
+        for j in range(w):
+            if act[i][j] == ... or act[i][j] != approx(exp[i][j]):
+                return False
     return True
 
 # ------------------------------------------------------
@@ -557,11 +561,20 @@ edge_matrices = [
     [[4, -6, 6], [3, -5, 3], [3, -3, 1]], 
     [[1, 5, 0], [2, -6, 0], [1, 2, 3]],
     [[3, -2], [-3, 2]],
-    [[0,0], [0,2]],
-    [[2,0], [0,0]]]
+    [[0, 0], [0, 2]],
+    [[2, 0], [0, 0]],
+    [[1, 0], [0, 1]],
+    [[1, 0], [1, 1]]]
     
-edge_values = [-2, 3, 0, 2, 2]
-edge_vectors = [[[0], [1], [1]], [[0], [0], [-2]], [[2], [3]], [[0], [-1]], [[1], [0]]]
+edge_values = [-2, 3, 0, 2, 2, 1, 1]
+edge_vectors = [
+    [[0], [1], [1]], 
+    [[0], [0], [-2]], 
+    [[2], [3]], 
+    [[0], [-1]], 
+    [[1], [0]],
+    [[1], [1]],
+    [[0], [1]]]
 
 # Computes determinant of a matrix (recursive)
 def determinant(mat):
