@@ -9,79 +9,7 @@
 \usepackage{calc}
 \usepackage[landscape]{geometry}
 \usepackage{color,graphicx,overpic}
-
-% https://tex.stackexchange.com/a/192067
-\usepackage{fontawesome}
-  \newfontfamily{\FA}{[FontAwesome.otf]}
-
-% Known issue in {fontspec}: https://github.com/wspr/fontspec/issues/312#issuecomment-342125206
-% Since {fontspec} is included only when compiling with XeTeX, we guard
-% our fix accordingly.
-\usepackage{ifxetex}
-    \ifxetex
-        \let\latinencoding\relax
-        \usepackage{fontspec}
-        \setmainfont{Segoe UI}
-        \setmonofont{Consolas}
-    \fi
-
-% \usepackage[T1]{fontenc}
-% \usepackage[bitstream-charter]{mathdesign}
-\usepackage[utf8]{inputenc}
-\usepackage{url}
-\usepackage{amsfonts}
 \usepackage{amsmath}
-\usepackage{array,booktabs}
-\usepackage{textcomp}
-\usepackage[usenames,dvipsnames,table]{xcolor}
-\usepackage[most]{tcolorbox}
-\usepackage{menukeys}
-\usepackage{tabularx}
-\usepackage{multirow}
-\usepackage{colortbl}
-\usepackage{tikz}
-\usepackage{environ}
-\usepackage{braket}
-
-\usetikzlibrary{calc}
-\pgfdeclarelayer{background}
-\pgfdeclarelayer{foreground}
-\pgfsetlayers{background,main,foreground}
-
-\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm}
-
-\pagestyle{empty} % Turn off header and footer
-
-% \renewcommand\rmdefault{phv} % Arial
-% \renewcommand\sfdefault{phv} % Arial
-
-% Redefine section commands to use less space
-\makeatletter
-\renewcommand{\section}{\@startsection{section}{1}{0mm}%
-  {-1ex plus -.5ex minus -.2ex}%
-  {0.5ex plus .2ex}%x
-  {\normalfont\large\bfseries}}
-\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
-  {-1explus -.5ex minus -.2ex}%
-  {0.5ex plus .2ex}%
-  {\normalfont\normalsize\bfseries}}
-\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
-  {-1ex plus -.5ex minus -.2ex}%
-  {1ex plus .2ex}%
-  {\normalfont\small\bfseries}}
-\makeatother
-
-\setcounter{secnumdepth}{0} % Don't print section numbers
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt plus 0.5ex}
-
-\definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
-\definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
-
-% Turn off warnings about slightly overfull boxes
-% https://tex.stackexchange.com/questions/50830/do-i-have-to-care-about-bad-boxes/50850
-
-\hfuzz=10pt
 
 % Workaround for left brackets not rendering
 % https://tex.stackexchange.com/questions/520847/left-matrix-bracket-not-rendered-properly
@@ -90,7 +18,7 @@
 \sbox\matrixrepresentationright{\parbox{\textwidth}{
   \footnotesize
   $\qquad \underrightarrow{n \text{ columns}} \\
-  \rotatebox[origin=c]{270}{\underrightarrow{m \text{ rows}}}
+  \rotatebox[origin=c]{270}{$\underrightarrow{m \text{ rows}}$}
   \begin{bmatrix} 
     a_{0,0}   & \cdots & a_{0,n-1} \\ 
     \vdots    & \ddots & \vdots \\
@@ -356,9 +284,77 @@
    $ \begin{bmatrix} 1 & 0 \\ 0 & e^{i\theta} \end{bmatrix} $
 }}
 
+% https://tex.stackexchange.com/a/192067
+\usepackage{fontawesome}
+  \newfontfamily{\FA}{[FontAwesome.otf]}
 
+% Known issue in {fontspec}: https://github.com/wspr/fontspec/issues/312#issuecomment-342125206
+% Since {fontspec} is included only when compiling with XeTeX, we guard
+% our fix accordingly.
+\usepackage{ifxetex}
+    \ifxetex
+        \let\latinencoding\relax
+        \usepackage{fontspec}
+        \setmainfont{Segoe UI}
+        \setmonofont{Consolas}
+    \fi
 
+% \usepackage[T1]{fontenc}
+% \usepackage[bitstream-charter]{mathdesign}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{amsfonts}
+\usepackage{array,booktabs}
+\usepackage{textcomp}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{menukeys}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage{environ}
+\usepackage{braket}
 
+\usetikzlibrary{calc}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm}
+
+\pagestyle{empty} % Turn off header and footer
+
+% \renewcommand\rmdefault{phv} % Arial
+% \renewcommand\sfdefault{phv} % Arial
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%x
+  {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+  {-1explus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {1ex plus .2ex}%
+  {\normalfont\small\bfseries}}
+\makeatother
+
+\setcounter{secnumdepth}{0} % Don't print section numbers
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+\definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
+\definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
+
+% Turn off warnings about slightly overfull boxes
+% https://tex.stackexchange.com/questions/50830/do-i-have-to-care-about-bad-boxes/50850
+
+\hfuzz=10pt
 
 \NewEnviron{keysref}[1]{
   % \begin{center}
