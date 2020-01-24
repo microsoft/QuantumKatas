@@ -18,12 +18,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Jupyter.Core" Version="1.1.18837" />
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.10.1910.3107" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.10.1911.1607" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="all" />
     <BuildOutputInPackage Include="..\Common\bin\$(Configuration)\netstandard2.1\Microsoft.Quantum.Katas.Common.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Common\DelaySign.cs" Link="DelaySign.cs" />
   </ItemGroup>
   
 </Project>

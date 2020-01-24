@@ -18,4 +18,4 @@ You can [run the GroversAlgorithm kata as a Jupyter Notebook](https://mybinder.o
 
 #### Q# materials
 
-* Q# Samples repository has an [implementation of Grover's search](https://github.com/Microsoft/Quantum/tree/master/Samples/src/DatabaseSearch).
+* Q# Samples repository has an [implementation of Grover's search](https://github.com/microsoft/Quantum/tree/master/samples/algorithms/database-search).

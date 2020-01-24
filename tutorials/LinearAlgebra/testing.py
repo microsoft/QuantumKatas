@@ -154,8 +154,12 @@ def matrix_equal(act, exp):
         return False
     
     for i in range(h):
-        if act[i] != exp[i] or act[i] != approx(exp[i]):
+        # Check that the length of each row matches the expectation
+        if w != len(act[i]):
             return False
+        for j in range(w):
+            if act[i][j] == ... or act[i][j] != approx(exp[i][j]):
+                return False
     return True
 
 # ------------------------------------------------------
@@ -417,15 +421,12 @@ def is_matrix_unitary_ref(a):
 
 @test
 def is_matrix_unitary_test(fun):
-    results = [True] * 5 + [False] * 5
-    r.shuffle(results)
-    i = 2
-    for result in results:
+    for testId in range(12):
         a = []
-        if i > 0:
-            --i
-            a = edge_unitary_matrices[i]
-        elif result:
+        # The first two tests are edge cases, after that unitary and non-unitary matrices alternate
+        if testId < 2:
+            a = edge_unitary_matrices[testId]
+        elif testId % 2 == 0:
             a = gen_unitary_matrix()
         else:
             n = r.randint(1,5)
@@ -560,11 +561,20 @@ edge_matrices = [
     [[4, -6, 6], [3, -5, 3], [3, -3, 1]], 
     [[1, 5, 0], [2, -6, 0], [1, 2, 3]],
     [[3, -2], [-3, 2]],
-    [[0,0], [0,2]],
-    [[2,0], [0,0]]]
+    [[0, 0], [0, 2]],
+    [[2, 0], [0, 0]],
+    [[1, 0], [0, 1]],
+    [[1, 0], [1, 1]]]
     
-edge_values = [-2, 3, 0, 2, 2]
-edge_vectors = [[[0], [1], [1]], [[0], [0], [-2]], [[2], [3]], [[0], [-1]], [[1], [0]]]
+edge_values = [-2, 3, 0, 2, 2, 1, 1]
+edge_vectors = [
+    [[0], [1], [1]], 
+    [[0], [0], [-2]], 
+    [[2], [3]], 
+    [[0], [-1]], 
+    [[1], [0]],
+    [[1], [1]],
+    [[0], [1]]]
 
 # Computes determinant of a matrix (recursive)
 def determinant(mat):
@@ -695,9 +705,11 @@ def find_eigenvector_test(fun):
         if result == [[0], [0]]:
             print("The eigenvector must be non-zero!")
             return
-        if not matrix_equal(matrix_mult_ref(a, result), scalar_mult_ref(x, result)):
+        matrix_product = matrix_mult_ref(a, result)
+        scalar_product = scalar_mult_ref(x, result)
+        if not matrix_equal(matrix_product, scalar_product):
             print("Wrong eigenvector!\nEigenvalue: {0:.3f}\n\n".format(x)
-                  + gen_labeled_message([a, result], ["A: ", "You returned: "])
+                  + gen_labeled_message([a, result, matrix_product, scalar_product], ["A: ", "You returned V: ", "Matrix product AV:", "Scalar product xV: "])
                   + "Try again!")
             return
     print("Success!")
