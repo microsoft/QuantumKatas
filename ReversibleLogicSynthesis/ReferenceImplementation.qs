@@ -14,6 +14,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Logical;
 
     //////////////////////////////////////////////////////////////////
@@ -55,12 +56,12 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return TruthTable(~~~bits &&& mask, numVars);
     }
 
-    // Task 1.2. Build if-then-else truth table
+    // Task 1.6. Build if-then-else truth table
     operation TTIfThenElse_Reference (ttCond : TruthTable, ttThen: TruthTable, ttElse : TruthTable) : TruthTable {
         return TTXor_Reference(TTAnd_Reference(ttCond, ttThen), TTAnd_Reference(TTNot_Reference(ttCond), ttElse));
     }
 
-    // Task 1.3. Find all true input assignments in a truth table
+    // Task 1.7. Find all true input assignments in a truth table
     operation AllMinterms_Reference (tt : TruthTable) : Int[] {
         return Mapped(
                    Fst<Int, Bool>,
@@ -69,5 +70,15 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
                        Enumerated(IntAsBoolArray(tt::bits, 2^tt::numVars))
                    )
                );
+    }
+
+    // Task 1.8.
+    operation ApplyFunction_Reference (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
+        body {
+            for (op in Mapped(ControlledOnInt(_, X), AllMinterms_Reference(tt))) {
+                op(controls, target);
+            }
+        }
+        adjoint self;
     }
 }

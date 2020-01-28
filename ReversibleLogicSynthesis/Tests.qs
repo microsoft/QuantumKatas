@@ -92,6 +92,18 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
             Fact(IndexOf(EqualI(minterm, _), minterms) != -1, "Some minterm is not correct");
         }
     }
+
+    operation _ApplyFunctionWrap (op : ((Qubit[], Qubit) => Unit is Adj), qubits : Qubit[]) : Unit is Adj {
+        op(Most(qubits), Tail(qubits));
+    }
+
+    operation T18_ApplyFunction_Test () : Unit {
+        let (x1, x2, x3) = ProjectiveTruthTables_Reference();
+        let tt = TTIfThenElse_Reference(x1, x2, x3);
+        let opUser = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _);
+        let opRef = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _);
+        AssertOperationsEqualReferenced(4, opUser, opRef);
+    }
 }
 
 

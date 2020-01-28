@@ -81,7 +81,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return TruthTable(0, 0);             // Update the return value
     }
 
-    // Task 1.3. Find all true input assignments in a truth table
+    // Task 1.7. Find all true input assignments in a truth table
     //
     // Goal: Return an array that contains all input assignments for which the
     //       if-then-else function returns true.  Make use of Q# library functions
@@ -95,7 +95,8 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return new Int[0]; // Update the return value
     }
 
-    operation ApplyFunction(tt : TruthTable, controls : Qubit[], target : Qubit) : Unit {
-        // With ControlledOnInt...?
+    // Task 1.8. ...
+    operation ApplyFunction (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
+        // Implement quantum operation
     }
 }
