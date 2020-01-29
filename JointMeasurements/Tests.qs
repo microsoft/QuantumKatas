@@ -7,9 +7,8 @@
 // The tasks themselves can be found in Tasks.qs file.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.JointMeasurements {
-    
-    open Microsoft.Quantum.Characterization;
+namespace Quantum.Kata.JointMeasurements {    
+    open Microsoft.Quantum.Characterization as Characterization;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -164,7 +163,7 @@ namespace Quantum.Kata.JointMeasurements {
     // for the purposes of the last two tasks: prohibiting all multi-qubit operations,
     // except the two that are allowed to be used for solving this task
     operation GetMultiQubitNonMeasurementOpCount () : Int {
-        return GetMultiQubitOpCount() - GetOracleCallsCount(Measure) - GetOracleCallsCount(MeasureAllZ);
+        return GetMultiQubitOpCount() - GetOracleCallsCount(Measure) - GetOracleCallsCount(Characterization.MeasureAllZ);
     }
     
     
