@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 using Microsoft.Quantum.Katas;
 
-namespace Quantum.Kata.ReversibleLogicSynthesis
+namespace Quantum.Kata.TruthTables
 {
     public class TestSuiteRunner
     {

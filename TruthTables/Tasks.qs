@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace Quantum.Kata.ReversibleLogicSynthesis {
+namespace Quantum.Kata.TruthTables {
     
     open Microsoft.Quantum.Diagnostics;
 

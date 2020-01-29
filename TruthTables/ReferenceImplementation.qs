@@ -8,7 +8,7 @@
 // but feel free to look up the solution if you get stuck.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.ReversibleLogicSynthesis {
+namespace Quantum.Kata.TruthTables {
 
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Canon;
@@ -78,7 +78,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
 
     // Task 8. Apply truth table as a quantum operation
     operation ApplyFunction_Reference (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
-        body {
+        body (...) {
             for (op in Mapped(ControlledOnInt(_, X), AllMinterms_Reference(tt))) {
                 op(controls, target);
             }

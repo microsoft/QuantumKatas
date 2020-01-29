@@ -7,7 +7,7 @@
 // The tasks themselves can be found in Tasks.qs file.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.ReversibleLogicSynthesis {
+namespace Quantum.Kata.TruthTables {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
