@@ -9,7 +9,6 @@
 
 namespace Quantum.Kata.KeyDistribution {
     
-    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Math;
@@ -43,15 +42,20 @@ namespace Quantum.Kata.KeyDistribution {
 
     operation T21_RandomArray_Test () : Unit {
         // The test checks that the operation does not return always the same array.
-        let N = 30;
-        let randomArrays = ForEach(RandomArray, [N, N, N]);
+        let N = 7;
+        let arr1 = RandomArray(N);
+        Fact(N == Length(arr1), "Returned array should be of the given length");
 
-        for (array in randomArrays) {
-            Fact(Length(array) == N, "Returned array should be of the given length");
-        }
+        let arr2 = RandomArray(N);
+        Fact(N == Length(arr2), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(arr1) != BoolArrayAsInt(arr2), 
+            "Random generation should not return equal arrays. Run again to see if problem goes away");
 
-        let randomInts = Mapped(BoolArrayAsInt, randomArrays);
-        Fact(randomInts[0] != randomInts[1] or randomInts[1] != randomInts[2] or randomInts[0] != randomInts[2], 
+        let arr3 = RandomArray(N);
+        Fact(N == Length(arr3), "Returned array should be of the given length");
+        Fact(BoolArrayAsInt(arr2) != BoolArrayAsInt(arr3), 
+            "Random generation should not return equal arrays. Run again to see if problem goes away");
+        Fact(BoolArrayAsInt(arr1) != BoolArrayAsInt(arr3), 
             "Random generation should not return equal arrays. Run again to see if problem goes away");
     }
     

@@ -22,16 +22,8 @@ function Build-One {
     $script:all_ok = ($LastExitCode -eq 0) -and $script:all_ok
 }
 
-# Microsoft.Quantum.Katas.sln should always be built:
-Build-One '..\utilities\Microsoft.Quantum.Katas\Microsoft.Quantum.Katas.sln'
-
-# Building all katas projects can be disabled with the ENABLE_KATAS 
-if ($Env:ENABLE_KATAS -ne "false") {
-    Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
-        | ForEach-Object { Build-One $_.FullName }
-} else {
-    Write-Host "##vso[task.logissue type=warning;]Skipping building Katas solutions. Env:ENABLE_KATAS is '$Env:ENABLE_KATAS'."
-}
+Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' `
+    | ForEach-Object { Build-One $_.FullName }
 
 if (-not $all_ok) {
     throw "At least one test failed execution. Check the logs."
