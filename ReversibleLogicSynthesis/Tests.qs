@@ -15,7 +15,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Logical;
 
-    operation T11_ProjectiveTruthTables_Test () : Unit {
+    operation T1_ProjectiveTruthTables_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference(); // REVERT
         Fact(x1::bits == 0b10101010, "Truth table of x1 is not correct");
         Fact(x2::bits == 0b11001100, "Truth table of x2 is not correct");
@@ -25,7 +25,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         Fact(x3::numVars == 3, "Number of variables of x3 is not correct");
     }
 
-    operation T12_TTAnd_Test () : Unit {
+    operation T2_TTAnd_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference(); // REVERT
         let and12 = TTAnd_Reference(x1, x2); // REVERT
         let and13 = TTAnd_Reference(x1, x3); // REVERT
@@ -38,7 +38,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         Fact(and23::numVars == 3, "Number of variables in truth table is not correct");
     }
 
-    operation T13_TTOr_Test () : Unit {
+    operation T3_TTOr_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference(); // REVERT
         let or12 = TTOr_Reference(x1, x2); // REVERT
         let or13 = TTOr_Reference(x1, x3); // REVERT
@@ -51,7 +51,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         Fact(or23::numVars == 3, "Number of variables in truth table is not correct");
     }
 
-    operation T14_TTXor_Test () : Unit {
+    operation T4_TTXor_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference(); // REVERT
         let xor12 = TTXor_Reference(x1, x2); // REVERT
         let xor13 = TTXor_Reference(x1, x3); // REVERT
@@ -64,7 +64,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         Fact(xor23::numVars == 3, "Number of variables in truth table is not correct");
     }
 
-    operation T15_TTNot_Test () : Unit {
+    operation T5_TTNot_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference(); // REVERT
         let not1 = TTNot_Reference(x1); // REVERT
         let not2 = TTNot_Reference(x2); // REVERT
@@ -77,14 +77,14 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         Fact(not3::numVars == 3, "Number of variables in truth table is not correct");
     }
 
-    operation T16_IfThenElseTruthTable_Test () : Unit {
+    operation T6_IfThenElseTruthTable_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let y = TTIfThenElse_Reference(x1, x2, x3); // REVERT
         Fact(y::numVars == 3, "Number of variables in truth table is not correct");
         Fact(y::bits == 0b11011000, "Truth table is not correct");
     }
 
-    operation T17_AllMinterms_Test () : Unit {
+    operation T7_AllMinterms_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let minterms = AllMinterms_Reference(TTIfThenElse_Reference(x1, x2, x3)); // REVERT
         EqualityFactI(Length(minterms), 4, "Number of minterms is not correct");
@@ -97,10 +97,10 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         op(Most(qubits), Tail(qubits));
     }
 
-    operation T18_ApplyFunction_Test () : Unit {
+    operation T8_ApplyFunction_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let tt = TTIfThenElse_Reference(x1, x2, x3);
-        let opUser = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _);
+        let opUser = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _); // REVERT
         let opRef = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _);
         AssertOperationsEqualReferenced(4, opUser, opRef);
     }

@@ -21,7 +21,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     // Part I. Truth tables as integers
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. Projective functions (elementary variables)
+    // Task 1. Projective functions (elementary variables)
     operation ProjectiveTruthTables_Reference () : (TruthTable, TruthTable, TruthTable) {
         let x1 = TruthTable(0b10101010, 3);
         let x2 = TruthTable(0b11001100, 3);
@@ -29,6 +29,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return (x1, x2, x3);
     }
 
+    // Task 2. Compute AND of two truth tables
     operation TTAnd_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -36,6 +37,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return TruthTable(bits1 &&& bits2, numVars1);
     }
 
+    // Task 3. Compute OR of two truth tables
     operation TTOr_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -43,6 +45,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return TruthTable(bits1 ||| bits2, numVars1);
     }
 
+    // Task 4. Compute XOR of two truth tables
     operation TTXor_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -50,18 +53,19 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return TruthTable(bits1 ^^^ bits2, numVars1);
     }
 
+    // Task 5. Compute NOT of a truth tables
     operation TTNot_Reference(tt : TruthTable) : TruthTable {
         let (bits, numVars) = tt!;
         let mask = (1 <<< (1 <<< numVars)) - 1;
         return TruthTable(~~~bits &&& mask, numVars);
     }
 
-    // Task 1.6. Build if-then-else truth table
+    // Task 6. Build if-then-else truth table
     operation TTIfThenElse_Reference (ttCond : TruthTable, ttThen: TruthTable, ttElse : TruthTable) : TruthTable {
         return TTXor_Reference(TTAnd_Reference(ttCond, ttThen), TTAnd_Reference(TTNot_Reference(ttCond), ttElse));
     }
 
-    // Task 1.7. Find all true input assignments in a truth table
+    // Task 7. Find all true input assignments in a truth table
     operation AllMinterms_Reference (tt : TruthTable) : Int[] {
         return Mapped(
                    Fst<Int, Bool>,
@@ -72,7 +76,7 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
                );
     }
 
-    // Task 1.8.
+    // Task 8. Apply truth table as a quantum operation
     operation ApplyFunction_Reference (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
         body {
             for (op in Mapped(ControlledOnInt(_, X), AllMinterms_Reference(tt))) {

@@ -9,12 +9,9 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     // Welcome!
     //////////////////////////////////////////////////////////////////
     
-    // ...
-    
-    
-    //////////////////////////////////////////////////////////////////
-    // Part I. Truth tables as integers
-    //////////////////////////////////////////////////////////////////
+    // This tutorial teaches you how to represent Boolean functions as
+    // integers.  We use the bits in the binary integer representation
+    // as truth values in the truth table of the Boolean function.
     
     // We can think of an n-variable Boolean function as an integer with at
     // least 2^n binary digits.  Each digit represents the truth value for
@@ -27,9 +24,13 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     // For example, the truth table of the 2-input function (x1 & x2) can be
     // represented by the integer 0b1000.
 
+    // Since the number of bits in an integer is always the same, we need to
+    // specify the number of variables explicitly.  Therefore, it makes sense
+    // to introduce a user defined type for truth tables.
+
     newtype TruthTable = (bits : Int, numVars : Int);
 
-    // Task 1.1. Projective functions (elementary variables)
+    // Task 1. Projective functions (elementary variables)
     //
     // Goal: Describe the three projective functions x1, x2, x3 as 3-input
     //       functions, represented by integers.
@@ -45,46 +46,61 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
         return (x1, x2, x3);
     }
 
-    // Task 1.2. Compute AND of two truth tables
+    // Task 2. Compute AND of two truth tables
+    //
+    // Goal: Compute a truth table that computes the conjunction (AND)
+    //       of two truth tables.
+    //
+    // Hint: You can use bit-wise operations in Q# for this task.  For
+    //       AND the fitting operation is `&&&`.
     operation TTAnd (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
         EqualityFactI(numVars1, numVars2, "Number of variables for both truth tables must match");
 
-        return TruthTable(0, numVars1);      // Update the return value
+        fail ("Task 2 not implemented!");
     }
 
-    // Task 1.3. Compute OR of two truth tables
+    // Task 3. Compute OR of two truth tables
+    //
+    // Goal: Compute a truth table that computes the disjunction (OR)
+    //       of two truth tables.
     operation TTOr (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
-        return TruthTable(0, 0);             // Update the return value
+        fail ("Task 3 not implemented!");
     }
 
-    // Task 1.4. Compute XOR of two truth tables
+    // Task 4. Compute XOR of two truth tables
+    //
+    // Goal: Compute a truth table that computes the exclusive-OR (XOR)
+    //       of two truth tables.
     operation TTXor (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
-        return TruthTable(0, 0);             // Update the return value
+        fail ("Task 4 not implemented!");
     }
 
-    // Task 1.5. Compute NOT of a truth table
+    // Task 5. Compute NOT of a truth table
+    //
+    // Goal: Compute a truth table that computes negation of a truth
+    //       table.
+    //
+    // Hint: Be careful not to set bits in the integer that are out-of-range
+    //       in the truth table.
     operation TTNot (tt : TruthTable) : TruthTable {
-        return TruthTable(0, 0);             // Update the return value
+        fail ("Task 5 not implemented!");
     }
 
-    // Task 1.6. Build if-then-else truth table
+    // Task 6. Build if-then-else truth table
     //
     // Goal: Compute the truth table of the if-then-else function x1 ? x2 : x3
-    //       (if x1 then x2 else x3) using bit-wise operations based on the
-    //       truth tables of the projective functions.
-    //
-    // Example: You can compute the AND of x1 and x2 using `x1 &&& x2`.  Other
-    //          bit-wise operations are ||| (OR), ^^^ (XOR), and ~~~ (bitwise negation).
+    //       (if x1 then x2 else x3) by making use of the truth table operations
+    //       defined in the previous 4 tasks.
     operation TTIfThenElse (ttCond : TruthTable, ttThen : TruthTable, ttElse : TruthTable) : TruthTable {
-        return TruthTable(0, 0);             // Update the return value
+        fail ("Task 6 not implemented!");
     }
 
-    // Task 1.7. Find all true input assignments in a truth table
+    // Task 7. Find all true input assignments in a truth table
     //
-    // Goal: Return an array that contains all input assignments for which the
-    //       if-then-else function returns true.  Make use of Q# library functions
+    // Goal: Return an array that contains all input assignments for
+    //       function represented as truth table.  Make use of Q# library functions
     //       to implement this operation without implementing any helper operations.
     //       Useful Q# library functions to complete this task are Mapped, Filtered,
     //       Compose, Enumerated, IntAsBoolArray, EqualB, Fst, and Snd.
@@ -92,11 +108,17 @@ namespace Quantum.Kata.ReversibleLogicSynthesis {
     // Example: The truth table of 2-input OR is 0b1110, i.e., its minterms are
     //          [1, 2, 3].
     operation AllMinterms (tt : TruthTable) : Int[] {
-        return new Int[0]; // Update the return value
+        fail ("Task 7 not implemented!");
     }
 
-    // Task 1.8. ...
+    // Task 8. Apply truth table as a quantum operation
+    //
+    // Goal: The goal is to apply the X operation on the target qubit, if and only if
+    //       the classical state of the controls is a minterm of the truth table.
+    //
+    // Hint: Make use of the ControlledOnInt operation in Microsoft.Quantum.Canon.
+    //       Note that this quantum operation is self-inverse.
     operation ApplyFunction (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
-        // Implement quantum operation
+        fail ("Task 8 not implemented!");
     }
 }
