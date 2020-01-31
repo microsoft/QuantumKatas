@@ -100,8 +100,8 @@ namespace Quantum.Kata.TruthTables {
     operation T8_ApplyFunction_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let tt = TTIfThenElse_Reference(x1, x2, x3);
-        let opUser = _ApplyFunctionWrap(ApplyFunction(tt, _, _), _);
-        let opRef = _ApplyFunctionWrap(ApplyFunction_Reference(tt, _, _), _);
+        let opUser = _ApplyFunctionWrap(ApplyControlledOnFunction(tt, _, _), _);
+        let opRef = _ApplyFunctionWrap(ApplyControlledOnFunction_Reference(tt, _, _), _);
         AssertOperationsEqualReferenced(4, opUser, opRef);
     }
 }
