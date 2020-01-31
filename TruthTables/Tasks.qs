@@ -128,9 +128,6 @@ namespace Quantum.Kata.TruthTables {
     //
     // Goal: The goal is to apply the X operation on the target qubit, if and only if
     //       the classical state of the controls is a minterm of the truth table.
-    //
-    // Hint: Make use of the ControlledOnInt operation in Microsoft.Quantum.Canon.
-    //       Note that this quantum operation is self-inverse.
     operation ApplyControlledOnFunction (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
         fail ("Task 8 not implemented!");
     }
