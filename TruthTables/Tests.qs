@@ -15,73 +15,49 @@ namespace Quantum.Kata.TruthTables {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Logical;
 
+    function EqualityFactTT (actual : TruthTable, expected : TruthTable, name : String) : Unit {
+        Fact(actual::numVars == expected::numVars, $"Number of variables in {name} is not correct");
+        Fact(actual::bits == expected::bits, $"Truth table {name} is not correct");
+    }
+
     operation T1_ProjectiveTruthTables_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables();
-        Fact(x1::bits == 0b10101010, "Truth table of x1 is not correct");
-        Fact(x2::bits == 0b11001100, "Truth table of x2 is not correct");
-        Fact(x3::bits == 0b11110000, "Truth table of x3 is not correct");
-        Fact(x1::numVars == 3, "Number of variables of x1 is not correct");
-        Fact(x2::numVars == 3, "Number of variables of x2 is not correct");
-        Fact(x3::numVars == 3, "Number of variables of x3 is not correct");
+        EqualityFactTT(x1, TruthTable(0b10101010, 3), "x₁");
+        EqualityFactTT(x2, TruthTable(0b11001100, 3), "x₂");
+        EqualityFactTT(x3, TruthTable(0b11110000, 3), "x₃");
     }
 
     operation T2_TTAnd_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let and12 = TTAnd(x1, x2);
-        let and13 = TTAnd(x1, x3);
-        let and23 = TTAnd(x2, x3);
-        Fact(and12::bits == 0b10001000, "Truth table of x1 ∧ x2 is not correct");
-        Fact(and13::bits == 0b10100000, "Truth table of x1 ∧ x3 is not correct");
-        Fact(and23::bits == 0b11000000, "Truth table of x2 ∧ x3 is not correct");
-        Fact(and12::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(and13::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(and23::numVars == 3, "Number of variables in truth table is not correct");
+        EqualityFactTT(TTAnd(x1, x2), TruthTable(0b10001000, 3), "x₁ ∧ x₂");
+        EqualityFactTT(TTAnd(x1, x3), TruthTable(0b10100000, 3), "x₁ ∧ x₃");
+        EqualityFactTT(TTAnd(x2, x3), TruthTable(0b11000000, 3), "x₂ ∧ x₃");
     }
 
     operation T3_TTOr_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let or12 = TTOr(x1, x2);
-        let or13 = TTOr(x1, x3);
-        let or23 = TTOr(x2, x3);
-        Fact(or12::bits == 0b11101110, "Truth table of x1 ∨ x2 is not correct");
-        Fact(or13::bits == 0b11111010, "Truth table of x1 ∨ x3 is not correct");
-        Fact(or23::bits == 0b11111100, "Truth table of x2 ∨ x3 is not correct");
-        Fact(or12::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(or13::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(or23::numVars == 3, "Number of variables in truth table is not correct");
+        EqualityFactTT(TTOr(x1, x2), TruthTable(0b11101110, 3), "x₁ ∨ x₂");
+        EqualityFactTT(TTOr(x1, x3), TruthTable(0b11111010, 3), "x₁ ∨ x₃");
+        EqualityFactTT(TTOr(x2, x3), TruthTable(0b11111100, 3), "x₂ ∨ x₃");
     }
 
     operation T4_TTXor_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let xor12 = TTXor(x1, x2);
-        let xor13 = TTXor(x1, x3);
-        let xor23 = TTXor(x2, x3);
-        Fact(xor12::bits == 0b01100110, "Truth table of x1 ⊕ x2 is not correct");
-        Fact(xor13::bits == 0b01011010, "Truth table of x1 ⊕ x3 is not correct");
-        Fact(xor23::bits == 0b00111100, "Truth table of x2 ⊕ x3 is not correct");
-        Fact(xor12::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(xor13::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(xor23::numVars == 3, "Number of variables in truth table is not correct");
+        EqualityFactTT(TTXor(x1, x2), TruthTable(0b01100110, 3), "x₁ ⊕ x₂");
+        EqualityFactTT(TTXor(x1, x3), TruthTable(0b01011010, 3), "x₁ ⊕ x₃");
+        EqualityFactTT(TTXor(x2, x3), TruthTable(0b00111100, 3), "x₂ ⊕ x₃");
     }
 
     operation T5_TTNot_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let not1 = TTNot(x1);
-        let not2 = TTNot(x2);
-        let not3 = TTNot(x3);
-        Fact(not1::bits == 0b01010101, "Truth table of ¬x1 is not correct");
-        Fact(not2::bits == 0b00110011, "Truth table of ¬x2 is not correct");
-        Fact(not3::bits == 0b00001111, "Truth table of ¬x3 is not correct");
-        Fact(not1::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(not2::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(not3::numVars == 3, "Number of variables in truth table is not correct");
+        EqualityFactTT(TTNot(x1), TruthTable(0b01010101, 3), "¬x₁");
+        EqualityFactTT(TTNot(x2), TruthTable(0b00110011, 3), "¬x₂");
+        EqualityFactTT(TTNot(x3), TruthTable(0b00001111, 3), "¬x₃");
     }
 
     operation T6_IfThenElseTruthTable_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let y = TTIfThenElse(x1, x2, x3);
-        Fact(y::numVars == 3, "Number of variables in truth table is not correct");
-        Fact(y::bits == 0b11011000, "Truth table is not correct");
+        EqualityFactTT(TTIfThenElse(x1, x2, x3), TruthTable(0b11011000, 3), "if-then-else");
     }
 
     operation T7_AllMinterms_Test () : Unit {

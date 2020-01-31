@@ -61,10 +61,12 @@ namespace Quantum.Kata.TruthTables {
     // Task 2. Compute AND of two truth tables
     //
     // Goal: Compute a truth table that computes the conjunction (AND)
-    //       of two truth tables.
+    //       of two truth tables.  Find a way to perform the computation
+    //       directly on the integer representations of the truth tables,
+    //       i.e., without accessing the bits individually.
     //
-    // Hint: You can use bit-wise operations in Q# for this task.  For
-    //       AND the fitting operation is `&&&`.
+    // Hint: You can use bit-wise operations in Q# for this task.  See
+    //       https://docs.microsoft.com/quantum/language/expressions#numeric-expressions
     function TTAnd (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -102,8 +104,8 @@ namespace Quantum.Kata.TruthTables {
 
     // Task 6. Build if-then-else truth table
     //
-    // Goal: Compute the truth table of the if-then-else function x₁ ? x₂ : x₃
-    //       (if x₁ then x₂ else x₃) by making use of the truth table operations
+    // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen : ttElse
+    //       (if ttCond then ttThen else ttElse) by making use of the truth table operations
     //       defined in the previous 4 tasks.
     function TTIfThenElse (ttCond : TruthTable, ttThen : TruthTable, ttElse : TruthTable) : TruthTable {
         fail ("Task 6 not implemented!");
@@ -113,10 +115,12 @@ namespace Quantum.Kata.TruthTables {
     //
     // Goal: Return an array that contains all input assignments in a truth table
     //       that have a true truth value.  These input assignments are called minterms.
-    //       Make use of Q# library functions to implement this operation without
-    //       implementing any helper operations. Useful Q# library functions to complete
-    //       this task are Mapped, Filtered, Compose, Enumerated, IntAsBoolArray, EqualB,
-    //       Fst, and Snd.
+    //       The order of assignments does not matter.
+    //
+    // Note: You could make use of Q# library functions to implement this operation in a
+    //       single return statement without implementing any helper operations. Useful
+    //       Q# library functions to complete this task are Mapped, Filtered, Compose,
+    //       Enumerated, IntAsBoolArray, EqualB, Fst, and Snd.
     //
     // Example: The truth table of 2-input OR is 0b1110, i.e., its minterms are
     //          [1, 2, 3].
