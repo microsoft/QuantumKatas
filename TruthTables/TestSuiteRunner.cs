@@ -28,7 +28,7 @@ namespace Quantum.Kata.TruthTables
         /// This driver will run all Q# tests (operations named "...Test") 
         /// that belong to namespace Quantum.Kata.TruthTables.
         /// </summary>
-        [OperationDriver(TestNamespace = "Quantum.Kata.ReversibleLogicSynthesis")]
+        [OperationDriver(TestNamespace = "Quantum.Kata.TruthTables")]
         public void TestTarget(TestOperation op)
         {
             using (var sim = new CounterSimulator())
