@@ -18,10 +18,10 @@ namespace Quantum.Kata.TruthTables {
     // a 1-bit output, called function value or truth value.
     
     // We can think of an n-variable Boolean function as an integer with at
-    // least 2^n binary digits.  Each digit represents the truth value for
-    // each of the 2ⁿ assignments.  The least-significant bit represents the
-    // assignment 00...00, the next one 00...01, and the most-significant bit
-    // represents 11...11.
+    // least 2ⁿ binary digits.  Each digit represents the truth value for
+    // each of the 2ⁿ input assignments.  The least-significant bit represents 
+    // the assignment 00...00, the next one - 00...01, and so on, and 
+    // the most-significant bit represents 11...11.
 
     // In Q# we can use the 0b prefix to specify integers in binary notation,
     // which is useful when describing the truth table of a Boolean function.
@@ -41,6 +41,7 @@ namespace Quantum.Kata.TruthTables {
 
     newtype TruthTable = (bits : Int, numVars : Int);
 
+
     // Task 1. Projective functions (elementary variables)
     //
     // Goal: Describe the three projective functions x₁, x₂, x₃ as 3-input
@@ -57,6 +58,7 @@ namespace Quantum.Kata.TruthTables {
 
         return (x1, x2, x3);
     }
+
 
     // Task 2. Compute AND of two truth tables
     //
@@ -75,6 +77,7 @@ namespace Quantum.Kata.TruthTables {
         fail ("Task 2 not implemented!");
     }
 
+
     // Task 3. Compute OR of two truth tables
     //
     // Goal: Compute a truth table that computes the disjunction (OR)
@@ -83,6 +86,7 @@ namespace Quantum.Kata.TruthTables {
         fail ("Task 3 not implemented!");
     }
 
+
     // Task 4. Compute XOR of two truth tables
     //
     // Goal: Compute a truth table that computes the exclusive-OR (XOR)
@@ -90,6 +94,7 @@ namespace Quantum.Kata.TruthTables {
     function TTXor (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         fail ("Task 4 not implemented!");
     }
+
 
     // Task 5. Compute NOT of a truth table
     //
@@ -102,6 +107,7 @@ namespace Quantum.Kata.TruthTables {
         fail ("Task 5 not implemented!");
     }
 
+
     // Task 6. Build if-then-else truth table
     //
     // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen : ttElse
@@ -111,11 +117,12 @@ namespace Quantum.Kata.TruthTables {
         fail ("Task 6 not implemented!");
     }
 
+
     // Task 7. Find all true input assignments in a truth table
     //
     // Goal: Return an array that contains all input assignments in a truth table
     //       that have a true truth value.  These input assignments are called minterms.
-    //       The order of assignments does not matter.
+    //       The order of assignments in the return does not matter.
     //
     // Note: You could make use of Q# library functions to implement this operation in a
     //       single return statement without implementing any helper operations. Useful
@@ -128,11 +135,12 @@ namespace Quantum.Kata.TruthTables {
         fail ("Task 7 not implemented!");
     }
 
+
     // Task 8. Apply truth table as a quantum operation
     //
-    // Goal: The goal is to apply the X operation on the target qubit, if and only if
+    // Goal: Apply the X operation on the target qubit, if and only if
     //       the classical state of the controls is a minterm of the truth table.
-    operation ApplyControlledOnFunction (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
+    operation ApplyXControlledOnFunction (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
         fail ("Task 8 not implemented!");
     }
 }

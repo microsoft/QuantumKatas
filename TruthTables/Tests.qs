@@ -16,8 +16,8 @@ namespace Quantum.Kata.TruthTables {
     open Microsoft.Quantum.Logical;
 
     function EqualityFactTT (actual : TruthTable, expected : TruthTable, name : String) : Unit {
-        Fact(actual::numVars == expected::numVars, $"Number of variables in {name} is not correct");
-        Fact(actual::bits == expected::bits, $"Truth table {name} is not correct");
+        Fact(actual::numVars == expected::numVars, $"Number of variables in truth table for {name} is not correct");
+        Fact(actual::bits == expected::bits, $"Truth table for {name} is not correct");
     }
 
     operation T1_ProjectiveTruthTables_Test () : Unit {
@@ -57,15 +57,17 @@ namespace Quantum.Kata.TruthTables {
 
     operation T6_IfThenElseTruthTable_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        EqualityFactTT(TTIfThenElse(x1, x2, x3), TruthTable(0b11011000, 3), "if-then-else");
+        EqualityFactTT(TTIfThenElse(x1, x2, x3), TruthTable(0b11011000, 3), "if x₁ then x₂ else x₃");
     }
 
     operation T7_AllMinterms_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
-        let minterms = AllMinterms(TTIfThenElse_Reference(x1, x2, x3));
+        let testTT = TTIfThenElse_Reference(x1, x2, x3);
+        Message($"Testing on truth table {testTT}");
+        let minterms = AllMinterms(testTT);
         EqualityFactI(Length(minterms), 4, "Number of minterms is not correct");
         for (minterm in [3, 4, 6, 7]) {
-            Fact(IndexOf(EqualI(minterm, _), minterms) != -1, "Some minterm is not correct");
+            Fact(IndexOf(EqualI(minterm, _), minterms) != -1, $"Minterm {minterm} should be part of the result");
         }
     }
 
@@ -76,8 +78,8 @@ namespace Quantum.Kata.TruthTables {
     operation T8_ApplyFunction_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let tt = TTIfThenElse_Reference(x1, x2, x3);
-        let opUser = _ApplyFunctionWrap(ApplyControlledOnFunction(tt, _, _), _);
-        let opRef = _ApplyFunctionWrap(ApplyControlledOnFunction_Reference(tt, _, _), _);
+        let opUser = _ApplyFunctionWrap(ApplyXControlledOnFunction(tt, _, _), _);
+        let opRef = _ApplyFunctionWrap(ApplyXControlledOnFunction_Reference(tt, _, _), _);
         AssertOperationsEqualReferenced(4, opUser, opRef);
     }
 }
