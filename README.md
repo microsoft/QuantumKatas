@@ -99,7 +99,7 @@ Each kata is a separate project that includes:
 
 #### Reversible computing
 
-* **[Truth tables](./TruthTables/)**
+* **[Truth tables](./TruthTables/)**.
   Learn to represent and manipulate Boolean functions as truth tables and to implement them as quantum operations.
 * **[Ripple-carry adder](./RippleCarryAdder/)**.
   Build a ripple-carry adder on a quantum computer.
