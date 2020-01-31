@@ -28,7 +28,7 @@ namespace Quantum.Kata.TruthTables {
     // For example, the truth table of the 2-input function (x₁ ∧ x₂) can be
     // represented by the integer 0b1000.
     // Here is how you would get this representation:
-    // | x₁ | x₂ | f(x₁, x₂) | Bit of the truth table
+    // | x₂ | x₁ | f(x₁, x₂) | Bit of the truth table
     // | 0  | 0  |     0     | Least significant
     // | 0  | 1  |     0     | 
     // | 1  | 0  |     0     | 
