@@ -97,6 +97,13 @@ Each kata is a separate project that includes:
 * **[GHZ game](./GHZGame/)**.
 * **[Mermin-Peres magic square game](./MagicSquareGame)**.
 
+#### Reversible computing
+
+* **[Truth tables](./TruthTables/)**.
+  Learn to represent and manipulate Boolean functions as truth tables and to implement them as quantum operations.
+* **[Ripple-carry adder](./RippleCarryAdder/)**.
+  Build a ripple-carry adder on a quantum computer.
+
 #### Miscellaneous
 
 * **[BB84 protocol](./KeyDistribution_BB84/)**.
@@ -105,8 +112,6 @@ Each kata is a separate project that includes:
   Learn about phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
-* **[Ripple-carry adder](./RippleCarryAdder/)**.
-  Build a ripple-carry adder on a quantum computer.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
   Learn to implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
