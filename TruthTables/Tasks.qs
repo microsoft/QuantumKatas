@@ -27,6 +27,13 @@ namespace Quantum.Kata.TruthTables {
     // which is useful when describing the truth table of a Boolean function.
     // For example, the truth table of the 2-input function (x₁ ∧ x₂) can be
     // represented by the integer 0b1000.
+    // Here is how you would get this representation:
+    // | x₁ | x₂ | f(x₁, x₂) | Bit of the truth table
+    // | 0  | 0  |     0     | Least significant
+    // | 0  | 1  |     0     | 
+    // | 1  | 0  |     0     | 
+    // | 1  | 1  |     1     | Most significant
+
 
     // Since the number of bits in a Q# integer is always the same, we need to
     // specify the number of variables explicitly.  Therefore, it makes sense
