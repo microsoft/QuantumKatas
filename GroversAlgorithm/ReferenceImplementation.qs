@@ -29,12 +29,15 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Task 1.2. The |1010...⟩ oracle
     operation Oracle_AlternatingBits_Reference (queryRegister : Qubit[], target : Qubit) : Unit
     is Adj {
-
-        // flip the bits in odd (0-based positions),
-        // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
-        FlipOddPositionBits_Reference(queryRegister);
-        Controlled X(queryRegister, target);
-        Adjoint FlipOddPositionBits_Reference(queryRegister);
+        
+        within {
+            // flip the bits in odd (0-based positions),
+            // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
+            FlipOddPositionBits_Reference(queryRegister);
+        }
+        apply {
+            Controlled X(queryRegister, target);
+        }
     }
     
     
