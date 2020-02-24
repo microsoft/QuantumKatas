@@ -4,10 +4,10 @@ steps:
 # Pre-reqs
 ##
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
+  displayName: 'Use .NET Core SDK 3.0.100'
   inputs:
     packageType: sdk
-    version: 2.2.x
+    version: '3.0.100'
 
 - task: UsePythonVersion@0
   inputs:

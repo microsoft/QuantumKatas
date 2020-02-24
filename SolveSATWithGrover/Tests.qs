@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -19,8 +19,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // ------------------------------------------------------
     // helper wrapper to represent oracle operation on input and output registers as an operation on an array of qubits
-    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit
-    is Adj {        
+    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {        
         op(Most(qs), Tail(qs));
     }
     
@@ -129,47 +128,99 @@ namespace Quantum.Kata.GroversAlgorithm {
 
 
     // ------------------------------------------------------
-    function F_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
-        for (clauseIndex in 0..Length(problem)-1) {
-            mutable isClauseTrue = false;
-            let clause = problem[clauseIndex];
-            for ((index, isTrue) in clause) {
-                if (isTrue == args[index]) {
-                    set isClauseTrue = true;
-                }
+    // A set of helper functions to pretty-print SAT formulas
+    function SATVariableAsString (var : (Int, Bool)) : String {
+        let (index, isTrue) = var;
+        return (isTrue ? "" | "¬") + $"x{index}";
+    }
+
+    function SATClauseAsString (clause : (Int, Bool)[]) : String {
+        mutable ret = SATVariableAsString(clause[0]);
+        for (ind in 1 .. Length(clause) - 1) {
+            set ret = ret + " ∨ " + SATVariableAsString(clause[ind]);
+        }
+        return ret;
+    }
+
+    function SATInstanceAsString (instance : (Int, Bool)[][]) : String {
+        mutable ret = "(" + SATClauseAsString(instance[0]) + ")";
+        for (ind in 1 .. Length(instance) - 1) {
+            set ret = ret + " ∧ (" + SATClauseAsString(instance[ind]) + ")";
+        }
+        return ret;
+    }
+
+
+    // ------------------------------------------------------
+    // Evaluate one clause of the SAT formula
+    function F_SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
+        for ((index, isTrue) in clause) {
+            if (isTrue == args[index]) {
+                // one true literal is sufficient for the clause to be true
+                return true;
             }
+        }
+        // none of the literals is true - the whole clause is false
+        return false;
+    }
+
+    operation Generate_SAT_Clause (nVar : Int, nTerms : Int) : (Int, Bool)[] {
+        mutable nVarInClause = (nTerms > 0) ? nTerms | (RandomInt(4) + 1);
+        if (nVarInClause > nVar) {
+            set nVarInClause = nVar;
+        }
+    
+        mutable clause = new (Int, Bool)[nVarInClause];
+        mutable usedVariables = new Bool[nVar];
+        // Make sure variables in the clause are distinct
+        for (k in 0 .. nVarInClause - 1) {
+            mutable nextInd = -1;
+            repeat { 
+                set nextInd = RandomInt(nVar);
+            } until (not usedVariables[nextInd])
+            fixup {}
+            set clause w/= k <- (nextInd, RandomInt(2) > 0);
+            set usedVariables w/= nextInd <- true;
+        }
+        return clause;
+    }
+
+
+    operation T15_Oracle_SATClause_Test () : Unit {
+        for (i in 1..10) {
+            let nVar = RandomInt(5) + 3;
+            let clause = Generate_SAT_Clause(nVar, i);
+
+            Message($"Testing SAT clause instance {SATClauseAsString(clause)}...");
+
+            AssertOracleImplementsFunction(nVar, Oracle_SATClause(_, _, clause), F_SATClause(_, clause));
+
+            AssertOperationsEqualReferenced(nVar + 1,
+                QubitArrayWrapperOperation(Oracle_SATClause(_, _, clause), _),
+                QubitArrayWrapperOperation(Oracle_SATClause_Reference(_, _, clause), _)
+            );
+        }
+    }
+
+
+    // ------------------------------------------------------
+    function F_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
+        for (clause in problem) {
             // One clause can invalidate the whole formula
-            if (not isClauseTrue) {
+            if (not F_SATClause(args, clause)) {
                 return false;
             }
         }
         return true;
     }
 
-    operation Generate_SAT_Instance (is2SAT : Bool) : (Int, (Int, Bool)[][]) {
+    operation Generate_SAT_Instance (nTerms : Int) : (Int, (Int, Bool)[][]) {
         let nVar = RandomInt(5) + 3;
         let nClause = RandomInt(2 * nVar) + 1;
         mutable problem = new (Int, Bool)[][nClause];
 
         for (j in 0..nClause-1) {
-            mutable nVarInClause = is2SAT ? 2 | (RandomInt(4) + 1);
-            if (nVarInClause > nVar) {
-                set nVarInClause = nVar;
-            }
-            
-            mutable problemRow = new (Int, Bool)[nVarInClause];
-            mutable usedVariables = new Bool[nVar];
-            // Make sure variables in each clause are distinct
-            for (k in 0..nVarInClause-1) {
-                mutable nextInd = -1;
-                repeat { 
-                    set nextInd = RandomInt(nVar);
-                } until (not usedVariables[nextInd])
-                fixup {}
-                set problemRow w/= k <- (nextInd, RandomInt(2) > 0);
-                set usedVariables w/= nextInd <- true;
-            }
-            set problem w/= j <- problemRow;
+            set problem w/= j <- Generate_SAT_Clause(nVar, nTerms);
         }
         return (nVar, problem);
     }
@@ -177,24 +228,27 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation Run2SATTests (oracle : ((Qubit[], Qubit, (Int, Bool)[][]) => Unit is Adj)) : Unit {
         // Cross-tests:
         // OR oracle
+        Message($"Testing 2-SAT instance (2, {SATInstanceAsString([[(0, true), (1, true)]])})...");
         AssertOperationsEqualReferenced(3, 
             QubitArrayWrapperOperation(oracle(_, _, [[(0, true), (1, true)]]), _),
             QubitArrayWrapperOperation(Oracle_Or_Reference, _));
 
         // XOR oracle
+        Message($"Testing 2-SAT instance (2, {SATInstanceAsString([[(0, true), (1, true)], [(1, false), (0, false)]])})...");
         AssertOperationsEqualReferenced(3, 
             QubitArrayWrapperOperation(oracle(_, _, [[(0, true), (1, true)], [(1, false), (0, false)]]), _),
             QubitArrayWrapperOperation(Oracle_Xor_Reference, _));
 
         // AlternatingBits oracle for 3 qubits
+        Message($"Testing 2-SAT instance (3, {SATInstanceAsString([[(1, false), (2, false)], [(0, true), (1, true)], [(1, false), (0, false)], [(2, true), (1, true)]])})...");
         AssertOperationsEqualReferenced(4,
             QubitArrayWrapperOperation(oracle(_, _, [[(1, false), (2, false)], [(0, true), (1, true)], [(1, false), (0, false)], [(2, true), (1, true)]]), _),
             QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _));
 
         // Standalone tests
         for (i in 1..8) {
-            let (nVar, problem) = Generate_SAT_Instance(true);
-            Message($"Testing 2-SAT instance {problem}");
+            let (nVar, problem) = Generate_SAT_Instance(2);
+            Message($"Testing 2-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, oracle(_, _, problem), F_SAT(_, problem));
 
@@ -205,11 +259,6 @@ namespace Quantum.Kata.GroversAlgorithm {
         }
     }
 
-    operation T15_Oracle_2SAT_Test () : Unit {
-        Run2SATTests(Oracle_2SAT);
-    }
-
-
     // ------------------------------------------------------
     operation T16_Oracle_SAT_Test () : Unit {
         // General SAT oracle should be able to implement all 2SAT problems
@@ -217,8 +266,8 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         // General SAT instances
         for (i in 1..5) {
-            let (nVar, problem) = Generate_SAT_Instance(false);
-            Message($"Testing k-SAT instance {problem}");
+            let (nVar, problem) = Generate_SAT_Instance(-1);
+            Message($"Testing k-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
 
@@ -231,19 +280,82 @@ namespace Quantum.Kata.GroversAlgorithm {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Using Grover's search for problems with multiple solutions
+    // Part II. Oracles for exactly-1 3-SAT problem
+    //////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------
+    function F_Exactly1One (args : Bool[]) : Bool {
+        mutable nOnes = 0;
+        for (element in args) {
+            if (element) {
+                set nOnes += 1;
+            }
+        }
+        return nOnes == 1;
+    }
+
+    operation T21_Oracle_Exactly1One_Test () : Unit {
+        AssertOracleImplementsFunction(3, Oracle_Exactly1One, F_Exactly1One);
+
+        let testOp = QubitArrayWrapperOperation(Oracle_Exactly1One, _);
+        let refOp = QubitArrayWrapperOperation(Oracle_Exactly1One_Reference, _);
+        AssertOperationsEqualReferenced(4, testOp, refOp);
+    }
+
+
+    // ------------------------------------------------------
+    // Evaluate one clause of the SAT formula
+    function F_Exactly1SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
+        mutable nOnes = 0;
+        for ((index, isTrue) in clause) {
+            if (isTrue == args[index]) {
+                // count the number of true literals
+                set nOnes += 1;
+            }
+        }
+        return nOnes == 1;
+    }
+
+    function F_Exactly1_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
+        for (clause in problem) {
+            // One clause can invalidate the whole formula
+            if (not F_Exactly1SATClause(args, clause)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    operation T22_Oracle_Exactly1SAT_Test () : Unit {
+        // General SAT instances
+        for (i in 1..10) {
+            let (nVar, problem) = Generate_SAT_Instance(3);
+            Message($"Testing exactly-1 3-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
+
+            AssertOracleImplementsFunction(nVar, Oracle_Exactly1_3SAT(_, _, problem), F_Exactly1_SAT(_, problem));
+
+            AssertOperationsEqualReferenced(nVar + 1,
+                QubitArrayWrapperOperation(Oracle_Exactly1_3SAT(_, _, problem), _),
+                QubitArrayWrapperOperation(Oracle_Exactly1_3SAT_Reference(_, _, problem), _)
+            );
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Using Grover's search for problems with multiple solutions
     //////////////////////////////////////////////////////////////////
 
     // Run algorithm on one instance of the SAT problem and check that the answer is correct
     operation RunGroverOnOneInstance (nVar : Int, problem : (Int, Bool)[][]) : Unit {
         let oracle = Oracle_SAT_Reference(_, _, problem);
-        let answer = GroversAlgorithm(nVar, oracle);
+        let answer = UniversalGroversAlgorithm(nVar, oracle);
         if (not F_SAT(answer, problem)) {
             fail $"Incorrect answer {answer} for {problem}";
         }
     }
 
-    operation T22_GroversSearch_Test () : Unit {
+    operation T32_UniversalGroversAlgorithm_Test () : Unit {
         // AND: 1 solution/4
         RunGroverOnOneInstance(2, [[(0, true)], [(1, true)]]);
 
