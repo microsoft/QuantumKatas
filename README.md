@@ -129,17 +129,17 @@ To use the Quantum Katas locally, you'll need the [Quantum Development Kit](http
 If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
 
 **If you want to run the katas and tutorials locally as Jupyter Notebooks**:
-1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/install-guide/#develop-with-python) 
-  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/install-guide/#develop-with-jupyter-notebooks).
+1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/install-guide/pyinstall) 
+  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/install-guide/qjupyter).
 2. Several tutorials require installing additional Python packages:
    * "Complex arithmetic" and "Linear algebra" require the [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
    * "Exploring Grover's search algorithm" requires the [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
-Follow the steps in the QDK install guide [for Visual Studio](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-on-windows-using-visual-studio), 
-[for Visual Studio Code](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-using-visual-studio-code) or 
-[for command line with other editors](https://docs.microsoft.com/quantum/install-guide/#develop-with-c-using-the-dotnet-command-line-tool).
+Follow the steps in the QDK install guide [for Visual Studio](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-visual-studio-), 
+[for Visual Studio Code](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-visual-studio-code-) or 
+[for command line with other editors](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-the-dotnet-command-line-tool-).
 
 
 ### Download the Quantum Katas <a name="download" /> ###
