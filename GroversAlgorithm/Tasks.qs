@@ -48,13 +48,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       If the query register is in state |11...1⟩, flip the target qubit.
     //       If the query register is in state (|00...0⟩ + |11...1⟩) / sqrt(2), and the target is in state |0⟩,
     //       the joint state of the query register and the target qubit should be (|00...00⟩ + |11...11⟩) / sqrt(2).
-    operation Oracle_AllOnes (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint self;
+    operation Oracle_AllOnes (queryRegister : Qubit[], target : Qubit) : Unit is Adj {
+        // ...
     }
     
     
@@ -69,13 +64,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Example:
     //        If the register is in state |0000000⟩, leave the target qubit unchanged.
     //        If the register is in state |10101⟩, flip the target qubit.
-    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint self;
+    operation Oracle_AlternatingBits (queryRegister : Qubit[], target : Qubit) : Unit is Adj {
+        // ...
     }
     
     
@@ -90,17 +80,12 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        Leave the query register in the same state it started in.
     // Example:
     //        If the bit pattern is [true, false], you need to flip the target qubit if and only if the qubits are in the |10⟩ state.
-    operation Oracle_ArbitraryPattern (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit {
-        
-        body (...) {
-            // The following line enforces the constraint on the input arrays.
-            // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-            EqualityFactI(Length(queryRegister), Length(pattern), "Arrays should have the same length");
+    operation Oracle_ArbitraryPattern (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit is Adj {
+        // The following line enforces the constraint on the input arrays.
+        // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
+        EqualityFactI(Length(queryRegister), Length(pattern), "Arrays should have the same length");
 
-            // ...
-        }
-        
-        adjoint self;
+        // ...
     }
     
     
@@ -136,8 +121,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //
     // Note:  If the register started in the |0...0⟩ state, this operation
     //        will prepare an equal superposition of all 2^N basis states.
-    operation HadamardTransform (register : Qubit[]) : Unit
-    is Adj {
+    operation HadamardTransform (register : Qubit[]) : Unit is Adj {
         // ...
     }
     
@@ -149,8 +133,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //        If the register is in state |0...0⟩, leave it unchanged.
     //        If the register is in any other basis state, multiply its phase by -1.
     // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
-    operation ConditionalPhaseFlip (register : Qubit[]) : Unit
-    is Adj {
+    operation ConditionalPhaseFlip (register : Qubit[]) : Unit is Adj {
     
         // Hint 1: Note that quantum states are defined up to a global phase.
         // Thus the state obtained as a result of this operation is the same
@@ -168,8 +151,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //      2) a phase-flipping oracle that takes an N-qubit register and flips
     //         the phase of the state if the register is in the desired state.
     // Goal:  Perform one Grover iteration.
-    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit
-    is Adj {
+    operation GroverIteration (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit is Adj {
         
         // Hint: A Grover iteration consists of 4 steps:
         //    1) apply the oracle
