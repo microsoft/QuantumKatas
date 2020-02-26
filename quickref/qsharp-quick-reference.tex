@@ -284,6 +284,67 @@
    $ \begin{bmatrix} 1 & 0 \\ 0 & e^{i\theta} \end{bmatrix} $
 }}
 
+\newbox\cnotgate
+\sbox\cnotgate{\parbox{\textwidth}{
+  \footnotesize
+   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{bmatrix} $
+}}
+
+\newbox\swapgate
+\sbox\swapgate{\parbox{\textwidth}{
+  \footnotesize
+   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} $
+}}
+
+\newbox\controlledugate
+\sbox\controlledugate{\parbox{\textwidth}{
+  \footnotesize
+  $\begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & a_{0,0} & a_{0,1} \\ 0 & 0 & a_{1,0} & a_{1,1} \end{bmatrix} $
+}}
+
+\newbox\ccnotgate
+\sbox\ccnotgate{\parbox{\textwidth}{
+  \footnotesize
+  $\begin{bmatrix}
+    1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+    0 & 0 &0  & 0 & 0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & \mathbf{0} & \mathbf{1} \\
+    0 & 0 & 0 & 0 & 0 & 0 & \mathbf{1} & \mathbf{0}
+\end{bmatrix}$
+}}
+
+\newbox\braketcx
+\sbox\braketcx{\parbox{\textwidth}{
+  \footnotesize
+	%$ \ket{00}\bra{00} + \ket{01}\bra{01} + \ket{11}\bra{10} + \ket{10}\bra{11} $ \newline \text{Or} \newline $ test $ &
+    $ |00\rangle\langle00| + |01\rangle\langle01| + |11\rangle\langle10| + |10\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes X $
+}}
+
+\newbox\braketcu
+\sbox\braketcu{\parbox{\textwidth}{
+  \footnotesize
+	%$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
+    $ |00\rangle\langle00| + |10\rangle\langle01| + a_{0,0}|10\rangle\langle10| + \newline a_{0,1}|10\rangle\langle11| + a_{1,0}|10\rangle\langle11| + a_{1,1}|11\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes U $
+}}
+
+\newbox\braketccx
+\sbox\braketccx{\parbox{\textwidth}{
+  \footnotesize
+	%$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
+    $ |00\rangle\langle00| + |10\rangle\langle01| + a_{0,0}|10\rangle\langle10| + \newline a_{0,1}|10\rangle\langle11| + a_{1,0}|10\rangle\langle11| + a_{1,1}|11\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes U $
+}}
+
+\newbox\basestatecu
+\sbox\basestatecu{\parbox{\textwidth}{
+  \footnotesize
+    %$\text{C(U)} \ket{10} = \ket{1} \otimes (\alpha \ket{0} + \gamma \ket{1}) \newline \text{C(U)} \ket{11} = \ket{1} \otimes (\beta \ket{0} + \delta \ket{1})  $
+      $ \text{C(U)} |10\rangle = |1\rangle \otimes (\alpha |0\rangle + \gamma |1\rangle) \newline \text{C(U)} |11\rangle = |1\rangle \otimes (\beta |0\rangle + \delta |1\rangle)  $
+}}
+
 % https://tex.stackexchange.com/a/192067
 \usepackage{fontawesome}
   \newfontfamily{\FA}{[FontAwesome.otf]}
@@ -386,9 +447,32 @@
       \rowcolors{1}{}{TableRow}
 
       \node (tbl) [inner sep=0pt] {
-        \begin{tabular}{p{0.85cm}p{3.85cm}p{3.85cm}p{5.05cm}p{2.95cm}p{2.95cm}p{2.95cm}}
+        \begin{tabular}{p{0.85cm}p{3.55cm}p{4.05cm}p{5.55cm}p{2.95cm}p{2.95cm}p{3.05cm}}
           \rowcolor{TableHead}
           \multicolumn{7}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
+          \BODY
+          \arrayrulecolor{TableHead}\specialrule{.17em}{0em}{.2em}
+        \end{tabular}};
+      \begin{pgfonlayer}{background}
+        \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+        ($(tbl.north west)-(0,-0.05)$) rectangle ($(tbl.north east)-(0.0,0.15)$);
+        \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+        ($(tbl.south west)-(0.0,-0.11)$) rectangle ($(tbl.south east)-(-0.0,-0.02)$);
+      \end{pgfonlayer}
+    \end{tikzpicture}
+  % \end{center}
+}
+
+\NewEnviron{keysrefMultiGates}[1]{
+  % \begin{center}
+  \smallskip
+  \begin{tikzpicture}
+      \rowcolors{1}{}{TableRow}
+
+      \node (tbl) [inner sep=0pt] {
+        \begin{tabular}{p{1.55cm}p{3,75cm}p{5,35cm}p{6,05cm}p{2.95cm}p{3.75cm}}
+          \rowcolor{TableHead}
+          \multicolumn{6}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
           \BODY
           \arrayrulecolor{TableHead}\specialrule{.17em}{0em}{.2em}
         \end{tabular}};
@@ -679,9 +763,9 @@
     \usebox\outerproductleft & \usebox\outerproductright \\
   
   \end{keysref}
-
+  
   \newpage
-
+  \end{multicols}
   \section{Gates reference}
 
 
@@ -725,8 +809,7 @@
     H & 
     \usebox\hgate & 
     $ \ket{0}\bra{+} + \ket{1}\bra{-} $ & 
-    $ H\ket{\psi} = \alpha\ket{+} + \beta\ket{-} = \newline 
-      = \frac{\alpha + \beta}{\sqrt{2}}\ket{0} + \frac{\alpha - \beta}{\sqrt{2}}\ket{1} $ & 
+    $ H\ket{\psi} = \alpha\ket{+} + \beta\ket{-} = \frac{\alpha + \beta}{\sqrt{2}}\ket{0} + \frac{\alpha - \beta}{\sqrt{2}}\ket{1} $ & 
     $ H\ket{0} = \ket{+}   \newline H\ket{1} = \ket{-} $ & 
     $ H\ket{+} = \ket{0} \newline H\ket{-} = \ket{1} $ & 
     $ H\ket{i} = e^{i\pi/4}\ket{-i} \newline H\ket{-i} = e^{-i\pi/4}\ket{i} $ \\
@@ -743,7 +826,8 @@
     \usebox\tgate & 
     $ \ket{0}\bra{0} + e^{i\pi/4}\ket{1} \bra{1} $ & 
     $ T\ket{\psi} = \alpha\ket{0} + e^{i\pi/4} \beta \ket{1} $ & 
-    $ T\ket{0} = \ket{0} \newline T\ket{1} = e^{i\pi/4}\ket{1} $ & &  \\
+    $ T\ket{0} = \ket{0}  $ &
+    $ T\ket{1} = e^{i\pi/4}\ket{1} $ &  \\
 
     $ R_x(\theta) $ & 
     \usebox\rxgate & 
@@ -769,8 +853,7 @@
 
     $ R_z(\theta) $ & \usebox\rzgate & 
     $  e^{-i\theta/2}\ket{0}\bra{0} + e^{i\theta/2}\ket{1} \bra{1} $ & 
-    $ R_z(\theta)\ket{\psi} = \newline 
-      = \alpha e^{-i\theta/2}\ket{0} + \beta e^{i\theta/2}\ket{1} $ & 
+    $ R_z(\theta)\ket{\psi} = \alpha e^{-i\theta/2}\ket{0} + \beta e^{i\theta/2}\ket{1} $ & 
     $ R_z(\theta)\ket{0} = e^{-i\theta/2}\ket{0} $ & 
     $ R_z(\theta)\ket{1} = e^{i\theta/2}\ket{1} $  &  \\
 
@@ -782,7 +865,63 @@
     $ R_1(\theta)\ket{1} = e^{i\theta}\ket{1} $  &  \\
 
   \end{keysrefGates}
+   
+  
+  \begin{keysrefMultiGates}{Two-qubit gates}
+  
+    Gate &
+    Matrix Representation & 
+    Ket-Bra Representation &
+    Applying to $\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + \gamma\ket{10} + \delta\ket{11}$ &
+    Applying to basis states & \\
+    
+    CNOT &
+    \usebox\cnotgate & 
+    \usebox\braketcx &
+    $ \text{CNOT}\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + \delta\ket{10} + \gamma\ket{11}$ &
+    $ \text{CNOT}\ket{00} = \ket{00} \newline
+      \text{CNOT}\ket{01} = \ket{01} $ &
+    $ \text{CNOT}\ket{10} = \ket{11} \newline
+      \text{CNOT}\ket{11} = \ket{10} $ \\
+ 
+    SWAP &
+    \usebox\swapgate & 
+    $ \ket{00}\bra{00} + \ket{01}\bra{10} + \ket{10}\bra{01} + \ket{11}\bra{11} $ &
+    $ \text{SWAP}\ket{\psi} = \alpha\ket{00} + \gamma\ket{01} + \beta\ket{10} + \delta\ket{11}$ &
+    $ \text{SWAP}\ket{00} = \ket{00} \newline
+      \text{SWAP}\ket{01} = \ket{10} $ &
+    $\text{SWAP}\ket{10} = \ket{01} \newline
+      \text{SWAP}\ket{11} = \ket{11} $ \\
+      
+    Controlled U &
+    \usebox\controlledugate  & 
+    \usebox\braketcu & %$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
+    $ \text{C(U)} \ket{\psi} =  \alpha\ket{00} + \gamma\ket{01} + (\gamma  a_{0,0} + \delta  a_{0,1}) \ket{10} +  (\gamma  a_{1,0} + \delta  a_{1,1}) \ket{11}  $ & 
+    $ \text{C(U)} \ket{00} = \ket{00} \newline
+      \text{C(U)} \ket{01} = \ket{01} $ & 
+    $\text{C(U)} \ket{10} = \ket{1} \otimes (\alpha \ket{0} + \gamma \ket{1}) \newline \text{C(U)} \ket{11} = \ket{1} \otimes (\beta \ket{0} + \delta \ket{1})  $ \\
+  \end{keysrefMultiGates}
+  
+  \begin{keysrefMultiGates}{Toffoli (CCNOT) gate} 
+  
+    Gate &
+    Matrix Representation &
+    Ket-Bra Representation &
+    Applying to $\ket{\psi} = \alpha\ket{000} + \beta\ket{001} + \gamma\ket{010} + \delta\ket{011} + \epsilon\ket{100} + \lambda\ket{101}  + \eta\ket{110} + \kappa\ket{111} $ &
+    Applying to basis states & \\
+    
+    
+    CCNOT &
+    \usebox\ccnotgate & 
+    $ \ket{000}\bra{000} + \ket{001}\bra{001} + \ket{010}\bra{010} + \ket{011}\bra{011} + \ket{100}\bra{100} + \ket{101}\bra{101} + \ket{110}\bra{111} + \ket{111}\bra{110} $ &
+    $ \text{CCNOT} \ket{\psi} = \alpha\ket{000} + \beta\ket{001} + \gamma\ket{010} + \delta\ket{011} + \epsilon\ket{100} + \lambda\ket{101}  + $ \boldmath$ \kappa \ket{110} + \eta\ket{111} $ &
+    $ \text{CCNOT} \ket{000} = \ket{000} \newline \text{CCNOT} \ket{001} = \ket{001} 
+      \newline \text{CCNOT} \ket{010} = \ket{010} \newline \text{CCNOT} \ket{011} = \ket{011} $ &
+     $ \text{CCNOT} \ket{100} = \ket{100} \newline \text{CCNOT} \ket{101} = \ket{101} \newline 
+       \text{CCNOT} \ket{110} = \ket{111} \newline \text{CCNOT} \ket{111} = \ket{110} $\\
+  
+  \end{keysrefMultiGates}
 
-  \end{multicols}
+ %\end{multicols}
 
 \end{document} 
