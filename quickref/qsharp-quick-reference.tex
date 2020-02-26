@@ -320,28 +320,24 @@
 \newbox\braketcx
 \sbox\braketcx{\parbox{\textwidth}{
   \footnotesize
-	%$ \ket{00}\bra{00} + \ket{01}\bra{01} + \ket{11}\bra{10} + \ket{10}\bra{11} $ \newline \text{Or} \newline $ test $ &
     $ |00\rangle\langle00| + |01\rangle\langle01| + |11\rangle\langle10| + |10\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes X $
 }}
 
 \newbox\braketcu
 \sbox\braketcu{\parbox{\textwidth}{
   \footnotesize
-	%$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
     $ |00\rangle\langle00| + |10\rangle\langle01| + a_{0,0}|10\rangle\langle10| + \newline a_{0,1}|10\rangle\langle11| + a_{1,0}|10\rangle\langle11| + a_{1,1}|11\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes U $
 }}
 
 \newbox\braketccx
 \sbox\braketccx{\parbox{\textwidth}{
   \footnotesize
-	%$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
     $ |00\rangle\langle00| + |10\rangle\langle01| + a_{0,0}|10\rangle\langle10| + \newline a_{0,1}|10\rangle\langle11| + a_{1,0}|10\rangle\langle11| + a_{1,1}|11\rangle\langle11| \newline \text{Or} \newline |0\rangle\langle0| \otimes I + |1\rangle\langle1| \otimes U $
 }}
 
 \newbox\basestatecu
 \sbox\basestatecu{\parbox{\textwidth}{
   \footnotesize
-    %$\text{C(U)} \ket{10} = \ket{1} \otimes (\alpha \ket{0} + \gamma \ket{1}) \newline \text{C(U)} \ket{11} = \ket{1} \otimes (\beta \ket{0} + \delta \ket{1})  $
       $ \text{C(U)} |10\rangle = |1\rangle \otimes (\alpha |0\rangle + \gamma |1\rangle) \newline \text{C(U)} |11\rangle = |1\rangle \otimes (\beta |0\rangle + \delta |1\rangle)  $
 }}
 
@@ -740,8 +736,6 @@
     Cartesian form $a + bi$ \newline to polar form $re^{i\theta}$ & $ r = \sqrt{a^2 + b^2}  \newline  \theta = \arctan(\frac{b}{a}) $ \\
   \end{keysref}
 
-
-
   \begin{keysref}{Linear Algebra}
 
     $m \times n$ matrix & \usebox\matrixrepresentationright \\
@@ -767,7 +761,6 @@
   \newpage
   \end{multicols}
   \section{Gates reference}
-
 
   \begin{keysrefGates}{Single Qubit gates}
 
@@ -865,7 +858,6 @@
     $ R_1(\theta)\ket{1} = e^{i\theta}\ket{1} $  &  \\
 
   \end{keysrefGates}
-   
   
   \begin{keysrefMultiGates}{Two-qubit gates}
   
@@ -895,7 +887,7 @@
       
     Controlled U &
     \usebox\controlledugate  & 
-    \usebox\braketcu & %$ \ket{00}\bra{00} + \ket{10}\bra{01} + a_{0,0}\ket{10}\bra{10} + a_{0,1}\ket{10}\bra{11} + a_{1,0}\ket{10}\bra{11} + a_{1,1}\ket{11}\bra{11} $ &
+    \usebox\braketcu & 
     $ \text{C(U)} \ket{\psi} =  \alpha\ket{00} + \gamma\ket{01} + (\gamma  a_{0,0} + \delta  a_{0,1}) \ket{10} +  (\gamma  a_{1,0} + \delta  a_{1,1}) \ket{11}  $ & 
     $ \text{C(U)} \ket{00} = \ket{00} \newline
       \text{C(U)} \ket{01} = \ket{01} $ & 
@@ -921,7 +913,5 @@
        \text{CCNOT} \ket{110} = \ket{111} \newline \text{CCNOT} \ket{111} = \ket{110} $\\
   
   \end{keysrefMultiGates}
-
- %\end{multicols}
 
 \end{document} 
