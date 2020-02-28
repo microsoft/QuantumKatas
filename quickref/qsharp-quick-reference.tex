@@ -287,13 +287,13 @@
 \newbox\cnotgate
 \sbox\cnotgate{\parbox{\textwidth}{
   \footnotesize
-   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{bmatrix} $
+   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \mathbf{0} & \mathbf{1} \\ 0 & 0 & \mathbf{1} & \mathbf{0} \end{bmatrix} $
 }}
 
 \newbox\swapgate
 \sbox\swapgate{\parbox{\textwidth}{
   \footnotesize
-   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} $
+   $ \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & \mathbf{0} & \mathbf{1} & 0 \\ 0 & \mathbf{1} & \mathbf{0} & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} $
 }}
 
 \newbox\controlledugate
@@ -866,7 +866,7 @@
     CNOT &
     \usebox\cnotgate & 
     \usebox\braketcx &
-    $ \text{CNOT}\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + \delta\ket{10} + \gamma\ket{11}$ &
+    $ \text{CNOT}\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + $ \boldmath$ \delta\ket{10} + \gamma\ket{11}$ &
     $ \text{CNOT}\ket{00} = \ket{00} \newline
       \text{CNOT}\ket{01} = \ket{01} $ &
     $ \text{CNOT}\ket{10} = \ket{11} \newline
@@ -875,7 +875,7 @@
     SWAP &
     \usebox\swapgate & 
     $ \ket{00}\bra{00} + \ket{01}\bra{10} + \ket{10}\bra{01} + \ket{11}\bra{11} $ &
-    $ \text{SWAP}\ket{\psi} = \alpha\ket{00} + \gamma\ket{01} + \beta\ket{10} + \delta\ket{11}$ &
+    $ \text{SWAP}\ket{\psi} = \alpha\ket{00} + $ {\boldmath $ \gamma\ket{01} + \beta\ket{10} $} $+ \delta\ket{11}$ &
     $ \text{SWAP}\ket{00} = \ket{00} \newline
       \text{SWAP}\ket{01} = \ket{10} $ &
     $\text{SWAP}\ket{10} = \ket{01} \newline
@@ -884,7 +884,7 @@
     Controlled U &
     \usebox\controlledugate  & 
     \usebox\braketcu & 
-    $ \text{C(U)} \ket{\psi} =  \alpha\ket{00} + \gamma\ket{01} + (\gamma  a_{0,0} + \delta  a_{0,1}) \ket{10} +  (\gamma  a_{1,0} + \delta  a_{1,1}) \ket{11}  $ & 
+    $ \text{C(U)} \ket{\psi} =  \alpha\ket{00} + \gamma\ket{01} + ( a_{0,0} + a_{0,1}) \ket{10} +  ( a_{1,0} +  a_{1,1}) \ket{11}  $ & 
     $ \text{C(U)} \ket{00} = \ket{00} \newline
       \text{C(U)} \ket{01} = \ket{01} $ & 
     $\text{C(U)} \ket{10} = \ket{1} \otimes (\alpha \ket{0} + \gamma \ket{1}) \newline \text{C(U)} \ket{11} = \ket{1} \otimes (\beta \ket{0} + \delta \ket{1})  $ \\
@@ -901,7 +901,7 @@
     
     CCNOT &
     \usebox\ccnotgate & 
-    $ \ket{000}\bra{000} + \ket{001}\bra{001} + \ket{010}\bra{010} + \ket{011}\bra{011} + \ket{100}\bra{100} + \ket{101}\bra{101} + \ket{110}\bra{111} + \ket{111}\bra{110} $ &
+    $ (I_2 - \ket{11}\bra{11}) \otimes I_1 + \ket{11}\bra{11} \otimes X $ &  %$ \ket{000}\bra{000} + \ket{001}\bra{001} + \ket{010}\bra{010} + \ket{011}\bra{011} + \ket{100}\bra{100} + \ket{101}\bra{101} + \ket{110}\bra{111} + \ket{111}\bra{110} $ &
     $ \text{CCNOT} \ket{\psi} = \alpha\ket{000} + \beta\ket{001} + \gamma\ket{010} + \delta\ket{011} + \epsilon\ket{100} + \lambda\ket{101}  + $ \boldmath$ \kappa \ket{110} + \eta\ket{111} $ &
     $ \text{CCNOT} \ket{000} = \ket{000} \newline \text{CCNOT} \ket{001} = \ket{001} 
       \newline \text{CCNOT} \ket{010} = \ket{010} \newline \text{CCNOT} \ket{011} = \ket{011} $ &
