@@ -866,7 +866,7 @@
     CNOT &
     \usebox\cnotgate & 
     \usebox\braketcx &
-    $ \text{CNOT}\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + $ \boldmath$ \delta\ket{10} + \gamma\ket{11}$ &
+    $ \text{CNOT}\ket{\psi} = \alpha\ket{00} + \beta\ket{01} + $ {\boldmath $ \delta\ket{10} + \gamma\ket{11} $} &
     $ \text{CNOT}\ket{00} = \ket{00} \newline
       \text{CNOT}\ket{01} = \ket{01} $ &
     $ \text{CNOT}\ket{10} = \ket{11} \newline
@@ -884,10 +884,12 @@
     Controlled U &
     \usebox\controlledugate  & 
     \usebox\braketcu & 
-    $ \text{C(U)} \ket{\psi} =  \alpha\ket{00} + \gamma\ket{01} + ( a_{0,0} + a_{0,1}) \ket{10} +  ( a_{1,0} +  a_{1,1}) \ket{11}  $ & 
-    $ \text{C(U)} \ket{00} = \ket{00} \newline
-      \text{C(U)} \ket{01} = \ket{01} $ & 
-    $\text{C(U)} \ket{10} = \ket{1} \otimes (\alpha \ket{0} + \gamma \ket{1}) \newline \text{C(U)} \ket{11} = \ket{1} \otimes (\beta \ket{0} + \delta \ket{1})  $ \\
+    $ \text{CU} \ket{\psi} =  \alpha\ket{00} + \beta\ket{01} + \newline 
+      + (\gamma  a_{0,0} + \delta  a_{0,1}) \ket{10} + (\gamma  a_{1,0} + \delta  a_{1,1}) \ket{11}  $ & 
+    $ \text{CU} \ket{00} = \ket{00} \newline
+      \text{CU} \ket{01} = \ket{01} $ & 
+    $\text{CU} \ket{10} = a_{0,0} \ket{10} + a_{1,0} \ket{11} \newline 
+     \text{CU} \ket{11} = a_{0,1} \ket{10} + a_{1,1} \ket{11} $ \\
   \end{keysrefMultiGates}
   
   \begin{keysrefMultiGates}{Toffoli (CCNOT) gate} 
