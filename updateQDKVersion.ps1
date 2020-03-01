@@ -29,16 +29,21 @@ function changeVersion
   
 }
 
-$i = 0
-$csproj_string = 'Include="{0}" Version=' -f $pkgs[$i]
-$csFiles = (Get-ChildItem -recurse -include "*.csproj")
-foreach ($csfile in $csFiles)
+foreach ($pkg in $pkgs)
 {
-    $cs_sentence = (Get-ChildItem -recurse | Select-String -pattern $csproj_string -Context 0).Line
-    $cs_ver = (($cs_sentence -split 'Version=')[1] | %{$_.split('"')[1]})
-    changeVersion "$csfile" "$cs_ver" "$ver"
+    $csproj_string = 'Include="{0}" Version=' -f $pkg
+    $csFiles = (Get-ChildItem -recurse -include "*.csproj")
+    write-output $csproj_string
+    foreach ($csfile in $csFiles)
+    {
+        $cs_sentence = (Get-ChildItem -recurse | Select-String -pattern $csproj_string -Context 0).Line
+        if ($cs_sentence)
+        {
+        $cs_ver = (($cs_sentence -split 'Version=')[1] | %{$_.split('"')[1]})
+        changeVersion "$csfile" "$cs_ver" "$ver"
+        }
+    }
 }
-
 
 $ipynb_string = "%package Microsoft.Quantum.Katas::"
 $ipynbFiles = (Get-ChildItem -recurse -include "*.ipynb")
