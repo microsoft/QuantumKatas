@@ -23,7 +23,7 @@ namespace Quantum.Kata.KeyDistribution {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. Diagonal polarization
-    operation DiagonalPolarization_Reference (qs : Qubit[]) : Unit is Adj {
+    operation DiagonalBasis_Reference (qs : Qubit[]) : Unit is Adj {
         ApplyToEachA(H, qs);
     }
 

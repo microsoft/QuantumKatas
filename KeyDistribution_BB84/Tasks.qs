@@ -38,7 +38,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Goal:  Convert the qubits to diagonal polarization:
     //	      if qs[i] was in state |0⟩, it should become |+⟩ = (|0⟩ + |1⟩) / sqrt(2),
     //	      if qs[i] was in state |1⟩, it should become |-⟩ = (|0⟩ - |1⟩) / sqrt(2).
-    operation DiagonalPolarization (qs : Qubit[]) : Unit {
+    operation DiagonalBasis (qs : Qubit[]) : Unit {
         // ...
     }
 

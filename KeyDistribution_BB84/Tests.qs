@@ -20,9 +20,9 @@ namespace Quantum.Kata.KeyDistribution {
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
 
-    operation T11_DiagonalPolarization_Test () : Unit {
+    operation T11_DiagonalBasis_Test () : Unit {
         for (i in 1 .. 5) {
-            AssertOperationsEqualReferenced(i, DiagonalPolarization, DiagonalPolarization_Reference);
+            AssertOperationsEqualReferenced(i, DiagonalBasis, DiagonalBasis_Reference);
         }
     }
 
