@@ -32,28 +32,92 @@ namespace Quantum.Kata.BasicGates {
     operation ArrayWrapperOperation (op : (Qubit => Unit is Adj+Ctl), qs : Qubit[]) : Unit is Adj+Ctl {
         Controlled op([qs[0]], qs[1]);
     }
-    
+
+    operation DumpDiffOnOneInput (  testImpl : (Qubit => Unit is Adj+Ctl),
+	                                refImpl : (Qubit => Unit is Adj+Ctl)) : Unit {
+        using(q = Qubit()){
+            
+            //Prep a nice state
+            let state = ArcCos(0.6);
+            StatePrep_A(state,q);
+            Message("Start state:");
+            DumpMachine(());
+
+            //Implement the reference solution and show result
+            Message("The desired state:");
+            refImpl(q);
+            DumpMachine(());
+            //Reset for test implementation
+            Reset(q);
+
+            //Prep the state again for test implementation
+            StatePrep_A(state,q);
+            //Implement test implementation and test dump the result
+            testImpl(q);
+            Message("The actual state:");
+            DumpMachine(());
+
+            Reset(q);
+		}
+	}
+
+    operation DumpDiffOnOneInputControlled (  testImpl : (Qubit => Unit is Adj+Ctl),
+	                                refImpl : (Qubit => Unit is Adj+Ctl)) : Unit {
+			using(qs = Qubit[2]){
+            
+			H(qs[0]);
+            //Prep a nice state
+            let state = ArcCos(0.6);
+            StatePrep_A(state,qs[1]);
+            Message("Start state:");
+            DumpMachine(());
+
+            
+            //Implement the reference solution and show result
+            Message("The desired state:");
+            Controlled refImpl([qs[0]],qs[1]);
+            DumpMachine(());
+            //Reset for test implementation
+            ResetAll(qs);
+
+            H(qs[0]);
+            //Prep the state again for test implementation
+            StatePrep_A(state,qs[1]);
+            //Implement test implementation and test dump the result
+            Controlled testImpl([qs[0]],qs[1]);
+            Message("The actual state:");
+            DumpMachine(());
+
+            ResetAll(qs);
+		}
+	} 
     
     // ------------------------------------------------------
     operation T101_StateFlip_Test () : Unit {
+        DumpDiffOnOneInput(StateFlip,StateFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(StateFlip, _), ArrayWrapperOperation(StateFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T102_BasisChange_Test () : Unit {
+        DumpDiffOnOneInput(BasisChange,BasisChange_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(BasisChange, _), ArrayWrapperOperation(BasisChange_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T103_SignFlip_Test () : Unit {
+        DumpDiffOnOneInput(SignFlip,SignFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(SignFlip, _), ArrayWrapperOperation(SignFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T104_AmplitudeChange_Test () : Unit {
+        let dumpAlpha = ((2.0 * PI()) * IntAsDouble(6)) / 36.0;
+        DumpDiffOnOneInput(AmplitudeChange(dumpAlpha, _),AmplitudeChange_Reference(dumpAlpha, _));
+
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperOperation(AmplitudeChange(alpha, _), _), ArrayWrapperOperation(AmplitudeChange_Reference(alpha, _), _));
@@ -63,12 +127,16 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T105_PhaseFlip_Test () : Unit {
+        DumpDiffOnOneInput(PhaseFlip,PhaseFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(PhaseFlip, _), ArrayWrapperOperation(PhaseFlip_Reference, _));
     }
     
     
     // ------------------------------------------------------
     operation T106_PhaseChange_Test () : Unit {
+        let dumpAlpha = ((2.0 * PI()) * IntAsDouble(10)) / 36.0;
+        DumpDiffOnOneInput(PhaseChange(dumpAlpha,_),PhaseChange_Reference(dumpAlpha,_));
+
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperOperation(PhaseChange(alpha, _), _), ArrayWrapperOperation(PhaseChange_Reference(alpha, _), _));
@@ -78,6 +146,8 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T107_GlobalPhaseChange_Test () : Unit {
+
+        DumpDiffOnOneInputControlled(GlobalPhaseChange,GlobalPhaseChange_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperOperation(GlobalPhaseChange, _), ArrayWrapperOperation(GlobalPhaseChange_Reference, _));
     }
     
@@ -126,22 +196,78 @@ namespace Quantum.Kata.BasicGates {
         }
     }
 
-    
+    operation DumpDiffBellStates (  testImpl : (Qubit[] => Unit is Adj),
+	                                refImpl : (Qubit[] => Unit is Adj),
+                                    startState : Int) : Unit{
+        using(qs = Qubit[2]){
 
+            //Prep the bell state and dump this start state
+            StatePrep_BellState(qs, startState); 
+            Message("Start state:");
+            DumpMachine(());
+
+            //Implement and dump the reference state
+            refImpl(qs);
+            Message("Desired state:");
+            DumpMachine(());
+            ResetAll(qs);
+            
+            //Implement and dump the task state
+            StatePrep_BellState(qs,startState);
+            testImpl(qs);
+            Message("The actual state:");
+            DumpMachine(());
+
+            ResetAll(qs);
+		}                        
+	}
+
+        operation DumpDiffBellStatesControlled (testImpl : (Qubit[] => Unit is Adj),
+	                                            refImpl : (Qubit[] => Unit is Adj),
+                                                startState : Int) : Unit{
+        using(qs = Qubit[3]){
+
+            H(qs[0]);
+            //Prep the bell state and dump this start state
+            StatePrep_BellState(Rest(qs), startState); 
+            Message("Start state:");
+            DumpMachine(());
+
+            //Implement and dump the reference state
+            refImpl(Rest(qs));
+            Message("Desired state:");
+            DumpMachine(());
+            ResetAll(qs);
+            
+            H(qs[0]);
+            //Implement and dump the task state
+            StatePrep_BellState(Rest(qs),startState);
+            testImpl(Rest(qs));
+            Message("The actual state:");
+            DumpMachine(());
+
+            ResetAll(qs);
+		}                        
+	}
+
+   
     // ------------------------------------------------------
     operation T108_BellStateChange1_Test () : Unit {
+        DumpDiffBellStates(BellStateChange1,BellStateChange1_Reference,0);
         VerifyBellStateConversion(BellStateChange1, 0, 1);
     }
     
     
     // ------------------------------------------------------
     operation T109_BellStateChange2_Test () : Unit {
+        DumpDiffBellStates(BellStateChange2,BellStateChange2_Reference,0);
         VerifyBellStateConversion(BellStateChange2, 0, 2);
     }
     
     
     // ------------------------------------------------------
     operation T110_BellStateChange3_Test () : Unit {
+        DumpDiffBellStatesControlled(BellStateChange3,BellStateChange3_Reference,0);
         VerifyBellStateConversion(BellStateChange3, 0, 3);
     }
     
@@ -149,13 +275,45 @@ namespace Quantum.Kata.BasicGates {
     // ------------------------------------------------------
     // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
     operation StatePrep_A (alpha : Double, q : Qubit) : Unit is Adj {
-        Ry(2.0 * alpha, q);
+            Ry(2.0 * alpha, q);
+    }
+    //Prepare a state for the various dumps
+    operation StatePrep_B (qs : Qubit[]) : Unit is Adj {
+        let alphas = [5.0,10.0,15.0];
+        for(index in 0 .. Length(qs) - 1){
+            Ry((2.0 * alphas[index]) + IntAsDouble(index + 1) * 2.0 , qs[index]);
+            Rz(2.0 * alphas[index], qs[index]);
+		}
     }
     
-    
+    operation DumpDiffOnMultiInput (N : Int,
+	                                testImpl : (Qubit[] => Unit is Adj),
+	                                refImpl : (Qubit[] => Unit is Adj),
+                                    stateprep : (Qubit[] => Unit is Adj )) : Unit {
+
+	    using(qs = Qubit[N]){
+            stateprep(qs);
+            Message("Start state:");
+            DumpMachine(());
+            //Display the proper solution
+            refImpl(qs);
+            Message("The desired state:");
+            DumpMachine(); 			          
+            ResetAll(qs);
+
+            //Display the test implementation
+            stateprep(qs);
+            testImpl(qs);
+            Message("The actual state:");
+            DumpMachine(); 
+            ResetAll(qs);
+		}
+	}    
+
     // ------------------------------------------------------
     operation T201_TwoQubitGate1_Test () : Unit {
-        
+        DumpDiffOnMultiInput(2,TwoQubitGate1,TwoQubitGate1_Reference,StatePrep_B);
+
         // Note that the way the problem is formulated, we can't just compare two unitaries,
         // we need to create an input state |A⟩ and check that the output state is correct
         using (qs = Qubit[2]) {
@@ -163,7 +321,6 @@ namespace Quantum.Kata.BasicGates {
                 let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
                 within {
-                    // prepare A state
                     StatePrep_A(alpha, qs[0]);
                 }
                 apply {
@@ -187,9 +344,9 @@ namespace Quantum.Kata.BasicGates {
         ApplyToEachA(H, qs);
     }
     
-    
     // ------------------------------------------------------
     operation T202_TwoQubitGate2_Test () : Unit {
+        DumpDiffOnMultiInput(2,TwoQubitGate2,TwoQubitGate2_Reference,StatePrep_PlusPlus);
         using (qs = Qubit[2]) {
             // prepare |+⟩ ⊗ |+⟩ state
             StatePrep_PlusPlus(qs);
@@ -214,6 +371,7 @@ namespace Quantum.Kata.BasicGates {
     
     
     operation T203_TwoQubitGate3_Test () : Unit {
+        DumpDiffOnMultiInput(2,TwoQubitGate3,TwoQubitGate3_Reference,StatePrep_B);
         AssertOperationsEqualReferenced(2, SwapWrapper, TwoQubitGate3_Reference);
         AssertOperationsEqualReferenced(2, TwoQubitGate3, TwoQubitGate3_Reference);
     }
@@ -221,13 +379,14 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T204_ToffoliGate_Test () : Unit {
+       DumpDiffOnMultiInput(3,ToffoliGate, ToffoliGate_Reference, StatePrep_B);
         AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
     
     
     // ------------------------------------------------------
     operation T205_FredkinGate_Test () : Unit {
+        DumpDiffOnMultiInput(3,FredkinGate, FredkinGate_Reference, StatePrep_B);
         AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }
-    
 }
