@@ -19,5 +19,5 @@ purely classical strategy.
 #### Q# Materials
 
 * Q# Samples repository has [an implementation of the CHSH
-  game](https://github.com/Microsoft/Quantum/tree/master/Samples/src/CHSHGame)
+  game](https://github.com/microsoft/Quantum/tree/master/samples/algorithms/chsh-game)
   that includes an explanation of the history and theory behind the game.

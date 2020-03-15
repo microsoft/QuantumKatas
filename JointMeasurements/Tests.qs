@@ -7,9 +7,8 @@
 // The tasks themselves can be found in Tasks.qs file.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.JointMeasurements {
-    
-    open Microsoft.Quantum.Characterization;
+namespace Quantum.Kata.JointMeasurements {    
+    open Microsoft.Quantum.Characterization as Characterization;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -57,8 +56,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit
-    is Adj {
+    operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
         // prep cos(alpha) * |0..0⟩ + sin(alpha) * |1..1⟩
         Ry(2.0 * alpha, qs[0]);
@@ -67,7 +65,7 @@ namespace Quantum.Kata.JointMeasurements {
         }
             
         if (state == 1) {
-            // flip the state of the last half of the qubits
+            // flip the state of the first half of the qubits
             for (i in 0 .. Length(qs) / 2 - 1) {
                 X(qs[i]);
             }
@@ -94,8 +92,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation StatePrep_WState_Arbitrary (qs : Qubit[]) : Unit
-    is Adj + Ctl {
+    operation StatePrep_WState_Arbitrary (qs : Qubit[]) : Unit is Adj + Ctl {
         
         let N = Length(qs);
             
@@ -104,22 +101,19 @@ namespace Quantum.Kata.JointMeasurements {
             X(qs[0]);
         }
         else {
-            // |W_N> = |0⟩|W_(N-1)> + |1⟩|0...0⟩
+            // |W_N⟩ = |0⟩|W_(N-1)⟩ + |1⟩|0...0⟩
             // do a rotation on the first qubit to split it into |0⟩ and |1⟩ with proper weights
             // |0⟩ -> sqrt((N-1)/N) |0⟩ + 1/sqrt(N) |1⟩
             let theta = ArcSin(1.0 / Sqrt(IntAsDouble(N)));
             Ry(2.0 * theta, qs[0]);
                 
             // do a zero-controlled W-state generation for qubits 1..N-1
-            X(qs[0]);
-            Controlled StatePrep_WState_Arbitrary(qs[0 .. 0], qs[1 .. N - 1]);
-            X(qs[0]);
+            (ControlledOnInt(0, StatePrep_WState_Arbitrary))([qs[0]], qs[1 .. N - 1]);
         }
     }
     
     
-    operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit
-    is Adj {
+    operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
         if (state == 0) {
             StatePrep_ParityMeasurement(qs, 0, alpha);
@@ -137,8 +131,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation StatePrep_DifferentBasis (qs : Qubit[], state : Int, alpha : Double) : Unit
-    is Adj {
+    operation StatePrep_DifferentBasis (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
         // prep cos(alpha) * |00⟩ + sin(alpha) * |11⟩
         Ry(2.0 * alpha, qs[0]);
@@ -160,8 +153,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     // prepare state |A⟩ = cos(α) * |0⟩ + sin(α) * |1⟩
-    operation StatePrep_A (alpha : Double, q : Qubit) : Unit
-    is Adj {        
+    operation StatePrep_A (alpha : Double, q : Qubit) : Unit is Adj {        
         Ry(2.0 * alpha, q);
     }
     
@@ -171,7 +163,7 @@ namespace Quantum.Kata.JointMeasurements {
     // for the purposes of the last two tasks: prohibiting all multi-qubit operations,
     // except the two that are allowed to be used for solving this task
     operation GetMultiQubitNonMeasurementOpCount () : Int {
-        return GetMultiQubitOpCount() - GetOracleCallsCount(Measure) - GetOracleCallsCount(MeasureAllZ);
+        return GetMultiQubitOpCount() - GetOracleCallsCount(Measure) - GetOracleCallsCount(Characterization.MeasureAllZ);
     }
     
     
@@ -208,13 +200,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation CNOTWrapper (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            CNOT(qs[0], qs[1]);
-        }
-        
-        adjoint self;
+    operation CNOTWrapper (qs : Qubit[]) : Unit is Adj {
+        CNOT(qs[0], qs[1]);
     }
     
     

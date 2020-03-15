@@ -87,8 +87,7 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |11⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BasisStateMeasurement_Reference (qs : Qubit[]) : Int {
-        // Measurement on the first qubit gives the higher bit of the answer, on the second - the lower.
-        // You can also use library function MeasureIntegerBE to get the same result.
+        // Measurement on the first qubit gives the higher bit of the answer, on the second - the lower
         let m1 = M(qs[0]) == Zero ? 0 | 1;
         let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m1 * 2 + m2;
@@ -286,14 +285,12 @@ namespace Quantum.Kata.Measurements {
     //         3 if they were in |Ψ⁻⟩ state.
     // The state of the qubits at the end of the operation does not matter.
     operation BellState_Reference (qs : Qubit[]) : Int {
+        CNOT(qs[0], qs[1]);
         H(qs[0]);
-        H(qs[1]);
-        CNOT(qs[1], qs[0]);
-        H(qs[1]);
 
         // these changes brought the state back to one of the 2-qubit basis states from task 1.6 (but in different order)
         let m1 = M(qs[0]) == Zero ? 0 | 1;
-        let  m2 = M(qs[1]) == Zero ? 0 | 1;
+        let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
 
@@ -353,15 +350,10 @@ namespace Quantum.Kata.Measurements {
     }
 
     // Helper function to implement diag(-1, 1, 1, 1) for the alternate solution to 1.14
-    operation ApplyDiag (qs : Qubit[]) : Unit {
-
-        body (...) {
-            ApplyToEach(X, qs);
-            Controlled Z([qs[0]], qs[1]);
-            ApplyToEach(X, qs);
-        }
-
-        adjoint self;
+    operation ApplyDiag (qs : Qubit[]) : Unit is Adj {
+        ApplyToEachA(X, qs);
+        Controlled Z([qs[0]], qs[1]);
+        ApplyToEachA(X, qs);
     }
 
 
@@ -378,7 +370,11 @@ namespace Quantum.Kata.Measurements {
         SWAP(qs[0], qs[1]);
 
         // Apply diag(..) (H ⊗ H) diag(..)
-        With(ApplyDiag, ApplyToEach(H, _), qs);
+        within {
+            ApplyDiag(qs);
+        } apply {
+            ApplyToEach(H, qs);
+        }
         return BasisStateMeasurement_Reference(qs);
     }
 
