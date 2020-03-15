@@ -1,73 +1,61 @@
 $ver = $args[0]
 Write-Host $ver
 
-$pkgs=@(
-"Microsoft.Quantum.Standard",
-"Microsoft.Quantum.Development.Kit",
-"Microsoft.Quantum.Xunit",
-"Microsoft.Quantum.Katas",
-"Microsoft.Quantum.IQSharp",
-"Microsoft.Quantum.Development.Kit", 
-"Microsoft.Quantum.Chemistry",
-"Microsoft.Quantum.Chemistry.Jupyter",
-"Microsoft.Quantum.Compiler",
-"Microsoft.Quantum.IQSharp.Core",
-"Microsoft.Quantum.Numerics",
-"Microsoft.Quantum.Research",
-"Microsoft.Quantum.CsharpGeneration",
-"Microsoft.Quantum.Simulators")
-
-function changeVersion
-{
-    Param(
-        [parameter(position=0)]$file, 
-        [parameter(position=1)]$old_ver, 
-        [parameter(position=2)]$new_ver)
-    
-    Write-Output "The current version of the $file is $old_ver"
-    (Get-Content $file) -replace $old_ver, $new_ver | Set-Content $file -Encoding "windows-1251"
-  
+$csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"(?<oldVersion>[0-9|\.]+)\"'
+$csFiles = (Select-String -Path "**\*.csproj" -pattern "Microsoft.Quantum" | Select-Object -Unique Path)
+$csFiles | ForEach-Object {
+    (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
+         $isQuantumPackage = $_ -match $csString
+         if ($isQuantumPackage) {
+             $_ -replace $Matches.oldVersion, $ver
+         } else {
+             $_
+         }
+    } | Set-Content -Encoding UTF8 $_.Path
 }
 
-foreach ($pkg in $pkgs)
-{
-    $csproj_string = 'Include="{0}" Version=' -f $pkg
-    $csFiles = (Get-ChildItem -recurse -include "*.csproj")
-    write-output $csproj_string
-    foreach ($csfile in $csFiles)
+$ipynb_string = '%package Microsoft.Quantum.Katas::(?<oldVersion>[0-9|\.]+)'
+$ipynbFiles =  (Select-String -Path "**\*.ipynb" -pattern "Microsoft.Quantum" | Select-Object -Unique Path)
+
+$ipynbFiles | ForEach-Object {
+    if ($_)
     {
-        $cs_sentence = (Get-ChildItem -recurse | Select-String -pattern $csproj_string -Context 0).Line
-        if ($cs_sentence)
-        {
-        $cs_ver = (($cs_sentence -split 'Version=')[1] | %{$_.split('"')[1]})
-        changeVersion "$csfile" "$cs_ver" "$ver"
-        }
+        (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
+            $isQuantumPackage = $_ -match $ipynb_string
+            if ($isQuantumPackage) {
+                $_ -replace $Matches.oldVersion, $ver
+            } else {
+                $_
+            }
+        } | Set-Content $_.Path
     }
 }
 
-$ipynb_string = "%package Microsoft.Quantum.Katas::"
-$ipynbFiles = (Get-ChildItem -recurse -include "*.ipynb")
-foreach ($ipynbfile in $ipynbFiles)
-{
-    $ipynb_sentence = ($ipynbfile | Select-String -pattern $ipynb_string -Context 0).Line
-    if ($ipynb_sentence)
-    {    
-    $ipynb_ver = (($ipynb_sentence -split '::')[1].Split('"')[0])
-    changeVersion "$ipynbfile" "$ipynb_ver" "$ver" 
-    }
+$docker_string = 'FROM mcr.microsoft.com/quantum/iqsharp-base:(?<oldVersion>[0-9|\.]+)'
+$dockerFiles =  (Select-String -Path "Dockerfile" -pattern "microsoft.com/quantum" | Select-Object -Unique Path)
+$dockerFiles | ForEach-Object {
+    (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
+         $isQuantumPackage = $_ -match $docker_string
+         if ($isQuantumPackage) {
+             $_ -replace $Matches.oldVersion, $ver
+         } else {
+             $_
+         }
+    } | Set-Content $_.Path
 }
 
-
-$docker_string = 'FROM mcr.microsoft.com/quantum/iqsharp-base:'
-$dockerFiles = (Get-ChildItem -recurse -include "Dockerfile")
-$dockerSentence = ($dockerfiles | Select-String -pattern $docker_string -Context 0).Line
-$dockerOld = (($dockerSentence -split '/iqsharp-base:')[1].Split('"')[0])
-changeVersion "$dockerFiles" "$dockerOld" "$ver"
-
-$ps1_string = 'Microsoft.Quantum.IQSharp --version'
-$ps1Files = Get-ChildItem -recurse -include "*install-iqsharp.ps1"
-$ps1Sentence = ($ps1Files | Select-String -pattern $ps1_string -Context 0).Line
-$ps1Old = (($ps1Sentence -split "--version ")[1].Split(' --tool-path')[0].Split('"')[0])
-changeVersion "$ps1Files" "$ps1Old" "$ver"
+$ps1_string = 'Microsoft.Quantum.IQSharp --version (?<oldVersion>[0-9|\.]+)'
+$ps1Files = (Select-String -Path "**\install-iqsharp.ps1" -pattern "Microsoft.Quantum.IQSharp" | Select-Object -Unique Path)
+$ps1Files | ForEach-Object {
+    
+    (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
+         $isQuantumPackage = $_ -match $ps1_string
+         if ($isQuantumPackage) {
+             $_ -replace $Matches.oldVersion, $ver
+         } else {
+             $_
+         }
+    } | Set-Content $_.Path
+}
 
 
