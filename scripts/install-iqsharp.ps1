@@ -13,7 +13,7 @@ try {
     dotnet iqsharp --version
     $install = ($LastExitCode -ne 0)
 } catch {
-    Write-Host ("`dotnet iqsharp --version` threw Exception.")
+    Write-Host ("`dotnet iqsharp --version` threw error: " + $_)
     $install = $True
 }
 
