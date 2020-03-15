@@ -159,7 +159,7 @@ namespace Quantum.Kata.Superposition {
     // Goal: create a superposition of all even numbers on N qubits if isEven is true,
     //       or a superposition of all odd numbers on N qubits if isEven is false.
     operation EvenOddNumbersSuperposition_Reference (qs : Qubit[], isEven : Bool) : Unit is Adj {
-        mutable N = Length(qs);
+        let N = Length(qs);
         for (i in 0 .. N-2) {
             H(qs[i]);
         }
@@ -259,13 +259,12 @@ namespace Quantum.Kata.Superposition {
 
     // helper function for TwoBitstringSuperposition_Reference
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
-        mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] and firstDiff == -1) {
-                set firstDiff = i;
+            if (bits1[i] != bits2[i]) {
+                return i;
             }
         }
-        return firstDiff;
+        return -1;
     }
 
 
