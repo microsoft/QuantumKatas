@@ -26,7 +26,6 @@ Param(
     $Notebook = ""
 )
 
-
 & "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
