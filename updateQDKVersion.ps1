@@ -20,14 +20,14 @@ $ipynbFiles =  (Select-String -Path "**\*.ipynb" -pattern "Microsoft.Quantum" | 
 $ipynbFiles | ForEach-Object {
     if ($_)
     {
-        (Get-Content -Encoding ascii $_.Path) | ForEach-Object {
+        (Get-Content $_.Path) | ForEach-Object {
             $isQuantumPackage = $_ -match $ipynb_string
             if ($isQuantumPackage) {
                 $_ -replace $Matches.oldVersion, $ver
             } else {
                 $_
             }
-        } | Set-Content -Encoding ascii $_.Path
+        } | Set-Content $_.Path
     }
 }
 
