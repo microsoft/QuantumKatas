@@ -285,8 +285,7 @@ namespace Quantum.Kata.Superposition {
                     }
                 }
             }
-            until (ok)
-            fixup { }
+            until (ok);
 
             // convert numbers to bit strings
             for (i in 0 .. 3) {
