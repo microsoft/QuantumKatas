@@ -130,10 +130,10 @@ namespace Quantum.Kata.Superposition {
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
     operation GHZ_State_Reference (qs : Qubit[]) : Unit is Adj {
 
-        H(qs[0]);
+        H(Head(qs));
 
         for (q in Rest(qs)) {
-            CNOT(qs[0], q);
+            CNOT(Head(qs), q);
         }
     }
 
@@ -159,13 +159,13 @@ namespace Quantum.Kata.Superposition {
     // Goal: create a superposition of all even numbers on N qubits if isEven is true,
     //       or a superposition of all odd numbers on N qubits if isEven is false.
     operation EvenOddNumbersSuperposition_Reference (qs : Qubit[], isEven : Bool) : Unit is Adj {
-        let N = Length(qs);
-        for (i in 0 .. N-2) {
-            H(qs[i]);
+
+        for (q in Most(qs)) {
+            H(q);
         }
         // for odd numbers, flip the last bit to 1
         if (not isEven) {
-            X(qs[N-1]);
+            X(Tail(qs));
         }
     }
 
@@ -231,16 +231,16 @@ namespace Quantum.Kata.Superposition {
     // Example: for bit string = [true, false] the qubit state required is (|00⟩ + |10⟩) / sqrt(2).
     operation ZeroAndBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[]) : Unit is Adj {
 
-        EqualityFactI(Length(bits), Length(qs), "Arrays should have the same length");
-        EqualityFactB(bits[0], true, "First bit of the input bit string should be set to true");
+        Fact(Length(bits)==Length(qs), "Arrays should have the same length");
+        Fact(Head(bits)==true, "First bit of the input bit string should be set to true");
 
         // Hadamard first qubit
-        H(qs[0]);
+        H(Head(qs));
 
         // iterate through the bit string and CNOT to qubits corresponding to true bits
         for (i in 1 .. Length(qs) - 1) {
             if (bits[i]) {
-                CNOT(qs[0], qs[i]);
+                CNOT(Head(qs), qs[i]);
             }
         }
     }
