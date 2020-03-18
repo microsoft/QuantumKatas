@@ -231,8 +231,8 @@ namespace Quantum.Kata.Superposition {
     // Example: for bit string = [true, false] the qubit state required is (|00⟩ + |10⟩) / sqrt(2).
     operation ZeroAndBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[]) : Unit is Adj {
 
-        Fact(Length(bits)==Length(qs), "Arrays should have the same length");
-        Fact(Head(bits)==true, "First bit of the input bit string should be set to true");
+        Fact(Length(bits) == Length(qs), "Arrays should have the same length");
+        Fact(Head(bits), "First bit of the input bit string should be set to true");
 
         // Hadamard first qubit
         H(Head(qs));
