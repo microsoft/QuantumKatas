@@ -70,7 +70,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectors_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        Fact(Length(qs)==2, "The array should have exactly 2 qubits.");
+        Fact(Length(qs) == 2, "The array should have exactly 2 qubits.");
 
         // ...
     }
@@ -82,7 +82,7 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectorsWithPhases_TwoQubits (qs : Qubit[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        Fact(Length(qs)==2, "The array should have exactly 2 qubits.");
+        Fact(Length(qs) == 2, "The array should have exactly 2 qubits.");
 
         // Hint: Is this state separable?
         // ...
@@ -175,8 +175,8 @@ namespace Quantum.Kata.Superposition {
     operation ZeroAndBitstringSuperposition (qs : Qubit[], bits : Bool[]) : Unit {
         // The following lines enforce the constraints on the input that you are given.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
-        Fact(Length(bits)==Length(qs), "Arrays should have the same length");
-        Fact(Head(bits)==true, "First bit of the input bit string should be set to true");
+        Fact(Length(bits) == Length(qs), "Arrays should have the same length");
+        Fact(Head(bits), "First bit of the input bit string should be set to true");
 
         // ...
     }
