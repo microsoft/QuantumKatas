@@ -147,6 +147,10 @@ namespace Quantum.Kata.Teleportation {
     operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
     is Adj {
         
+        // |000⟩ --H⊗H⊗I--> 1/2(|000⟩+|010⟩+|100⟩+|110⟩) --X(c)-> 1/2(|001⟩+|011⟩+|101⟩+|111⟩)
+        // --CNOT(a,b,c)-> 1/2(|001⟩+|011⟩+|101⟩+|110⟩) --X(a)X(b)-> 1/2(|111⟩+|101⟩+|011⟩+|000⟩)
+        // --CNOT(a,b,c)-> 1/2(|110⟩+|101⟩+|011⟩+|000⟩) --X(a)X(b)-> 1/2(|000⟩+|011⟩+|101⟩+|110⟩)
+        
         H(qAlice);
         H(qBob);
         X(qCharlie);
