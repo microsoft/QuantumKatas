@@ -306,14 +306,14 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     operation T204_ToffoliGate_Test () : Unit {
-        DumpDiff(2, StatePrepMiscAmplitudes, ToffoliGate, ToffoliGate_Reference);
+        DumpDiff(3, StatePrepMiscAmplitudes, ToffoliGate, ToffoliGate_Reference);
         AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
     
     
     // ------------------------------------------------------
     operation T205_FredkinGate_Test () : Unit {
-        DumpDiff(2, StatePrepMiscAmplitudes, FredkinGate, FredkinGate_Reference);
+        DumpDiff(3, StatePrepMiscAmplitudes, FredkinGate, FredkinGate_Reference);
         AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }
 }
