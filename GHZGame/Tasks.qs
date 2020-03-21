@@ -7,6 +7,7 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Logical;
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
