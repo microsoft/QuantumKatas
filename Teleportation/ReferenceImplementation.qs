@@ -146,24 +146,37 @@ namespace Quantum.Kata.Teleportation {
     // Task 4.1. Entangled trio
     operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
     is Adj {
-        
-        // |000⟩ --H⊗H⊗I--> 1/2(|000⟩+|010⟩+|100⟩+|110⟩) --X(c)-> 1/2(|001⟩+|011⟩+|101⟩+|111⟩)
-        // --CNOT(a,b,c)-> 1/2(|001⟩+|011⟩+|101⟩+|110⟩) --X(a)X(b)-> 1/2(|111⟩+|101⟩+|011⟩+|000⟩)
-        // --CNOT(a,b,c)-> 1/2(|110⟩+|101⟩+|011⟩+|000⟩) --X(a)X(b)-> 1/2(|000⟩+|011⟩+|101⟩+|110⟩)
-        
+        // Starting with |000⟩
+
         H(qAlice);
+
+        // now state is:  1/sqrt(2) (|0⟩+|1⟩) |00⟩
+
         H(qBob);
+
+        // state: 1/2(|000⟩+|010⟩+|100⟩+|110⟩)
+
         X(qCharlie);
 
+        // state: 1/2(|001⟩+|011⟩+|101⟩+|111⟩)
+
         CCNOT(qAlice, qBob, qCharlie);
+
+        // state: 1/2(|001⟩+|011⟩+|101⟩+|110⟩)
 
         X(qAlice);
         X(qBob);
 
+        // state: 1/2(|111⟩+|101⟩+|011⟩+|000⟩)
+
         CCNOT(qAlice, qBob, qCharlie);
+
+        // state:  1/2(|110⟩+|101⟩+|011⟩+|000⟩)
 
         X(qAlice);
         X(qBob);
+
+        // final state:  1/2(|000⟩+|011⟩+|101⟩+|110⟩)
     }
     
     
