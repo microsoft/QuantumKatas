@@ -8,7 +8,6 @@ namespace Quantum.Kata.RippleCarryAdder {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
-    open Microsoft.Quantum.Logical;
     
     
     //////////////////////////////////////////////////////////////////
