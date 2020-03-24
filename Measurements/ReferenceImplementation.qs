@@ -74,7 +74,7 @@ namespace Quantum.Kata.Measurements {
     // The state of the qubits at the end of the operation does not matter.
     operation ZeroZeroOrOneOne_Reference (qs : Qubit[]) : Int {
         // it's enough to do one measurement on any qubit
-        return M(qs[0]) == Zero ? 0 | 1;
+        return M(Head(qs)) == Zero ? 0 | 1;
     }
 
 
