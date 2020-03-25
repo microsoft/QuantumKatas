@@ -15,6 +15,7 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Logical;
 
 
     //////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.1. Win condition
     function WinCondition_Reference (rst : Bool[], abc : Bool[]) : Bool {
-        return (rst[0] or rst[1] or rst[2]) == XOR(XOR(abc[0], abc[1]), abc[2]);
+        return (rst[0] or rst[1] or rst[2]) == Xor(Xor(abc[0], abc[1]), abc[2]);
     }
 
 
