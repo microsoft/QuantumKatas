@@ -9,7 +9,6 @@
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.JointMeasurements {    
-    open Microsoft.Quantum.Characterization as Characterization;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Measurement;
     
@@ -41,7 +40,7 @@ namespace Quantum.Kata.JointMeasurements {
         // Since the number of qubits in qs is even, the parity of both |0..0⟩ and |1..1⟩ basis states is 0,
         // so both of them belong to the +1 eigenspace of operator Z ⊗ Z ⊗ ... ⊗ Z. 
         // All basis vectors in W state have parity 1 and belong to the -1 eigenspace of this operator.
-        return Characterization.MeasureAllZ(qs) == Zero ? 0 | 1;
+        return MeasureAllZ(qs) == Zero ? 0 | 1;
     }
     
     
@@ -74,10 +73,10 @@ namespace Quantum.Kata.JointMeasurements {
                 let c = qs[0];
                 let t = qs[1];
                 H(a);
-                let p1 = Characterization.MeasureAllZ([c, a]);
+                let p1 = MeasureAllZ([c, a]);
                 H(a);
                 H(t);
-                let p2 = Characterization.MeasureAllZ([a, t]);
+                let p2 = MeasureAllZ([a, t]);
                 H(a);
                 H(t);
                 let m = MResetZ(a);

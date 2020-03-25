@@ -139,6 +139,7 @@ namespace Microsoft.Quantum.Katas
             try
             {
                 var qsim = CreateSimulator();
+                qsim.DisableExceptionPrinting();
 
                 qsim.DisableLogToConsole();
                 // Register all solutions to previously executed tasks (including the current one)
