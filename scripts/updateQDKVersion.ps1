@@ -39,10 +39,6 @@ $csFiles | ForEach-Object {
 $ipynbString = '%package Microsoft.Quantum.Katas::(?<oldVersion>[0-9|\.]+)'
 $ipynbFiles =  (Select-String -Path "..\**\*.ipynb" -pattern "Microsoft.Quantum" | Select-Object -Unique Path)
 
-Write-Output (Get-ChildItem -Recurse "*.ipynb" `
-| ForEach-Object { Select-String -Path $_ -Pattern $ipynbString } `
-| Select-Object -Unique Path)
-
 $ipynbFiles | ForEach-Object {
     if ($_)
     {
