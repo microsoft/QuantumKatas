@@ -24,7 +24,7 @@ param(
 #>
 
 $csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"(?<oldVersion>[0-9|\.]+)\"'
-$csFiles = (Select-String -Path "..\**\*.csproj" -pattern "Microsoft.Quantum" | Select-Object -Unique Path)
+$csFiles = (Get-ChildItem -Path "..\" -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $csFiles | ForEach-Object {
     (Get-Content -Encoding UTF8NoBom $_.Path) | ForEach-Object {
          $isQuantumPackage = $_ -match $csString
@@ -37,8 +37,7 @@ $csFiles | ForEach-Object {
 }
 
 $ipynbString = '%package Microsoft.Quantum.Katas::(?<oldVersion>[0-9|\.]+)'
-$ipynbFiles =  (Select-String -Path "..\**\*.ipynb" -pattern "Microsoft.Quantum" | Select-Object -Unique Path)
-
+$ipynbFiles =  (Get-ChildItem -Path "..\" -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $ipynbFiles | ForEach-Object {
     if ($_)
     {
