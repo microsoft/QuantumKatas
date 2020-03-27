@@ -1,7 +1,5 @@
 #!/usr/bin/env pwsh
 
-#Requires -PSEdition Core
-
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)]
@@ -23,21 +21,23 @@ param(
         PS> ./Update-QDKVersion.ps1 -Version 0.10.2002.2610
 #>
 
+$katasRoot = Join-Path $PSScriptRoot "\..\"
+
 $csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"(?<oldVersion>[0-9|\.]+)\"'
-$csFiles = (Get-ChildItem -Path "..\" -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
+$csFiles = (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $csFiles | ForEach-Object {
-    (Get-Content -Encoding UTF8NoBom $_.Path) | ForEach-Object {
+    (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
          $isQuantumPackage = $_ -match $csString
          if ($isQuantumPackage) {
              $_ -replace $Matches.oldVersion, $Version
          } else {
              $_
          }
-    } | Set-Content -Encoding UTF8NoBom $_.Path
+    } | Set-Content -Encoding UTF8 $_.Path
 }
 
 $ipynbString = '%package Microsoft.Quantum.Katas::(?<oldVersion>[0-9|\.]+)'
-$ipynbFiles =  (Get-ChildItem -Path "..\" -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
+$ipynbFiles =  (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $ipynbFiles | ForEach-Object {
     if ($_)
     {
@@ -52,26 +52,26 @@ $ipynbFiles | ForEach-Object {
     }
 }
 $dockerString = 'FROM mcr.microsoft.com/quantum/iqsharp-base:(?<oldVersion>[0-9|\.]+)'
-$dockerFiles =  (Select-String -Path "..\Dockerfile" -pattern "microsoft.com/quantum" | Select-Object -Unique Path)
-Get-Content $dockerFiles.Path | ForEach-Object {
+$dockerPath = Join-Path $katasRoot "Dockerfile"
+(Get-Content -Path $dockerPath) | ForEach-Object {
          $isQuantumPackage = $_ -match $dockerString
          if ($isQuantumPackage) {
              $_ -replace $Matches.oldVersion, $Version
          } else {
              $_
          }
-    } | Set-Content $dockerFiles.Path
+    } | Set-Content -Path $dockerPath
 
 
 $ps1String = 'Microsoft.Quantum.IQSharp --version (?<oldVersion>[0-9|\.]+)'
-$ps1Files = (Select-String -Path "..\scripts\install-iqsharp.ps1" -pattern "Microsoft.Quantum.IQSharp" | Select-Object -Unique Path)
-Get-Content $ps1Files.Path | ForEach-Object {
+$ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
+(Get-Content -Path $ps1Path) | ForEach-Object {
          $isQuantumPackage = $_ -match $ps1String
          if ($isQuantumPackage) {
              $_ -replace $Matches.oldVersion, $Version
          } else {
              $_
          }
-    } | Set-Content $ps1Files.Path
+    } | Set-Content -Path $ps1Path
 
 
