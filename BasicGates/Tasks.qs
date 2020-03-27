@@ -162,7 +162,7 @@ namespace Quantum.Kata.BasicGates {
     // Note that unless the starting state of the first qubit was |0⟩ or |1⟩,
     // the resulting two-qubit state can not be represented as a tensor product
     // of the states of individual qubits any longer; thus the qubits become entangled.
-    operation TwoQubitGate1 (qs : Qubit[]) : Unit is Adj {
+    operation TwoQubitGate1 (qs : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -173,7 +173,7 @@ namespace Quantum.Kata.BasicGates {
     // Goal:  Change the two-qubit state to (|00⟩ + |01⟩ + |10⟩ - |11⟩) / 2.
     // Note that while the starting state can be represented as a tensor product of single-qubit states,
     // the resulting two-qubit state can not be represented in such a way.
-    operation TwoQubitGate2 (qs : Qubit[]) : Unit is Adj {
+    operation TwoQubitGate2 (qs : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -182,7 +182,7 @@ namespace Quantum.Kata.BasicGates {
     // Input: Two qubits (stored in an array of length 2) in an arbitrary
     //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
     // Goal:  Change the two-qubit state to α|00⟩ + γ|01⟩ + β|10⟩ + δ|11⟩.
-    operation TwoQubitGate3 (qs : Qubit[]) : Unit is Adj {
+    operation TwoQubitGate3 (qs : Qubit[]) : Unit is Adj+Ctl {
         // Hint: this task can be solved using one intrinsic gate;
         // as an exercise, try to express the solution using several
         // (possibly controlled) Pauli gates.
@@ -196,7 +196,7 @@ namespace Quantum.Kata.BasicGates {
     // Goal:  Flip the state of the third qubit if the state of the first two is |11⟩:
     //        i.e., change the three-qubit state to
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + θ|110⟩ + η|111⟩.
-    operation ToffoliGate (qs : Qubit[]) : Unit is Adj {
+    operation ToffoliGate (qs : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -206,7 +206,7 @@ namespace Quantum.Kata.BasicGates {
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Swap the states of second and third qubit if and only if the state of the first qubit is |1⟩:
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + η|101⟩ + ζ|110⟩ + θ|111⟩.
-    operation FredkinGate (qs : Qubit[]) : Unit is Adj {
+    operation FredkinGate (qs : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
