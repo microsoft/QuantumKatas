@@ -110,11 +110,11 @@ namespace Quantum.Kata.KeyDistribution {
     operation T25_CheckKeysMatch_Test () : Unit {
         for (i in 10 .. 30) {
             let (key1, key2) = GenerateRandomState(i);
-            let threshold = RandomInt(50) + 50;
-            let expected = CheckKeysMatch_Reference(key1, key2, threshold);
-            let result = CheckKeysMatch(key1, key2, threshold);
+            let errorRate = RandomInt(50) ;
+            let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
+            let result = CheckKeysMatch(key1, key2, errorRate);
 
-            Fact(expected == result, $"Check for {key1} vs {key2} with threshold {threshold}% should return {expected}, returned {result}");
+            Fact(expected == result, $"Check for {key1} vs {key2} with errorRate {errorRate}% should return {expected}, returned {result}");
         }
     }
 
