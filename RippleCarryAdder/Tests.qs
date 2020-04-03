@@ -17,6 +17,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Logical;
     
     open Quantum.Kata.Utils;
 
@@ -314,9 +315,9 @@ namespace Quantum.Kata.RippleCarryAdder {
         let a = bits[0];
         let b = bits[1];
         let c = bits[2];
-        let ab = XOR(a, b);
-        let ac = XOR(a, c);
-        let cout = XOR(ab and ac, a);
+        let ab = Xor(a, b);
+        let ac = Xor(a, c);
+        let cout = Xor(ab and ac, a);
         return [cout, ab, ac];
     }
 
@@ -333,9 +334,9 @@ namespace Quantum.Kata.RippleCarryAdder {
         let a = bits[0];
         let b = bits[1];
         let c = bits[2];
-        let a2 = XOR(b and c, a);
-        let c2 = XOR(a2, c);
-        let b2 = XOR(c2, b);
+        let a2 = Xor(b and c, a);
+        let c2 = Xor(a2, c);
+        let b2 = Xor(c2, b);
         return [a2, b2, c2];
     }
     
