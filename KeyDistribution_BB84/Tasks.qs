@@ -28,10 +28,9 @@ namespace Quantum.Kata.KeyDistribution {
     // Normally there are two parties, commonly referred to as Alice 
     // and Bob, who want to share a random, secret string of bits 
     // called a _key_. This key can then be used for a variety of 
-    // different [cryptographic protocols](https://en.wikipedia.org/wiki/Cryptographic_protocol) 
-    // like encryption or authentication. Quantum versions of key 
-    // exchange protocols look very similar, and utilize qubits as 
-    // a way to securely transmit the bit string. 
+    // different cryptographic protocols like encryption or authentication. 
+    // Quantum versions of key exchange protocols look very similar, 
+    // and utilize qubits as a way to securely transmit the bit string. 
     // Alice and Bob have two connections, one quantum channel and 
     // one bidirectional classical channel. In this kata you will 
     // simulate what happens on the quantum channel by preparing 
@@ -40,16 +39,11 @@ namespace Quantum.Kata.KeyDistribution {
     // binary key.
 
     // There are a variety of different quantum key distribution protocols, 
-    // however the most common is called [BB84](https://en.wikipedia.org/wiki/BB84)
-    // after the initials of the authors and the year it was published. 
+    // however the most common is called BB84 after the initials of the 
+    // authors and the year it was published. 
     // It is used in many existing commercial quantum key distribution 
     // devices that implement BB84 with single photons as the qubits. 
-
-    // For more information:
-    // * [Introduction to quantum cryptography and BB84](https://www.youtube.com/watch?v=UiJiXNEm-Go).
-    // * [QKD summer school lecture on quantum key distribution](https://www.youtube.com/watch?v=oEJOtu0joXk).
-    // * [Updated version of the BB84 paper](https://www.sciencedirect.com/science/article/pii/S0304397514004241?via%3Dihub).
-    
+ 
     // Each task is wrapped in one operation preceded by the description 
     // of the task. Each task (except tasks in which you have to write a 
     // test) has a unit test associated with it, which initially fails. 
@@ -190,7 +184,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Inputs:
     //      1) "keyAlice" and "keyBob": Bool arrays of equal length N describing 
     //         the versions of the shared key obtained by Alice and Bob, respectively,
-    //      2) "errorRate": an integer between 0 and 50 - the percentage of the key bits that didn't match.
+    //      2) "errorRate": an integer between 0 and 50 - the percentage of the key bits 
+    //         that did not match in Alice's and Bob's key.
     // Output: "true" if the percentage of errors is less than or equal to the error rate, 
     //          and "false" otherwise.
     function CheckKeysMatch (keyAlice : Bool[], keyBob : Bool[], errorRate : Int) : Bool {
