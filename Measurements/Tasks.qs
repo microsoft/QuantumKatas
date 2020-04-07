@@ -3,6 +3,7 @@
 
 namespace Quantum.Kata.Measurements {
 
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -124,6 +125,9 @@ namespace Quantum.Kata.Measurements {
     // Example: for bit strings [false, true, false] and [false, false, true]
     //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
     operation TwoBitstringsMeasurement (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Int {
+        Fact(Length(bits1) == Length(bits2), "Bit Arrays should have the same length");
+        Fact(Length(qs) == Length(bits1), "Arrays should have the same length");
+
         // ...
         return -1;
     }
@@ -156,6 +160,9 @@ namespace Quantum.Kata.Measurements {
     //          return 1 corresponds to state (|101⟩ + |001⟩) / sqrt(2),
     //          and you can distinguish these states perfectly by measuring the second qubit.
     operation SuperpositionOneMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
+
         // ...
         return -1;
     }
@@ -180,6 +187,9 @@ namespace Quantum.Kata.Measurements {
     //          return 0 corresponds to state (|010⟩ + |001⟩) / sqrt(2), 
     //          return 1 corresponds to state (|111⟩ + |011⟩) / sqrt(2)
     operation SuperpositionMeasurement (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
+
         // ...
         return -1;
     }
