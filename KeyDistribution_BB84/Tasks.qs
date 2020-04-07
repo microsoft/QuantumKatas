@@ -176,9 +176,9 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // Task 2.5. Check if error rate was low enough
-    // The main trace evesdroppers can leave on a key exchange is to introduce
-    // more errors into the transmission. Alice and Bob have already characterized
-    // the error rate of their channel, and need to make sure when exchaning 
+    // The main trace eavesdroppers can leave on a key exchange is to introduce
+    // more errors into the transmission. Alice and Bob should have characterized
+    // the error rate of their channel before launching the protocol, and need to make sure when exchanging 
     // the key that there were not more errors than they expected. The "errorRate" 
     // parameter represents their earlier characterization of their channel.
     // Inputs:
@@ -244,7 +244,7 @@ namespace Quantum.Kata.KeyDistribution {
     // prepare a new qubit in the state she measured. Then she will send the 
     // new qubit back to the channel. 
     // Eve hopes that if she got lucky with her measurement, that when Bob 
-    // measures the qubit he dosen't get an error so she won't be caught!
+    // measures the qubit he doesn't get an error so she won't be caught!
     //
     // Inputs:
     //      1) "q": a qubit in one of the following states: |0⟩, |1⟩, |+⟩ or |-⟩,
