@@ -27,7 +27,7 @@ namespace Quantum.Kata.Measurements {
         let nStates = 2;
         mutable misclassifications = new Int[nStates];
         
-        using (qs = Qubit[1]) {
+        using (q = Qubit()) {
             for (i in 1 .. nTotal) {
                 // get a random bit to define whether qubit will be in a state corresponding to true return (1) or to false one (0)
                 // state = 0 false return
@@ -35,16 +35,16 @@ namespace Quantum.Kata.Measurements {
                 let state = RandomIntPow2(1);
 
                 // do state prep: convert |0⟩ to outcome with false return or to outcome with true return depending on state
-                statePrep(qs[0], state);
+                statePrep(q, state);
 
                 // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
-                let ans = testImpl(qs[0]);
+                let ans = testImpl(q);
                 if (ans != (state == 1)) {
                     set misclassifications w/= state <- misclassifications[state] + 1;
                 }
 
                 // we're not checking the state of the qubit after the operation
-                Reset(qs[0]);
+                Reset(q);
             }
         }
         
@@ -77,16 +77,16 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation T102_InitializeQubit_Test () : Unit {
-        using (qs = Qubit[1]) {
+        using (q = Qubit()) {
             for (i in 0 .. 36) {
                 let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-                Ry(2.0 * alpha, qs[0]);
+                Ry(2.0 * alpha, q);
 
                 // Test Task 1
-                InitializeQubit(qs[0]);
+                InitializeQubit(q);
 
                 // Confirm that the state is |0⟩.
-                AssertAllZero(qs);
+                AssertQubit(Zero, q);
             }
         }
     }
@@ -301,13 +301,12 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation StatePrep_FindFirstDiff (bits1 : Bool[], bits2 : Bool[]) : Int {
-        mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] and firstDiff == -1) {
-                set firstDiff = i;
+            if (bits1[i] != bits2[i]) {
+                return i;
             }
         }
-        return firstDiff;
+        return -1;
     }
 
 
@@ -517,10 +516,9 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation GHZ_State_Reference (qs : Qubit[]) : Unit is Adj {
-
-        H(qs[0]);
-        for (i in 1 .. Length(qs) - 1) {
-            CNOT(qs[0], qs[i]);
+        H(Head(qs));
+        for (q in Rest(qs)) {
+            CNOT(Head(qs), q);
         }
     }
 

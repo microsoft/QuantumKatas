@@ -18,6 +18,7 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Logical;
 
 
     //////////////////////////////////////////////////////////////////
@@ -189,9 +190,9 @@ namespace Quantum.Kata.Measurements {
         Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
 
         // measure all qubits and check in which array you can find the resulting bit string
-        let meas = ResultArrayAsBoolArray (MultiM(qs));
+        let meas = ResultArrayAsBoolArray(MultiM(qs));
         for (i in 0 .. Length(bits1) - 1) {
-            if (AreBitstringsEqual_Reference(bits1[i], meas)) {
+            if (EqualA(EqualB, bits1[i], meas)) {
                 return 0;
             }
         }
@@ -361,14 +362,6 @@ namespace Quantum.Kata.Measurements {
         return m2 * 2 + m1;
     }
 
-    // Helper function to implement diag(-1, 1, 1, 1) for the alternate solution to 1.14
-    operation ApplyDiag_Reference (qs : Qubit[]) : Unit is Adj {
-        ApplyToEachA(X, qs);
-        Controlled Z([qs[0]], qs[1]);
-        ApplyToEachA(X, qs);
-    }
-
-
     // Alternate reference implementation for Task 1.14
     operation TwoQubitStatePartTwo_Alternate (qs : Qubit[]) : Int {
 
@@ -383,7 +376,7 @@ namespace Quantum.Kata.Measurements {
 
         // Apply diag(..) (H ⊗ H) diag(..)
         within {
-            ApplyDiag_Reference(qs);
+            ApplyDiagonalUnitary([PI(), 0.0, 0.0, 0.0], LittleEndian(qs));
         } apply {
             ApplyToEach(H, qs);
         }
