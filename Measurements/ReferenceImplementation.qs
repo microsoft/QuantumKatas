@@ -121,7 +121,7 @@ namespace Quantum.Kata.Measurements {
 
 
     operation TwoBitstringsMeasurement_Reference (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Int {
-        Fact(Length(bits1) == Length(bits2), "Bit Arrays should have the same length");
+        Fact(Length(bits1) == Length(bits2), "Bit arrays should have the same length");
         Fact(Length(qs) == Length(bits1), "Arrays should have the same length");
 
         // find the first index at which the bit strings are different and measure it
@@ -157,8 +157,8 @@ namespace Quantum.Kata.Measurements {
     }
 
     operation SuperpositionOneMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
-        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
-        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit arrays should be equal to number of qubits");
 
         // find the position in which the bit strings of two arrays differ
         let diff = FindFirstSuperpositionDiff_Reference(bits1, bits2, Length(qs));
@@ -174,20 +174,9 @@ namespace Quantum.Kata.Measurements {
     }
 
     // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
-
-    function AreBitstringsEqual_Reference (bits1 : Bool[], bits2 : Bool[]) : Bool {
-        for (i in 0.. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     operation SuperpositionMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
-        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
-        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit arrays should be equal to number of qubits");
 
         // measure all qubits and check in which array you can find the resulting bit string
         let meas = ResultArrayAsBoolArray(MultiM(qs));
@@ -204,7 +193,7 @@ namespace Quantum.Kata.Measurements {
     // Slightly more expensive, but uses built-in functions
     operation SuperpositionMeasurement_Alternate (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
         Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
-        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be euqal to number of qubits");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be equal to number of qubits");
 
         // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
         let measuredState = ResultArrayAsInt(MultiM(qs));
