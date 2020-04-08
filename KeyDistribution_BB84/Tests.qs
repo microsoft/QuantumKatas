@@ -108,11 +108,24 @@ namespace Quantum.Kata.KeyDistribution {
 
     // ------------------------------------------------------
     operation T25_CheckKeysMatch_Test () : Unit {
+        // Hard-coded test to validate that the solution checks the right relation with error rate
+        mutable key1 = ConstantArray(10, false);
+        mutable key2 = key1 w/ 3 <- true;
+        mutable errorRate = 15;
+        mutable result = CheckKeysMatch(key1, key2, errorRate);
+        // 10% mismatch with 15% error rate should pass
+        Fact(result, $"Check for {key1} vs {key2} with errorRate {errorRate}% should return {true}, returned {result}");
+
+        set key2 w/= 5 <- true;
+        set result = CheckKeysMatch(key1, key2, errorRate);
+        // 20% mismatch with 15% error rate should fail
+        Fact(not result, $"Check for {key1} vs {key2} with errorRate {errorRate}% should return {false}, returned {result}");
+
         for (i in 10 .. 30) {
-            let (key1, key2) = GenerateRandomState(i);
-            let errorRate = RandomInt(50) ;
+            set (key1, key2) = GenerateRandomState(i);
+            set errorRate = RandomInt(50) ;
             let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
-            let result = CheckKeysMatch(key1, key2, errorRate);
+            set result = CheckKeysMatch(key1, key2, errorRate);
 
             Fact(expected == result, $"Check for {key1} vs {key2} with errorRate {errorRate}% should return {expected}, returned {result}");
         }

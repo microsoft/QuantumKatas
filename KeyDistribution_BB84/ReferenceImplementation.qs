@@ -93,14 +93,14 @@ namespace Quantum.Kata.KeyDistribution {
     // Task 2.5. Check if error rate was low enough
     function CheckKeysMatch_Reference (keyAlice : Bool[], keyBob : Bool[], errorRate : Int) : Bool {
         let N = Length(keyAlice);
-        mutable count = 0;
+        mutable mismatchCount = 0;
         for (i in 0 .. N - 1) {
             if (keyAlice[i] != keyBob[i]) {
-                set count += 1;
+                set mismatchCount += 1;
             }
         }
 
-        return IntAsDouble(count) / IntAsDouble(N) <= IntAsDouble(errorRate) / 100.0;
+        return IntAsDouble(mismatchCount) / IntAsDouble(N) <= IntAsDouble(errorRate) / 100.0;
     }
 
 
