@@ -19,4 +19,6 @@ There are a variety of different quantum key distribution protocols, however the
 * [Introduction to quantum cryptography and BB84](https://www.youtube.com/watch?v=UiJiXNEm-Go).
 * [QKD summer school lecture on quantum key distribution](https://www.youtube.com/watch?v=oEJOtu0joXk).
 * [Key Distribution Wikipedia article](https://en.wikipedia.org/wiki/Quantum_key_distribution)
+* [BB84 Protocol Wikipedia article](https://en.wikipedia.org/wiki/BB84)
+* [Short animated video introducing BB84 protocol](https://www.youtube.com/watch?v=UVzRbU6y7Ks)
 * [Updated version of the BB84 paper](https://www.sciencedirect.com/science/article/pii/S0304397514004241?via%3Dihub).

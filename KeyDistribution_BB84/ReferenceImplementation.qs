@@ -100,7 +100,7 @@ namespace Quantum.Kata.KeyDistribution {
             }
         }
 
-        return IntAsDouble(count) / IntAsDouble(N) >= IntAsDouble(errorRate) / 100.0;
+        return IntAsDouble(count) / IntAsDouble(N) <= IntAsDouble(errorRate) / 100.0;
     }
 
 

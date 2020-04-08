@@ -20,8 +20,7 @@ namespace Quantum.Kata.KeyDistribution {
     // designed to teach you about a neat quantum technology where you
     // can use qubits to exchange secure cryptographic keys. In 
     // particular, you will work through implementing and testing a 
-    // quantum key distribution protocol called 
-    // [BB84](https://en.wikipedia.org/wiki/BB84). 
+    // quantum key distribution protocol called BB84. 
     
     // Background
     // What does a key distribution protocol look like in general? 
@@ -184,8 +183,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Inputs:
     //      1) "keyAlice" and "keyBob": Bool arrays of equal length N describing 
     //         the versions of the shared key obtained by Alice and Bob, respectively,
-    //      2) "errorRate": an integer between 0 and 50 - the percentage of the key bits 
-    //         that did not match in Alice's and Bob's key.
+    //      2) "errorRate": an integer between 0 and 50 - the percentage of the bits 
+    //         that did not match in Alice's and Bob's channel characterization.
     // Output: "true" if the percentage of errors is less than or equal to the error rate, 
     //          and "false" otherwise.
     function CheckKeysMatch (keyAlice : Bool[], keyBob : Bool[], errorRate : Int) : Bool {
