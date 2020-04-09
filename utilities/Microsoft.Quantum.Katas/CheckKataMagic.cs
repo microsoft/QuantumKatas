@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
@@ -20,7 +21,30 @@ namespace Microsoft.Quantum.Katas
         public CheckKataMagic(IOperationResolver resolver, ICompilerService compiler, ILogger<KataMagic> logger)
         {
             this.Name = $"%check_kata";
-            this.Documentation = new Documentation() { Summary = "Checks the resference implementaiton of a single kata's test." };
+            this.Documentation = new Documentation() { Summary = "Checks the reference implementation for a single kata's test." };
+            this.Documentation = new Documentation
+            {
+                Summary = "Checks the reference implementation for a single kata's test.",
+                Description =
+                    "Substitutes the reference implementation for a " +
+                    "single task into the cell, and reports whether the test " +
+                    "passed successfully using the reference implementation.",
+                Examples = new []
+                {
+                    "To check a test called `Test`:\n" +
+                    "```\n" +
+                    "In []: %check_kata T101_StateFlip_Test \n",
+                    "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
+                    "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
+                    "           // Type X(q);\n",
+                    "           // Then run the cell using Ctrl/⌘+Enter.\n",
+                    "\n",
+                    "           // ...\n",
+                    "       }\n" +
+                    "Out[]: Success!" +
+                    "```\n"
+                }
+            };
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
 
@@ -47,7 +71,7 @@ namespace Microsoft.Quantum.Katas
         /// - semi-compile the code after to identify the name of the operation with the user's answer.
         /// - call simulate to execute the test.
         /// </summary>
-        public virtual ExecutionResult Run(string input, IChannel channel)
+        public virtual async Task<ExecutionResult> Run(string input, IChannel channel)
         {
             channel = channel.WithNewLines();
 
