@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.Measurements {
 
+    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Intrinsic;
@@ -17,6 +18,7 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Logical;
 
 
     //////////////////////////////////////////////////////////////////
@@ -119,6 +121,9 @@ namespace Quantum.Kata.Measurements {
 
 
     operation TwoBitstringsMeasurement_Reference (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Int {
+        Fact(Length(bits1) == Length(bits2), "Bit arrays should have the same length");
+        Fact(Length(qs) == Length(bits1), "Arrays should have the same length");
+
         // find the first index at which the bit strings are different and measure it
         let firstDiff = FindFirstDiff_Reference(bits1, bits2);
         let res = M(qs[firstDiff]) == One;
@@ -152,6 +157,9 @@ namespace Quantum.Kata.Measurements {
     }
 
     operation SuperpositionOneMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit arrays should be equal to number of qubits");
+
         // find the position in which the bit strings of two arrays differ
         let diff = FindFirstSuperpositionDiff_Reference(bits1, bits2, Length(qs));
 
@@ -165,24 +173,15 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
     // Task 1.9. Distinguish two superposition states given by two arrays of bit strings
-
-    function AreBitstringsEqual (bits1 : Bool[], bits2 : Bool[]) : Bool {
-        for (i in 0.. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     operation SuperpositionMeasurement_Reference (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit arrays should be equal to number of qubits");
+
         // measure all qubits and check in which array you can find the resulting bit string
-        let meas = ResultArrayAsBoolArray (MultiM(qs));
+        let meas = ResultArrayAsBoolArray(MultiM(qs));
         for (i in 0 .. Length(bits1) - 1) {
-            if (AreBitstringsEqual(bits1[i], meas)) {
+            if (EqualA(EqualB, bits1[i], meas)) {
                 return 0;
             }
         }
@@ -193,6 +192,9 @@ namespace Quantum.Kata.Measurements {
     // Alternate reference implementation for task 1.9
     // Slightly more expensive, but uses built-in functions
     operation SuperpositionMeasurement_Alternate (qs : Qubit[], bits1 : Bool[][], bits2 : Bool[][]) : Int {
+        Fact(Length(bits1[0]) == Length(bits2[0]), "Second dimension of bit Arrays should have the same length");
+        Fact(Length(bits1[0]) == Length(qs), "Second dimension of bit Arrays should be equal to number of qubits");
+
         // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
         let measuredState = ResultArrayAsInt(MultiM(qs));
         for (s in bits1) {
@@ -293,7 +295,7 @@ namespace Quantum.Kata.Measurements {
         let m2 = M(qs[1]) == Zero ? 0 | 1;
         return m2 * 2 + m1;
     }
-
+    
 
     // Task 1.13. Distinguish four orthogonal 2-qubit states
     // Input: two qubits (stored in an array) which are guaranteed to be in one of the four orthogonal states:
@@ -349,14 +351,6 @@ namespace Quantum.Kata.Measurements {
         return m2 * 2 + m1;
     }
 
-    // Helper function to implement diag(-1, 1, 1, 1) for the alternate solution to 1.14
-    operation ApplyDiag (qs : Qubit[]) : Unit is Adj {
-        ApplyToEachA(X, qs);
-        Controlled Z([qs[0]], qs[1]);
-        ApplyToEachA(X, qs);
-    }
-
-
     // Alternate reference implementation for Task 1.14
     operation TwoQubitStatePartTwo_Alternate (qs : Qubit[]) : Int {
 
@@ -371,7 +365,7 @@ namespace Quantum.Kata.Measurements {
 
         // Apply diag(..) (H ⊗ H) diag(..)
         within {
-            ApplyDiag(qs);
+            ApplyDiagonalUnitary([PI(), 0.0, 0.0, 0.0], LittleEndian(qs));
         } apply {
             ApplyToEach(H, qs);
         }
