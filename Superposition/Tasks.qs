@@ -202,7 +202,7 @@ namespace Quantum.Kata.Superposition {
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) four bit string represented as Bool[][] bits
-    //         bits is an array of size 4 x N which describes the bit strings as follows:
+    //         bits is an array of size 4 x N array which describes the bit strings as follows:
     //         bits[i] describes the i-th bit string and has N elements.
     //         All four bit strings will be distinct.
     //
