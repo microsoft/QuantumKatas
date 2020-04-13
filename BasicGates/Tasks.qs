@@ -153,7 +153,10 @@ namespace Quantum.Kata.BasicGates {
     //////////////////////////////////////////////////////////////////
     // Part II. Multi-Qubit Gates
     //////////////////////////////////////////////////////////////////
-
+    // In the following tasks the order of qubit states in task description matches the order of qubits in the array 
+    // (i.e.,  |10⟩  state corresponds to qs[0] in state |1⟩ and qs[1] in state |0⟩).
+    // Note also that the states shown in test output use little-endian notation (similarly to DumpMachine), 
+    // see tutorial MultiQubitGates, for a refresher on endianness.
     // Task 2.1. Two-qubit gate - 1
     // Input: Two unentangled qubits (stored in an array of length 2).
     //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0⟩
