@@ -307,16 +307,14 @@ namespace Quantum.Kata.Superposition {
     //
     // Goal: create an equal superposition of the four basis states given by the bit strings.
     operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit is Adj {
-        let N = Length(qs);
-
         using (anc = Qubit[2]) {
             // Put two ancillas into equal superposition of 2-qubit basis states
             ApplyToEachA(H, anc);
 
             // Set up the right pattern on the main qubits with control on ancillas
             for (i in 0 .. 3) {
-                for (j in 0 .. N - 1) {
-                    if ((bits[i])[j]) {
+                for (j in 0 .. Length(qs) - 1) {
+                    if (bits[i][j]) {
                         (ControlledOnInt(i, X))(anc, qs[j]);
                     }
                 }

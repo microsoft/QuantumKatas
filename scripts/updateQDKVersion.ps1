@@ -23,7 +23,10 @@ param(
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
 
-$csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"(?<oldVersion>[0-9|\.]+)\"'
+# old version regular expression accounts for possible suffixes like "-beta"
+$versionRegex = "(?<oldVersion>[0-9|\.|\-|a-z]+)"
+
+$csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"' + $versionRegex + '\"'
 $csFiles = (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $csFiles | ForEach-Object {
     (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
@@ -36,7 +39,7 @@ $csFiles | ForEach-Object {
     } | Set-Content -Encoding UTF8 $_.Path
 }
 
-$ipynbString = '%package Microsoft.Quantum.Katas::(?<oldVersion>[0-9|\.]+)'
+$ipynbString = "%package Microsoft.Quantum.Katas::$versionRegex"
 $ipynbFiles =  (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $ipynbFiles | ForEach-Object {
     if ($_)
@@ -51,7 +54,8 @@ $ipynbFiles | ForEach-Object {
         } | Set-Content $_.Path
     }
 }
-$dockerString = 'FROM mcr.microsoft.com/quantum/iqsharp-base:(?<oldVersion>[0-9|\.]+)'
+
+$dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
 (Get-Content -Path $dockerPath) | ForEach-Object {
          $isQuantumPackage = $_ -match $dockerString
@@ -63,7 +67,7 @@ $dockerPath = Join-Path $katasRoot "Dockerfile"
     } | Set-Content -Path $dockerPath
 
 
-$ps1String = 'Microsoft.Quantum.IQSharp --version (?<oldVersion>[0-9|\.]+)'
+$ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
 (Get-Content -Path $ps1Path) | ForEach-Object {
          $isQuantumPackage = $_ -match $ps1String

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
@@ -21,7 +22,29 @@ namespace Microsoft.Quantum.Katas
         public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger)
         {
             this.Name = $"%kata";
-            this.Documentation = new Documentation() { Summary = "Executes a single test.", Full = "## Executes a single test.\n##Usage: \n%kata Test \"q# operation\"" };
+            this.Documentation = new Documentation
+            {
+                Summary = "Executes a single test.",
+                Description = "Executes a single test, and reports whether the test passed successfully.",
+                Examples = new []
+                {
+                    "To run a test called `Test`:\n" +
+                    "```\n" +
+                    "In []: %kata T101_StateFlip_Test \n",
+                    "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
+                    "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
+                    "           // Type X(q);\n",
+                    "           // Then run the cell using Ctrl/⌘+Enter.\n",
+                    "\n",
+                    "           // ...\n",
+                    "       }\n" +
+                    "Out[]: Qubit in invalid state. Expecting: Zero\n" +
+	                "       \tExpected:\t0\n"+
+	                "       \tActual:\t0.5000000000000002\n" +
+                    "       Try again!" +
+                    "```\n"
+                }
+            };
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
 
@@ -51,7 +74,7 @@ namespace Microsoft.Quantum.Katas
         /// - compile the code after found after the name as the user's answer.
         /// - run (simulate) the test and report its result.
         /// </summary>
-        public virtual ExecutionResult Run(string input, IChannel channel)
+        public virtual async Task<ExecutionResult> Run(string input, IChannel channel)
         {
             channel = channel.WithNewLines();
 
