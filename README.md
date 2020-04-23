@@ -119,7 +119,8 @@ Each kata is a separate project that includes:
 
 ## Run the katas and tutorials online <a name="run-online" /> ##
 
-The Quantum Katas are now available as Jupyter Notebooks! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
+The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
+While running online is the easiet option to get started, if you want to save your progress and better performance, choose the local option. 
 
 ## Run the katas locally <a name="kata-locally" /> ##
 
