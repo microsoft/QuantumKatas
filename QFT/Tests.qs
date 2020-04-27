@@ -9,282 +9,143 @@
 
 namespace Quantum.Kata.QFT {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Arithmetic;
+    open Microsoft.Quantum.Preparation;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Extensions.Diagnostics;
-    open Microsoft.Quantum.Extensions.Bitwise;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Bitwise;
 
-    function AssertRegisterState(qubits : Qubit[], expected : Complex[], tolerance : Double)
-            : Unit {}
 
-    function Pow2(p : Int) : Int {
-        return 1 <<< p;
-    }
-
-    operation RandomIntPow2_(maxBits : Int) : Int {
-        mutable num = 0;
-        repeat {
-            set num = RandomIntPow2(maxBits);
-        } until(num >= 0 && num < Pow2(maxBits))
-        fixup {}
-        return num;
-    }
-
-    operation RandomProb() : Double {
-        return ToDouble(RandomIntPow2(4)) / ToDouble(Pow2(4) - 1);
-    }
-
-    operation PrepareRandomState(qs : Qubit[]) : (Int, Int, Double) {
-        let n = Length(qs);
-        let i1 = RandomIntPow2_(n - 1) * 2;
-        let i2 = RandomIntPow2_(n - 1) * 2 + 1;
-        let ip = RandomProb();
-        mutable coeffs = new Double[Pow2(n)];
-        set coeffs[i1] = Sqrt(ip);
-        set coeffs[i2] = Sqrt(1.0 - ip);
-        (StatePreparationPositiveCoefficients(coeffs))(BigEndian(qs));
-        return (i1, i2, ip);
-    }
-
-    operation AssertState(qs : Qubit[], (i1 : Int, i2 : Int, ip : Double)) : Unit {
-        AssertProbIntBE(i1, ip, BigEndian(qs), 1e-5);
-        AssertProbIntBE(i2, 1.0 - ip, BigEndian(qs), 1e-5);
+    operation ArrayWrapperControlledOperation (op : (Qubit => Unit is Adj+Ctl), register : Qubit[]) : Unit is Adj+Ctl {
+        Controlled op([register[0]], register[1]);
     }
 
     operation T11_Test () : Unit {
-        using (qs = Qubit[2]) {
-            for (k in 1 .. 10) {
-                for (control in 0 .. 1) {
-                    if (control == 1) { X(qs[0]); }
-                    H(qs[1]);
-                    Controlled Rotation([qs[0]], (qs[1], k));
-                    Adjoint Controlled Rotation_Reference([qs[0]], (qs[1], k));
-                    AssertQubitState((Complex(1.0 / Sqrt(2.0), 0.0), Complex(1.0 / Sqrt(2.0), 0.0)), qs[1], 1e-5);
-                    ResetAll(qs);
-                }
-            }
+        AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(OneQubitQFT, _), 
+                                           ArrayWrapperControlledOperation(OneQubitQFT_Reference, _));
+    }
+
+
+    // ------------------------------------------------------
+    operation T12_Test () : Unit {
+        // several hardcoded tests for small values of k
+        // k = 0: α |0⟩ + β · exp(2πi) |1⟩ = α |0⟩ + β |1⟩ - identity
+        AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 0), _), 
+                                           ArrayWrapperControlledOperation(I, _));
+
+        // k = 1: α |0⟩ + β · exp(2πi/2) |1⟩ = α |0⟩ - β |1⟩ - Z
+        AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 1), _), 
+                                           ArrayWrapperControlledOperation(Z, _));
+
+        // k = 2: α |0⟩ + β · exp(2πi/4) |1⟩ = α |0⟩ + iβ |1⟩ - S
+        AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 2), _), 
+                                           ArrayWrapperControlledOperation(S, _));
+
+        // k = 3: α |0⟩ + β · exp(2πi/8) |1⟩ - T
+        AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 3), _), 
+                                           ArrayWrapperControlledOperation(T, _));
+
+        // general case
+        for (k in 4 .. 10) {
+            AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, k), _), 
+                                               ArrayWrapperControlledOperation(Rotation_Reference(_, k), _));
         }
     }
 
-    operation T12_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using (qs = Qubit[n]) {
-            for (_ in 1 .. time) {
-                let s = PrepareRandomState(qs);
-                QuantumFT(qs);
-                InverseQFT_Reference(qs);
-                AssertState(qs, s);
-                ResetAll(qs);
-            }
+
+    // ------------------------------------------------------
+    function IntAsIntArray (j : Int, nBits : Int) : Int[] {
+        mutable bits = new Int[nBits];
+        for (ind in 0 .. nBits - 1) {
+            set bits w/= ind <- ((j &&& (1 <<< (nBits - 1 - ind))) > 0 ? 1 | 0);
         }
+        return bits;
     }
+
 
     operation T13_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using (qs = Qubit[n]) {
-            for (_ in 1 .. time) {
-                let s = PrepareRandomState(qs);
-                QuantumFT_Reference(qs);
-                InverseQFT(qs);
-                AssertState(qs, s);
-                ResetAll(qs);
+        for (n in 1 .. 5) {
+            for (exponent in 0 .. (1 <<< n) - 1) {
+                let bits = IntAsIntArray(exponent, n);
+                Message($"{n}-bit {exponent} = {bits}");
+                AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(BinaryFractionClassical(_, bits), _), 
+                                                   ArrayWrapperControlledOperation(BinaryFractionClassical_Reference(_, bits), _));
+
+                // compare it to the single-rotation solution for good measure
+                AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(BinaryFractionClassical(_, bits), _), 
+                                                   ArrayWrapperControlledOperation(BinaryFractionClassical_Alternative(_, bits), _));
             }
         }
     }
 
-    operation T21_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using (qs = Qubit[n]) {
-            for (_ in 1 .. time) {
-                let s = PrepareRandomState(qs);
-                PrepareRegisterA(qs);
-                InverseQFT_Reference(qs);
-                AssertState(qs, s);
-                ResetAll(qs);
-            }
+
+    // ------------------------------------------------------
+    operation Task14InputWrapper (op : ((Qubit, Qubit[]) => Unit is Adj+Ctl), qs : Qubit[]) : Unit is Adj+Ctl {
+        Controlled op([qs[0]], (qs[1], qs[2 ...]));
+    }
+
+    operation T14_Test () : Unit {
+        for (n in 1 .. 5) {
+            AssertOperationsEqualReferenced(n + 2, Task14InputWrapper(BinaryFractionQuantum, _), 
+                                                   Task14InputWrapper(BinaryFractionQuantum_Reference, _));
         }
     }
 
-    operation T22_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using ((a, b) = (Qubit[n], Qubit[n / 2])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                PrepareRegisterA_Reference(a);
-                AddRegisterB(a, b);
-                InverseRegisterA_Reference(a);
-                Adjoint QFTAddition_Reference(a, b);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-            }
+
+    // ------------------------------------------------------
+    operation T15_Test () : Unit {
+        for (n in 1 .. 6) {
+            AssertOperationsEqualReferenced(n, BinaryFractionQuantumInPlace, 
+                                               BinaryFractionQuantumInPlace_Reference);
         }
     }
 
-    operation T23_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                PrepareRegisterA_Reference(a);
-                AddRegisterB_Reference(a, b);
-                InverseRegisterA(a);
-                Adjoint QFTAddition_Reference(a, b);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-            }
+
+    // ------------------------------------------------------
+    operation T16_Test () : Unit {
+        for (n in 1 .. 6) {
+            AssertOperationsEqualReferenced(n, ReverseRegister, 
+                                               ReverseRegister_Reference);
+            AssertOperationsEqualReferenced(n, ReverseRegister, 
+                                               SwapReverseRegister);
         }
     }
 
-    operation T24_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                QFTAddition(a, b);
-                Adjoint QFTAddition_Reference(a, b);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-            }
+
+    // ------------------------------------------------------
+    operation HWrapper (register : Qubit[]) : Unit is Adj+Ctl {
+        H(register[0]);
+    }
+
+    operation LibraryQFTWrapper (register : Qubit[]) : Unit is Adj+Ctl {
+        QFT(BigEndian(register));
+    }
+
+    operation T17_Test () : Unit {
+        AssertOperationsEqualReferenced(1, QuantumFourierTransform, HWrapper);
+
+        for (n in 1 .. 5) {
+            AssertOperationsEqualReferenced(n, QuantumFourierTransform, 
+                                               QuantumFourierTransform_Reference);
+            AssertOperationsEqualReferenced(n, QuantumFourierTransform, 
+                                               LibraryQFTWrapper);
         }
     }
 
-    operation T25_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                QFTSubtraction(a, b);
-                QFTAddition_Reference(a, b);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-            }
+
+    // ------------------------------------------------------
+    operation T18_Test () : Unit {
+        AssertOperationsEqualReferenced(1, InverseQFT, HWrapper);
+
+        for (n in 1 .. 5) {
+            AssertOperationsEqualReferenced(n, InverseQFT, 
+                                               InverseQFT_Reference);
+            AssertOperationsEqualReferenced(n, InverseQFT, 
+                                               Adjoint LibraryQFTWrapper);
         }
     }
-
-    operation T26_Test () : Unit {
-        let n = 4;
-        let time = 10;
-        using ((a, b, c) = (Qubit[n], Qubit[n], Qubit[2 * n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                QFTMultiplication(a, b, c);
-                Adjoint QFTMultiplication(a, b, c);
-                AssertProbIntBE(0, 1.0, BigEndian(c), 1e-5);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-                ResetAll(c);
-            }
-        }
-    }
-
-    operation T31_Test () : Unit {
-        let n = 8;
-        let time = 10;
-        using (qs = Qubit[n]) {
-            for (_ in 1 .. time) {
-                let s = PrepareRandomState(qs);
-                AQFT(3, qs);
-                Adjoint AQFT_Reference(3, qs);
-                AssertState(qs, s);
-                ResetAll(qs);
-            }
-        }
-    }
-
-    operation T41_Test () : Unit {
-        let n = 5;
-        let time = 3;
-        using ((a, b) = (Qubit[n], Qubit[n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                let mul = 17;
-                let modulus = 31;
-                PowerOfa(mul, modulus, a, b);
-                Adjoint PowerOfa_Reference(mul, modulus, a, b);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                ResetAll(a);
-                ResetAll(b);
-            }
-        }
-    }
-
-    operation T42_Test () : Unit {
-        let n = 3;
-        let time = 3;
-        using ((a, b, c) = (Qubit[n], Qubit[n], Qubit[n])) {
-            for (_ in 1 .. time) {
-                let s1 = PrepareRandomState(a);
-                let s2 = PrepareRandomState(b);
-                let s3 = PrepareRandomState(c);
-                let bb = 4;
-                let aa = 2;
-                let modulus = 5;
-                DLOracle(aa, bb, modulus, a, b, c);
-                Adjoint DLOracle_Reference(aa, bb, modulus, a, b, c);
-                AssertState(a, s1);
-                AssertState(b, s2);
-                AssertState(c, s3);
-                ResetAll(a);
-                ResetAll(b);
-                ResetAll(c);
-            }
-        }
-    }
-
-    operation DiscreteLogSpecial_N5_Test () : Unit {
-        let N = 5; // group (Z/5Z)*
-        let a = 2; // 2 is a generator of group (Z/5Z)*
-        let b = 3; // 2^3 = 3 in (Z/5Z)*, so log_2(3)=3
-        let r = 4; // 𝜑(N)=𝜑(5)=4
-        mutable result = 0;
-        let answer = 3;
-        Message($"Running Shor's Algorithm on N={N}, generator a={a}, element b={b}");
-        repeat {
-            set result = DiscreteLogarithm(a, b, N, r);
-        } until (result == answer) fixup {}
-        Message($"log_{a}({b})={result} in group (Z/{N}Z)*");
-    }
-
-    // due to larger number of qubits, this test may take a while
-    operation DiscreteLogSpecial_N15_Test () : Unit {
-        let N = 15; // ambient group (Z/5Z)*
-        let a = 7; // ⟨7⟩ generates subgroup {1, 4, 7, 13} in (Z/15Z)*
-        let b = 13; // 7^3 = 13 in (Z/15Z)*, so log_7(13)=3
-        let r = 4; // size of subgroup ⟨7⟩ is 4
-        mutable result = 0;
-        let answer = 3;
-        Message($"Running Shor's Algorithm on N={N}, generator a={a}, element b={b}");
-        repeat {
-            set result = DiscreteLogarithm(a, b, N, r);
-        } until (result == answer) fixup {}
-        Message($"log_{a}({b})={result} in group (Z/{N}Z)*");
-    }
-    
 }

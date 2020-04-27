@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -10,190 +10,113 @@
 
 namespace Quantum.Kata.QFT {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
 
-    // Task 1.1 Rotation Gate
-    operation Rotation_Reference (q : Qubit, k : Int) : Unit {
-        body(...) {
-            R1Frac(2, k, q);
-        }
+    // Task 1.1. 1-qubit QFT
+    operation OneQubitQFT_Reference (q : Qubit) : Unit is Adj+Ctl {
+        H(q);
+    }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+
+    // Task 1.2. Rotation gate
+    operation Rotation_Reference (q : Qubit, k : Int) : Unit is Adj+Ctl {
+        R1Frac(2, k, q);
     }
     
-    // Task 1.2 QFT
-    operation QuantumFT_Reference (qs : Qubit[]) : Unit {
-        body(...) {
-            let n = Length(qs);
-            for (i in 0 .. n - 1) {
-                H(qs[i]);
-                for (j in i + 1 .. n - 1) {
-                    Controlled Rotation_Reference([qs[j]], (qs[i], j - i + 1));
-                }
-            }
-            SwapReverseRegister(qs);
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 1.3 Inverse QFT
-    operation InverseQFT_Reference (qs : Qubit[]) : Unit {
-        body(...) {
-            Adjoint QuantumFT_Reference(qs);
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.1 Prepare Register |a⟩
-    operation PrepareRegisterA_Reference (qs : Qubit[]) : Unit {
-        body(...) {
-            QuantumFT_Reference(qs);
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.2 Rotation from Register |b⟩
-    operation AddRegisterB_Reference (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            let n = Length(a);
-            let m = Length(b);
-            for (i in 0 .. n - 1) {
-                for (j in MaxI(0, m - 1 - i) .. m - 1) {
-                    Controlled Rotation_Reference([b[j]], (a[i], j - (m - 1 - i) + 1));
-                }
+    // Task 1.3. Prepare binary fraction exponent (classical input)
+    // Inputs:
+    //      1) A qubit in state |ψ⟩ = α |0⟩ + β |1⟩
+    //      2) An array of bits [j₁, j₂, ..., jₙ], stored as Int[] (jₖ ∈ {0, 1}).
+    // Goal: Change the state of the qubit to α |0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩,
+    // where 0.j₁j₂...jₙ is a binary fraction, similar to decimal fractions:
+    //       0.j₁j₂...jₙ = j₁ / 2¹ + j₂ / 2² + ... + jₙ / 2ⁿ.
+    operation BinaryFractionClassical_Reference (q : Qubit, j : Int[]) : Unit is Adj+Ctl {
+        for (ind in 0 .. Length(j) - 1) {
+            if (j[ind] == 1) {
+                Rotation_Reference(q, ind + 1);
             }
         }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
     }
 
-    // Task 2.3 Inverse Register |a⟩
-    operation InverseRegisterA_Reference (qs : Qubit[]) : Unit {
-        body(...) {
-            Adjoint PrepareRegisterA_Reference(qs);
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    function IntArrayAsInt (j : Int[]) : Int {
+        mutable n = 0;
+        for (ind in 0 .. Length(j) - 1) {
+            set n = n * 2 + j[ind];
+        }
+        return n;
     }
 
-    // Task 2.4 Complete QFT Addition
-    operation QFTAddition_Reference (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            PrepareRegisterA_Reference(a);
-            AddRegisterB_Reference(a, b);
-            InverseRegisterA_Reference(a);
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    operation BinaryFractionClassical_Alternative (q : Qubit, j : Int[]) : Unit is Adj+Ctl {
+        // alternatively, we can convert the number to an integer and apply a single R1 rotation
+        let num = IntArrayAsInt(j);
+        R1(2.0 * PI() * IntAsDouble(num) / IntAsDouble(1 <<< Length(j)), q);
     }
 
-    // Task 2.5 Complete QFT Subtraction
-    operation QFTSubtraction_Reference (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            Adjoint QFTAddition_Reference(a, b);
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-    
-    // Task 2.6 Complete QFT Multiplication
-    operation QFTMultiplication_Reference (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
-        body(...) {
-            ApplyToEachCA(H, c);
-            for (i in 0 .. Length(b) - 1) {
-                Controlled AddRegisterB_Reference([b[Length(b) - 1 - i]], (c[i .. Length(c) - 1], a));
-            }
-            InverseRegisterA_Reference(c);
+    // Task 1.4. Prepare binary fraction exponent (quantum input)
+    // Inputs:
+    //      1) A qubit in state |ψ⟩ = α |0⟩ + β |1⟩
+    //      2) A register of qubits in state |j₁j₂...jₙ⟩
+    // Goal: Change the state of the input 
+    //       from (α |0⟩ + β |1⟩) ⊗ |j₁j₂...jₙ⟩
+    //         to (α |0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₁j₂...jₙ⟩,
+    //       where 0.j₁j₂...jₙ is a binary fraction corresponding to the basis state j₁j₂...jₙ of the register.
+    operation BinaryFractionQuantum_Reference (q : Qubit, jRegister : Qubit[]) : Unit is Adj+Ctl {
+        for (ind in 0 .. Length(jRegister) - 1) {
+            Controlled Rotation_Reference([jRegister[ind]], (q, ind + 1));
         }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
     }
 
-    // Task 3.1 AQFT
-    operation AQFT_Reference (t : Int, qs : Qubit[]) : Unit {
-        body(...) {
-            let n = Length(qs);
-            for (i in 0 .. n - 1) {
-                for (j in i - 1 .. -1 .. MaxI(0, i - t + 1)) {
-                    Controlled Rotation_Reference([qs[i]], (qs[j], i - j + 1));
-                }
-                H(qs[i]);
-            }
-            SwapReverseRegister(qs);
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    // Task 1.5. Prepare binary fraction exponent in place (quantum input)
+    // Input: A register of qubits in state |j₁j₂...jₙ⟩
+    // Goal: Change the state of the register
+    //       from |j₁⟩ ⊗ |j₂...jₙ⟩
+    //         to 1/sqrt(2) (|0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
+    operation BinaryFractionQuantumInPlace_Reference (register : Qubit[]) : Unit is Adj+Ctl {
+        OneQubitQFT_Reference(register[0]);
+        for (ind in 1 .. Length(register) - 1) {
+            Controlled Rotation_Reference([register[ind]], (register[0], ind + 1));
+        }
     }
 
-    // Task 4.1 Power |x⟩|y⟩ → |x⟩|a^x · y mod N⟩
-    operation PowerOfa_Reference (a : Int, N : Int, x : Qubit[], y : Qubit[]) : Unit {
-        body(...) {
-            let y_LE = BigEndianToLittleEndian(BigEndian(y));
-            let oracle = ModularMultiplyByConstantLE(a, N, _);
-            for (p in 0 .. Length(x) - 1) {
-                Controlled (OperationPowCA(oracle, 1 <<< p))([x[Length(x) - 1 - p]], y_LE);
-            }
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    // Task 1.6. Reverse the order of qubits
+    // Input: A register of qubits in state |x₁x₂...xₙ⟩
+    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩
+    operation ReverseRegister_Reference (register : Qubit[]) : Unit is Adj+Ctl {
+        let N = Length(register);
+        for (ind in 0 .. N / 2 - 1) {
+            SWAP(register[ind], register[N - 1 - ind]);
+        }
     }
 
-    // Task 4.2 Oracle U|x1⟩|x2⟩|y⟩ → |x1⟩|x2⟩|y ⊕ f(x1,x2)⟩ where f(x1,x2)=b^x1*a^x2 mod N
-    operation OracleFunc (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], qs : Qubit[]) : Unit {
-        body(...) {
-            X(qs[Length(qs) - 1]);
-            PowerOfa_Reference(b, N, x1, qs);
-            PowerOfa_Reference(a, N, x2, qs);
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    // Task 1.7. Quantum Fourier transform
+    // Input: A register of qubits in state |j₁j₂...jₙ⟩
+    // Goal: Apply quantum Fourier transform to the input register, i.e.,
+    //       transform it to a state 
+    //       1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ) |1⟩) ⊗
+    //       1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ₋₁jₙ) |1⟩) ⊗ ... ⊗
+    //       1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ₋₁jₙ) |1⟩) ⊗
+    operation QuantumFourierTransform_Reference (register : Qubit[]) : Unit is Adj+Ctl {
+        let n = Length(register);
+        for (i in 0 .. n - 1) {
+            BinaryFractionQuantumInPlace_Reference(register[i ...]);
+        }
+        ReverseRegister_Reference(register);
     }
 
-    operation DLOracle_Reference (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], y : Qubit[]) : Unit {
-        body(...) {
-            using (qs = Qubit[Length(y)]) {
-                OracleFunc(a, b, N, x1, x2, qs);
-                for (i in 0 .. Length(qs) - 1) {
-                    CNOT(qs[i], y[i]);
-                }
-                Adjoint OracleFunc(a, b, N, x1, x2, qs);
-            }
-        }
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
+    // Task 1.8. Inverse QFT
+    operation InverseQFT_Reference (register : Qubit[]) : Unit is Adj+Ctl {
+        Adjoint QuantumFourierTransform_Reference(register);
     }
 
 }

@@ -3,12 +3,11 @@
 
 namespace Quantum.Kata.QFT {
     
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Diagnostics;
+    open Microsoft.Quantum.Diagnostics;
     
     //////////////////////////////////////////////////////////////////
     // Welcome!
@@ -17,10 +16,7 @@ namespace Quantum.Kata.QFT {
     // The "QFT (Quantum Fourier Transform)" quantum kata is a series of
     // exercises designed to teach you the basics of Quantum Fourier Transform.
     // It covers the following topics:
-    //  - Basic Quantum Fourier Transform,
-    //  - Ancillary Qubit Free Quantum Addition,
-    //  - Approximate Quantum Fourier Transform,
-    //  - Discrete Logarithm
+    //  - implementing QFT.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -28,247 +24,113 @@ namespace Quantum.Kata.QFT {
     // with some Q# code to make the failing test pass.
 
     //////////////////////////////////////////////////////////////////
-    // Part I. Quantum Fourier Transform (QFT)
+    // Part I. Implementing Quantum Fourier Transform
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1 Rotation Gate
-    // Input: A qubit in state |ψ⟩ = α |0⟩ + β |1⟩ and an integer k.
-    // Goal:  Change the state of the qubit to α |0⟩ + β * e^{2πi / 2^k} |1⟩.
-    operation Rotation (q : Qubit, k : Int) : Unit {
-        body(...) {
-            // ...
-        }
+    // This sequence of tasks uses the implementation of QFT described in Nielsen & Chuang.
 
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-    
-    // Task 1.2 QFT
-    // Input: A quantum register in big endian format.
-    // Goal: Run QFT on the input register.
-    // Though you might be able to do this with 1 library call, we recommned
-    // implementing QFT yourself for learning purposes. Hint: the rotation
-    // gate you implemented in Task 1.1 might help.
-    operation QuantumFT (qs : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 1.3 Inverse QFT
-    // Input: A quantum register in big endian format. 
-    // Goal: Run inverse QFT on the input register.
-    operation InverseQFT (qs : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Part II. QFT Addition & Multiplication
-    //////////////////////////////////////////////////////////////////
-
-    // Task 2.1 Prepare Register |a⟩
-    // Input: a quantum register with n qubits, representing the first number we
-    // are trying to add.
-    // Goal: For each k-th qubit in a, prepare it into (|0⟩ + e^{2πi0.a[0]a[1]...a[k]} |1⟩) / sqrt(2).
-    operation PrepareRegisterA (a : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.2 Rotation from Register |b⟩
-    // Input: 2 quantum registers with n qubits in Big Endian. a is the first number we try to add
-    // prepared by Task 2.1, and the second is the raw state of the second number in addition.
-    // Note that register |b⟩ is guaranteed to have size less than or equal to size of |a⟩.
-    // Goal: For each k-th qubit in a, rotate it into (|0⟩ + e^{2πi(0.a[0]a[1]...a[k] + 0.b[0]b[1]...b[k])} |1⟩) / sqrt(2).
-    operation AddRegisterB (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.3 Inverse Register |a⟩
-    // Input: The resulting state of by Task 2.2
-    // Goal: Retrieve the addition result by inverse QFT
-    operation InverseRegisterA (a : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.4 Complete QFT Addition
-    // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change a to the binary representation of (a + b) mod 2^n, in big endian,
-    // without using any extra qubibt and state of register b should remain
-    // the same after the opperation
-    operation QFTAddition (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.5 Complete QFT Subtraction
-    // Input: 2 n-qubit quantum register numbers a and b, in big endian.
-    // Goal: Change a to the binary representation of (a - b) mod 2^n, in big endian,
-    // without using any extra qubit and state of register b should remain
-    // the same after the opperation
-    operation QFTSubtraction (a : Qubit[], b : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 2.6 Complete QFT Multiplication
-    // Input: two multiplier registers and an initially zero result register. The
-    // result register has sum of the sizes of mulitplier registers.
-    // Goal: Perform |a⟩|b⟩|0⟩ → |a⟩|b⟩|a * b⟩
-    operation QFTMultiplication (a : Qubit[], b : Qubit[], c : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Part III. AQFT
-    //////////////////////////////////////////////////////////////////
-
-    // Task 3.1 AQFT
-    // Input: t is the threshold of rotation, qs is a quantum register in big endian format.
-    // Goal: Perform ordinary QFT but prune any rotation e^{2πi / 2^k} with k > t.
-    operation AQFT (t : Int, qs : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Part IV. Discrete logarithm
-    //////////////////////////////////////////////////////////////////
-
-    // Task 4.1 Power |x⟩|y⟩ → |x⟩|a^x · y mod N⟩
-    // Input: integers a and N, registers x and y.
-    // Goal: perform the desired operation.
-    operation PowerOfa (a : Int, N : Int, x : Qubit[], y : Qubit[]) : Unit {
-        body(...) {
-            // ...
-        }
-
-        adjoint auto;
-        controlled auto;
-        adjoint controlled auto;
-    }
-
-    // Task 4.2 Oracle U|x1⟩|x2⟩|y⟩ → |x1⟩|x2⟩|y ⊕ f(x1,x2)⟩ where f(x1,x2)=b^x1*a^x2 mod N
-    // Input: integers a, b, and N, registers x1, x2, and qs.
-    // Goal: perform the desired operation.
-    operation DLOracle (a : Int, b : Int, N : Int, x1 : Qubit[], x2 : Qubit[], y : Qubit[]) : Unit {
+    // Task 1.1. 1-qubit QFT
+    // Input: A qubit in state |ψ⟩ = x₀ |0⟩ + x₁ |1⟩.
+    // Goal:  Apply QFT to this qubit, i.e., transform it to a state
+    //        1/sqrt(2) ((x₀ + x₁)|0⟩ + (x₀ - x₁)|1⟩).
+    // In other words, transform a basis state |j⟩ into a state 1/sqrt(2) (|0⟩ + exp(2πi·j/2)|1⟩).
+    operation OneQubitQFT (q : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
-    // Discrete logarithm Algorithm
-    // Input: integers a, b, N, r
-    // Goal: compute the discrete logarithm log_a(b), returns -1 on failure cases
-    operation DiscreteLogarithm (a : Int, b : Int, N : Int, r : Int) : Int {
-        mutable appr_slmodr = 0;
-        mutable appr_l = 0;
-        let t = BitSize(N) * 2 + 1;
-        using ((x1, x2, y) = (Qubit[t], Qubit[t], Qubit[t])) {
-            ApplyToEach(H, x1);
-            ApplyToEach(H, x2);
-            DLOracle(a, b, N, x1, x2, y);
-            InverseQFT(x1);
-            InverseQFT(x2);
-            set appr_slmodr = MeasureIntegerBE(BigEndian(x1));
-            set appr_l = MeasureIntegerBE(BigEndian(x2));
-            ResetAll(x1);
-            ResetAll(x2);
-            ResetAll(y);
-        }
-        let (slmodr, _) = (ContinuedFractionConvergent(Fraction(appr_slmodr, t), N))!;
-        let (l, _) = (ContinuedFractionConvergent(Fraction(appr_l, t), N))!;
-        if (GCD(l, r) != 1) {
-            Message($"Algorithm failed due to measure l={l}, no coprime to r={r}");
-            return -1;
-        }
-        let l_inv = InverseMod(l, r);
-        let s = slmodr * l_inv % r;
-        return s;
+
+    // Task 1.2. Rotation gate
+    // Inputs:
+    //      1) A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
+    //      2) An integer k ≥ 0.
+    // Goal: Change the state of the qubit to α |0⟩ + β · exp(2πi / 2ᵏ) |1⟩.
+    // Note: Be careful about not introducing an extra global phase! 
+    //       This is going to be important in the later tasks.
+    operation Rotation (q : Qubit, k : Int) : Unit is Adj+Ctl {
+        // ...
     }
 
-    // Discrete logarithm designed for product of distinct Fermat primes
-    // so that simulation runtime is tolerable on a personal computer, 
-    // we only allow N to be 5 or 15 because when N=17 the program may not finish
-    // realistically
-    // This function is for demonstration of how Shor's algorithm works, it takes
-    // advantage of the fact that 𝜑(N) is a power of 2, and with some modification
-    // from the algorihtm, we can use fewer qubits to demonstrate a working version
-    // of Shor's algorithm
-    operation DiscreteLogarithmSpecial (a : Int, b : Int, N : Int, r : Int) : Int {
-        mutable appr_slmodr = 0;
-        mutable appr_l = 0;
-        mutable slmodr = 0;
-        mutable l = 0;
-        let t = BitSize(N);
-        using ((x1, x2, y) = (Qubit[t], Qubit[t], Qubit[t])) {
-            ApplyToEach(H, x1);
-            ApplyToEach(H, x2);
-            DLOracle_Reference(a, b, N, x1, x2, y);
-            InverseQFT_Reference(x1);
-            InverseQFT_Reference(x2);
-            set appr_slmodr = MeasureIntegerBE(BigEndian(x1));
-            set slmodr = appr_slmodr / 2;
-            set appr_l = MeasureIntegerBE(BigEndian(x2));
-            set l = appr_l / 2;
-            ResetAll(x1);
-            ResetAll(x2);
-            ResetAll(y);
-        }
-        if (GCD(l, r) != 1) {
-            Message($"Algorithm failed due to measure l={l}, no coprime to r={r}");
-            return -1;
-        }
-        let l_inv = InverseMod(l, r);
-        let s = slmodr * l_inv % r;
-        return s;
+
+    // Task 1.3. Prepare binary fraction exponent (classical input)
+    // Inputs:
+    //      1) A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
+    //      2) An array of bits [j₁, j₂, ..., jₙ], stored as Int[] (jₖ ∈ {0, 1}).
+    // Goal: Change the state of the qubit to α |0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩,
+    // where 0.j₁j₂...jₙ is a binary fraction, similar to decimal fractions:
+    //       0.j₁j₂...jₙ = j₁ / 2¹ + j₂ / 2² + ... + jₙ / 2ⁿ.
+    operation BinaryFractionClassical (q : Qubit, j : Int[]) : Unit is Adj+Ctl {
+        // ...
+    }
+    
+
+    // Task 1.4. Prepare binary fraction exponent (quantum input)
+    // Inputs:
+    //      1) A qubit in state |ψ⟩ = α |0⟩ + β |1⟩.
+    //      2) A register of qubits in state |j₁j₂...jₙ⟩.
+    // Goal: Change the state of the input 
+    //       from (α |0⟩ + β |1⟩) ⊗ |j₁j₂...jₙ⟩
+    //         to (α |0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₁j₂...jₙ⟩,
+    //       where 0.j₁j₂...jₙ is a binary fraction corresponding to the basis state j₁j₂...jₙ of the register.
+    // Note: The register of qubits can be in superposition as well; 
+    //       the behavior in this case is defined by behavior on the basis states and the linearity of unitary transformations.
+    operation BinaryFractionQuantum (q : Qubit, jRegister : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
+
+
+    // Task 1.5. Prepare binary fraction exponent in place (quantum input)
+    // Input: A register of qubits in state |j₁j₂...jₙ⟩.
+    // Goal: Change the state of the register
+    //       from |j₁⟩ ⊗ |j₂...jₙ⟩
+    //         to 1/sqrt(2) (|0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
+    // Note: The register of qubits can be in superposition as well; 
+    //       the behavior in this case is defined by behavior on the basis states and the linearity of unitary transformations.
+    // Hint: This task is very similar to task 1.6, but the digit j₁ is encoded in-place, using task 1.1.
+    operation BinaryFractionQuantumInPlace (register : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
+
+
+    // Task 1.6. Reverse the order of qubits
+    // Input: A register of qubits in state |x₁x₂...xₙ⟩.
+    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩
+    operation ReverseRegister (register : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
+    
+    
+    // Task 1.7. Quantum Fourier transform
+    // Input: A register of qubits in state |j₁j₂...jₙ⟩.
+    // Goal: Apply quantum Fourier transform to the input register, 
+    //       i.e., transform it to a state 
+    //       1/sqrt(2ⁿ) ∑ₖ exp(2πi · jk / 2ⁿ) |k⟩ =
+    //     = 1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ) |1⟩) ⊗
+    //     ⊗ 1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ₋₁jₙ) |1⟩) ⊗ ... ⊗
+    //     ⊗ 1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ₋₁jₙ) |1⟩)
+    //
+    // Note: The register of qubits can be in superposition as well; 
+    //       the behavior in this case is defined by behavior on the basis states and the linearity of unitary transformations.
+    // Note: You can do this with a library call, but we recommend
+    //       implementing the algorithm yourself for learning purposes, using the previous tasks. 
+    //
+    // Hint: Consider preparing a different state first and transforming it to the goal state:
+    //       1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ₋₁jₙ) |1⟩) ⊗ ... ⊗
+    //     ⊗ 1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ₋₁jₙ) |1⟩) ⊗
+    //     ⊗ 1/sqrt(2) (|0⟩ + exp(2πi · 0.jₙ) |1⟩) ⊗
+    operation QuantumFourierTransform (register : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
+
+
+    // Task 1.8. Inverse QFT
+    // Input: A register of qubits in state |j₁j₂...jₙ⟩.
+    // Goal: Apply inverse QFT to the input register,
+    //       i.e., transform it to a state 
+    //       1/sqrt(2ⁿ) ∑ₖ exp(-2πi · jk / 2ⁿ) |k⟩.
+    // Hint: Inverse QFT is literally the inverse transformation of QFT.
+    //       Do you know a quantum way to express this?
+    operation InverseQFT (register : Qubit[]) : Unit is Adj+Ctl {
+        // ...
     }
 
 }
