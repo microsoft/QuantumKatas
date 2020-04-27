@@ -4,6 +4,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QEC_BitFlipCode", "QEC_BitFlipCode.csproj", "{74AE1DA0-0B82-46C3-8E5D-2B2FF94DDAB4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\utilities\Common\Common.csproj", "{33756153-102C-4122-9ED9-424EA4D46409}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,18 @@ Global
 		{74AE1DA0-0B82-46C3-8E5D-2B2FF94DDAB4}.Release|x64.Build.0 = Release|Any CPU
 		{74AE1DA0-0B82-46C3-8E5D-2B2FF94DDAB4}.Release|x86.ActiveCfg = Release|Any CPU
 		{74AE1DA0-0B82-46C3-8E5D-2B2FF94DDAB4}.Release|x86.Build.0 = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|x64.Build.0 = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Debug|x86.Build.0 = Debug|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|x64.ActiveCfg = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|x64.Build.0 = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|x86.ActiveCfg = Release|Any CPU
+		{33756153-102C-4122-9ED9-424EA4D46409}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

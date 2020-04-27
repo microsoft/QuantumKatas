@@ -9,10 +9,8 @@
 
 namespace Quantum.Kata.Teleportation {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Preparation;
+    open Microsoft.Quantum.Intrinsic;
     
     
     //////////////////////////////////////////////////////////////////
@@ -20,14 +18,10 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. Entangled pair
-    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit {
-        
-        body (...) {
-            H(qAlice);
-            CNOT(qAlice, qBob);
-        }
-        
-        adjoint invert;
+    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit
+    is Adj {        
+        H(qAlice);
+        CNOT(qAlice, qBob);
     }
     
     
@@ -63,17 +57,16 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 1.5. Prepare the message specified and send it (Alice's task)
     operation PrepareAndSendMessage_Reference (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool) {
-        mutable classicalBits = (false, false);
-        using (qs = Qubit[1]) {
+        using (message = Qubit()) {
             if (state) {
-                X(qs[0]);
+                X(message);
             }
             
-            PrepareQubit(basis, qs[0]);
-            set classicalBits = SendMessage_Reference(qAlice, qs[0]);
-            Reset(qs[0]);
+            PrepareQubit(basis, message);
+            let classicalBits = SendMessage_Reference(qAlice, message);
+            Reset(message);
+            return classicalBits;
         }
-        return classicalBits;
     }
     
     
@@ -151,25 +144,39 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 4.1. Entangled trio
-    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit {
-        
-        body (...) {
-            H(qAlice);
-            H(qBob);
-            X(qCharlie);
+    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
+    is Adj {
+        // Starting with |000⟩
 
-            CCNOT(qAlice, qBob, qCharlie);
+        H(qAlice);
 
-            X(qAlice);
-            X(qBob);
+        // now state is:  1/sqrt(2) (|0⟩+|1⟩) |00⟩
 
-            CCNOT(qAlice, qBob, qCharlie);
+        H(qBob);
 
-            X(qAlice);
-            X(qBob);
-        }
-        
-        adjoint invert;
+        // state: 1/2(|000⟩+|010⟩+|100⟩+|110⟩)
+
+        X(qCharlie);
+
+        // state: 1/2(|001⟩+|011⟩+|101⟩+|111⟩)
+
+        CCNOT(qAlice, qBob, qCharlie);
+
+        // state: 1/2(|001⟩+|011⟩+|101⟩+|110⟩)
+
+        X(qAlice);
+        X(qBob);
+
+        // state: 1/2(|111⟩+|101⟩+|011⟩+|000⟩)
+
+        CCNOT(qAlice, qBob, qCharlie);
+
+        // state:  1/2(|110⟩+|101⟩+|011⟩+|000⟩)
+
+        X(qAlice);
+        X(qBob);
+
+        // final state:  1/2(|000⟩+|011⟩+|101⟩+|110⟩)
     }
     
     

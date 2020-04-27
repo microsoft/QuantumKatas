@@ -9,13 +9,15 @@
 
 namespace Quantum.Kata.QEC_BitFlipCode {
     
+    open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Extensions.Bitwise;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
-    open Microsoft.Quantum.Extensions.Testing;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Bitwise;
     
+    open Quantum.Kata.Utils;
     
     //////////////////////////////////////////////////////////////////////////
     // Task 01
@@ -29,30 +31,27 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit {
+    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit
+    is Adj {
         
-        body (...) {
-            if (bits / 4 == 1) {
-                X(qs[0]);
-            }
-            
-            if ((bits / 2) % 2 == 1) {
-                X(qs[1]);
-            }
-            
-            if (bits % 2 == 1) {
-                X(qs[2]);
-            }
+        if (bits / 4 == 1) {
+            X(qs[0]);
         }
-        
-        adjoint invert;
+            
+        if ((bits / 2) % 2 == 1) {
+            X(qs[1]);
+        }
+            
+        if (bits % 2 == 1) {
+            X(qs[2]);
+        }
     }
     
     
     function FindFirstDiff_Reference (bits1 : Int[], bits2 : Int[]) : Int {
         mutable firstDiff = -1;
         for (i in 0 .. Length(bits1) - 1) {
-            if (bits1[i] != bits2[i] && firstDiff == -1) {
+            if (bits1[i] != bits2[i] and firstDiff == -1) {
                 set firstDiff = i;
             }
         }
@@ -65,45 +64,48 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit {
+    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit
+    is Adj {
         
-        body (...) {
-            let firstDiff = FindFirstDiff_Reference(bits1, bits2);
-            H(qs[firstDiff]);
+        let firstDiff = FindFirstDiff_Reference(bits1, bits2);
+        H(qs[firstDiff]);
             
-            for (i in 0 .. Length(qs) - 1) {
-                if (bits1[i] == bits2[i]) {
-                    if (bits1[i] == 1) {
+        for (i in 0 .. Length(qs) - 1) {
+            if (bits1[i] == bits2[i]) {
+                if (bits1[i] == 1) {
+                    X(qs[i]);
+                }
+            } else {
+                if (i > firstDiff) {
+                    CNOT(qs[firstDiff], qs[i]);
+                    if (bits1[i] != bits1[firstDiff]) {
                         X(qs[i]);
-                    }
-                } else {
-                    if (i > firstDiff) {
-                        CNOT(qs[firstDiff], qs[i]);
-                        if (bits1[i] != bits1[firstDiff]) {
-                            X(qs[i]);
-                        }
                     }
                 }
             }
         }
-        
-        adjoint invert;
     }
     
     
-    operation TestParityOnState (statePrep : (Qubit[] => Unit : Adjoint), parity : Int, stateStr : String) : Unit {
+    operation TestParityOnState (statePrep : (Qubit[] => Unit is Adj), parity : Int, stateStr : String) : Unit {
         
         using (register = Qubit[3]) {
             // prepare basis state to test on
             statePrep(register);
+
+            ResetOracleCallsCount();
+
             let res = MeasureParity(register);
             
             // check that the returned parity is correct
-            AssertBoolEqual(res == Zero, parity == 0, $"Failed on {stateStr}.");
+            Fact((res == Zero) == (parity == 0), $"Failed on {stateStr}.");
             
             // check that the state has not been modified
             Adjoint statePrep(register);
             AssertAllZero(register);
+
+            let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+            Fact(nm <= 1, $"You are allowed to do at most one measurement, and you did {nm}");
         }
     }
     
@@ -138,9 +140,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //////////////////////////////////////////////////////////////////////////
     
     operation AssertEqualOnZeroState (
-        statePrep : (Qubit[] => Unit : Adjoint), 
+        statePrep : (Qubit[] => Unit is Adj), 
         testImpl : (Qubit[] => Unit), 
-        refImpl : (Qubit[] => Unit : Adjoint)) : Unit {
+        refImpl : (Qubit[] => Unit is Adj)) : Unit {
         using (qs = Qubit[3]) {
             // prepare state
             statePrep(qs);
@@ -158,19 +160,15 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit {
-        
-        body (...) {
-            Ry(2.0 * alpha, qs[0]);
-        }
-        
-        adjoint invert;
+    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit
+    is Adj {        
+        Ry(2.0 * alpha, qs[0]);
     }
     
     
     operation T02_Encode_Test () : Unit {
         for (i in 0 .. 36) {
-            let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(StatePrep_Rotate(_, alpha), Encode, Encode_Reference);
         }
     }
@@ -180,31 +178,28 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 03
     //////////////////////////////////////////////////////////////////////////
 
-    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit {
+    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit
+    is Adj {
         
-        body (...) {
-            StatePrep_Rotate(qs, alpha);
-            Encode_Reference(qs);
+        StatePrep_Rotate(qs, alpha);
+        Encode_Reference(qs);
             
-            if (hasError) {
-                X(qs[0]);
-            }
+        if (hasError) {
+            X(qs[0]);
         }
-        
-        adjoint invert;
     }
     
     
     operation T03_DetectErrorOnLeftQubit_Test () : Unit {
         using (register = Qubit[3]) {
             for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * ToDouble(i)) / 36.0;
+                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 StatePrep_WithError(register, alpha, false);
-                AssertResultEqual(DetectErrorOnLeftQubit(register), Zero, "Failed on a state without X error.");
+                EqualityFactR(DetectErrorOnLeftQubit(register), Zero, "Failed on a state without X error.");
                 Adjoint StatePrep_WithError(register, alpha, false);
                 AssertAllZero(register);
                 StatePrep_WithError(register, alpha, true);
-                AssertResultEqual(DetectErrorOnLeftQubit(register), One, "Failed on a state with X error.");
+                EqualityFactR(DetectErrorOnLeftQubit(register), One, "Failed on a state with X error.");
                 Adjoint StatePrep_WithError(register, alpha, true);
                 AssertAllZero(register);
             }
@@ -217,7 +212,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     //////////////////////////////////////////////////////////////////////////
     
     operation BindErrorCorrectionRoundImpl (
-        encoder : (Qubit[] => Unit : Adjoint), 
+        encoder : (Qubit[] => Unit is Adj), 
         error : Pauli[], 
         logicalOp : (Qubit[] => Unit), 
         correction : (Qubit[] => Unit), 
@@ -246,7 +241,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     function BindErrorCorrectionRound (
-        encoder : (Qubit[] => Unit : Adjoint), 
+        encoder : (Qubit[] => Unit is Adj), 
         error : Pauli[], 
         logicalOp : (Qubit[] => Unit), 
         correction : (Qubit[] => Unit)) : (Qubit[] => Unit) {
@@ -269,7 +264,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let errors = PauliErrors();
         
         for (idxError in 0 .. 1) {
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), NoOp<Qubit[]>, 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
         }
     }
     
@@ -285,7 +280,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             
             for (idxError in 0 .. Length(errors) - 1) {
                 let θ = RandomReal(12);
-                let statePrep = BindCA([H, Rz(θ, _)]);
+                let statePrep = BoundCA([H, Rz(θ, _)]);
                 mutable errorStr = "no error";
                 if (idxError > 0) {
                     set errorStr = $"error on qubit {idxError}";
@@ -295,7 +290,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
                 statePrep(Head(register));
                 Encode_Reference(register);
                 ApplyPauli(errors[idxError], register);
-                AssertIntEqual(DetectErrorOnAnyQubit(register), idxError, $"Failed on state with {errorStr}.");
+                EqualityFactI(DetectErrorOnAnyQubit(register), idxError, $"Failed on state with {errorStr}.");
                 ApplyPauli(errors[idxError], register);
                 Adjoint Encode_Reference(register);
                 Adjoint statePrep(Head(register));
@@ -316,7 +311,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 06: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), NoOp<Qubit[]>, 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
         }
     }
     
@@ -332,7 +327,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 07: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), ApplyPauli([PauliX], _), 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyPauli([PauliX], _));
         }
     }
     
@@ -348,7 +343,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         
         for (idxError in 0 .. Length(errors) - 1) {
             Message($"Task 08: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(partialBind(errors[idxError]), ApplyToEachA(Z, _), 1);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyToEachA(Z, _));
         }
     }
     

@@ -3,10 +3,7 @@
 
 namespace Quantum.Kata.JointMeasurements {
     
-    open Microsoft.Quantum.Primitive;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Extensions.Convert;
-    open Microsoft.Quantum.Extensions.Math;
+    open Microsoft.Quantum.Intrinsic;
     
     
     //////////////////////////////////////////////////////////////////
@@ -110,13 +107,8 @@ namespace Quantum.Kata.JointMeasurements {
     // Goal:  Change the two-qubit state to α|00⟩ + β|01⟩ + δ|10⟩ + γ|11⟩ using only single-qubit gates and joint measurements.
     //        Do not use two-qubit gates.
     operation ControlledX_General (qs : Qubit[]) : Unit {
-        
-        body (...) {
-            // Hint: You can use an extra qubit to perform this operation.
-            // ...
-        }
-        
-        adjoint self;
+        // Hint: You can use an extra qubit to perform this operation.
+        // ...
     }
     
 }

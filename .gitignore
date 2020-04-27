@@ -17,6 +17,7 @@ Tests/build
 # test outputs
 TestResults/
 *.qxe
+Check.ipynb
 
 # Random VS files
 *.suo
@@ -37,6 +38,9 @@ build_log.txt
 
 # Q# code-behind files:
 *.g.cs
+
+# jupyter notebooks checkpoints:
+.ipynb_checkpoints
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
@@ -280,3 +284,6 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+# Python build files
+__pycache__
