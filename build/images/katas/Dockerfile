@@ -22,7 +22,7 @@ RUN pip install -I \
 USER ${USER}
 
 # Pre-exec notebooks to improve first-use start time
-RUN pushd ${HOME} && \
+RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
@@ -50,7 +50,6 @@ RUN pushd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
-    popd && \
 # To improve performance when running the %package commands (usually Katas' first cell)
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve packages dependencies again (as it was already done
