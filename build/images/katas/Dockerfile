@@ -22,7 +22,7 @@ RUN pip install -I \
 USER ${USER}
 
 # Pre-exec notebooks to improve first-use start time
-RUN cd $HOME && \
+RUN pushd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
@@ -50,7 +50,15 @@ RUN cd $HOME && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
-    rm $HOME/NuGet.config && \
+    popd && \
+# To improve performance when running the %package commands (usually Katas' first cell)
+# we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
+# resolution won't attempt to resolve packages dependencies again (as it was already done
+# during the prebuild steps above).
+# The downside is that online packages that were already downloaded to .nuget/packages folder
+# will be available to get loaded.
+# Users that require loading additional packages should use the iqsharp-base image instead.
+    rm ${HOME}/NuGet.config && \
     echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\
           <configuration>\
               <packageSources>\
