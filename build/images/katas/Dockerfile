@@ -1,0 +1,60 @@
+# We use the iqsharp-base image, as that includes
+# the .NET Core SDK, IQ#, and Jupyter Notebook already
+# installed for us.
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.11.2004.2715-beta
+
+# Add metadata indicating that this image is used for the katas.
+ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
+
+# Make sure the contents of our repo are in ${HOME}
+# Required for mybinder.org
+COPY . ${HOME}
+
+USER root
+RUN chown -R ${USER} ${HOME} && \
+    chmod +x ${HOME}/scripts/*.sh
+
+# Install Python dependencies for the Python visualization and tutorial notebooks
+RUN pip install -I \
+        matplotlib \
+        pytest
+
+USER ${USER}
+
+# Pre-exec notebooks to improve first-use start time
+RUN cd $HOME && \
+    ./scripts/prebuild-kata.sh BasicGates && \
+    ./scripts/prebuild-kata.sh CHSHGame && \
+    ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
+    ./scripts/prebuild-kata.sh GHZGame && \
+    ./scripts/prebuild-kata.sh GraphColoring && \
+    ./scripts/prebuild-kata.sh GroversAlgorithm && \
+    ./scripts/prebuild-kata.sh JointMeasurements && \
+    ./scripts/prebuild-kata.sh KeyDistribution_BB84 && \
+    ./scripts/prebuild-kata.sh MagicSquareGame && \
+    ./scripts/prebuild-kata.sh Measurements && \
+    ./scripts/prebuild-kata.sh PhaseEstimation && \
+    ./scripts/prebuild-kata.sh QEC_BitFlipCode && \
+    ./scripts/prebuild-kata.sh RippleCarryAdder && \
+    ./scripts/prebuild-kata.sh SolveSATWithGrover && \
+    ./scripts/prebuild-kata.sh SuperdenseCoding && \
+    ./scripts/prebuild-kata.sh Superposition && \
+    ./scripts/prebuild-kata.sh Teleportation && \
+    ./scripts/prebuild-kata.sh TruthTables && \
+    ./scripts/prebuild-kata.sh UnitaryPatterns && \
+    ./scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
+    rm $HOME/NuGet.config && \
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\
+          <configuration>\
+              <packageSources>\
+                   <clear />\
+              </packageSources>\
+          </configuration>\
+    " > ${HOME}/.nuget/NuGet/NuGet.Config
