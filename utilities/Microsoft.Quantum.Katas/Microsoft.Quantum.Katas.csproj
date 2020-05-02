@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Jupyter.Core" Version="1.3.52077" />
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.11.2004.804-beta" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Core" Version="0.11.2004.2825" />
   </ItemGroup>
 
   <ItemGroup>

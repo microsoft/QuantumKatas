@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Quantum.Kata.PhaseEstimation</RootNamespace>
+    <RootNamespace>Quantum.Kata.QFT</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,10 +14,6 @@
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
-  </ItemGroup>
-   
-  <ItemGroup>
-    <ProjectReference Include="..\utilities\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
