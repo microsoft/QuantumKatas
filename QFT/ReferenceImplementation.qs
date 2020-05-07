@@ -128,10 +128,10 @@ namespace Quantum.Kata.QFT {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Using Quantum Fourier Transform
+    // Part II. Using the Quantum Fourier Transform
     //////////////////////////////////////////////////////////////////
 
-    // Task 2.1. Prepare equal superposition of all basis states
+    // Task 2.1. Prepare an equal superposition of all basis states
     operation PrepareEqualSuperposition_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         // We get equal superposition of all basis states 
         // if we apply QFT to the |0...0⟩ state
@@ -162,7 +162,7 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    // Task 2.4. Prepare equal superposition of all even basis states
+    // Task 2.4. Prepare an equal superposition of all even basis states
     // 1/sqrt(2ⁿ⁻¹) (|0⟩ + |2⟩ + ... + |2ⁿ-2⟩).
     operation PrepareEqualSuperpositionOfEvenStates_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         // Prepare superposition |0⟩ + |2ⁿ⁻¹⟩ = |0...00⟩ + |0..01⟩
@@ -172,7 +172,7 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    // Task 2.5*. Prepare square-wave signal
+    // Task 2.5*. Prepare a square-wave signal
     // 1/sqrt(2ⁿ) (|0⟩ + |1⟩ - |2⟩ - |3⟩ + ... - |2ⁿ-2⟩ - |2ⁿ-1⟩).
     operation PrepareSquareWaveSignal_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         // Following https://oreilly-qc.github.io?p=7-3
@@ -190,7 +190,7 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    // Task 2.6. Get frequency of the signal
+    // Task 2.6. Get the frequency of a signal
     // Input: A register of n ≥ 2 qubits in state 1/sqrt(2ⁿ) Σₖ exp(2πikF/2ⁿ) |k⟩, 0 ≤ F ≤ 2ⁿ - 1.
     // Goal: Return the frequency F of the "signal" encoded in this state.
     operation Frequency_Reference (register : Qubit[]) : Int {

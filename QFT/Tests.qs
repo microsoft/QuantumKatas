@@ -154,7 +154,7 @@ namespace Quantum.Kata.QFT {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Using Quantum Fourier Transform
+    // Part II. Using the Quantum Fourier Transform
     //////////////////////////////////////////////////////////////////
 
     operation AssertEqualOnZeroState (N : Int, 
