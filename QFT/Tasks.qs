@@ -137,14 +137,14 @@ namespace Quantum.Kata.QFT {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Using Quantum Fourier Transform
+    // Part II. Using the Quantum Fourier Transform
     //////////////////////////////////////////////////////////////////
     
     // This section offers you tasks on state preparation and state analysis
     // that can be solved using QFT (or inverse QFT). It is possible to solve them 
-    // without QFT, but we recommend you to try and come up with a QFT-based solution.
+    // without QFT, but we recommend that you to try and come up with a QFT-based solution.
 
-    // Task 2.1. Prepare equal superposition of all basis states
+    // Task 2.1. Prepare an equal superposition of all basis states
     // Input: A register of n qubits in state |0...0⟩.
     // Goal: Prepare an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
     //       (i.e., state (|0...0⟩ + ... + |1...1⟩) / sqrt(2ⁿ) ).
@@ -183,18 +183,18 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    // Task 2.4. Prepare equal superposition of all even basis states
+    // Task 2.4. Prepare an equal superposition of all even basis states
     // Input: A register of n qubits in state |0...0⟩.
     // Goal: Prepare an equal superposition of all even basis vectors:
     //       1/sqrt(2ⁿ⁻¹) (|0⟩ + |2⟩ + ... + |2ⁿ-2⟩).
     operation PrepareEqualSuperpositionOfEvenStates (register : Qubit[]) : Unit is Adj+Ctl {
         // Hint: Which superposition of two basis states can be mapped to this state using QFT?
-        //       Use solutions to tasks 2.1 and 2.3 to figure out the answer.
+        //       Use the solutions to tasks 2.1 and 2.3 to figure out the answer.
         // ...
     }
 
 
-    // Task 2.5*. Prepare square-wave signal
+    // Task 2.5*. Prepare a square-wave signal
     // Input: A register of n ≥ 2 qubits in state |0...0⟩.
     // Goal: Prepare a periodic state with alternating 1, 1, -1, -1 amplitudes of basis states:
     //       1/sqrt(2ⁿ) (|0⟩ + |1⟩ - |2⟩ - |3⟩ + ... - |2ⁿ-2⟩ - |2ⁿ-1⟩).
@@ -205,7 +205,7 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    // Task 2.6. Get frequency of the signal
+    // Task 2.6. Get the frequency of a signal
     // Input: A register of n ≥ 2 qubits in state 1/sqrt(2ⁿ) Σₖ exp(2πikF/2ⁿ) |k⟩, 0 ≤ F ≤ 2ⁿ - 1.
     // Goal: Return the frequency F of the "signal" encoded in this state.
     operation Frequency (register : Qubit[]) : Int {
