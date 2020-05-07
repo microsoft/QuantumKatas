@@ -19,19 +19,22 @@ namespace Quantum.Kata.QFT {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Bitwise;
 
+    //////////////////////////////////////////////////////////////////
+    // Part I. Implementing Quantum Fourier Transform
+    //////////////////////////////////////////////////////////////////
 
     operation ArrayWrapperControlledOperation (op : (Qubit => Unit is Adj+Ctl), register : Qubit[]) : Unit is Adj+Ctl {
         Controlled op([register[0]], register[1]);
     }
 
-    operation T11_Test () : Unit {
+    operation T11_OneQubitQFT_Test () : Unit {
         AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(OneQubitQFT, _), 
                                            ArrayWrapperControlledOperation(OneQubitQFT_Reference, _));
     }
 
 
     // ------------------------------------------------------
-    operation T12_Test () : Unit {
+    operation T12_Rotation_Test () : Unit {
         // several hardcoded tests for small values of k
         // k = 0: α |0⟩ + β · exp(2πi) |1⟩ = α |0⟩ + β |1⟩ - identity
         AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 0), _), 
@@ -67,7 +70,7 @@ namespace Quantum.Kata.QFT {
     }
 
 
-    operation T13_Test () : Unit {
+    operation T13_BinaryFractionClassical_Test () : Unit {
         for (n in 1 .. 5) {
             for (exponent in 0 .. (1 <<< n) - 1) {
                 let bits = IntAsIntArray(exponent, n);
@@ -88,7 +91,7 @@ namespace Quantum.Kata.QFT {
         Controlled op([qs[0]], (qs[1], qs[2 ...]));
     }
 
-    operation T14_Test () : Unit {
+    operation T14_BinaryFractionQuantum_Test () : Unit {
         for (n in 1 .. 5) {
             AssertOperationsEqualReferenced(n + 2, Task14InputWrapper(BinaryFractionQuantum, _), 
                                                    Task14InputWrapper(BinaryFractionQuantum_Reference, _));
@@ -97,7 +100,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
-    operation T15_Test () : Unit {
+    operation T15_BinaryFractionQuantumInPlace_Test () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, BinaryFractionQuantumInPlace, 
                                                BinaryFractionQuantumInPlace_Reference);
@@ -106,7 +109,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
-    operation T16_Test () : Unit {
+    operation T16_ReverseRegister_Test () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, ReverseRegister, 
                                                ReverseRegister_Reference);
@@ -125,7 +128,7 @@ namespace Quantum.Kata.QFT {
         QFT(BigEndian(register));
     }
 
-    operation T17_Test () : Unit {
+    operation T17_QuantumFourierTransform_Test () : Unit {
         AssertOperationsEqualReferenced(1, QuantumFourierTransform, HWrapper);
 
         for (n in 1 .. 5) {
@@ -138,7 +141,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
-    operation T18_Test () : Unit {
+    operation T18_InverseQFT_Test () : Unit {
         AssertOperationsEqualReferenced(1, InverseQFT, HWrapper);
 
         for (n in 1 .. 5) {
@@ -148,4 +151,95 @@ namespace Quantum.Kata.QFT {
                                                Adjoint LibraryQFTWrapper);
         }
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Using the Quantum Fourier Transform
+    //////////////////////////////////////////////////////////////////
+
+    operation AssertEqualOnZeroState (N : Int, 
+                                      testImpl : (Qubit[] => Unit), 
+                                      refImpl : (Qubit[] => Unit is Adj)) : Unit {
+        using (qs = Qubit[N]) {
+            // apply operation that needs to be tested
+            testImpl(qs);
+
+            // apply adjoint reference operation and check that the result is |0⟩
+            Adjoint refImpl(qs);
+
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
+        }
+    }
+
+
+    operation T21_PrepareEqualSuperposition_Test () : Unit {
+        for (N in 1 .. 5) {
+            AssertEqualOnZeroState(N, PrepareEqualSuperposition, PrepareEqualSuperposition_Reference);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T22_PreparePeriodicState_Test () : Unit {
+        for (N in 1 .. 5) {
+            // cross-test: for F = 0 it's the same as equal superposition of states
+            AssertEqualOnZeroState(N, PreparePeriodicState(_, 0), PrepareEqualSuperposition_Reference);
+
+            for (F in 1 .. (1 <<< N - 1)) {
+                AssertEqualOnZeroState(N, PreparePeriodicState(_, F), PreparePeriodicState_Reference(_, F));
+            }
+        }
+    }
+    
+
+    // ------------------------------------------------------
+    operation T23_PrepareAlternatingState_Test () : Unit {
+        for (N in 1 .. 5) {
+            AssertEqualOnZeroState(N, PrepareAlternatingState, PrepareAlternatingState_Reference);
+        }
+    }
+    
+
+    // ------------------------------------------------------
+    operation ApplyHToMostWrapper (register : Qubit[]) : Unit is Adj+Ctl {
+        ApplyToEachCA(H, Most(register));
+    }
+
+
+    operation T24_PrepareEqualSuperpositionOfEvenStates_Test () : Unit {
+        for (N in 1 .. 5) {
+            // cross-test: we already know how to prepare a superposition of even states
+            AssertEqualOnZeroState(N, ApplyHToMostWrapper, PrepareEqualSuperpositionOfEvenStates_Reference);
+            AssertEqualOnZeroState(N, PrepareEqualSuperpositionOfEvenStates, PrepareEqualSuperpositionOfEvenStates_Reference);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T25_PrepareSquareWaveSignal_Test () : Unit {
+        for (N in 2 .. 5) {
+            AssertEqualOnZeroState(N, PrepareSquareWaveSignal, PrepareSquareWaveSignal_Reference);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T26_Frequency_Test () : Unit {
+        for (N in 2 .. 5) {
+            using (register = Qubit[N]) {
+                for (F in 0 .. (1 <<< N - 1)) {
+                    // Prepare input state 
+                    PreparePeriodicState_Reference(register, F);
+                    // Feed it to the solution
+                    let FRet = Frequency(register);
+                    if (FRet != F) {
+                        fail $"Expected frequency {F}, returned frequency {FRet} (n = {N})";
+                    }
+                    ResetAll(register);
+                }
+            }
+        }
+    }
+
 }
