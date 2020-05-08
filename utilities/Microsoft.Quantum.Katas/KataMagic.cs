@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
+using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
@@ -19,7 +20,7 @@ namespace Microsoft.Quantum.Katas
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
         /// </summary>
-        public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger)
+        public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger, IConfigurationSource configurationSource)
         {
             this.Name = $"%kata";
             this.Documentation = new Documentation
@@ -47,6 +48,7 @@ namespace Microsoft.Quantum.Katas
             };
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
+            this.ConfigurationSource = configurationSource;
 
             this.Resolver = resolver;
             this.Snippets = snippets;
@@ -58,6 +60,12 @@ namespace Microsoft.Quantum.Katas
         /// The Resolver lets us find compiled Q# operations from the workspace
         /// </summary>
         protected IOperationResolver Resolver { get; }
+
+        /// <summary>
+        ///     The configuration source used by this magic command to control
+        ///     simulation options (e.g.: dump formatting options).
+        /// </summary>
+        public IConfigurationSource ConfigurationSource { get; }
 
         /// <summary>
         /// The list of user-defined Q# code snippets from the notebook.
@@ -161,7 +169,7 @@ namespace Microsoft.Quantum.Katas
 
             try
             {
-                var qsim = CreateSimulator();
+                var qsim = CreateSimulator(channel);
                 qsim.DisableExceptionPrinting();
 
                 qsim.DisableLogToConsole();
@@ -196,8 +204,8 @@ namespace Microsoft.Quantum.Katas
         /// Creates the instance of the simulator to use to run the Test 
         /// (for now always CounterSimulator from the same package).
         /// </summary>
-        public virtual SimulatorBase CreateSimulator() =>
-            new CounterSimulator();
+        public virtual SimulatorBase CreateSimulator(IChannel channel) =>
+            new CounterSimulator().WithJupyterDisplay(channel, ConfigurationSource);
 
         /// <summary>
         /// Returns the OperationInfo with the Test to run based on the given name.
