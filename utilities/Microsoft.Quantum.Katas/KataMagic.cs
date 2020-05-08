@@ -178,7 +178,6 @@ namespace Microsoft.Quantum.Katas
                     Logger.LogDebug($"Registering {answer.Key.FullName}");
                     qsim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
                 }
-                qsim.OnLog += channel.Stdout;
 
                 var value = test.RunAsync(qsim, null).Result;
 
