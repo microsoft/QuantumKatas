@@ -10,8 +10,7 @@ $install = $False
 
 # Install iqsharp if not installed yet.
 try {
-    dotnet iqsharp --version
-    $install = ($LastExitCode -ne 0)
+    $install = [string]::IsNullOrWhitespace((dotnet tool list --tool-path $Env:TOOLS_DIR | Select-String -Pattern "microsoft.quantum.iqsharp"))
 } catch {
     Write-Host ("`dotnet iqsharp --version` threw error: " + $_)
     $install = $True
