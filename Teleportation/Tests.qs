@@ -163,9 +163,8 @@ namespace Quantum.Kata.Teleportation {
         let numRepetitions = 100;
         
         using ((qAlice, qBob) = (Qubit(), Qubit())) {
-            for (i in 0 .. Length(messages) - 1) {
+            for ((basis, sentState) in messages) {
                 for (j in 1 .. numRepetitions) {
-                    let (basis, sentState) = messages[i];
                     StatePrep_BellState(qAlice, qBob, 0);
                     let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
                     let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
