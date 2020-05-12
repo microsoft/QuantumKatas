@@ -39,20 +39,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 3. Unequal superposition
-    // Inputs:
-    //      1) a qubit in the |0⟩ state.
-    //      2) angle alpha, in radians, represented as Double
-    // Goal: prepare a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
-    operation UnequalSuperposition_Reference (q : Qubit, alpha : Double) : Unit is Adj {
-
-        // Hint: Experiment with rotation gates from Microsoft.Quantum.Intrinsic
-        Ry(2.0 * alpha, q);
-    }
-
-
-    // ------------------------------------------------------
-    // Task 4. Superposition of all basis vectors on two qubits
+    // Task 3. Superposition of all basis vectors on two qubits
     operation AllBasisVectors_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
 
         // Since a Hadamard gate will change |0⟩ into |+⟩ = (|0⟩ + |1⟩)/sqrt(2)
@@ -62,6 +49,16 @@ namespace Quantum.Kata.Superposition {
         H(qs[1]);
     }
 
+    // ------------------------------------------------------
+    // Task 4. Superposition of basis vectors with phase flip
+    operation AllBasisVectorWithPhaseFlip_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
+        
+        // We create the same state as the previous task. 
+        // Lastly, we use a controlled Z gate to phase flip the |11⟩ state.
+        H(qs[0]);
+        H(qs[1]);
+        Controlled Z ([qs[0]],qs[1]);
+	}
 
     // ------------------------------------------------------
     // Task 5. Superposition of basis vectors with phases
@@ -169,58 +166,8 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
-
     // ------------------------------------------------------
-    // Task 11. |00⟩ + |01⟩ + |10⟩ state
-    // Input: 2 qubits in |00⟩ state.
-    // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
-    operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
-
-        // Follow Niel's answer at https://quantumcomputing.stackexchange.com/a/2313/
-
-        // Rotate first qubit to (sqrt(2) |0⟩ + |1⟩) / sqrt(3) (task 1.4 from BasicGates kata)
-        let theta = ArcSin(1.0 / Sqrt(3.0));
-        Ry(2.0 * theta, qs[0]);
-
-        // Split the state sqrt(2) |0⟩ ⊗ |0⟩ into |00⟩ + |01⟩
-        (ControlledOnInt(0, H))([qs[0]], qs[1]);
-    }
-
-    // Alternative solution, based on post-selection
-    operation ThreeStates_TwoQubits_Postselection (qs : Qubit[]) : Unit {
-        using (ancilla = Qubit()) {
-            repeat {
-                // Create |00⟩ + |01⟩ + |10⟩ + |11⟩ state
-                ApplyToEach(H, qs);
-                // Create (|00⟩ + |01⟩ + |10⟩) ⊗ |0⟩ + |11⟩ ⊗ |1⟩
-                Controlled X(qs, ancilla);
-                let res = MResetZ(ancilla);
-            }
-            until (res == Zero)
-            fixup {
-                ResetAll(qs);
-            }
-        }
-    }
-
-    // ------------------------------------------------------
-    // Task 12*. Hardy State
-    // Input: 2 qubits in |00⟩ state
-    // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11⟩) / sqrt(12) on these qubits.
-    operation Hardy_State_Reference (qs : Qubit[]) : Unit is Adj {
-        // Follow Mariia's answer at https://quantumcomputing.stackexchange.com/questions/6836/how-to-create-quantum-circuits-from-scratch
-
-        // Rotate first qubit to (Sqrt(10.0/12.0) |0⟩ + Sqrt(2.0/12.0) |1⟩)
-        let theta = ArcCos(Sqrt(10.0/12.0));
-        Ry(2.0 * theta, qs[0]);
-
-        (ControlledOnInt(0, Ry))([qs[0]], (2.0 * ArcCos(3.0/Sqrt(10.0)) , qs[1]));
-        (ControlledOnInt(1, Ry))([qs[0]], (2.0 * PI()/4.0 , qs[1]));
-    }
-
-
-    // ------------------------------------------------------
-    // Task 13. Superposition of |0...0⟩ and given bit string
+    // Task 11. Superposition of |0...0⟩ and given bit string
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) bit string represented as Bool[]
@@ -245,9 +192,8 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
-
     // ------------------------------------------------------
-    // Task 14. Superposition of two bit strings
+    // Task 12. Superposition of two bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) two bit string represented as Bool[]s
@@ -266,7 +212,6 @@ namespace Quantum.Kata.Superposition {
         }
         return -1;
     }
-
 
     operation TwoBitstringSuperposition_Reference (qs : Qubit[], bits1 : Bool[], bits2 : Bool[]) : Unit is Adj {
 
@@ -297,7 +242,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 15*. Superposition of four bit strings
+    // Task 13*. Superposition of four bit strings
     // Inputs:
     //      1) N qubits in |0...0⟩ state
     //      2) four bit string represented as Bool[][] bits
@@ -332,9 +277,94 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+    // ------------------------------------------------------
+    // Task 14. Controlled Superposition
+    // Input: two qubits in |00⟩ state (stored in an array of length 2).
+    // Goal: change the state to 1/sqrt(2)|00⟩+12|10⟩+12|11⟩.
+    operation ControlledSuperposition_Reference (qs : Qubit[]) : Unit is Adj {
+        H(qs[0]);
+        Controlled H ([qs[0]],qs[1]);
+    }
+
+    
+    // ------------------------------------------------------
+    // Task 15. Unequal superposition
+    // Inputs:
+    //      1) a qubit in the |0⟩ state.
+    //      2) angle alpha, in radians, represented as Double
+    // Goal: prepare a cos(alpha) * |0⟩ + sin(alpha) * |1⟩ state on this qubit.
+    operation UnequalSuperposition_Reference (q : Qubit, alpha : Double) : Unit is Adj {
+
+        // Hint: Experiment with rotation gates from Microsoft.Quantum.Intrinsic
+        Ry(2.0 * alpha, q);
+    }
+
 
     // ------------------------------------------------------
-    // Task 16. W state on 2ᵏ qubits
+    // Task 16. |00⟩ + |01⟩ + |10⟩ state
+    // Input: 2 qubits in |00⟩ state.
+    // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
+    operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
+
+        // Follow Niel's answer at https://quantumcomputing.stackexchange.com/a/2313/
+
+        // Rotate first qubit to (sqrt(2) |0⟩ + |1⟩) / sqrt(3) (task 1.4 from BasicGates kata)
+        let theta = ArcSin(1.0 / Sqrt(3.0));
+        Ry(2.0 * theta, qs[0]);
+
+        // Split the state sqrt(2) |0⟩ ⊗ |0⟩ into |00⟩ + |01⟩
+        (ControlledOnInt(0, H))([qs[0]], qs[1]);
+    }
+
+    // Alternative solution, based on post-selection
+    operation ThreeStates_TwoQubits_Postselection (qs : Qubit[]) : Unit {
+        using (ancilla = Qubit()) {
+            repeat {
+                // Create |00⟩ + |01⟩ + |10⟩ + |11⟩ state
+                ApplyToEach(H, qs);
+                // Create (|00⟩ + |01⟩ + |10⟩) ⊗ |0⟩ + |11⟩ ⊗ |1⟩
+                Controlled X(qs, ancilla);
+                let res = MResetZ(ancilla);
+            }
+            until (res == Zero)
+            fixup {
+                ResetAll(qs);
+            }
+        }
+    }
+
+    // ------------------------------------------------------
+    // Task 17. (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3)
+    // Input: two qubits in |00⟩ state (stored in an array of length 2).
+    // Goal: change the state to (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3).
+    operation ThreeStates_Unequal_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
+
+        //Frislty create (|00⟩ + |01⟩ + |10⟩) / sqrt(3) state
+        ThreeStates_TwoQubits_Reference(qs);
+        
+        R1(2.0 * PI() / 3.0, qs[0]);
+        R1(4.0 * PI() / 3.0, qs[1]);
+	}
+
+
+    // ------------------------------------------------------
+    // Task 18*. Hardy State
+    // Input: 2 qubits in |00⟩ state
+    // Goal: create the state (3|00⟩ + |01⟩ + |10⟩ + |11⟩) / sqrt(12) on these qubits.
+    operation Hardy_State_Reference (qs : Qubit[]) : Unit is Adj {
+        // Follow Mariia's answer at https://quantumcomputing.stackexchange.com/questions/6836/how-to-create-quantum-circuits-from-scratch
+
+        // Rotate first qubit to (Sqrt(10.0/12.0) |0⟩ + Sqrt(2.0/12.0) |1⟩)
+        let theta = ArcCos(Sqrt(10.0/12.0));
+        Ry(2.0 * theta, qs[0]);
+
+        (ControlledOnInt(0, Ry))([qs[0]], (2.0 * ArcCos(3.0/Sqrt(10.0)) , qs[1]));
+        (ControlledOnInt(1, Ry))([qs[0]], (2.0 * PI()/4.0 , qs[1]));
+    }
+
+
+    // ------------------------------------------------------
+    // Task 19. W state on 2ᵏ qubits
     // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.
@@ -369,7 +399,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    // Task 17**. W state on arbitrary number of qubits
+    // Task 20**. W state on arbitrary number of qubits
     // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.

@@ -75,30 +75,16 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(1, ArrayWrapperOperation(MinusState, _), ArrayWrapperOperationA(MinusState_Reference, _), true, "");
     }
 
-
     // ------------------------------------------------------
-    operation T03_UnequalSuperposition_Test () : Unit {
-        // cross-test
-        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(X, _), true, "α = 0.5 π");
-        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.25 * PI()), _), ArrayWrapperOperationA(PlusState_Reference, _), true, "α = 0.25 π");
-        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.75 * PI()), _), ArrayWrapperOperationA(MinusState_Reference, _), true, "α = 0.75 π");
-
-        Message("Testing on hidden test cases...");
-        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.0), _), ApplyToEachA(I, _), false, "");
-
-        for (i in 1 .. 36) {
-            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
-            AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, alpha), _), ArrayWrapperOperationA(UnequalSuperposition_Reference(_, alpha), _), false, "");
-        }
-    }
-
-
-    // ------------------------------------------------------
-    operation T04_AllBasisVectors_TwoQubits_Test () : Unit {
+    operation T03_AllBasisVectors_TwoQubits_Test () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, AllBasisVectors_TwoQubits, AllBasisVectors_TwoQubits_Reference, true, "");
-    }
+    }    
 
+    // ------------------------------------------------------
+    operation T04_AllBasisVectorWithPhaseFlip_TwoQubits_Test() : Unit {
+        AssertEqualOnZeroState(2, AllBasisVectorWithPhaseFlip_TwoQubits, AllBasisVectorWithPhaseFlip_TwoQubits_Reference, true, "");
+	}
 
     // ------------------------------------------------------
     operation T05_AllBasisVectorsWithPhases_TwoQubits_Test () : Unit {
@@ -166,20 +152,8 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
-
     // ------------------------------------------------------
-    operation T11_ThreeStates_TwoQubits_Test () : Unit {
-        AssertEqualOnZeroState(2, ThreeStates_TwoQubits, ThreeStates_TwoQubits_Reference, true, "");
-    }
-
-    
-    // ------------------------------------------------------
-    operation T12_Hardy_State_Test () : Unit {
-        AssertEqualOnZeroState(2, Hardy_State, Hardy_State_Reference, true, "");
-    }
-
-    // ------------------------------------------------------
-    operation T13_ZeroAndBitstringSuperposition_Test () : Unit {
+    operation T11_ZeroAndBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
         mutable b = [true];
         AssertEqualOnZeroState(Length(b), ZeroAndBitstringSuperposition(_, b), 
@@ -207,9 +181,8 @@ namespace Quantum.Kata.Superposition {
                                           ZeroAndBitstringSuperposition_Reference(_, b), false, "");
     }
 
-
-    // ------------------------------------------------------
-    operation T14_TwoBitstringSuperposition_Test () : Unit {
+       // ------------------------------------------------------
+    operation T12_TwoBitstringSuperposition_Test () : Unit {
         // open tests
         // diff in the first position
         mutable b1 = [true];
@@ -257,9 +230,8 @@ namespace Quantum.Kata.Superposition {
                                            TwoBitstringSuperposition_Reference(_, b1, b2), false, "");
     }
 
-
     // ------------------------------------------------------
-    operation T15_FourBitstringSuperposition_Test () : Unit {
+    operation T13_FourBitstringSuperposition_Test () : Unit {
 
         // cross-tests
         mutable bits = [[false, false], [false, true], [true, false], [true, true]];
@@ -296,9 +268,44 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+    // ------------------------------------------------------
+    operation T14_ControlledSuperposition_Test () : Unit {
+        AssertEqualOnZeroState(2, ControlledSuperposition, ControlledSuperposition_Reference, true, "");
+	}
 
     // ------------------------------------------------------
-    operation T16_WState_PowerOfTwo_Test () : Unit {
+    operation T15_UnequalSuperposition_Test () : Unit {
+        // cross-test
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(X, _), true, "α = 0.5 π");
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.25 * PI()), _), ArrayWrapperOperationA(PlusState_Reference, _), true, "α = 0.25 π");
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.75 * PI()), _), ArrayWrapperOperationA(MinusState_Reference, _), true, "α = 0.75 π");
+
+        Message("Testing on hidden test cases...");
+        AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.0), _), ApplyToEachA(I, _), false, "");
+
+        for (i in 1 .. 36) {
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
+            AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, alpha), _), ArrayWrapperOperationA(UnequalSuperposition_Reference(_, alpha), _), false, "");
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T16_ThreeStates_TwoQubits_Test () : Unit {
+        AssertEqualOnZeroState(2, ThreeStates_TwoQubits, ThreeStates_TwoQubits_Reference, true, "");
+    }
+
+    operation T17_ThreeStates_Unequal_TwoQubits_Test () : Unit {
+        AssertEqualOnZeroState(2, ThreeStates_Unequal_TwoQubits, ThreeStates_Unequal_TwoQubits_Reference, true, "");
+	}
+
+    // ------------------------------------------------------
+    operation T18_Hardy_State_Test () : Unit {
+        AssertEqualOnZeroState(2, Hardy_State, Hardy_State_Reference, true, "");
+    }
+
+    // ------------------------------------------------------
+    operation T19_WState_PowerOfTwo_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         AssertEqualOnZeroState(1, WState_PowerOfTwo, ApplyToEachA(X, _), true, "N = 1");
 
@@ -312,7 +319,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
-    operation T17_WState_Arbitrary_Test () : Unit {
+    operation T20_WState_Arbitrary_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         AssertEqualOnZeroState(1, WState_Arbitrary, ApplyToEachA(X, _), true, "N = 1");
 
