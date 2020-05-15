@@ -19,7 +19,10 @@ namespace Quantum.Kata.Superposition {
     open Microsoft.Quantum.Math;
 
 
-    // ------------------------------------------------------
+    //////////////////////////////////////////////////////////////////
+    // Part I. Simple Gates
+    //////////////////////////////////////////////////////////////////
+
     // Task 1.1. Plus state
     // Input: a qubit in the |0⟩ state.
     // Goal: prepare a |+⟩ state on this qubit (|+⟩ = (|0⟩ + |1⟩) / sqrt(2)).
@@ -52,11 +55,11 @@ namespace Quantum.Kata.Superposition {
     operation AllBasisVectorWithPhaseFlip_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
         
         // We create the same state as the previous task. 
+        AllBasisVectors_TwoQubits_Reference(qs);
+
         // Lastly, we use a controlled Z gate to phase flip the |11⟩ state.
-        H(qs[0]);
-        H(qs[1]);
         Controlled Z ([qs[0]],qs[1]);
-	}
+    }
 
     // ------------------------------------------------------
     // Task 1.5. Superposition of basis vectors with phases
@@ -269,7 +272,11 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
-    // ------------------------------------------------------
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Arbitrary Rotations
+    //////////////////////////////////////////////////////////////////
+
     // Task 2.1. Unequal superposition
     // Inputs:
     //      1) a qubit in the |0⟩ state.
@@ -282,16 +289,16 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
-    // Task 2.2. Controlled Superposition
+    // Task 2.2. 1/sqrt(2)|00⟩ + 1/2|01⟩ + 1/2|10⟩ state
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: change the state to 1/sqrt(2)|00⟩+1/2|10⟩+1/2|11⟩.
-    operation ControlledSuperposition_Reference (qs : Qubit[]) : Unit is Adj {
+    operation ControlledRotation_Reference (qs : Qubit[]) : Unit is Adj {
         H(qs[0]);
         Controlled H ([qs[0]],qs[1]);
     }
 
     // ------------------------------------------------------
-    // Task 2.3 |00⟩ + |01⟩ + |10⟩ state
+    // Task 2.3*. |00⟩ + |01⟩ + |10⟩ state
     // Input: 2 qubits in |00⟩ state.
     // Goal: create the state (|00⟩ + |01⟩ + |10⟩) / sqrt(3) on these qubits.
     operation ThreeStates_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
@@ -324,17 +331,17 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
-    // Task 2.4. (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3)
+    // Task 2.4*. (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3)
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
     // Goal: change the state to (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3).
-    operation ThreeStates_Unequal_TwoQubits_Reference (qs : Qubit[]) : Unit is Adj {
+    operation ThreeStates_TwoQubits_Phases_Reference (qs : Qubit[]) : Unit is Adj {
 
-        //Frislty create (|00⟩ + |01⟩ + |10⟩) / sqrt(3) state
+        // First create (|00⟩ + |01⟩ + |10⟩) / sqrt(3) state
         ThreeStates_TwoQubits_Reference(qs);
         
         R1(2.0 * PI() / 3.0, qs[0]);
         R1(4.0 * PI() / 3.0, qs[1]);
-	}
+    }
 
     // ------------------------------------------------------
     // Task 2.5*. Hardy State
@@ -352,7 +359,7 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
-    // Task 2.6. W state on 2ᵏ qubits
+    // Task 2.6*. W state on 2ᵏ qubits
     // Input: N = 2ᵏ qubits in |0...0⟩ state.
     // Goal: create a W state (https://en.wikipedia.org/wiki/W_state) on these qubits.
     // W state is an equal superposition of all basis states on N qubits of Hamming weight 1.

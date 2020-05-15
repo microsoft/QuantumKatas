@@ -55,7 +55,10 @@ namespace Quantum.Kata.Superposition {
     }
 
 
-    // ------------------------------------------------------
+    //////////////////////////////////////////////////////////////////
+    // Part I. Simple Gates
+    //////////////////////////////////////////////////////////////////
+
     operation ArrayWrapperOperation (op : (Qubit => Unit), qs : Qubit[]) : Unit {
         op(qs[0]);
     }
@@ -84,7 +87,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     operation T104_AllBasisVectorWithPhaseFlip_TwoQubits_Test() : Unit {
         AssertEqualOnZeroState(2, AllBasisVectorWithPhaseFlip_TwoQubits, AllBasisVectorWithPhaseFlip_TwoQubits_Reference, true, "");
-	}
+    }
 
     // ------------------------------------------------------
     operation T105_AllBasisVectorsWithPhases_TwoQubits_Test () : Unit {
@@ -268,7 +271,11 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
-    // ------------------------------------------------------
+
+    //////////////////////////////////////////////////////////////////
+    // Part II. Arbitrary Rotations
+    //////////////////////////////////////////////////////////////////
+
     operation T201_UnequalSuperposition_Test () : Unit {
         // cross-test
         AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(X, _), true, "α = 0.5 π");
@@ -285,18 +292,19 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
-    operation T202_ControlledSuperposition_Test () : Unit {
-        AssertEqualOnZeroState(2, ControlledSuperposition, ControlledSuperposition_Reference, true, "");
-	}
+    operation T202_ControlledRotation_Test () : Unit {
+        AssertEqualOnZeroState(2, ControlledRotation, ControlledRotation_Reference, true, "");
+    }
 
     // ------------------------------------------------------
     operation T203_ThreeStates_TwoQubits_Test () : Unit {
         AssertEqualOnZeroState(2, ThreeStates_TwoQubits, ThreeStates_TwoQubits_Reference, true, "");
     }
 
-    operation T204_ThreeStates_Unequal_TwoQubits_Test () : Unit {
-        AssertEqualOnZeroState(2, ThreeStates_Unequal_TwoQubits, ThreeStates_Unequal_TwoQubits_Reference, true, "");
-	}
+    // ------------------------------------------------------
+    operation T204_ThreeStates_TwoQubits_Phases_Test () : Unit {
+        AssertEqualOnZeroState(2, ThreeStates_TwoQubits_Phases, ThreeStates_TwoQubits_Phases_Reference, true, "");
+    }
 
     // ------------------------------------------------------
     operation T205_Hardy_State_Test () : Unit {
