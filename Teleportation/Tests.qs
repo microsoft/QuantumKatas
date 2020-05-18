@@ -81,10 +81,7 @@ namespace Quantum.Kata.Teleportation {
         teleportOp : ((Qubit, Qubit, Qubit) => Unit), 
         setupPsiOp : (Qubit => Unit is Adj)) : Unit {
         
-        using (qs = Qubit[3]) {
-            let qMessage = qs[0];
-            let qAlice = qs[1];
-            let qBob = qs[2];
+        using ((qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit())) {
             setupPsiOp(qMessage);
             
             // This should modify qBob to be identical to the state
@@ -95,7 +92,7 @@ namespace Quantum.Kata.Teleportation {
             // should make it Zero.
             Adjoint setupPsiOp(qBob);
             AssertQubit(Zero, qBob);
-            ResetAll(qs);
+            ResetAll([qMessage, qAlice, qBob]);
         }
     }
     
@@ -116,9 +113,9 @@ namespace Quantum.Kata.Teleportation {
         // Depending on the outcomes different paths are taken on Bob's side.
         // We repeat each test run several times to ensure that all paths are checked.
         let numRepetitions = 100;
-        for (i in 0 .. Length(setupPsiOps) - 1) {
+        for (psiOp in setupPsiOps) {
             for (j in 1 .. numRepetitions) {
-                TeleportTestHelper(teleportOp, setupPsiOps[i]);
+                TeleportTestHelper(teleportOp, psiOp);
             }
         }
     }
@@ -163,9 +160,8 @@ namespace Quantum.Kata.Teleportation {
         let numRepetitions = 100;
         
         using ((qAlice, qBob) = (Qubit(), Qubit())) {
-            for (i in 0 .. Length(messages) - 1) {
+            for ( (basis, sentState) in messages) {
                 for (j in 1 .. numRepetitions) {
-                    let (basis, sentState) = messages[i];
                     StatePrep_BellState(qAlice, qBob, 0);
                     let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
                     let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
@@ -216,19 +212,15 @@ namespace Quantum.Kata.Teleportation {
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;
         
-        using (qs = Qubit[3]) {
-            let qMessage = qs[0];
-            let qAlice = qs[1];
-            let qBob = qs[2];
-            
-            for (i in 0 .. Length(setupPsiOps) - 1) {
+        using ((qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit())) {
+            for (psiOp in setupPsiOps) {
                 for (j in 1 .. numRepetitions) {
-                    setupPsiOps[i](qMessage);
+                    psiOp(qMessage);
                     StatePrep_BellState(qAlice, qBob, 0);
                     MeasurementFreeTeleport(qAlice, qBob, qMessage);
-                    Adjoint setupPsiOps[i](qBob);
+                    Adjoint psiOp(qBob);
                     AssertQubit(Zero, qBob);
-                    ResetAll(qs);
+                    ResetAll([qMessage, qAlice, qBob]);
                 }
             }
         }
@@ -238,11 +230,7 @@ namespace Quantum.Kata.Teleportation {
     // ------------------------------------------------------
     operation T41_EntangleThreeQubits_Test () : Unit {
         
-        using (qs = Qubit[3]) {
-            let qAlice = qs[0];
-            let qBob = qs[1];
-            let qCharlie = qs[2];
-            
+        using ((qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit())) {
             // Apply operation that needs to be tested
             EntangleThreeQubits(qAlice, qBob, qCharlie);
             
@@ -250,7 +238,7 @@ namespace Quantum.Kata.Teleportation {
             Adjoint EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
             
             // Assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
+            AssertAllZero([qAlice, qBob, qCharlie]);
         }
     }
     
@@ -260,22 +248,17 @@ namespace Quantum.Kata.Teleportation {
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;
         
-        using (qs = Qubit[4]) {
-            let qMessage = qs[0];
-            let qAlice = qs[1];
-            let qBob = qs[2];
-            let qCharlie = qs[3];
-            
-            for (i in 0 .. Length(setupPsiOps) - 1) {
+        using ((qMessage, qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit(), Qubit())) {
+            for (psiOp in setupPsiOps) {
                 for (j in 1 .. numRepetitions) {
-                    setupPsiOps[i](qMessage);
+                    psiOp(qMessage);
                     EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
                     let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
                     let b3 = ResultAsBool(M(qBob));
                     ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
-                    Adjoint setupPsiOps[i](qCharlie);
+                    Adjoint psiOp(qCharlie);
                     AssertQubit(Zero, qCharlie);
-                    ResetAll(qs);
+                    ResetAll([qMessage, qAlice, qBob, qCharlie]);
                 }
             }
         }
