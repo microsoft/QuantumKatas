@@ -51,11 +51,17 @@ function Validate {
     #  convert %kata to %check_kata. run Jupyter nbconvert to execute the kata.
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
+    # dotnet-iqsharp writes some output to stderr, which causes Powershell to throw
+    # unless $ErrorActionPreference is set to 'Continue'.
+    $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG
+        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120
-    } 
+        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+    }
+    $ErrorActionPreference = 'Stop'
 
     # if jupyter returns an error code, report that this notebook is invalid:
     if ($LastExitCode -ne 0) {
@@ -88,19 +94,18 @@ $not_ready =
     'LinearAlgebra.ipynb'
 )
 
-$errors = $false
 
 if ($Notebook -ne "") {
     # Validate only the notebook provided as the parameter (do not exclude blacklisted notebooks)
     Get-ChildItem $Notebook `
-        | ForEach-Object { $errors = (Validate $_) -or $errors }
+        | ForEach-Object { Validate $_ }
 } else {
     # Validate all notebooks in the folder from which the script was executed
     Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready `
-            | ForEach-Object { $errors = (Validate $_) -or $errors }
+            | ForEach-Object { Validate $_ }
 }
 
 if (-not $all_ok) {
