@@ -339,8 +339,8 @@ namespace Quantum.Kata.Superposition {
         // First create (|00⟩ + |01⟩ + |10⟩) / sqrt(3) state
         ThreeStates_TwoQubits_Reference(qs);
         
-        R1(2.0 * PI() / 3.0, qs[0]);
-        R1(4.0 * PI() / 3.0, qs[1]);
+        R1(4.0 * PI() / 3.0, qs[0]);
+        R1(2.0 * PI() / 3.0, qs[1]);
     }
 
     // ------------------------------------------------------
