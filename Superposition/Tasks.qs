@@ -235,7 +235,7 @@ namespace Quantum.Kata.Superposition {
 
     // Task 2.4*. (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3)
     // Input: two qubits in |00⟩ state (stored in an array of length 2).
-    // Goal: change the state to (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3).
+    // Goal: change the state to (|00⟩ + ω |01⟩ + ω² |10⟩) / sqrt(3) where ω is exp(2πi/3).
     operation ThreeStates_TwoQubits_Phases (qs : Qubit[]) : Unit {
         // ...
     }

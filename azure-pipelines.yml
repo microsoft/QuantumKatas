@@ -12,7 +12,7 @@ variables:
   Build.Patch: $(Build.BuildId)
   Build.Configuration: 'Release'
   Drops.Dir: $(Build.ArtifactStagingDirectory)/drops
-
+  IQSharp.Hosting.Env: 'build-agent-katas'
 
 jobs:
 - job: Windows
