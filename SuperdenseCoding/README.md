@@ -1,6 +1,6 @@
 # Welcome!
 
-This kata covers superdense coding - a protocol which allows to transmit two bits of classical information by sending just one qubit using previously shared quantum entanglement. This protocol can be thought of as the dual to the teleportation protocol, which allows to transfer the state of a qubit by sending two classical bits.
+This kata covers superdense coding, a protocol which allows the transmission of two bits of classical information by sending just one qubit that uses previously shared quantum entanglement. This protocol can be thought of as the dual to the teleportation protocol, which allows to transfer the state of a qubit by sending two classical bits.
 
 You can [run the SuperdenseCoding kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=SuperdenseCoding%2FSuperdenseCoding.ipynb)!
 
