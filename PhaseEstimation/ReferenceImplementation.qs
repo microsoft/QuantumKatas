@@ -92,6 +92,44 @@ namespace Quantum.Kata.PhaseEstimation {
         }
     }
 
+    // A reference solution to Task 1.4 that uses a lower level library primitive, QFTLE.
+    // Follows the algorithm as given in
+    // https://en.wikipedia.org/w/index.php?title=Quantum_phase_estimation_algorithm&oldid=953506229
+    // We let exp(2πiθ) denote the eigenvalue of U corresponding to eigenstate P|0⟩.
+    // This function will return an approximation of θ.
+    operation QPE_Reference_QFT (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), n : Int) : Double {
+        using ((eigenstate, phaseRegister) = (Qubit(), Qubit[n])) {
+            // Prepare the eigenstate of U
+            P(eigenstate);
+
+            // Put phaseRegister into a uniform superposition of all computational basis states.
+            ApplyToEach(H, phaseRegister);
+
+            // Apply controlled U gates so that |k⟩ gets transformed into exp(2πikθ)|k⟩.
+            // Here |k⟩ is encoded in little-endian format in phaseRegister.
+            for (i in 0 .. n - 1) {
+                let powU = UnitaryPower(U, 1 <<< i); // powU = U^(2^i)
+                Controlled powU([phaseRegister[i]], eigenstate);
+            }
+
+            // Apply an inverse QFT to phaseRegister.
+            // We use QFTLE because phaseRegister is little-endian encoded.
+            // This leaves phaseRegister in a superposition of integers which are close to θ*2^n.
+            // See the linked Wikipedia article on the details of this supoerposition.
+            Adjoint QFTLE(LittleEndian(phaseRegister));
+
+            // Measure out an integer that is close to θ*2^n.
+            let phaseRegisterMeasurement = MeasureInteger(LittleEndian(phaseRegister));
+
+            // Clean up qubits.
+            ResetAll([eigenstate] + phaseRegister);
+
+            // Scale our measurement down to [0, 1) and return our estimate.
+            let phase_estimate = IntAsDouble(phaseRegisterMeasurement) / IntAsDouble(1 <<< n);
+            return phase_estimate;
+        }
+    }
+
 
     //////////////////////////////////////////////////////////////////
     // Part II. Iterative phase estimation
