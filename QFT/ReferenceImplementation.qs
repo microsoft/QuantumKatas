@@ -85,7 +85,7 @@ namespace Quantum.Kata.QFT {
     // Input: A register of qubits in state |j₁j₂...jₙ⟩
     // Goal: Change the state of the register
     //       from |j₁⟩ ⊗ |j₂...jₙ⟩
-    //         to 1/sqrt(2) (|0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
+    //         to 1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
     operation BinaryFractionQuantumInPlace_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         OneQubitQFT_Reference(register[0]);
         for (ind in 1 .. Length(register) - 1) {
@@ -96,7 +96,7 @@ namespace Quantum.Kata.QFT {
 
     // Task 1.6. Reverse the order of qubits
     // Input: A register of qubits in state |x₁x₂...xₙ⟩
-    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩
+    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩.
     operation ReverseRegister_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         let N = Length(register);
         for (ind in 0 .. N / 2 - 1) {

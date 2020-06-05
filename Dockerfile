@@ -37,6 +37,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh Measurements && \
     ./scripts/prebuild-kata.sh PhaseEstimation && \
     ./scripts/prebuild-kata.sh QEC_BitFlipCode && \
+    ./scripts/prebuild-kata.sh QFT && \
     ./scripts/prebuild-kata.sh RippleCarryAdder && \
     ./scripts/prebuild-kata.sh SolveSATWithGrover && \
     ./scripts/prebuild-kata.sh SuperdenseCoding && \

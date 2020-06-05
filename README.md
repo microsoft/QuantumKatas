@@ -91,6 +91,13 @@ Each kata is a separate project that includes:
 * **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
   Continue the exploration of Grover's search algorithm, using graph coloring problems as an example.
 
+#### Tools and libraries/Building up to Shor's algorithm
+
+* **[Quantum Fourier transform](./QFT/)**.
+  Learn to implement quantum Fourier transform and to use it to perform simple state transformations.
+* **[Phase estimation](./PhaseEstimation/)**.
+  Learn about phase estimation algorithms.
+
 #### Entanglement games
 
 * **[CHSH game](./CHSHGame/)**.
@@ -108,8 +115,6 @@ Each kata is a separate project that includes:
 
 * **[BB84 protocol](./KeyDistribution_BB84/)**.
   Implement the BB84 key distribution algorithm.
-* **[Phase estimation](./PhaseEstimation/)**.
-  Learn about phase estimation algorithms.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
 * **[Unitary Patterns*](./UnitaryPatterns/)**.
