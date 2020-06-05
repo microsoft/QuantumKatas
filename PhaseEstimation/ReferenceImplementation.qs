@@ -108,14 +108,14 @@ namespace Quantum.Kata.PhaseEstimation {
             // Apply controlled U gates so that |k⟩ gets transformed into exp(2πikθ)|k⟩.
             // Here |k⟩ is encoded in little-endian format in phaseRegister.
             for (i in 0 .. n - 1) {
-                let powU = UnitaryPower(U, 1 <<< i); // powU = U^(2^i)
+                let powU = UnitaryPower_Reference(U, 1 <<< i); // powU = U^(2^i)
                 Controlled powU([phaseRegister[i]], eigenstate);
             }
 
             // Apply an inverse QFT to phaseRegister.
             // We use QFTLE because phaseRegister is little-endian encoded.
             // This leaves phaseRegister in a superposition of integers which are close to θ*2^n.
-            // See the linked Wikipedia article on the details of this supoerposition.
+            // See the linked Wikipedia article on the details of this superposition.
             Adjoint QFTLE(LittleEndian(phaseRegister));
 
             // Measure out an integer that is close to θ*2^n.
