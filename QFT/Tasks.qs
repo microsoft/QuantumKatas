@@ -16,7 +16,8 @@ namespace Quantum.Kata.QFT {
     // The "QFT (Quantum Fourier Transform)" quantum kata is a series of
     // exercises designed to teach you the basics of Quantum Fourier Transform.
     // It covers the following topics:
-    //  - implementing QFT.
+    //  - implementing QFT,
+    //  - using it to perform simple state transformations.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -84,10 +85,10 @@ namespace Quantum.Kata.QFT {
     // Input: A register of n qubits in state |j₁j₂...jₙ⟩.
     // Goal: Change the state of the register
     //       from |j₁⟩ ⊗ |j₂...jₙ⟩
-    //         to 1/sqrt(2) (|0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
+    //         to 1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
     // Note: The register of qubits can be in superposition as well; 
     //       the behavior in this case is defined by behavior on the basis states and the linearity of unitary transformations.
-    // Hint: This task is very similar to task 1.6, but the digit j₁ is encoded in-place, using task 1.1.
+    // Hint: This task is very similar to task 1.4, but the digit j₁ is encoded in-place, using task 1.1.
     operation BinaryFractionQuantumInPlace (register : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
@@ -95,7 +96,7 @@ namespace Quantum.Kata.QFT {
 
     // Task 1.6. Reverse the order of qubits
     // Input: A register of n qubits in state |x₁x₂...xₙ⟩.
-    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩
+    // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩.
     operation ReverseRegister (register : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
