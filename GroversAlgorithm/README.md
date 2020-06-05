@@ -14,7 +14,7 @@ You can [run the GroversAlgorithm kata as a Jupyter Notebook](https://mybinder.o
 * [An Introduction to Quantum Algorithms](https://people.cs.umass.edu/~strubell/doc/quantum_tutorial.pdf) by Emma Strubell, pages 20-24.
 * [Lecture 4: Grover's Algorithm](https://www.cs.cmu.edu/~odonnell/quantum15/lecture04.pdf) by John Wright.
 * Lectures [12](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/12.pdf) and [13](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/13.pdf) by John Watrous.
-* [This page](http://davidbkemp.github.io/animated-qubits/grover.html) has an animated demonstration of Grover's algorithm for a simple case.
+* Here is an [animated demonstration of Grover's algorithm](http://davidbkemp.github.io/animated-qubits/grover.html) for a simple case.
 
 #### Q# materials
 

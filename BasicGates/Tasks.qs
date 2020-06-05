@@ -122,6 +122,8 @@ namespace Quantum.Kata.BasicGates {
     // to observe the global phase it introduces. This is used 
     // in later katas as part of more complicated tasks.
     operation GlobalPhaseChange (q: Qubit) : Unit is Adj+Ctl {
+        // Hint: Can you apply one of the rotation gates?
+        // Take a look at the functions in the Microsoft.Quantum.Math package to use a common mathematical constant.
         // ...
     }
 
