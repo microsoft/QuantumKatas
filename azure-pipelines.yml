@@ -2,29 +2,32 @@
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
-pool:
-  vmImage: 'VS2017-Win2016'
+name: $(Build.Major).$(Build.Minor).$(BuildId)
+trigger:
+- master
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  Build.Major: 1
+  Build.Minor: 0
+  Build.Patch: $(Build.BuildId)
+  Build.Configuration: 'Release'
+  Drops.Dir: $(Build.ArtifactStagingDirectory)/drops
+  IQSharp.Hosting.Env: 'build-agent-katas'
 
-steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: 'scripts/validate-unicode.ps1'
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - template: scripts/steps.yml
+- job: macOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - template: scripts/steps.yml
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: scripts/steps.yml
 
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'

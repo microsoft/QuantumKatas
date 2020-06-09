@@ -3,7 +3,8 @@
 
 namespace Quantum.Kata.SimonsAlgorithm {
     
-    open Microsoft.Quantum.Primitive;
+    open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     
     
@@ -24,18 +25,14 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Part I. Oracles
     //////////////////////////////////////////////////////////////////
     
-    // Task 1.1. f(x) = 𝑥₀ ⊕ ... ⊕ xₙ₋₁ (i.e., the parity of a given bit string)
+    // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (i.e., the parity of a given bit string)
     // Inputs:
     //      1) N qubits in an arbitrary state |x⟩
     //      2) a qubit in an arbitrary state |y⟩
     // Goal: Transform state |x, y⟩ into |x, y ⊕ x_0 ⊕ x_1 ... ⊕ x_{n-1}⟩ (⊕ is addition modulo 2).
-    operation Oracle_CountBits (x : Qubit[], y : Qubit) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation Oracle_CountBits (x : Qubit[], y : Qubit) : Unit
+    is Adj {        
+        // ...
     }
     
     
@@ -45,13 +42,9 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      2) N qubits in an arbitrary state |y⟩
     // Goal: Transform state |x, y⟩ into |x, y ⊕ f(x)⟩, where f is bitwise right shift function, i.e.,
     // |y ⊕ f(x)⟩ = |y_0, y_1 ⊕ x_0, y_2 ⊕ x_1, ..., y_{n-1} ⊕ x_{n-2}⟩ (⊕ is addition modulo 2).
-    operation Oracle_BitwiseRightShift (x : Qubit[], y : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation Oracle_BitwiseRightShift (x : Qubit[], y : Qubit[]) : Unit
+    is Adj {        
+        // ...
     }
     
     
@@ -62,17 +55,14 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      3) a 1xN binary matrix (represented as an Int[]) describing operator A
     //         (see https://en.wikipedia.org/wiki/Transformation_matrix )
     // Goal: Transform state |x, y⟩ into |x, y ⊕ A(x) ⟩ (⊕ is addition modulo 2).
-    operation Oracle_OperatorOutput (x : Qubit[], y : Qubit, A : Int[]) : Unit {
+    operation Oracle_OperatorOutput (x : Qubit[], y : Qubit, A : Int[]) : Unit
+    is Adj {
         
-        body (...) {
-            // The following line enforces the constraint on the input arrays.
-            // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-            AssertIntEqual(Length(x), Length(A), "Arrays x and A should have the same length");
+        // The following line enforces the constraint on the input arrays.
+        // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
+        EqualityFactI(Length(x), Length(A), "Arrays x and A should have the same length");
             
-            // ...
-        }
-        
-        adjoint invert;
+        // ...
     }
     
     
@@ -86,18 +76,15 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //         the second dimension (columns) - the input register,
     //         i.e., A[r][c] (element in r-th row and c-th column) corresponds to x[c] and y[r].
     // Goal: Transform state |x, y⟩ into |x, y ⊕ A(x) ⟩ (⊕ is addition modulo 2).
-    operation Oracle_MultidimensionalOperatorOutput (x : Qubit[], y : Qubit[], A : Int[][]) : Unit {
+    operation Oracle_MultidimensionalOperatorOutput (x : Qubit[], y : Qubit[], A : Int[][]) : Unit
+    is Adj {
         
-        body (...) {
-            // The following lines enforce the constraints on the input arrays.
-            // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
-            AssertIntEqual(Length(x), Length(A[0]), "Arrays x and A[0] should have the same length");
-            AssertIntEqual(Length(y), Length(A), "Arrays y and A should have the same length");
+        // The following lines enforce the constraints on the input arrays.
+        // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
+        EqualityFactI(Length(x), Length(A[0]), "Arrays x and A[0] should have the same length");
+        EqualityFactI(Length(y), Length(A), "Arrays y and A should have the same length");
             
-            // ...
-        }
-        
-        adjoint invert;
+        // ...
     }
     
     
@@ -110,13 +97,9 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      1) N qubits in |0⟩ state (query register)
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     // (i.e. the state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N)).
-    operation SA_StatePrep (query : Qubit[]) : Unit {
-        
-        body (...) {
-            // ...
-        }
-        
-        adjoint invert;
+    operation SA_StatePrep (query : Qubit[]) : Unit
+    is Adj {        
+        // ...
     }
     
     
@@ -135,7 +118,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // the bit string s for it is [0, ..., 0, 1].
     //
     // Output:
-    //      Any bit string b such that Σᵢ cᵢ sᵢ = 0 modulo 2.
+    //      Any bit string b such that Σᵢ bᵢ sᵢ = 0 modulo 2.
     //
     // Note that the whole algorithm will reconstruct the bit string s itself, but the quantum part of the
     // algorithm will only find some vector orthogonal to the bit string s. The classical post-processing
@@ -143,7 +126,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     operation Simon_Algorithm (N : Int, Uf : ((Qubit[], Qubit[]) => Unit)) : Int[] {
         
         // Declare an Int array in which the result will be stored;
-        // the array has to be mutable to allow updating its elements.
+        // the variable has to be mutable to allow updating it.
         mutable b = new Int[N];
         
         // ...

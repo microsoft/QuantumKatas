@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitaryPatterns", "UnitaryPatterns.csproj", "{4BAAB76A-ABFA-4F5C-9E5B-788BB3E8647E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\utilities\Common\Common.csproj", "{8CA53E79-0DB8-444A-ABD5-34BEC46CC09E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BAAB76A-ABFA-4F5C-9E5B-788BB3E8647E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BAAB76A-ABFA-4F5C-9E5B-788BB3E8647E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BAAB76A-ABFA-4F5C-9E5B-788BB3E8647E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BAAB76A-ABFA-4F5C-9E5B-788BB3E8647E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA53E79-0DB8-444A-ABD5-34BEC46CC09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA53E79-0DB8-444A-ABD5-34BEC46CC09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA53E79-0DB8-444A-ABD5-34BEC46CC09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA53E79-0DB8-444A-ABD5-34BEC46CC09E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7CB0806C-1BBF-4E0C-BDFC-04A9A068F41C}
+	EndGlobalSection
+EndGlobal
