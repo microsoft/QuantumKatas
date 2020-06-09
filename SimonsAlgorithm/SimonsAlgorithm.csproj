@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\utilities\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="README.md" />
   </ItemGroup>
 

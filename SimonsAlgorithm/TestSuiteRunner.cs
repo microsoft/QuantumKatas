@@ -14,6 +14,8 @@ namespace Quantum.Kata.SimonsAlgorithm
     using Microsoft.Quantum.Simulation.XUnit;
 
     using Xunit.Abstractions;
+    
+    using Microsoft.Quantum.Katas;
 
     public class TestSuiteRunner
     {
@@ -31,7 +33,7 @@ namespace Quantum.Kata.SimonsAlgorithm
         [OperationDriver(TestNamespace = "Quantum.Kata.SimonsAlgorithm")]
         public void TestTarget(TestOperation op)
         {
-            using (var sim = new OracleCounterSimulator())
+            using (var sim = new CounterSimulator())
             {
                 // OnLog defines action(s) performed when Q# test calls function Message
                 sim.OnLog += msg => { output.WriteLine(msg); };
