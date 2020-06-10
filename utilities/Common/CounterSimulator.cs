@@ -36,7 +36,8 @@ namespace Microsoft.Quantum.Katas
         }
         
         /// <summary>
-        /// Getter method for _operationsCount.
+        /// Getter method for _operationsCount designed to be accessed from C# code.
+        /// See GetOracleCallsCount for accessing within Q#.
         /// </summary>
         public int GetOperationCount(ICallable op)
         {
