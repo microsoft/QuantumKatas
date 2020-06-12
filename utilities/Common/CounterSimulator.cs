@@ -34,6 +34,15 @@ namespace Microsoft.Quantum.Katas
         {
             this.OnOperationStart += CountOperationCalls;
         }
+        
+        /// <summary>
+        /// Getter method for _operationsCount designed to be accessed from C# code.
+        /// See GetOracleCallsCount for accessing within Q#.
+        /// </summary>
+        public int GetOperationCount(ICallable op)
+        {
+            return _operationsCount.TryGetValue(op, out var value) ? value : 0;
+        }
 
         #region Counting operations
         /// <summary>

@@ -13,7 +13,7 @@ namespace Q22
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
+    using Microsoft.Quantum.Katas;
     using Microsoft.Quantum.Simulation.Core;
 
     using Quantum.Kata.SimonsAlgorithm;
@@ -109,7 +109,7 @@ namespace Q22
         [MemberData(nameof(GetInstances))]
         public void Test(Instance instance)
         {
-            var sim = new OracleCounterSimulator();
+            var sim = new CounterSimulator();
             
             var len = instance.Kernel.Count;
             var saver = new List<IQArray<long>>();
