@@ -463,31 +463,21 @@ namespace Quantum.Kata.Superposition {
                 }
             }
 
-            if (P == N) {
-                // prepare as a power of 2 (previous task)
-                WState_PowerOfTwo_Reference(qs);
-            } else {
-                // allocate extra qubits
-                using (anc = Qubit[P - N]) {
-                    let all_qubits = qs + anc;
+            // allocate extra qubits (might be 0 qubits if N is a power of 2)
+            using (anc = Qubit[P - N]) {
+                repeat {
+                    // prepare state W_P on original + ancilla qubits
+                    WState_PowerOfTwo(qs + anc);
 
-                    repeat {
-                        // prepare state W_P on original + ancilla qubits
-                        WState_PowerOfTwo_Reference(all_qubits);
-
-                        // measure ancilla qubits; if all of the results are Zero, we get the right state on main qubits
-                        mutable allZeros = true;
-                        for (i in 0 .. (P - N) - 1) {
-                            if (not IsResultZero(M(anc[i]))) {
-                                set allZeros = false;
-                            }
+                    // measure extra qubits; if all of the results are Zero, we got the right state on main qubits
+                    mutable allZeros = true;
+                    for (i in 0 .. (P - N) - 1) {
+                        if (MResetZ(anc[i]) == One) {
+                            set allZeros = false;
                         }
                     }
-                    until (allZeros)
-                    fixup {
-                        ResetAll(anc);
-                    }
                 }
+                until (allZeros);
             }
         }
     }
