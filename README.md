@@ -117,7 +117,9 @@ Each kata is a separate project that includes:
   Implement the BB84 key distribution algorithm.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
-* **[Unitary Patterns*](./UnitaryPatterns/)**.
+* **[Distinguish Unitaries](./DistinguishUnitaries/)**.
+  Learn to distinguish unitaries by designing and performing experiments with them.
+* **[Unitary Patterns](./UnitaryPatterns/)**.
   Learn to implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
 
 > For a Q# programming language quick reference sheet, see [Q# Language Quick Reference](./quickref/qsharp-quick-reference.pdf).
