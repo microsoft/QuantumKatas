@@ -28,6 +28,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
+    ./scripts/prebuild-kata.sh DistinguishUnitaries && \
     ./scripts/prebuild-kata.sh GHZGame && \
     ./scripts/prebuild-kata.sh GraphColoring && \
     ./scripts/prebuild-kata.sh GroversAlgorithm && \
