@@ -26,12 +26,14 @@ $katasRoot = Join-Path $PSScriptRoot "\..\"
 # old version regular expression accounts for possible suffixes like "-beta"
 $versionRegex = "(?<oldVersion>[0-9|\.|\-|a-z]+)"
 
-$csString = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"' + $versionRegex + '\"'
+$csStringPackage = 'PackageReference Include=\"Microsoft\.Quantum\.[a-zA-Z\.]+\" Version=\"' + $versionRegex + '\"'
+$csStringProject = 'Project Sdk=\"Microsoft.Quantum.Sdk/' + $versionRegex + '\"'
 $csFiles = (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
 $csFiles | ForEach-Object {
     (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
-         $isQuantumPackage = $_ -match $csString
-         if ($isQuantumPackage) {
+         $isQuantumPackage = $_ -match $csStringPackage
+         $isQuantumProject = $_ -match $csStringProject
+         if ($isQuantumPackage -or $isQuantumProject) {
              $_ -replace $Matches.oldVersion, $Version
          } else {
              $_
