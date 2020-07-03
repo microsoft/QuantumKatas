@@ -41,7 +41,7 @@ namespace Quantum.Kata.SingleQubitGates {
         
     }
 
-    // Exercise 5.
+    // Exercise 6.
     operation PrepareRotatedState (alpha : Double, beta : Double, q : Qubit) : Unit is Adj+Ctl {
         // ...
         
