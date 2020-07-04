@@ -295,7 +295,25 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 5.1. Adder Modulo 2ᴺ
     operation AdderModuloNbits_Reference (a : Qubit[], b : Qubit[], sum : Qubit[]) : Unit is Adj {
-        // ...
+        // Modification of Challenge Solution of Task 1.7 (Last Carry bit isn't calculated)
+        // Sum qubits are used to store the carry bits, and the sum is calculated as they get cleaned up
+        let N = Length(a);
+
+        // Calculate carry bits and Store them in Sum
+        LowestBitCarry_Reference(a[0], b[0], sum[0]);
+        for (i in 1 .. N-1) {
+            HighBitCarry_Reference(a[i], b[i], sum[i - 1], sum[i]);
+        }
+        // No need to calculated last (N+1)th carry bit as Addition is Modulo 2ᴺ
+        
+        // Clean sum qubits (Uncompute carries after they aren't needed) and compute sum
+        for (i in N-1 .. -1 .. 1) {
+            Adjoint HighBitCarry_Reference(a[i], b[i], sum[i - 1], sum[i]); // Restore sum[i] to state 0
+            HighBitSum_Reference(a[i], b[i], sum[i - 1], sum[i]); // Compute sum[i]
+        }
+        Adjoint LowestBitCarry_Reference(a[0], b[0], sum[0]); // Restore sum[0] to state 0
+        LowestBitSum_Reference(a[0], b[0], sum[0]); // Compute sum[i]
+    
     }
     
     // Task 5.2. Subtractor Modulo 2ᴺ
@@ -305,11 +323,32 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     // Task 5.3. In Place Adder Modulo 2ᴺ
     operation InPlaceAdderModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
-        // ...
+        // Modification of Solution of Task 3.5 (Last Carry bit isn't saved)
+        
+        let N = Length(a);
+        
+        using (tempCarry = Qubit()) {
+            let carries = [tempCarry] + a;
+
+            // Compute carry bits
+            for (i in 0 .. N-1) {
+                Majority_Reference(a[i], b[i], carries[i]);
+            }
+
+            // No need to save last (N+1)th carry bit as Addition is Modulo 2ᴺ
+            
+            // Restore inputs and ancilla, compute sum
+            for (i in N-1 .. -1 .. 0) {
+                UnMajorityAdd_Reference(a[i], b[i], carries[i]);
+            }
+        }
     }
     
     // Task 5.4. In Place Subtractor Modulo 2ᴺ
     operation InPlaceSubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
-        // ...
+        // Notice that Task 5.4 is actually the Adjoint of Task 5.3. 
+        // Task 5.3 maps (a,b) -> (a,(a+b)mod2ᴺ). Let c = (a+b)mod2ᴺ
+        // Task 5.4 maps (a,b) -> (a,(b-a)mod2ᴺ). So Task 5.4 will maps (a,c) -> (a,(c-a)mod2ᴺ) = (a,((a+b)mod2ᴺ-a)mod2ᴺ) = (a,b).
+        Adjoint InPlaceAdderModuloNbits_Reference (a,b);
     }
 }
