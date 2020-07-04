@@ -63,9 +63,9 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
     
-    // Task 4. |0..0⟩ + |1..1⟩ or W state ?
+    // Task 4. GHZ state or W state ?
     // Input: An even number of qubits (stored in an array) which are guaranteed to be
-    //        either in a superposition of states |0..0⟩ and |1..1⟩
+    //        either in a superposition of states |0..0⟩ and |1..1⟩ (the GHZ state https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state)
     //        or in the W state ( https://en.wikipedia.org/wiki/W_state ).
     // Output: 0 if qubits were in the first superposition,
     //         1 if they were in the second superposition.
