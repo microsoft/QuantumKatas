@@ -345,7 +345,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     
 
     //////////////////////////////////////////////////////////////////
-    // Part V. Operations Modulo 2^N
+    // Part V. Operations Modulo 2ᴺ
     //////////////////////////////////////////////////////////////////
 
     // Through Parts I-IV we have used an extra qubit to act as a carry or borrow qubit. 
@@ -356,7 +356,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // We need to modify the computation itself so that the last carry qubit is not computed or not used at all.
     // In this part we will now try to implement Operations which either do not use this extra qubit as input.
 
-    // Task 5.1. Adder Modulo 2^N
+    // Task 5.1. Adder Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
@@ -369,7 +369,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.2. Subtractor Modulo 2^N
+    // Task 5.2. Subtractor Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
@@ -382,7 +382,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.3. In Place Adder Modulo 2^N
+    // Task 5.3. In Place Adder Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
@@ -394,7 +394,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.4. In Place Subtractor Modulo 2^N
+    // Task 5.4. In Place Subtractor Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,

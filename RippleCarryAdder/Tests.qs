@@ -404,4 +404,48 @@ namespace Quantum.Kata.RippleCarryAdder {
             AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
         }
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Part V. Operations Modulo 2ᴺ
+    //////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------
+    operation T51_AdderModuloNbits_Test () : Unit {
+        for (i in 1 .. 5) {
+            let testOp = QubitArrayInPlaceAdderWrapper(i, AdderModuloNbits, _);
+            let refOp = QubitArrayInPlaceAdderWrapper(i, AdderModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
+            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        }
+    }
+    
+    // ------------------------------------------------------
+    operation T52_SubtractorModuloNbits_Test () : Unit {
+        for (i in 1 .. 5) {
+            let testOp = QubitArrayInPlaceAdderWrapper(i, SubtractorModuloNbits, _);
+            let refOp = QubitArrayInPlaceAdderWrapper(i, SubtractorModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinarySubtractor(_, i), 2 * i, i, (2 * i) - 1, 1);
+            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        }
+    }
+    
+    // ------------------------------------------------------
+    operation T53_InPlaceAdderModuloNbits_Test () : Unit {
+        for (i in 1 .. 5) {
+            let testOp = QubitArrayInPlaceAdderWrapper(i, InPlaceAdderModuloNbits, _);
+            let refOp = QubitArrayInPlaceAdderWrapper(i, InPlaceAdderModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
+            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        }
+    }
+    
+    // ------------------------------------------------------
+    operation T54_InPlaceSubtractorModuloNbits_Test () : Unit {
+        for (i in 1 .. 5) {
+            let testOp = QubitArrayInPlaceAdderWrapper(i, InPlaceSubtractorModuloNbits, _);
+            let refOp = QubitArrayInPlaceAdderWrapper(i, InPlaceSubtractorModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinarySubtractor(_, i), 2 * i, i, (2 * i) - 1, 1);
+            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        }
+    }
 }

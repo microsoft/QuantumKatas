@@ -288,4 +288,28 @@ namespace Quantum.Kata.RippleCarryAdder {
         // transform 2ᴺ - 1 - (b - a) into b - a
         ApplyToEachA(X, b);
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Part V. Operations Modulo 2ᴺ
+    //////////////////////////////////////////////////////////////////
+
+    // Task 5.1. Adder Modulo 2ᴺ
+    operation AdderModuloNbits_Reference (a : Qubit[], b : Qubit[], sum : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+    // Task 5.2. Subtractor Modulo 2ᴺ
+    operation SubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+    // Task 5.3. In Place Adder Modulo 2ᴺ
+    operation InPlaceAdderModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+    // Task 5.4. In Place Subtractor Modulo 2ᴺ
+    operation InPlaceSubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
+        // ...
+    }
 }
