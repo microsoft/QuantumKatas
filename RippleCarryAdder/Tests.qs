@@ -459,7 +459,14 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
-    operation T52_SubtractorModuloNbits_Test () : Unit {
+    operation T52_TwosComplement_Test () : Unit {
+        for (nQubits in 1 .. 4) {
+            AssertOperationsEqualReferenced(nQubits, TwosComplement, TwosComplement_Reference);
+        }
+    }
+    
+    // ------------------------------------------------------
+    operation T53_SubtractorModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloNbits, _);
             let refOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloNbits_Reference, _);
@@ -469,7 +476,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
-    operation T53_InPlaceAdderModuloNbits_Test () : Unit {
+    operation T54_InPlaceAdderModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, AdderModuloNbits, _);
             let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, AdderModuloNbits_Reference, _);
@@ -479,7 +486,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
-    operation T54_InPlaceSubtractorModuloNbits_Test () : Unit {
+    operation T55_InPlaceSubtractorModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, SubtractorModuloNbits, _);
             let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, SubtractorModuloNbits_Reference, _);

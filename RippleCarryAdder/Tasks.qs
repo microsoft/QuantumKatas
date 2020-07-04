@@ -369,7 +369,17 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.2. Subtractor Modulo 2ᴺ
+    // Task 5.2. Two's Complement
+    // Inputs:
+    //      1) N qubit register "a" in an arbitrary state |φ⟩,
+    // Goals:
+    //      1) Transform register a into its binary (little-endian) Two's complement of  𝜙 .
+    //      2) Any extra qubits used must be reset to the same state at the end.    
+    operation TwosComplement (a : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+    // Task 5.3. Subtractor Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
@@ -382,7 +392,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.3. In Place Adder Modulo 2ᴺ
+    // Task 5.4. In Place Adder Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
@@ -394,7 +404,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         // ...
     }
     
-    // Task 5.4. In Place Subtractor Modulo 2ᴺ
+    // Task 5.5. In Place Subtractor Modulo 2ᴺ
     // Inputs:
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
