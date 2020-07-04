@@ -316,12 +316,34 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     }
     
-    // Task 5.2. Subtractor Modulo 2ᴺ
-    operation SubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
-        // ...
+    // Task 5.2. Two's Complement
+    operation TwosComplement_Reference (a : Qubit[]) : Unit is Adj {
+        // transform a into 2ᴺ - 1 - a - One's Complement
+        ApplyToEachA(X, a);
+        
+        // Do (a+1) mod 2ᴺ
+     
+        X(a[0]); // Increment the least significant bit
+     
+        // Since we are incrementing by One, we flip the next bit only if all previous bits are 0.
+        for(i in 1 .. Length(a)-1){
+            (ControlledOnInt(0,X))(a[0..i-1], a[i]); 
+        }
     }
     
-    // Task 5.3. In Place Adder Modulo 2ᴺ
+    // Task 5.3. Subtractor Modulo 2ᴺ
+    operation SubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
+        // Transform a into its Two's Complement 2ᴺ - a 
+        TwosComplement_Reference(a);
+        
+        // Add 2ᴺ - a and b to get (2ᴺ + b - a) mod 2ᴺ = (b-a) mod 2ᴺ 
+        AdderModuloNbits_Reference(a,b,diff);
+        
+        // Transform 2ᴺ - a back to a by applying Two's Complement again.  
+        TwosComplement_Reference(a);
+    }
+    
+    // Task 5.4. In Place Adder Modulo 2ᴺ
     operation InPlaceAdderModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
         // Modification of Solution of Task 3.5 (Last Carry bit isn't saved)
         
@@ -344,7 +366,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         }
     }
     
-    // Task 5.4. In Place Subtractor Modulo 2ᴺ
+    // Task 5.5. In Place Subtractor Modulo 2ᴺ
     operation InPlaceSubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
         // Notice that Task 5.4 is actually the Adjoint of Task 5.3. 
         // Task 5.3 maps (a,b) -> (a,(a+b)mod2ᴺ). Let c = (a+b)mod2ᴺ
