@@ -32,6 +32,14 @@ namespace Quantum.Kata.RippleCarryAdder {
         return ((diff + max) % max, diff < 0);
     }
 
+    function ModuloAdder (max : Int, a : Int, b : Int) : (Int, Bool) {
+        return (a + b) % max;  
+    }
+
+    function ModuloSubtractor_F (max : Int, a : Int, b : Int) : (Int, Bool) {
+        return (b-a+max) % max;  
+    }
+    
     function BinaryAdder (input : Bool[], N : Int) : Bool[] {
         let max = 1 <<< N;
         let bitsa = input[0 .. N-1];
@@ -50,6 +58,26 @@ namespace Quantum.Kata.RippleCarryAdder {
         let b = BoolArrayAsInt(bitsb);
         let (diff, borrow) = Subtractor_F(max, a, b);
         return IntAsBoolArray(diff, N) + [borrow];
+    }
+    
+    function BinaryModuloAdder (input : Bool[], N : Int) : Bool[] {
+        let max = 1 <<< N;
+        let bitsa = input[0 .. N-1];
+        let bitsb = input[N ...];
+        let a = BoolArrayAsInt(bitsa);
+        let b = BoolArrayAsInt(bitsb);
+        let sum = ModuloAdder(max, a, b);
+        return IntAsBoolArray(sum, N);
+    }
+
+    function BinaryModuloSubtractor (input : Bool[], N : Int) : Bool[] {
+        let max = 1 <<< N;
+        let bitsa = input[0 .. N-1];
+        let bitsb = input[N ...];
+        let a = BoolArrayAsInt(bitsa);
+        let b = BoolArrayAsInt(bitsb);
+        let diff = Subtractor_F(max, a, b);
+        return IntAsBoolArray(diff, N);
     }
     
     function BinaryXor (bits : Bool[]) : Bool {
@@ -85,6 +113,16 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation QubitArrayInPlaceAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
         let splits = Partitioned([N, N, 1], arr);
         op(splits[0], splits[1], Tail(arr));
+    }
+    
+    operation QubitArrayModuloAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit[]) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
+        let splits = Partitioned([N, N, N], arr);
+        op(splits[0], splits[1], splits[2]);
+    }
+
+    operation QubitArrayInPlaceModuloAdderWrapper (N : Int, op : ((Qubit[], Qubit[]) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
+        let splits = Partitioned([N, N], arr);
+        op(splits[0], splits[1]);
     }
 
 
@@ -411,41 +449,42 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // ------------------------------------------------------
     operation T51_AdderModuloNbits_Test () : Unit {
-        for (i in 1 .. 5) {
-            let testOp = QubitArrayInPlaceAdderWrapper(i, AdderModuloNbits, _);
-            let refOp = QubitArrayInPlaceAdderWrapper(i, AdderModuloNbits_Reference, _);
-            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
-            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        // 4 bits seems reasonable - any more than that will take forever
+        for (nQubits in 1 .. 4) {
+            let testOp = QubitArrayModuloAdderWrapper(nQubits, AdderModuloNbits, _);
+            let refOp = QubitArrayModuloAdderWrapper(nQubits, AdderModuloNbits_Reference, _);
+            AssertOperationImplementsBinaryFunction(testOp, BinaryModuloAdder(_, nQubits), 2 * nQubits, nQubits);
+            AssertOperationsEqualReferenced(3 * nQubits, testOp, refOp);
         }
     }
     
     // ------------------------------------------------------
     operation T52_SubtractorModuloNbits_Test () : Unit {
-        for (i in 1 .. 5) {
-            let testOp = QubitArrayInPlaceAdderWrapper(i, SubtractorModuloNbits, _);
-            let refOp = QubitArrayInPlaceAdderWrapper(i, SubtractorModuloNbits_Reference, _);
-            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinarySubtractor(_, i), 2 * i, i, (2 * i) - 1, 1);
-            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        for (nQubits in 1 .. 4) {
+            let testOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloNbits, _);
+            let refOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloNbits_Reference, _);
+            AssertOperationImplementsBinaryFunction(testOp, BinaryModuloSubtractor(_, nQubits), 2 * nQubits, nQubits);
+            AssertOperationsEqualReferenced(3 * nQubits, testOp, refOp);
         }
     }
     
     // ------------------------------------------------------
     operation T53_InPlaceAdderModuloNbits_Test () : Unit {
-        for (i in 1 .. 5) {
-            let testOp = QubitArrayInPlaceAdderWrapper(i, InPlaceAdderModuloNbits, _);
-            let refOp = QubitArrayInPlaceAdderWrapper(i, InPlaceAdderModuloNbits_Reference, _);
-            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
-            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        for (nQubits in 1 .. 4) {
+            let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, AdderModuloNbits, _);
+            let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, AdderModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryModuloAdder(_, nQubits), 2*nQubits, nQubits, (2*nQubits)-1, 0);
+            AssertOperationsEqualReferenced(2 * nQubits, testOp, refOp);
         }
     }
     
     // ------------------------------------------------------
     operation T54_InPlaceSubtractorModuloNbits_Test () : Unit {
-        for (i in 1 .. 5) {
-            let testOp = QubitArrayInPlaceAdderWrapper(i, InPlaceSubtractorModuloNbits, _);
-            let refOp = QubitArrayInPlaceAdderWrapper(i, InPlaceSubtractorModuloNbits_Reference, _);
-            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinarySubtractor(_, i), 2 * i, i, (2 * i) - 1, 1);
-            AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
+        for (nQubits in 1 .. 4) {
+            let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, SubtractorModuloNbits, _);
+            let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, SubtractorModuloNbits_Reference, _);
+            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryModuloSubtractor(_, nQubits), 2*nQubits, nQubits, (2*nQubits)-1,0);
+            AssertOperationsEqualReferenced(2 * nQubits, testOp, refOp);
         }
     }
 }
