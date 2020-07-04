@@ -375,7 +375,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
     //      3) N qubit register "diff" in state |0...0⟩,
     // Goals:
-    //      1) transform the "sum" register into the binary difference of φ and ψ,
+    //      1) transform the "sum" register into the binary difference of φ from ψ,
     //      2) Leave register a and b unchanged.
     //      3) Any extra qubits used must be reset to the same state at the end.    
     operation SubtractorModuloNbits (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
@@ -399,7 +399,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //      1) N qubit register "a" in an arbitrary state |φ⟩,
     //      2) N qubit register "b" in an arbitrary state |ψ⟩,
     // Goals:
-    //      1) transform the "b" register into the binary difference of φ and ψ,
+    //      1) transform the "b" register into the binary difference of φ from ψ,
     //      2) Leave register a unchanged.
     //      3) Any extra qubits used must be reset to the same state at the end.    
     operation InPlaceSubtractorModuloNbits (a : Qubit[], b : Qubit[]) : Unit is Adj {
