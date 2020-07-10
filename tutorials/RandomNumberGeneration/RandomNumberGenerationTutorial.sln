@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeutschJozsaAlgorithmTutorial", "DeutschJozsaAlgorithmTutorial.csproj", "{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomNumberGenrationTutorial", "RandomNumberGenerationTutorial.csproj", "{B4477C91-FBD6-4DCE-8B4C-1A5E48669790}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\..\utilities\Common\Common.csproj", "{BC099DCB-6526-49CF-8638-0132C9C5AE89}"
 EndProject
