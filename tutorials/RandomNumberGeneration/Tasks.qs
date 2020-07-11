@@ -15,8 +15,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
     
     // Exercise 1.
     operation RandomBit () : Int {
-        // ...
-        return -1;
+        using (q = Qubit()) {
+            // ...
+            return -1;
+        }
     }
 
     // Exercise 2. 
@@ -25,12 +27,13 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return -1;
     }
 
-    operation RandomNBits (bits: Int) : Int {
+    // Exercise 3.
+    operation RandomNBits (N: Int) : Int {
         // ...
         return -1;
     }
 
-    // Exercise 2. 
+    // Exercise 4.
     operation WeightedRandomBit (x : Double) : Int {
         // ...
         return -1;
