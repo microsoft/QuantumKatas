@@ -110,7 +110,7 @@ namespace Quantum.Kata.TruthTables {
 
     // Task 6. Build if-then-else truth table
     //
-    // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen : ttElse
+    // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen | ttElse
     //       (if ttCond then ttThen else ttElse) by making use of the truth table operations
     //       defined in the previous 4 tasks.
     function TTIfThenElse (ttCond : TruthTable, ttThen : TruthTable, ttElse : TruthTable) : TruthTable {
