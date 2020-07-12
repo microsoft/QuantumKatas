@@ -179,8 +179,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Input: N qubits in an arbitrary state.
     // Goal: Implement a unitary transformation on N qubits which is represented by a matrix
     //       with all zero elements in the top right and bottom left quarters, 
-    //       an anti-diagonal pattern from task 1.6 in the top left quarter,
-    //       and an all-non-zero pattern from task 1.2 in the bottom right quarter.
+    //       an anti-diagonal pattern from task 7 in the top left quarter,
+    //       and an all-non-zero pattern from task 2 in the bottom right quarter.
     // Example: For N = 2, the matrix of the transformation should look as follows:
     //          .X..
     //          X...
