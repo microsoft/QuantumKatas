@@ -19,24 +19,17 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 1.
     operation T1_RandomBit_Test () : Unit {
         Message("Testing...");
-        mutable count = 0;
+        CheckDistribution(RandomBit_Wrapper, 1, 0.4, 0.6, 450);
+    }
 
-        ResetOracleCallsCount();
-        for (N in 1..1000) {
-            set count += RandomBit();
-        }
-        if (count < 465) {
-            fail $"Unexpectedly low number of 1's generated. Generated {count} out of 1000";
-        } elif (count > 535) {
-            fail $"Unexpectedly high number of 1's generated. Generated {count} out of 1000";
-        }
-        CheckRandomCalls();
+    operation RandomBit_Wrapper (throwaway: Int) : Int {
+        return RandomBit();
     }
 
     // Exercise 2.
     operation T2_RandomTwoBits_Test () : Unit {
         Message("Testing...");
-        CheckFlatDistribution(RandomTwoBits_Wrapper, 2, 1, 2, 200);
+        CheckDistribution(RandomTwoBits_Wrapper, 2, 1.4, 1.6, 200);
     }
 
     operation RandomTwoBits_Wrapper (throwaway: Int) : Int {
@@ -46,55 +39,61 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 3.
     operation T3_RandomNBits_Test () : Unit {
         Message("Testing N = 1...");
-        CheckFlatDistribution(RandomNBits, 1, 0, 2, 465);
+        CheckDistribution(RandomNBits, 1, 0.4, 0.6, 450);
         Message("Testing N = 2...");
-        CheckFlatDistribution(RandomNBits, 2, 1, 2, 200);
+        CheckDistribution(RandomNBits, 2, 1.4, 1.6, 200);
+        Message("Testing N = 3...");
+        CheckDistribution(RandomNBits, 3, 3.3, 3.7, 90);
         Message("Testing N = 10...");
-        CheckFlatDistribution(RandomNBits, 10, 461, 563, 0);
+        CheckDistribution(RandomNBits, 10, 461.0, 563.0, 0);
 
     }
 
     // f: operation to be tested
+    // parameter: value to be passed to f for the test. Will be the same as numBits to test flat distributions.
     // numBits: number of bits in each result
     // lowRange, highRange: median and average for generated dataset should be within [lowRange, highRange]
     // minimum: the minimum number of times each possible number should be generated
-    operation CheckFlatDistribution (f : (Int => Int), numBits: Int, lowRange: Int, highRange: Int, minimum: Int) : Unit {
+    operation CheckDistribution (f : (Int => Int), numBits: Int, lowRange: Double, highRange: Double, minimum: Int) : Unit {
         let max = PowI(2, numBits);
         mutable counts = ConstantArray(max, 0);
-        mutable average = 0;
-        let total = 1000;
+        mutable average = 0.0;
+        let nRuns = 1000;
 
         ResetOracleCallsCount();
-        for (i in 1..total) {
+        for (i in 1..nRuns) {
             let val = f(numBits);
-            set average = average + val;
+            if (val < 0 or val >= max) {
+                fail $"Unexpected number generated. Expected values from 0 to {max - 1}, instead generated {val}";
+            }
+            set average = average + IntAsDouble(val);
             set counts w/= val <- counts[val] + 1;
         }
         CheckRandomCalls();
 
-        set average = average / total;
+        set average = average / IntAsDouble(nRuns);
         if (average < lowRange or average > highRange) {
             fail $"Unexpected average. Expected between {lowRange} and {highRange}, instead was {average}";
         }
 
-        let median = FindMedian (counts, max, total);
-        if (median < lowRange or median > highRange) {
+        let median = FindMedian (counts, max, nRuns);
+        if (median < Floor(lowRange) or median > Ceiling(highRange)) {
             fail $"Unexpected median. Expected between {lowRange} and {highRange}, instead was {median}.";
 
         }
 
         for (i in 0..max - 1) {
             if (counts[i] < minimum) {
-                fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {total} were {i}";
+                fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}";
             }
         }
     }
 
     operation FindMedian (counts : Int [], arrSize : Int, sampleSize : Int) : Int {
-        mutable x = 0;
+        mutable totalCount = 0;
         for (i in 0..arrSize - 1) {
-            set x = x + counts[i];
-            if (x >= sampleSize / 2) {
+            set totalCount = totalCount + counts[i];
+            if (totalCount >= sampleSize / 2) {
                 return i;
             }
         }
@@ -115,28 +114,28 @@ namespace Quantum.Kata.RandomNumberGeneration {
     operation CheckXPercentZero (x : Double) : Unit {
         Message($"Testing x = {x}...");
         mutable oneCount = 0;
+        let nRuns = 1000;
         ResetOracleCallsCount();
-        for (N in 1..1000) {
-            set oneCount += WeightedRandomBit(x);
+        for (N in 1..nRuns) {
+            let val = WeightedRandomBit(x);
+            if (val < 0 or val > 1) {
+                fail $"Unexpected number generated. Expected 0 or 1, instead generated {val}";
+            }
+            set oneCount += val;
         }
         CheckRandomCalls();
 
-        let zeroCount = 1000 - oneCount;
-        
-        if (x == 0.0) {
-            if (zeroCount != 0) {
-                fail $"expected 0% 0's, instead got {zeroCount} 0's out of 1000";
-            }
-        } elif (x == 1.0) {
-            if (zeroCount != 1000) {
-                fail $"expected 100% 0's, instead got {zeroCount} 0's out of 1000";
+        let zeroCount = nRuns - oneCount;
+        let goalZeroCount = (x == 0.0) ? 0 | (x == 1.0) ? nRuns | Floor(x * IntAsDouble(nRuns));
+        if (goalZeroCount == 0 or goalZeroCount == 1) {
+            if (zeroCount != goalZeroCount) {
+                fail $"Expected {x * 100.0}% 0's, instead got {zeroCount} 0's out of {nRuns}";
             }
         } else {
-            let goalZeroCount = Floor(x * 1000.0);
-            if (zeroCount < goalZeroCount - 35) {
-                fail $"Unexpectedly low number of 0's generated. Generated {zeroCount} out of 1000";
-            } elif (zeroCount > goalZeroCount + 35) {
-                fail $"Unexpectedly high number of 0's generated. Generated {zeroCount} out of 1000";
+            if (zeroCount < goalZeroCount - 40) {
+                fail $"Unexpectedly low number of 0's generated. Generated {zeroCount} out of {nRuns}";
+            } elif (zeroCount > goalZeroCount + 40) {
+                fail $"Unexpectedly high number of 0's generated. Generated {zeroCount} out of {nRuns}";
             }
         }
     }

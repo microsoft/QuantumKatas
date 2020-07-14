@@ -1,2 +1,9 @@
 # Welcome!
 
+This folder contains a Notebook tutorial on quantum random number generation - an application of quantum computing that requires few qubits but offers improvement over current ways to generate random numbers.
+
+You can run the tutorial online [here](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=tutorials/RandomNumberGeneration%2FRandomNumberGenerationTutorial.ipynb). Alternatively, you can install Jupyter and Q# on your machine, as described [here](https://docs.microsoft.com/quantum/install-guide/jupyter), and run the tutorial locally by navigating to this folder and starting the notebook from command line using the following command: 
+
+    jupyter notebook RandomNumberGenerationTutorial.ipynb
+
+The Q# project in this folder contains the back-end of the tutorial and is not designed for direct use.

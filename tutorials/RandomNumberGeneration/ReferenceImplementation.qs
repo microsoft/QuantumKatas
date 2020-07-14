@@ -22,19 +22,13 @@ namespace Quantum.Kata.RandomNumberGeneration {
     operation RandomBit_Reference () : Int {
         using (q = Qubit()) {
             H(q);
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
 
     // Exercise 2. 
     operation RandomTwoBits_Reference () : Int {
-        let firstBit = RandomBit_Reference();
-        let secondBit = RandomBit_Reference();
-        if (firstBit == 0) {
-            return secondBit == 0 ? 0 | 1;
-        } else {
-            return secondBit == 0 ? 2 | 3;
-        }
+        return 2 * RandomBit_Reference() + RandomBit_Reference();
     }
 
     // Exercise 3.
@@ -51,7 +45,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let theta = ArcCos(Sqrt(x));
         using (q = Qubit()) {
             Ry(2.0 * theta, q);
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
 }
