@@ -19,7 +19,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 1.
     operation T1_RandomBit_Test () : Unit {
         Message("Testing...");
-        CheckDistribution(RandomBit_Wrapper, 1, 0.4, 0.6, 450);
+        CheckFlatDistribution(RandomBit_Wrapper, 1, 0.4, 0.6, 450);
     }
 
     operation RandomBit_Wrapper (throwaway: Int) : Int {
@@ -29,7 +29,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 2.
     operation T2_RandomTwoBits_Test () : Unit {
         Message("Testing...");
-        CheckDistribution(RandomTwoBits_Wrapper, 2, 1.4, 1.6, 200);
+        CheckFlatDistribution(RandomTwoBits_Wrapper, 2, 1.4, 1.6, 200);
     }
 
     operation RandomTwoBits_Wrapper (throwaway: Int) : Int {
@@ -39,22 +39,21 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 3.
     operation T3_RandomNBits_Test () : Unit {
         Message("Testing N = 1...");
-        CheckDistribution(RandomNBits, 1, 0.4, 0.6, 450);
+        CheckFlatDistribution(RandomNBits, 1, 0.4, 0.6, 450);
         Message("Testing N = 2...");
-        CheckDistribution(RandomNBits, 2, 1.4, 1.6, 200);
+        CheckFlatDistribution(RandomNBits, 2, 1.4, 1.6, 200);
         Message("Testing N = 3...");
-        CheckDistribution(RandomNBits, 3, 3.3, 3.7, 90);
+        CheckFlatDistribution(RandomNBits, 3, 3.3, 3.7, 90);
         Message("Testing N = 10...");
-        CheckDistribution(RandomNBits, 10, 461.0, 563.0, 0);
+        CheckFlatDistribution(RandomNBits, 10, 461.0, 563.0, 0);
 
     }
 
     // f: operation to be tested
-    // parameter: value to be passed to f for the test. Will be the same as numBits to test flat distributions.
     // numBits: number of bits in each result
     // lowRange, highRange: median and average for generated dataset should be within [lowRange, highRange]
     // minimum: the minimum number of times each possible number should be generated
-    operation CheckDistribution (f : (Int => Int), numBits: Int, lowRange: Double, highRange: Double, minimum: Int) : Unit {
+    operation CheckFlatDistribution (f : (Int => Int), numBits: Int, lowRange: Double, highRange: Double, minimum: Int) : Unit {
         let max = PowI(2, numBits);
         mutable counts = ConstantArray(max, 0);
         mutable average = 0.0;
