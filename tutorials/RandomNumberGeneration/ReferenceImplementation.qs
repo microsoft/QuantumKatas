@@ -35,7 +35,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     operation RandomNBits_Reference (N: Int) : Int {
         mutable result = 0;
         for (i in 0..(N - 1)) {
-            set result = result + RandomBit_Reference() * PowI(2, i);
+            set result = result * 2 + RandomBit_Reference();
         }
         return result;
     }

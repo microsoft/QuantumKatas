@@ -78,7 +78,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
         let median = FindMedian (counts, max, nRuns);
         if (median < Floor(lowRange) or median > Ceiling(highRange)) {
-            fail $"Unexpected median. Expected between {lowRange} and {highRange}, instead was {median}.";
+            fail $"Unexpected median. Expected between {Floor(lowRange)} and {Ceiling(highRange)}, instead was {median}.";
 
         }
 
