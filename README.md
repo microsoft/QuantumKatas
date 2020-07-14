@@ -52,6 +52,8 @@ Each kata is a separate project that includes:
   Learn to represent multi-qubit systems.
 * **[Multi-qubit gates](./tutorials/MultiQubitGates/)**.
   Learn about the most common multi-qubit gates.
+* **[Random number generation](./tutorials/RandomNumberGeneration/)**.
+  Learn to generate random numbers using the principles of quantum computing.
 * **[Exploring Deutsch–Jozsa algorithm](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
   Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
   solution to the Deutsch–Jozsa problem to a classical one.
