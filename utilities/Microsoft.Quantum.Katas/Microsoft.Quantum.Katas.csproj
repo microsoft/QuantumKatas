@@ -12,7 +12,7 @@
     <PackageReleaseNotes>See: https://docs.microsoft.com/en-us/quantum/relnotes/</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/Microsoft/QuantumKatas/raw/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/master/Microsoft.Quantum.Katas</PackageProjectUrl>
-    <PackageIconUrl>https://secure.gravatar.com/avatar/bd1f02955b2853ba0a3b1cdc2434e8ec.png</PackageIconUrl>
+    <PackageIcon>qdk-nuget-icon.png</PackageIcon>
     <PackageTags>Quantum Q# Qsharp</PackageTags>
   </PropertyGroup>
 
@@ -28,5 +28,9 @@
   <ItemGroup>
     <Compile Include="..\Common\DelaySign.cs" Link="DelaySign.cs" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Include="..\..\scripts\assets\qdk-nuget-icon.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+
 </Project>
