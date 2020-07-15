@@ -38,8 +38,10 @@ steps:
   displayName: "Packing"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
+- powershell: ./manifest.ps1
+  displayName: "List built assemblies"
+  workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
 - powershell: ./validate.ps1
   displayName: "Validating"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
-
-
