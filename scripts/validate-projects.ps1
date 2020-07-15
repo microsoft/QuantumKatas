@@ -3,6 +3,8 @@
 
 $ErrorActionPreference = 'Stop'
 
+& "$PSScriptRoot/set-env.ps1"
+
 
 function Build-One {
   param(
@@ -20,16 +22,6 @@ function Build-One {
   $script:all_ok = ($LastExitCode -eq 0) -and $script:all_ok
 }
 
-& "$PSScriptRoot/set-env.ps1"
-
 # Validating all katas projects can be disables with the ENABLE_KATAS flag:
-if ($Env:ENABLE_KATAS -ne "false") {
-  & "$PSScriptRoot/validate-unicode.ps1"
-
-  Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
-  | ForEach-Object { Build-One $_.FullName }
-
-  & "$PSScriptRoot/validate-notebooks.ps1"
-} else {
-  Write-Host "##vso[task.logissue type=warning;]Skipping Katas validation. Env:ENABLE_KATAS is '$Env:ENABLE_KATAS'."
-}
+Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
+| ForEach-Object { Build-One $_.FullName }

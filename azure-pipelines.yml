@@ -15,19 +15,64 @@ variables:
   IQSharp.Hosting.Env: 'build-agent-katas'
 
 jobs:
-- job: Windows
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - template: scripts/steps.yml
-- job: macOS
-  pool:
-    vmImage: 'macOS-latest'
-  steps:
-  - template: scripts/steps.yml
-- job: Linux
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: scripts/steps.yml
+  - job: binaries
+    displayName: 'Build Binary Packages'
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
+    - template: scripts/steps-binaries.yml
+
+  - job: validate_projects
+    displayName: 'Validate C# Projects'
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
+
+    - powershell: ./validate-unicode.ps1
+      displayName: "Validating unicode characters"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
+    - powershell: ./validate-projects.ps1
+      displayName: "Validating C# projects"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
+
+
+  - job: validate_notebooks
+    displayName: 'Validate Notebooks'
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
+
+    - powershell: ./validate-notebooks.ps1
+      displayName: "Validating notebooks"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
 
