@@ -28,8 +28,8 @@ namespace Quantum.Kata.Teleportation {
     // Part I. Standard Teleportation
     //////////////////////////////////////////////////////////////////
     
-    // We split the teleportation protocol into several steps, following the description at
-    // https://docs.microsoft.com/quantum/techniques/putting-it-all-together :
+    // We split the teleportation protocol into several steps, following the description in 
+    // the Wikipedia article at https://en.wikipedia.org/wiki/Quantum_teleportation :
     // * Preparation (creating the entangled pair of qubits that are sent to Alice and Bob).
     // * Sending the message (Alice's task): Entangling the message qubit with Alice's qubit
     //   and extracting two classical bits to be sent to Bob.
