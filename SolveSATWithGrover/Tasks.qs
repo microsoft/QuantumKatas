@@ -103,7 +103,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // 
     // For general SAT problems, f(x) is represented as a conjunction (an AND operation) of several clauses on N variables, 
     // and each clause is a disjunction (an OR operation) of one or several variables or negated variables:
-    //      clause(x) = ∨ₖ yᵢₖ, where yᵢₖ = either xⱼ or ¬xⱼ for some j in {0, ..., N-1}
+    //      clause(x) = ∨ₖ yₖ, where yₖ = either xⱼ or ¬xⱼ for some j in {0, ..., N-1}
     // 
     // For example, one of the possible clauses on two variables is 
     //      clause(x) = x₀ ∨ ¬x₁
