@@ -18,8 +18,7 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. Entangled pair
-    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit
-    is Adj {        
+    operation Entangle_Reference (qAlice : Qubit, qBob : Qubit) : Unit is Adj {        
         H(qAlice);
         CNOT(qAlice, qBob);
     }
@@ -144,39 +143,24 @@ namespace Quantum.Kata.Teleportation {
     //////////////////////////////////////////////////////////////////
     
     // Task 4.1. Entangled trio
-    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit
-    is Adj {
+    operation EntangleThreeQubits_Reference (qAlice : Qubit, qBob : Qubit, qCharlie : Qubit) : Unit is Adj {
         // Starting with |000⟩
+        
+        H(qBob);
+
+        // now state is: 1/sqrt(2) (|000⟩ + |010⟩)
+
+        CNOT(qBob, qCharlie);
+
+        // state: 1/sqrt(2) (|000⟩ + |011⟩)
 
         H(qAlice);
 
-        // now state is:  1/sqrt(2) (|0⟩+|1⟩) |00⟩
+        // state: 1/2 (|000⟩ + |011⟩ + |100⟩ + |111⟩)
 
-        H(qBob);
+        CNOT(qAlice, qCharlie);
 
-        // state: 1/2(|000⟩+|010⟩+|100⟩+|110⟩)
-
-        X(qCharlie);
-
-        // state: 1/2(|001⟩+|011⟩+|101⟩+|111⟩)
-
-        CCNOT(qAlice, qBob, qCharlie);
-
-        // state: 1/2(|001⟩+|011⟩+|101⟩+|110⟩)
-
-        X(qAlice);
-        X(qBob);
-
-        // state: 1/2(|111⟩+|101⟩+|011⟩+|000⟩)
-
-        CCNOT(qAlice, qBob, qCharlie);
-
-        // state:  1/2(|110⟩+|101⟩+|011⟩+|000⟩)
-
-        X(qAlice);
-        X(qBob);
-
-        // final state:  1/2(|000⟩+|011⟩+|101⟩+|110⟩)
+        // final state:  1/2 (|000⟩ + |011⟩ + |101⟩ + |110⟩)
     }
     
     
@@ -187,8 +171,7 @@ namespace Quantum.Kata.Teleportation {
         }
         
         if (b2) {
-            Z(qCharlie);
-            Y(qCharlie);
+            X(qCharlie);
         }
         
         if (b3) {
