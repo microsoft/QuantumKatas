@@ -170,7 +170,13 @@ If you don't have Git installed, download the katas from https://github.com/Micr
 
 ### Run a kata as a Jupyter Notebook <a name="kata-as-notebook" /> ###
 
-The best way to run the katas as Jupyter Notebooks is to navigate to the root folder of the repository and to open `index.ipynb` using Jupyter:
+If you are using Windows, easiest way to run the katas as Jupyter Notebooks is navigate to scripts directory in root folder of repository and run `runNotebooks.py` using python.
+>```cmd
+> cd QuantumKatas/scripts/
+> python runNotebooks.py
+>```
+This will start Jupyter Notebook server in another command palette.
+Else navigate to the root folder of the repository and open `index.ipynb` using Jupyter:
 
 > ```bash
 > $ cd QuantumKatas/
