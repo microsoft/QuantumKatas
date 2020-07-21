@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import random as r
 from cmath import sqrt
 from pytest import approx
