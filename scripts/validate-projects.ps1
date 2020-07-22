@@ -22,6 +22,6 @@ function Build-One {
   $script:all_ok = ($LastExitCode -eq 0) -and $script:all_ok
 }
 
-# Validating all katas projects can be disables with the ENABLE_KATAS flag:
+# Build all Katas solutions:
 Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
 | ForEach-Object { Build-One $_.FullName }
