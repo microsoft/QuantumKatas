@@ -22,9 +22,11 @@ function Build-One {
     $script:all_ok = ($LastExitCode -eq 0) -and $script:all_ok
 }
 
-# Microsoft.Quantum.Katas.sln should always be built:
+Write-Host "Building Katas binaries:"
+
+Build-One '..\utilities\DumpUnitary\DumpUnitary.sln'
 Build-One '..\utilities\Microsoft.Quantum.Katas\Microsoft.Quantum.Katas.sln'
 
 if (-not $all_ok) {
-    throw "At least one test failed execution. Check the logs."
+    throw "At least one project failed building. Check the logs."
 }
