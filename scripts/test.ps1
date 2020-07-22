@@ -1,15 +1,33 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-$ErrorActionPreference = 'Stop'
-
 & "$PSScriptRoot/set-env.ps1"
+$all_ok = $True
 
-& "$PSScriptRoot/validate-unicode.ps1"
+function Test-One {
+    Param($project)
 
-# Validating all katas projects can be disables with the ENABLE_KATAS 
-if ($Env:ENABLE_KATAS -ne "false") {
-  & "$PSScriptRoot/validate-notebooks.ps1"
-} else {
-  Write-Host "##vso[task.logissue type=warning;]Skipping testing Katas notebooks. Env:ENABLE_KATAS is '$Env:ENABLE_KATAS'."
+    Write-Host "##[info]Testing $project"
+    dotnet test $project `
+        -c $Env:BUILD_CONFIGURATION `
+        -v $Env:BUILD_VERBOSITY `
+        --no-build `
+        --logger trx `
+        /property:DefineConstants=$Env:ASSEMBLY_CONSTANTS `
+        /property:InformationalVersion=$Env:SEMVER_VERSION `
+        /property:Version=$Env:ASSEMBLY_VERSION
+
+    if  ($LastExitCode -ne 0) {
+        Write-Host "##vso[task.logissue type=error;]Failed to test $project"
+        $script:all_ok = $False
+    }
+}
+
+Write-Host "Testing Katas binaries:"
+
+Test-One '..\utilities\DumpUnitary\DumpUnitary.sln'
+Test-One '..\utilities\Microsoft.Quantum.Katas\Microsoft.Quantum.Katas.sln'
+
+if (-not $all_ok) {
+    throw "At least one test failed execution. Check the logs."
 }
