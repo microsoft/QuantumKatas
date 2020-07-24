@@ -21,7 +21,6 @@ jobs:
     displayName: 'Validate C# Projects'
     strategy:
       parallel:
-      matrix:
         linux:
           imageName: 'ubuntu-latest'
         mac:
@@ -45,7 +44,6 @@ jobs:
     displayName: 'Validate Notebooks'
     strategy:
       parallel:
-      matrix:
         linux:
           imageName: 'ubuntu-latest'
         mac:
