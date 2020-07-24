@@ -17,31 +17,31 @@ jobs:
     - template: scripts/steps-init.yml
     - template: scripts/steps-binaries.yml
 
-  # - job: validate_projects
-  #   displayName: 'Validate C# Projects'
-  #   strategy:
-  #     maxParallel: 3
-  #     matrix:
-  #       linux:
-  #         imageName: 'ubuntu-latest'
-  #       mac:
-  #         imageName: 'macOS-latest'
-  #       windows:
-  #         imageName: 'windows-latest'
-  #   pool: 
-  #     vmImage: $(imageName)
-  #   steps:
-  #   - template: scripts/steps-init.yml
+  - job: validate_projects
+    displayName: 'Validate C# Projects'
+    strategy:
+      maxParallel: 3
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
 
-  #   - powershell: ./validate-unicode.ps1
-  #     displayName: "Validating unicode characters"
-  #     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+    - powershell: ./validate-unicode.ps1
+      displayName: "Validating unicode characters"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-  #   - powershell: ./validate-projects.ps1
-  #     displayName: "Validating C# projects"
-  #     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+    - powershell: ./validate-projects.ps1
+      displayName: "Validating C# projects"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-  - job: validate_notebooks
+  - job: validate_notebooks_part_1
     displayName: 'Validate Notebooks'
     strategy:
       maxParallel: 3
@@ -57,7 +57,27 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: ./validate-notebooks.ps1
+    - powershell: ./validate-notebooks.ps1 -startindex 0 -endindex 20
+      displayName: "Validating notebooks"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
+  - job: validate_notebooks_part_2
+    displayName: 'Validate Notebooks'
+    strategy:
+      maxParallel: 3
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
+
+    - powershell: ./validate-notebooks.ps1 -startindex 20 -endindex 39
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
