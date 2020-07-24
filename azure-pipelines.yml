@@ -42,7 +42,7 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks_part_1
-    displayName: 'Validate Notebooks'
+    displayName: 'Validate Notebooks part 1'
     strategy:
       maxParallel: 3
       matrix:
@@ -62,7 +62,7 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks_part_2
-    displayName: 'Validate Notebooks'
+    displayName: 'Validate Notebooks part 2'
     strategy:
       maxParallel: 3
       matrix:
