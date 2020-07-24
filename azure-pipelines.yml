@@ -17,29 +17,29 @@ jobs:
     - template: scripts/steps-init.yml
     - template: scripts/steps-binaries.yml
 
-  - job: validate_projects
-    displayName: 'Validate C# Projects'
-    strategy:
-      maxParallel: 3
-      matrix:
-        linux:
-          imageName: 'ubuntu-latest'
-        mac:
-          imageName: 'macOS-latest'
-        windows:
-          imageName: 'windows-latest'
-    pool: 
-      vmImage: $(imageName)
-    steps:
-    - template: scripts/steps-init.yml
+  # - job: validate_projects
+  #   displayName: 'Validate C# Projects'
+  #   strategy:
+  #     maxParallel: 3
+  #     matrix:
+  #       linux:
+  #         imageName: 'ubuntu-latest'
+  #       mac:
+  #         imageName: 'macOS-latest'
+  #       windows:
+  #         imageName: 'windows-latest'
+  #   pool: 
+  #     vmImage: $(imageName)
+  #   steps:
+  #   - template: scripts/steps-init.yml
 
-    - powershell: ./validate-unicode.ps1
-      displayName: "Validating unicode characters"
-      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+  #   - powershell: ./validate-unicode.ps1
+  #     displayName: "Validating unicode characters"
+  #     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-    - powershell: ./validate-projects.ps1
-      displayName: "Validating C# projects"
-      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+  #   - powershell: ./validate-projects.ps1
+  #     displayName: "Validating C# projects"
+  #     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks
     displayName: 'Validate Notebooks'
