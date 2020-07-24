@@ -13,6 +13,8 @@ We're so glad you asked!
    * [Contributing New Katas](#contributing-new-katas)
    * [Testing the Katas](#testing-the-katas)
    * [Style Guide](#style-guide)
+   * [Updating the Katas to the new QDK version](#updating-the-Katas-to-the-new-QDK-version)
+   * [Validating your changes](#validating-your-changes)
 
 * [Contributor License Agreement](#contributor-license-agreement)
 
@@ -77,6 +79,28 @@ For example, to validate BasicGates kata run the following command from the Powe
 
 To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/qjupyter) 
 and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
+
+### Updating the Katas to the new QDK version
+
+The Quantum Development Kit is updated frequently, new releases with release notes can be found [here](https://docs.microsoft.com/en-us/quantum/resources/relnotes). When there is a new release the Katas should be updated to the latest version to make sure everyone can use the latest Q# features in the Katas. 
+
+To update the Katas to use the newest QDK version the following powershell script can be used:
+
+```powershell
+   PS> ./scripts/updateQDKVersion.ps1
+```
+
+After running this script you should validate that the Katas are still valid, see the section below to validate the change.
+
+> Currently when running the script the new version in the `DOCKERFILE` is not correct see issue [#420](https://github.com/microsoft/QuantumKatas/issues/420) for more details and how to fix this.
+
+### Validating your changes
+
+When making contributions it is good to validate that the projects are still working as they supposed to. Here is a list of points which you should check to work:
+* **Local development** do all the notebooks still run as expected. Because testing all Notebooks will take too much time testing the *Measurement* notebook is a good indication if the project still runs. Also take a look at the section above [Testing the Katas](#testing-the-Katas), to test automatically.
+* **Binder** the notebooks can also be run on [Binder](https://mybinder.org), when you make a change make sure that this still works.
+You can check this by navigating to the binder link in the root folder of a Kata and change `microsoft` in the url to your Github username, for example the Measurements kata binder url is: `https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=Measurements%2FMeasurements.ipynb` this should be changed to `https://mybinder.org/v2/gh/{YOUR_USERNAME_HERE}/QuantumKatas/master?filepath=Measurements%2FMeasurements.ipynb`
+* **CI** every time you open a PR or add a commit to the PR a pipeline is run, to check if the Katas are still valid. You can see the run details on the PR page, make sure you monitor this and that the run succeeds.
 
 ### Style Guide
 
