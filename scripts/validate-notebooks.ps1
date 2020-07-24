@@ -109,7 +109,9 @@ if ($Notebook -ne "") {
         -Exclude $not_ready
     
     for($i=$StartIndex;$i -le $EndIndex;$i++){
-        Validate $Allitems[$i]
+        if($i -lt $Allitems.Length){ #Check if there is a valid path
+            Validate $Allitems[$i]
+        }
     }
 
 } else {
@@ -118,7 +120,7 @@ if ($Notebook -ne "") {
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready `
-            | ForEach-Object { Validate $_ } 
+            | ForEach-Object { Validate $_ }
 }
 
 if (-not $all_ok) {
