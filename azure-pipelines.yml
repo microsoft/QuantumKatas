@@ -20,6 +20,7 @@ jobs:
   - job: validate_projects
     displayName: 'Validate C# Projects'
     strategy:
+      parallel:
       matrix:
         linux:
           imageName: 'ubuntu-latest'
@@ -43,6 +44,7 @@ jobs:
   - job: validate_notebooks
     displayName: 'Validate Notebooks'
     strategy:
+      parallel:
       matrix:
         linux:
           imageName: 'ubuntu-latest'

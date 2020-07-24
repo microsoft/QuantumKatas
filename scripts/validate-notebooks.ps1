@@ -105,7 +105,7 @@ if ($Notebook -ne "") {
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready `
-            | ForEach-Object { Validate $_ }
+            | ForEach-Object -Parallel { Validate $_ } -ThrottleLimit 5 
 }
 
 if (-not $all_ok) {
