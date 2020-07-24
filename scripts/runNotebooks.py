@@ -3,4 +3,5 @@
 # Licensed under the MIT License.
 
 import os
-os.system('start cmd /k "cd .. & jupyter notebook index.ipynb"')
+os.system("cd .. & jupyter notebook index.ipynb")
+input()	#This input line stops immediate closing of terminal
