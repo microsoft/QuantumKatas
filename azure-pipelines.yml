@@ -44,7 +44,6 @@ jobs:
   - job: validate_notebooks_part_1
     displayName: 'Validate Notebooks part 1'
     strategy:
-      maxParallel: 3
       matrix:
         linux:
           imageName: 'ubuntu-latest'
@@ -57,14 +56,13 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: ./validate-notebooks.ps1 -startindex 0 -endindex 20
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 20'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks_part_2
     displayName: 'Validate Notebooks part 2'
     strategy:
-      maxParallel: 3
       matrix:
         linux:
           imageName: 'ubuntu-latest'
@@ -77,7 +75,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: ./validate-notebooks.ps1 -startindex 20 -endindex 39
+    - powershell: './validate-notebooks.ps1 -startindex 20 -endindex 39'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
