@@ -23,7 +23,9 @@
 [CmdletBinding()]
 Param(
     [Parameter(Position=1)]
-    $Notebook = ""
+    $Notebook = "",
+    [double]$StartIndex = -1.0,
+    [double]$EndIndex = -1.0
 )
 
 
@@ -99,13 +101,24 @@ if ($Notebook -ne "") {
     # Validate only the notebook provided as the parameter (do not exclude blacklisted notebooks)
     Get-ChildItem $Notebook `
         | ForEach-Object { Validate $_ }
+}elseif ($StartIndex -ge 0 -or $EndIndex -ge 0) {
+    #Validate only the notebooks which is between the $startindex an $endindex (this can be usefull to validate a subset of all notebooks)
+    $Allitems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
+        -Recurse `
+        -Include '*.ipynb' `
+        -Exclude $not_ready
+    
+    for($i=$StartIndex;$i -le $EndIndex;$i++){
+        Validate $Allitems[$i]
+    }
+
 } else {
     # Validate all notebooks in the folder from which the script was executed
     Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready `
-            | ForEach-Object -Parallel { Validate $_ } -ThrottleLimit 5 
+            | ForEach-Object { Validate $_ } 
 }
 
 if (-not $all_ok) {
