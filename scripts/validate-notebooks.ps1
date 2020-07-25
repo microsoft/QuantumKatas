@@ -17,15 +17,20 @@
     .PARAMETER Notebook
         Path to the notebook to be validated.
         If not set, defaults to validating all notebooks in the current directory.
-
+    .PARAMETER StartIndex
+        From a list of all possible notebooks to validate, this is the index of the first notebook to be checked
+        If this is not set all the notebooks will be validated
+    .PARAMETER EndIndex
+        This represents the end index of the notebooks to be validated
+        If this is not set all the notebooks will be validated
 #>
 
 [CmdletBinding()]
 Param(
     [Parameter(Position=1)]
     $Notebook = "",
-    [double]$StartIndex = -1.0,
-    [double]$EndIndex = -1.0
+    [int]$StartIndex = -1.0,
+    [int]$EndIndex = -1.0
 )
 
 
@@ -101,26 +106,26 @@ if ($Notebook -ne "") {
     # Validate only the notebook provided as the parameter (do not exclude blacklisted notebooks)
     Get-ChildItem $Notebook `
         | ForEach-Object { Validate $_ }
-}elseif ($StartIndex -ge 0 -or $EndIndex -ge 0) {
-    #Validate only the notebooks which is between the $startindex an $endindex (this can be usefull to validate a subset of all notebooks)
+} else {
+    # Validate all notebooks in the folder from which the script was executed
     $Allitems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready
-    
+
+    #If the start item is not set or larger then the total amount of items set the start to 0
+    if($StartIndex -lt 0 -or $StartIndex -gt $Allitems.Length){
+        $StartIndex = 0
+    }
+    if($EndIndex -lt 0){
+        $EndIndex = $Allitems.Length
+    }
+
     for($i=$StartIndex;$i -le $EndIndex;$i++){
         if($i -lt $Allitems.Length){ #Check if there is a valid path
             Validate $Allitems[$i]
         }
     }
-
-} else {
-    # Validate all notebooks in the folder from which the script was executed
-    Get-ChildItem (Join-Path $PSScriptRoot '..') `
-        -Recurse `
-        -Include '*.ipynb' `
-        -Exclude $not_ready `
-            | ForEach-Object { Validate $_ }
 }
 
 if (-not $all_ok) {

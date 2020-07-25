@@ -55,7 +55,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 20'
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 19'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
