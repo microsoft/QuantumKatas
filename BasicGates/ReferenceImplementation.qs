@@ -166,7 +166,7 @@ namespace Quantum.Kata.BasicGates {
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + θ|110⟩ + η|111⟩.
     operation ToffoliGate_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
         CCNOT(qs[0], qs[1], qs[2]);
-        // alternatively (Controlled X)(qs[0..1], qs[2]);
+        // alternatively (Controlled X)(qs[0 .. 1], qs[2]);
     }
 
     // Task 2.5. Fredkin gate
