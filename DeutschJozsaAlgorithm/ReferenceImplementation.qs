@@ -146,21 +146,15 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
         // add check for prefix as a multicontrolled NOT
         // true bits of r correspond to 1-controls, false bits - to 0-controls
-        for (i in 0 .. P - 1) {
-                
-            if (prefix[i] == 0) {
-                X(x[i]);
+        within {
+            for (i in 0 .. P - 1) {
+                    
+                if (prefix[i] == 0) {
+                    X(x[i]);
+                }
             }
-        }
-            
-        Controlled X(x[0 .. P - 1], y);
-            
-        // uncompute changes done to input register
-        for (i in 0 .. P - 1) {
-                
-            if (prefix[i] == 0) {
-                X(x[i]);
-            }
+        } apply {
+            Controlled X(x[0 .. P - 1], y);
         }
     }
     
@@ -329,8 +323,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             }
             
             // before releasing the qubits make sure they are all in |0⟩ state
-            ResetAll(x);
-            Reset(y);
+            // ResetAll(x);
+            // Reset(y);
             return r;
         }
     }
