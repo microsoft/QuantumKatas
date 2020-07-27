@@ -33,7 +33,7 @@ jobs:
     - template: scripts/steps-init.yml
 
     - powershell: ./validate-unicode.ps1
-      displayName: "Validating unicode characters"
+      displayName: "Validating Unicode characters"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
     - powershell: ./validate-projects.ps1
@@ -41,7 +41,7 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks_part_1
-    displayName: 'Validate Notebooks part 1'
+    displayName: 'Validate Notebooks (part 1)'
     strategy:
       matrix:
         linux:
@@ -60,7 +60,7 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
   - job: validate_notebooks_part_2
-    displayName: 'Validate Notebooks part 2'
+    displayName: 'Validate Notebooks (part 2)'
     strategy:
       matrix:
         linux:
@@ -74,7 +74,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 20 -endindex 39'
+    - powershell: './validate-notebooks.ps1 -startindex 20'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 

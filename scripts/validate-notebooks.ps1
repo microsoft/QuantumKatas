@@ -18,11 +18,11 @@
         Path to the notebook to be validated.
         If not set, defaults to validating all notebooks in the current directory.
     .PARAMETER StartIndex
-        From a list of all possible notebooks to validate, this is the index of the first notebook to be checked
-        If this is not set all the notebooks will be validated
+        The index of the first notebook to be checked (in the list of all possible notebooks)
+        If not set, will default to 0 to validate all notebooks from the beginning of the list
     .PARAMETER EndIndex
-        This represents the end index of the notebooks to be validated
-        If this is not set all the notebooks will be validated
+        The index of the last notebook to be checked (in the list of all possible notebooks)
+        If not set, will default to the index of the last notebook in the list to validate all notebooks to the end of the list
 #>
 
 [CmdletBinding()]
@@ -55,10 +55,11 @@ function Validate {
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
 
-    #  convert %kata to %check_kata. run Jupyter nbconvert to execute the kata.
+    # Convert %kata to %check_kata
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
-    # dotnet-iqsharp writes some output to stderr, which causes Powershell to throw
+    # Run Jupyter nbconvert to execute the kata.
+    # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
     # unless $ErrorActionPreference is set to 'Continue'.
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
@@ -107,24 +108,24 @@ if ($Notebook -ne "") {
     Get-ChildItem $Notebook `
         | ForEach-Object { Validate $_ }
 } else {
-    # Validate all notebooks in the folder from which the script was executed
-    $Allitems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
+    # Get the list of all notebooks in the folder from which the script was executed
+    $AllItems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
         -Exclude $not_ready
 
-    #If the start item is not set or larger then the total amount of items set the start to 0
-    if($StartIndex -lt 0 -or $StartIndex -gt $Allitems.Length){
+    # If the start index is not set, set it to 0 to check all notebooks
+    if ($StartIndex -lt 0) {
         $StartIndex = 0
     }
-    if($EndIndex -lt 0){
-        $EndIndex = $Allitems.Length
+
+    # If the end index is not set, set it to (the number of notebooks - 1) to check all notebooks
+    if ($EndIndex -lt 0) {
+        $EndIndex = $AllItems.Length - 1
     }
 
-    for($i=$StartIndex;$i -le $EndIndex;$i++){
-        if($i -lt $Allitems.Length){ #Check if there is a valid path
-            Validate $Allitems[$i]
-        }
+    for ($i = $StartIndex; $i -le $EndIndex -and $i -le $AllItems.Length - 1; $i++) {
+        Validate $AllItems[$i]
     }
 }
 
