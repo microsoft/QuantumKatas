@@ -93,18 +93,17 @@ namespace Quantum.Kata.GraphColoring {
     // Task 2.2. Oracle for verifying vertex coloring
     operation VertexColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         let nEdges = Length(edges);
-        using (conflicts = Qubit[nEdges]) {
+        using (conflictQubits = Qubit[nEdges]) {
             within {
-                for (i in 0 .. nEdges-1) {
-                    let (start, end) = edges[i];
+                for (((start, end), conflictQubit) in Zip(edges, conflictQubits)) {
                     // Check that endpoints of the edge have different colors:
                     // apply ColorEqualityOracle_Nbit_Reference oracle; if the colors are the same the result will be 1, indicating a conflict
                     ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1], 
-                                                       colorsRegister[end * 2 .. end * 2 + 1], conflicts[i]);
+                                                       colorsRegister[end * 2 .. end * 2 + 1], conflictQubit);
                 }
             } apply {
                 // If there are no conflicts (all qubits are in 0 state), the vertex coloring is valid
-                (ControlledOnInt(0, X))(conflicts, target);
+                (ControlledOnInt(0, X))(conflictQubits, target);
             }
         }
     }
@@ -165,11 +164,12 @@ namespace Quantum.Kata.GraphColoring {
             
         for (_ in 1 .. iterations) {
             phaseOracle(register);
-            ApplyToEach(H, register);
-            ApplyToEach(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEach(X, register);
-            ApplyToEach(H, register);
+            within {
+                ApplyToEachA(H, register);
+                ApplyToEachA(X, register);
+            } apply {
+                Controlled Z(Most(register), Tail(register));
+            }
         }
     }
 }
