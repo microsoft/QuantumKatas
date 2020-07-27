@@ -96,9 +96,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
         
         // the mask with all 0's corresponds to Oracle_Zero
-        for (i in 0 .. L - 1) {
-            set r w/= i <- 0;
-        }
+        set r = ConstantArray(10, 0);
         
         for (i in 2 .. L) {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_Zero_Reference);

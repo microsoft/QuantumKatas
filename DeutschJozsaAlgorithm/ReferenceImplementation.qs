@@ -109,7 +109,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
                 CNOT(x[i], y);
             } else {
                 // do a 0-controlled NOT
-                (ControlledOnInt(0,X))([x[i]],y);
+                (ControlledOnInt(0, X))([x[i]], y);
             }
         }
     }
