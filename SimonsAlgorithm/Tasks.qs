@@ -93,7 +93,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Inputs:
     //      1) N qubits in |0⟩ state (query register)
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
-    // (i.e. the state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N)).
+    // (i.e. the state (|0...0⟩ + ... + |1...1⟩) / sqrt(2ᴺ)).
     operation SA_StatePrep (query : Qubit[]) : Unit is Adj {        
         // ...
     }

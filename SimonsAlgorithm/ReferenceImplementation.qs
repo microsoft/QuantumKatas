@@ -98,7 +98,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
                 }
             }
             
-            // since y has not been measured, but the Oracle changes the state, we reset y qubit
+            // since y has not been measured, we reset y qubits
             ResetAll(y);
             return j;
         }

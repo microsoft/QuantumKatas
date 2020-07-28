@@ -73,13 +73,11 @@ namespace Quantum.Kata.SimonsAlgorithm {
     operation Q13_Oracle_OperatorOutput_Test () : Unit {
         // cross-tests
         // the mask for all 1's should behave the same as Oracle_CountBits
-        
-        // 
         mutable A = ConstantArray(11, 1);
         let L = Length(A);
         
         for (i in 2 .. L) {
-            AssertTwoOraclesAreEqual(i .. i, Oracle_OperatorOutput(_, _, A[0 ...]), Oracle_OperatorOutput_Reference(_, _, A[0 ...]));
+            AssertTwoOraclesAreEqual(i .. i, Oracle_OperatorOutput(_, _, A[0 .. i - 1]), Oracle_OperatorOutput_Reference(_, _, A[0 .. i - 1]));
         }
         
         set A = [1, 1, 0, 0];
@@ -149,7 +147,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
                 SA_StatePrep(qs);
                 
                 // apply adjoint reference operation
-                Adjoint SA_StatePrep_Reference(qs[0 ...]);
+                Adjoint SA_StatePrep_Reference(qs);
                 
                 // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
