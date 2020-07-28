@@ -105,7 +105,6 @@ namespace Quantum.Kata.GHZGame {
     operation T22_QuantumStrategy_Test () : Unit {
         using (q = Qubit()) {
             EqualityFactB(QuantumStrategy(false, q), false, "|0⟩ not measured as false");
-            Reset(q);
 
             X(q);
             EqualityFactB(QuantumStrategy(false, q), true, "|1⟩ not measured as true");
