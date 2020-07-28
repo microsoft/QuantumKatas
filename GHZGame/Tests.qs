@@ -40,7 +40,7 @@ namespace Quantum.Kata.GHZGame {
     operation GetClassicalStrategySuccessRate (N : Int, strategy : (Bool => Bool)) : Double {
         let inputs = RefereeBits();
         mutable wins = 0;
-        for (i in 0 .. N - 1) {
+        for (_ in 0 .. N - 1) {
             let rst = inputs[RandomInt(Length(inputs))];
             let abc = PlayClassicalGHZ_Reference(strategy, rst);
             if (WinCondition_Reference(rst, abc)) {
