@@ -172,19 +172,25 @@ If you don't have Git installed, download the katas from https://github.com/Micr
 
 The best way to run the katas as Jupyter Notebooks is to navigate to the root folder of the repository and to open `index.ipynb` using Jupyter:
 
-> ```bash
-> $ cd QuantumKatas/
-> $ jupyter notebook index.ipynb
-> ```
+```bash
+$ cd QuantumKatas/
+$ jupyter notebook index.ipynb
+```
 
 This will open the notebook that contains a list of all katas and tutorials, and you will be able to navigate to the one you want using links.
 
+> Note that this will start Jupyter Notebooks server in the same command line window you used to run the command. If you want to keep using that window for navigation, you can launch Jupyter Notebooks server in a new window using the following commands (on Windows):
+> ```bash
+> $ cd QuantumKatas/
+> $ start jupyter notebook index.ipynb
+> ```
+
 You can also open an individual notebook directly, but this might render internal links invalid:
 
-> ```bash
-> $ cd QuantumKatas/tutorials/ComplexArithmetic
-> $ jupyter notebook ComplexArithmetic.ipynb
-> ```
+```bash
+$ cd QuantumKatas/tutorials/ComplexArithmetic
+$ jupyter notebook ComplexArithmetic.ipynb
+```
 
 
 ### Run a kata as a Q# project <a name="kata-as-project" /> ###
