@@ -19,20 +19,15 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (parity of the number of bits set to 1)
-    operation Oracle_CountBits_Reference (x : Qubit[], y : Qubit) : Unit
-    is Adj {
-        
-        let N = Length(x);
-
-        for (i in 0 .. N - 1) {
-            CNOT(x[i], y);
+    operation Oracle_CountBits_Reference (x : Qubit[], y : Qubit) : Unit is Adj {
+        for (q in x) {
+            CNOT(q, y);
         }
     }
     
     
     // Task 1.2. Bitwise right shift
-    operation Oracle_BitwiseRightShift_Reference (x : Qubit[], y : Qubit[]) : Unit
-    is Adj {
+    operation Oracle_BitwiseRightShift_Reference (x : Qubit[], y : Qubit[]) : Unit is Adj {
         
         let N = Length(x);
 
@@ -43,8 +38,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     
     // Task 1.3. Linear operator
-    operation Oracle_OperatorOutput_Reference (x : Qubit[], y : Qubit, A : Int[]) : Unit
-    is Adj {
+    operation Oracle_OperatorOutput_Reference (x : Qubit[], y : Qubit, A : Int[]) : Unit is Adj {
         
         let N = Length(x);
             
@@ -57,8 +51,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     
     // Task 1.4. Multidimensional linear operator
-    operation Oracle_MultidimensionalOperatorOutput_Reference (x : Qubit[], y : Qubit[], A : Int[][]) : Unit
-    is Adj {
+    operation Oracle_MultidimensionalOperatorOutput_Reference (x : Qubit[], y : Qubit[], A : Int[][]) : Unit is Adj {
         
         let N1 = Length(y);
         let N2 = Length(x);
@@ -78,11 +71,9 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Task 2.1. State preparation for Simon's algorithm
-    operation SA_StatePrep_Reference (query : Qubit[]) : Unit
-    is Adj {        
+    operation SA_StatePrep_Reference (query : Qubit[]) : Unit is Adj {        
         ApplyToEachA(H, query);
     }
-    
     
     // Task 2.2. Quantum part of Simon's algorithm
     operation Simon_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit[]) => Unit)) : Int[] {
@@ -107,8 +98,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
                 }
             }
             
-            // before releasing the qubits make sure they are all in |0⟩ states
-            ResetAll(x);
+            // since y has not been measured, we reset y qubits
             ResetAll(y);
             return j;
         }
