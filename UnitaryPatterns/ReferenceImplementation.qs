@@ -193,9 +193,9 @@ namespace Quantum.Kata.UnitaryPatterns {
                 // if two bits are different, set both to 1 using CNOT
                 if (i > diff) {
                     if (not bits1[i]) {
-                         X(qs[diff]);
-                         CNOT(qs[diff], qs[i]);
-                         X(qs[diff]);
+                        X(qs[diff]);
+                        CNOT(qs[diff], qs[i]);
+                        X(qs[diff]);
                     }
                     if (not bits2[i]) {
                         CNOT(qs[diff], qs[i]);
