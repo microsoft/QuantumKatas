@@ -31,7 +31,6 @@ namespace Quantum.Kata.JointMeasurements {
         // Considering only the two middle qubits of the array, their parity for the first state is 0,
         // so the first state belongs to the +1 eigenspace of operator Z ⊗ Z on these qubits;
         // their parity for the second state is 1, so the second state belongs to the -1 eigenspace.
-        
         return MeasureAllZ(qs[1 .. 2]) == Zero ? 0 | 1;
     }
     
@@ -50,7 +49,6 @@ namespace Quantum.Kata.JointMeasurements {
         // The first state is a superposition of the states |++⟩ and |--⟩, 
         // which belong to the +1 eigenspace of the operator X ⊗ X;
         // the second one is a superposition of |+-⟩ and |-+⟩, which belong to the -1 eigenspace.
-        
         return Measure([PauliX, PauliX], qs) == Zero ? 0 | 1;
     }
     
@@ -61,36 +59,38 @@ namespace Quantum.Kata.JointMeasurements {
         
         if (MeasureAllZ(qs) == One){
             X(qs[1]);  
-		}
+	    }
     }
     
     
     // Task 7**. Controlled X gate with arbitrary target
     operation ControlledX_General_Reference (qs : Qubit[]) : Unit {
-        
-        // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
-        // Note the parity notation used in the table of fixups in the paper
-        // differs from the notation used in Q#.
-        using (a = Qubit()) {
-            let c = qs[0];
-            let t = qs[1];
-            H(a);
-            let p1 = MeasureAllZ([c, a]);
-            H(a);
-            H(t);
-            let p2 = MeasureAllZ([a, t]);
-            H(a);
-            H(t);
-            let m = MResetZ(a);
+        body (...) {
+            // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
+            // Note the parity notation used in the table of fixups in the paper
+            // differs from the notation used in Q#.
+            using (a = Qubit()) {
+                let c = qs[0];
+                let t = qs[1];
+                H(a);
+                let p1 = MeasureAllZ([c, a]);
+                H(a);
+                H(t);
+                let p2 = MeasureAllZ([a, t]);
+                H(a);
+                H(t);
+                let m = M(a);
                 
-            // apply fixups
-            if (p2 == One) {
-                Z(c);
-            }
-            if (p1 != m) {
-                X(t);
+                // apply fixups
+                if (p2 == One) {
+                    Z(c);
+                }
+                if (p1 != m) {
+                    X(t);
+                }
             }
         }
+        adjoint self;
     }
     
 }
