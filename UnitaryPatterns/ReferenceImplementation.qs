@@ -17,9 +17,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     
     // Task 1. Main diagonal
-    operation MainDiagonal_Reference (qs : Qubit[]) : Unit {
-        
-    }
+    operation MainDiagonal_Reference (qs : Qubit[]) : Unit {}
     
     
     // Task 2. All-non-zero matrix
