@@ -51,7 +51,7 @@ namespace Quantum.Kata.JointMeasurements {
         // which belong to the +1 eigenspace of the operator X ⊗ X;
         // the second one is a superposition of |+-⟩ and |-+⟩, which belong to the -1 eigenspace.
         
-        return MeasureAllX(qs) == Zero ? 0 | 1;
+        return Measure([PauliX, PauliX], qs) == Zero ? 0 | 1;
     }
     
     
