@@ -23,7 +23,6 @@ namespace Quantum.Kata.JointMeasurements {
     // Task 2. Parity measurement
     operation ParityMeasurement_Reference (qs : Qubit[]) : Int {
         return MeasureAllZ(qs) == Zero ? 0 | 1;
-        //return Measure([PauliZ, PauliZ], qs) == Zero ? 0 | 1;
     }
     
     
@@ -34,7 +33,6 @@ namespace Quantum.Kata.JointMeasurements {
         // their parity for the second state is 1, so the second state belongs to the -1 eigenspace.
         
         return MeasureAllZ(qs[1 .. 2]) == Zero ? 0 | 1;
-        //return Measure([PauliZ, PauliZ], qs[1 .. 2]) == Zero ? 0 | 1;
     }
     
     
@@ -53,8 +51,7 @@ namespace Quantum.Kata.JointMeasurements {
         // which belong to the +1 eigenspace of the operator X ⊗ X;
         // the second one is a superposition of |+-⟩ and |-+⟩, which belong to the -1 eigenspace.
         
-        return MeasureAllZ(qs) == Zero ? 0 | 1;
-        //return Measure([PauliX, PauliX], qs) == Zero ? 0 | 1;
+        return MeasureAllX(qs) == Zero ? 0 | 1;
     }
     
     
@@ -65,10 +62,6 @@ namespace Quantum.Kata.JointMeasurements {
         if (MeasureAllZ(qs) == One){
             X(qs[1]);  
 		}
-        
-        //if (Measure([PauliZ, PauliZ], qs) == One) {
-        //    X(qs[1]);
-        //}
     }
     
     
