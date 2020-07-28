@@ -93,9 +93,9 @@ namespace Quantum.Kata.UnitaryPatterns {
 
     // Task 11. X-Wing fighter
     operation XWing_Fighter_Reference (qs : Qubit[]) : Unit {
-        ApplyToEach(CNOT(qs[0], _), qs[1 .. Length(qs) - 1]);
+        ApplyToEach(CNOT(qs[0], _), qs[1...]);
         H(qs[0]);
-        ApplyToEach(CNOT(qs[0], _), qs[1 .. Length(qs) - 1]);
+        ApplyToEach(CNOT(qs[0], _), qs[1...]);
     }
     
 
@@ -112,7 +112,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation Decrement (qs : Qubit[]) : Unit {
         X(qs[0]);
         for (i in 1..Length(qs)-1) {
-            Controlled X(qs[0..i-1], qs[i]);
+            Controlled X(qs[...i-1], qs[i]);
         }
     }
     
@@ -126,11 +126,11 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation TIE_Fighter_Reference (qs : Qubit[]) : Unit {
         let n = Length(qs);
         X(qs[n-1]);
-        Controlled Reflect([qs[n-1]], qs[0..(n-2)]);
+        Controlled Reflect([qs[n-1]], qs[...(n-2)]);
         X(qs[n-1]);
-        Decrement(qs[0..(n-2)]);
+        Decrement(qs[...(n-2)]);
         H(qs[n-1]);
-        Controlled Reflect([qs[n-1]], qs[0..(n-2)]);
+        Controlled Reflect([qs[n-1]], qs[...(n-2)]);
     }
     
 
@@ -193,9 +193,9 @@ namespace Quantum.Kata.UnitaryPatterns {
                 // if two bits are different, set both to 1 using CNOT
                 if (i > diff) {
                     if (not bits1[i]) {
-                        X(qs[diff]);
-                        CNOT(qs[diff], qs[i]);
-                        X(qs[diff]);
+                         X(qs[diff]);
+                         CNOT(qs[diff], qs[i]);
+                         X(qs[diff]);
                     }
                     if (not bits2[i]) {
                         CNOT(qs[diff], qs[i]);
