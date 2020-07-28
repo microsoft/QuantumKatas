@@ -85,7 +85,7 @@ namespace Quantum.Kata.GHZGame {
             CreateEntangledTriple_Reference(qs);
             
             mutable abc = new Bool[3];
-            for (i in 0..2) {
+            for (i in 0 .. 2) {
                 set abc w/= i <- strategies[i](qs[i]);
             }
 

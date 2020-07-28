@@ -25,7 +25,7 @@ namespace Quantum.Kata.GHZGame {
 
     operation T11_WinCondition_Test () : Unit {
         for (rst in RefereeBits()) {
-            for (i in 0..1 <<< 3 - 1) {
+            for (i in 0 .. 1 <<< 3 - 1) {
                 let abc = IntAsBoolArray(i, 3);
                 EqualityFactB(
                     WinCondition(rst, abc),
@@ -40,7 +40,7 @@ namespace Quantum.Kata.GHZGame {
     operation GetClassicalStrategySuccessRate (N : Int, strategy : (Bool => Bool)) : Double {
         let inputs = RefereeBits();
         mutable wins = 0;
-        for (i in 0..N - 1) {
+        for (i in 0 .. N - 1) {
             let rst = inputs[RandomInt(Length(inputs))];
             let abc = PlayClassicalGHZ_Reference(strategy, rst);
             if (WinCondition_Reference(rst, abc)) {
@@ -71,7 +71,7 @@ namespace Quantum.Kata.GHZGame {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
         for (rst in inputs) {
-            for (mode in 0..3) {
+            for (mode in 0 .. 3) {
                 let result = PlayClassicalGHZ(TestStrategy(_, mode), rst);
                 let expected = PlayClassicalGHZ_Reference(TestStrategy(_, mode), rst);
                 AllEqualityFactB(result, expected, $"Unexpected result for rst={rst}");
@@ -125,7 +125,7 @@ namespace Quantum.Kata.GHZGame {
 
     // ------------------------------------------------------
     operation T23_PlayQuantumGHZ_Test () : Unit {
-        for (i in 0..1000) {
+        for (_ in 0 .. 1000) {
             let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
                               QuantumStrategy_Reference(rst[1], _), 
