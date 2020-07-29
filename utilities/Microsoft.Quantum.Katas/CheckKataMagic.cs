@@ -37,7 +37,7 @@ namespace Microsoft.Quantum.Katas
                     "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
                     "           // Type X(q);\n",
-                    "           // Then run the cell using Ctrl/⌘+Enter.\n",
+                    "           // Then run the cell using Ctrl+Enter (⌘+Enter on MacOS).\n",
                     "\n",
                     "           // ...\n",
                     "       }\n" +
