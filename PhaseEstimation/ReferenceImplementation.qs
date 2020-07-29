@@ -204,16 +204,10 @@ namespace Quantum.Kata.PhaseEstimation {
             // prepare the eigenstate |ψ⟩
             P(eigenstate);
 
-            within {
-                
-                H(control);     
-            
-            } apply {
-            
-                Controlled U([control], eigenstate);
-            
-            }
+            H(control);
+            Controlled U([control], eigenstate);
             S(control);
+            H(control);         
 
             let eigenvalue = MResetZ(control) == Zero ? 0.75 | 0.25;
             Reset(eigenstate);
