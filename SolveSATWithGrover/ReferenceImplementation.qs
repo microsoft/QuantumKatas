@@ -127,11 +127,14 @@ namespace Quantum.Kata.GroversAlgorithm {
         // first mark the state with 1s in even positions (starting with the first qubit, index 0), 
         // then mark the state with 1s in odd positions
         for (firstIndex in 0..1) {
+            //FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
+            //Controlled X(queryRegister, target);
+            //Adjoint FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
             within {
                 FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
             } 
             apply {
-                X(queryRegister, target);
+               Controlled X(queryRegister, target);
             }
         }
     }
@@ -283,13 +286,11 @@ namespace Quantum.Kata.GroversAlgorithm {
             
         for (i in 1 .. iterations) {
             phaseOracle(register);
-            within {
-                ApplyToEach(H, register);
-                ApplyToEach(X, register);
-            }
-            apply {
-                Controlled Z(Most(register), Tail(register));
-            }
+            ApplyToEach(H, register);
+            ApplyToEach(X, register);
+            Controlled Z(Most(register), Tail(register));
+            ApplyToEach(X, register);
+            ApplyToEach(H, register);
         }
     }
 
