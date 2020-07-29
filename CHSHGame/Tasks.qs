@@ -45,7 +45,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 1.2. Alice and Bob's classical strategy
     // In this task you have to implement two functions, one for Alice's classical strategy and one for Bob's.
-    // Note that they are covered by one test, so you have to implement both before attemping the test.
+    // Note that they are covered by one test, so you have to implement both before attempting the test.
 
     // Input: Alice's starting bit (X).
     // Output: The bit that Alice should output (A) to maximize their chance of winning.
@@ -119,7 +119,7 @@ namespace Quantum.Kata.CHSHGame {
     // The state of the qubit after the operation does not matter.
     operation BobQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        fail "Bob's classical strategy in task 2.4 not implemented yet";
+        fail "Bob's quantum strategy in task 2.4 not implemented yet";
     }
 
 
