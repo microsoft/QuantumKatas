@@ -31,8 +31,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit
-    is Adj {
+    operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit is Adj {
         
         if (bits / 4 == 1) {
             X(qs[0]);
@@ -64,8 +63,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit
-    is Adj {
+    operation StatePrep_TwoBitmasks (qs : Qubit[], bits1 : Int[], bits2 : Int[]) : Unit is Adj {
         
         let firstDiff = FindFirstDiff_Reference(bits1, bits2);
         H(qs[firstDiff]);
@@ -160,8 +158,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     }
     
     
-    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit
-    is Adj {        
+    operation StatePrep_Rotate (qs : Qubit[], alpha : Double) : Unit is Adj {        
         Ry(2.0 * alpha, qs[0]);
     }
     
@@ -178,8 +175,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 03
     //////////////////////////////////////////////////////////////////////////
 
-    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit
-    is Adj {
+    operation StatePrep_WithError (qs : Qubit[], alpha : Double, hasError : Bool) : Unit is Adj {
         
         StatePrep_Rotate(qs, alpha);
         Encode_Reference(qs);
@@ -309,9 +305,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnAnyQubit);
         let errors = PauliErrors();
         
-        for (idxError in 0 .. Length(errors) - 1) {
-            Message($"Task 06: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
+        for (pauliError in errors) {
+            Message($"Task 06: Testing on {pauliError}...");
+            AssertOperationsEqualReferenced(1, partialBind(pauliError), NoOp<Qubit[]>);
         }
     }
     
@@ -325,9 +321,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalX, CorrectErrorOnAnyQubit_Reference);
         let errors = PauliErrors();
         
-        for (idxError in 0 .. Length(errors) - 1) {
-            Message($"Task 07: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyPauli([PauliX], _));
+        for (pauliError in errors) {
+            Message($"Task 07: Testing on {pauliError}...");
+            AssertOperationsEqualReferenced(1, partialBind(pauliError), ApplyPauli([PauliX], _));
         }
     }
     
@@ -341,9 +337,9 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalZ, CorrectErrorOnAnyQubit_Reference);
         let errors = PauliErrors();
         
-        for (idxError in 0 .. Length(errors) - 1) {
-            Message($"Task 08: Testing on {errors[idxError]}...");
-            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), ApplyToEachA(Z, _));
+        for (pauliError in errors) {
+            Message($"Task 08: Testing on {pauliError}...");
+            AssertOperationsEqualReferenced(1, partialBind(pauliError), ApplyToEachA(Z, _));
         }
     }
     
