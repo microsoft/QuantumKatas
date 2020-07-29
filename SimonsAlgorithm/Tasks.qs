@@ -29,10 +29,10 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Inputs:
     //      1) N qubits in an arbitrary state |x⟩
     //      2) a qubit in an arbitrary state |y⟩
-    // Goal: Transform state |x, y⟩ into |x, y ⊕ x_0 ⊕ x_1 ... ⊕ x_{n-1}⟩ (⊕ is addition modulo 2).
-    operation Oracle_CountBits (x : Qubit[], y : Qubit) : Unit
-    is Adj {        
+    // Goal: Transform state |x, y⟩ into |x, y ⊕ x₀ ⊕ x₁ ... ⊕ xₙ₋₁⟩ (⊕ is addition modulo 2).
+    operation Oracle_CountBits (x : Qubit[], y : Qubit) : Unit is Adj {        
         // ...
+
     }
     
     
@@ -41,9 +41,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      1) N qubits in an arbitrary state |x⟩
     //      2) N qubits in an arbitrary state |y⟩
     // Goal: Transform state |x, y⟩ into |x, y ⊕ f(x)⟩, where f is bitwise right shift function, i.e.,
-    // |y ⊕ f(x)⟩ = |y_0, y_1 ⊕ x_0, y_2 ⊕ x_1, ..., y_{n-1} ⊕ x_{n-2}⟩ (⊕ is addition modulo 2).
-    operation Oracle_BitwiseRightShift (x : Qubit[], y : Qubit[]) : Unit
-    is Adj {        
+    // |y ⊕ f(x)⟩ = |y₀, y₁ ⊕ x₀, y₂ ⊕ x₁, ..., yₙ₋₁ ⊕ xₙ₋₂⟩ (⊕ is addition modulo 2).
+    operation Oracle_BitwiseRightShift (x : Qubit[], y : Qubit[]) : Unit is Adj {        
         // ...
     }
     
@@ -55,8 +54,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      3) a 1xN binary matrix (represented as an Int[]) describing operator A
     //         (see https://en.wikipedia.org/wiki/Transformation_matrix )
     // Goal: Transform state |x, y⟩ into |x, y ⊕ A(x) ⟩ (⊕ is addition modulo 2).
-    operation Oracle_OperatorOutput (x : Qubit[], y : Qubit, A : Int[]) : Unit
-    is Adj {
+    operation Oracle_OperatorOutput (x : Qubit[], y : Qubit, A : Int[]) : Unit is Adj {
         
         // The following line enforces the constraint on the input arrays.
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
@@ -76,8 +74,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //         the second dimension (columns) - the input register,
     //         i.e., A[r][c] (element in r-th row and c-th column) corresponds to x[c] and y[r].
     // Goal: Transform state |x, y⟩ into |x, y ⊕ A(x) ⟩ (⊕ is addition modulo 2).
-    operation Oracle_MultidimensionalOperatorOutput (x : Qubit[], y : Qubit[], A : Int[][]) : Unit
-    is Adj {
+    operation Oracle_MultidimensionalOperatorOutput (x : Qubit[], y : Qubit[], A : Int[][]) : Unit is Adj {
         
         // The following lines enforce the constraints on the input arrays.
         // You don't need to modify them. Feel free to remove them, this won't cause your code to fail.
@@ -96,9 +93,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // Inputs:
     //      1) N qubits in |0⟩ state (query register)
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
-    // (i.e. the state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N)).
-    operation SA_StatePrep (query : Qubit[]) : Unit
-    is Adj {        
+    // (i.e. the state (|0...0⟩ + ... + |1...1⟩) / sqrt(2ᴺ)).
+    operation SA_StatePrep (query : Qubit[]) : Unit is Adj {        
         // ...
     }
     

@@ -53,10 +53,9 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     function BinaryXor (bits : Bool[]) : Bool {
-        let N = Length(bits);
         mutable ans = false;
-        for (i in 0 .. N-1) {
-            if (bits[i]) {
+        for (bit in bits) {
+            if (bit) {
                 set ans = not ans;
             }
         }
