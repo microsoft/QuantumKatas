@@ -127,9 +127,12 @@ namespace Quantum.Kata.GroversAlgorithm {
         // first mark the state with 1s in even positions (starting with the first qubit, index 0), 
         // then mark the state with 1s in odd positions
         for (firstIndex in 0..1) {
-            FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
-            Controlled X(queryRegister, target);
-            Adjoint FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
+            within {
+                FlipAlternatingPositionBits_Reference(queryRegister, firstIndex);
+            } 
+            apply {
+                X(queryRegister, target);
+            }
         }
     }
 
@@ -257,17 +260,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
 
         using (target = Qubit()) {
-            // Put the target into the |-⟩ state
-            X(target);
-            H(target);
-                
-            // Apply the marking oracle; since the target is in the |-⟩ state,
-            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            markingOracle(register, target);
-                
-            // Put the target back into |0⟩ so we can return it
-            H(target);
-            X(target);
+            within {
+                // Put the target into the |-⟩ state, perform the apply functionality, then put back into |0⟩ so we can return it
+                X(target);
+                H(target);
+            }
+            apply {
+                // Apply the marking oracle; since the target is in the |-⟩ state,
+                // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+                markingOracle(register, target);
+            }
         }
     }
     
@@ -281,11 +283,13 @@ namespace Quantum.Kata.GroversAlgorithm {
             
         for (i in 1 .. iterations) {
             phaseOracle(register);
-            ApplyToEach(H, register);
-            ApplyToEach(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEach(X, register);
-            ApplyToEach(H, register);
+            within {
+                ApplyToEach(H, register);
+                ApplyToEach(X, register);
+            }
+            apply {
+                Controlled Z(Most(register), Tail(register));
+            }
         }
     }
 
