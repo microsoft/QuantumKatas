@@ -175,7 +175,7 @@ namespace Quantum.Kata.BasicGates {
     // Goal:  Swap the states of second and third qubit if and only if the state of the first qubit is |1⟩:
     //        i.e., change the three-qubit state to
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + η|101⟩ + ζ|110⟩ + θ|111⟩.
-    operation FredkinGate_Reference (qs : Qubit[]) : Unit {
+    operation FredkinGate_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
         Controlled SWAP([qs[0]], (qs[1], qs[2]));
     }
 
