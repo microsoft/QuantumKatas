@@ -97,17 +97,15 @@ namespace Quantum.Kata.GroversAlgorithm {
         // Allocate N-1 qubits to store results of clauses evaluation
         let N = Length(queryRegister);
         using (anc = Qubit[N-1]) {
-            // Evaluate all XOR clauses (using XOR oracle)
-            for (i in 0..N-2) {
-                Oracle_Xor_Reference(queryRegister[i..i+1], anc[i]);
+            within {
+                // Evaluate all XOR clauses (using XOR oracle) and uncompute after
+                for (i in 0..N-2) {
+                    Oracle_Xor_Reference(queryRegister[i..i+1], anc[i]);
+                }
             }
-                
-            // Evaluate the overall formula as an AND oracle (can use reference depending on the implementation)
-            Controlled X(anc, target);
-                
-            // Uncompute
-            for (i in 0..N-2) {
-                Adjoint Oracle_Xor_Reference(queryRegister[i..i+1], anc[i]);
+            apply {
+                // Evaluate the overall formula as an AND oracle (can use reference depending on the implementation)
+                Controlled X(anc, target);
             }
         }
     }
