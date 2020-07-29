@@ -52,7 +52,7 @@ namespace Quantum.Kata.GraphColoring {
         // Small case solution with no extra qubits allocated:
         // iterate over all bit strings of length 2, and do a controlled X on the target qubit
         // with control qubits c0 and c1 in states described by each of these bit strings.
-        // For a better solution, see task 1.4.
+        // For a better solution, see task 1.5.
         for (color in 0..3) {
             let binaryColor = IntAsBoolArray(color, 2);
             (ControlledOnBitString(binaryColor + binaryColor, X))(c0 + c1, target);
@@ -62,15 +62,14 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 1.5. N-bit color equality oracle (no extra qubits)
     operation ColorEqualityOracle_Nbit_Reference (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        for ((q0, q1) in Zip(c0, c1)) {
-            // compute XOR of q0 and q1 in place (storing it in q1)
-            CNOT(q0, q1);
-        }
-        // if all XORs are 0, the bit strings are equal
-        (ControlledOnInt(0, X))(c1, target);
-        // uncompute
-        for ((q0, q1) in Zip(c0, c1)) {
-            CNOT(q0, q1);
+        within {
+            for ((q0, q1) in Zip(c0, c1)) {
+                // compute XOR of q0 and q1 in place (storing it in q1)
+                CNOT(q0, q1);
+            }
+        } apply {
+            // if all XORs are 0, the bit strings are equal
+            (ControlledOnInt(0, X))(c1, target);
         }
     }
 
@@ -94,24 +93,17 @@ namespace Quantum.Kata.GraphColoring {
     // Task 2.2. Oracle for verifying vertex coloring
     operation VertexColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         let nEdges = Length(edges);
-        using (conflicts = Qubit[nEdges]) {
-            for (i in 0 .. nEdges-1) {
-                let (start, end) = edges[i];
-                // Check that endpoints of the edge have different colors:
-                // apply ColorEqualityOracle_Nbit_Reference oracle; if the colors are the same the result will be 1, indicating a conflict
-                ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1], 
-                                                   colorsRegister[end * 2 .. end * 2 + 1], conflicts[i]);
-            }
-
-            // If there are no conflicts (all qubits are in 0 state), the vertex coloring is valid
-            (ControlledOnInt(0, X))(conflicts, target);
-
-            for (i in 0 .. nEdges-1) {
-                let (start, end) = edges[i];
-                // Check that endpoints of the edge have different colors:
-                // apply ColorEqualityOracle_Nbit_Reference oracle; if the colors are the same the result will be 1, indicating a conflict
-                Adjoint ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1], 
-                                                           colorsRegister[end * 2 .. end * 2 + 1], conflicts[i]);
+        using (conflictQubits = Qubit[nEdges]) {
+            within {
+                for (((start, end), conflictQubit) in Zip(edges, conflictQubits)) {
+                    // Check that endpoints of the edge have different colors:
+                    // apply ColorEqualityOracle_Nbit_Reference oracle; if the colors are the same the result will be 1, indicating a conflict
+                    ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1], 
+                                                       colorsRegister[end * 2 .. end * 2 + 1], conflictQubit);
+                }
+            } apply {
+                // If there are no conflicts (all qubits are in 0 state), the vertex coloring is valid
+                (ControlledOnInt(0, X))(conflictQubits, target);
             }
         }
     }
@@ -153,17 +145,16 @@ namespace Quantum.Kata.GraphColoring {
     operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
 
         using (target = Qubit()) {
-            // Put the target into the |-⟩ state
-            X(target);
-            H(target);
-                
-            // Apply the marking oracle; since the target is in the |-⟩ state,
-            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            markingOracle(register, target);
-                
-            // Put the target back into |0⟩ so we can return it
-            H(target);
-            X(target);
+            within {
+                // Put the target into the |-⟩ state
+                X(target);
+                H(target);
+            } apply {
+                // Apply the marking oracle; since the target is in the |-⟩ state,
+                // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+                markingOracle(register, target);
+            }
+            // We put the target back into |0⟩ so we can return it
         }
     }
     
@@ -171,13 +162,14 @@ namespace Quantum.Kata.GraphColoring {
         let phaseOracle = OracleConverterImpl(oracle, _);
         ApplyToEach(H, register);
             
-        for (i in 1 .. iterations) {
+        for (_ in 1 .. iterations) {
             phaseOracle(register);
-            ApplyToEach(H, register);
-            ApplyToEach(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEach(X, register);
-            ApplyToEach(H, register);
+            within {
+                ApplyToEachA(H, register);
+                ApplyToEachA(X, register);
+            } apply {
+                Controlled Z(Most(register), Tail(register));
+            }
         }
     }
 }
