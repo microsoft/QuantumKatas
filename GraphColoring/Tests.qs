@@ -119,7 +119,7 @@ namespace Quantum.Kata.GraphColoring {
     // as an operation on an array of qubits
     operation WrapperOperation (op : ((Qubit[], Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {        
         let N = (Length(qs) - 1) / 2;
-        op(qs[0..N-1], qs[N..2*N-1], qs[2*N]);
+        op(qs[0 .. N - 1], qs[N .. 2 * N - 1], qs[2 * N]);
     }
 
 
@@ -247,6 +247,7 @@ namespace Quantum.Kata.GraphColoring {
 
 
     operation T22_VertexColoringOracle_Test () : Unit {
+        // Run test on all test cases except the last one
         for ((V, edges) in Most(ExampleGraphs())) {
             AssertOracleRecognizesColoring(V, edges, VertexColoringOracle);
         }

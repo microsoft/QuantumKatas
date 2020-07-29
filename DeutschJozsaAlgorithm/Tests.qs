@@ -11,7 +11,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
-
+    open Microsoft.Quantum.Arrays;
     open Quantum.Kata.Utils;
     
     
@@ -88,7 +88,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T15_Oracle_ProductFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
         for (i in 2 .. L) {
@@ -96,9 +96,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
         
         // the mask with all 0's corresponds to Oracle_Zero
-        for (i in 0 .. L - 1) {
-            set r w/= i <- 0;
-        }
+        set r = ConstantArray(10, 0);
         
         for (i in 2 .. L) {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_Zero_Reference);
@@ -123,7 +121,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T16_Oracle_ProductWithNegationFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
         for (i in 2 .. L) {
@@ -175,22 +173,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             }
         }
     }
-    
-    // ------------------------------------------------------
-    function AllEqualityFactI (actual : Int[], expected : Int[], message : String) : Unit {
-        
-        let n = Length(actual);
-        if (n != Length(expected)) {
-            fail message;
-        }
-        
-        for (idx in 0 .. n - 1) {
-            if (actual[idx] != expected[idx]) {
-                fail message;
-            }
-        }
-    }
-    
     
     // ------------------------------------------------------
     function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
