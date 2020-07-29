@@ -206,7 +206,8 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation Embed_2x2_Operator (U : (Qubit => Unit is Ctl), index1 : Int, index2 : Int, qs : Qubit[]) : Unit {
         within {
             Embedding_Perm(index1, index2, qs);
-        } apply {
+        } 
+        apply {
             Controlled U(Most(qs), Tail(qs));
         }
     }
