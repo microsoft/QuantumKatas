@@ -38,8 +38,14 @@ namespace Quantum.Kata.WGame {
     //          F,F,F     T,T,F     T,F,T     F,T,T
 
     // Like the GHZ and CHSH games, the players can not communicate during the game.
-    // Also, in this form of the game, all the players have to use the same approach, so,
-    // for instance, the team may not have Charlie follow a different protocol from Alice and Bob.
+
+    // Also, in this form of the game, all the players have to use the same approach,
+    // if dependent on the input (i.e. in this game, the team may not have Charlie follow
+    // a different protocol from Alice and Bob, if any of the protocols depend on the input).
+    // However, this restriction only applies to strategies for which the composition of the
+    // team's output bits could vary; the rules permit them individual strategies that are
+    // independent of the input (such as Bob always outputs true while Alice and Charlie output
+    // false) allowing them to ensure that exactly one true bit gets submitted between them.
 
     // Each task is wrapped in one operation preceded by the
     // description of the task. Each task has a unit test associated
