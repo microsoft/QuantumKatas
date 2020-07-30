@@ -48,7 +48,7 @@ namespace Quantum.Kata.WGame {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part I. Classical GHZ
+    // Part I. Classical W game
     //////////////////////////////////////////////////////////////////
 
     // Task 1.1. Win condition
@@ -57,7 +57,7 @@ namespace Quantum.Kata.WGame {
     //     2) Alice, Bob and Charlie's output bits (a, b and c), stored as an array of length 3.
     // The input bits will have zero, one, or two bits set to true.
     // Output:
-    //     True if Alice, Bob and Charlie won the GHZ game (see above table),
+    //     True if Alice, Bob and Charlie won the W game (see above table),
     //     and false otherwise.
     function WinCondition (rst : Bool[], abc : Bool[]) : Bool {
         // ...
@@ -89,21 +89,21 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 1.4. Referee classical GHZ game
+    // Task 1.4. Referee classical W game
     // Inputs:
     //      1) an operation which implements a classical strategy 
     //         (i.e., takes an input bit and produces and output bit),
     //      2) an array of 3 input bits that should be passed to the players.
     // Output:
     //      An array of 3 bits that will be produced if each player uses this strategy.
-    operation PlayClassicalGHZ (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
+    operation PlayClassicalW (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         // ...
         fail "Task 1.4 not implemented yet";
     }
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum GHZ
+    // Part II. Quantum W game
     //////////////////////////////////////////////////////////////////
 
     // In the quantum version of the game, the players still can not
@@ -132,12 +132,12 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 2.3. Play the GHZ game using the quantum strategy
+    // Task 2.3. Play the W game using the quantum strategy
     // Input: Operations that return Alice, Bob and Charlie's output bits (a, b and c) based on
     //        their quantum strategies and given their respective qubits from the entangled triple. 
     //        The players have already been told what their starting bits (r, s and t) are.
     // Goal:  Return an array of players' output bits (a, b and c).
-    operation PlayQuantumGHZ (strategies : (Qubit => Bool)[]) : Bool[] {
+    operation PlayQuantumW (strategies : (Qubit => Bool)[]) : Bool[] {
         // ...
         fail "Task 2.3 not implemented yet";
     }

@@ -19,7 +19,7 @@ namespace Quantum.Kata.WGame {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part I. Classical GHZ
+    // Part I. Classical W game
     //////////////////////////////////////////////////////////////////
 
     // Task 1.1. Win condition
@@ -51,14 +51,14 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 1.4. Referee classical GHZ game
-    operation PlayClassicalGHZ_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
+    // Task 1.4. Referee classical W game
+    operation PlayClassicalW_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         return ForEach(strategy, inputs);
     }
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum GHZ
+    // Part II. Quantum W game
     //////////////////////////////////////////////////////////////////
 
     // Task 2.1. Entangled triple
@@ -85,8 +85,8 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 2.3. Play the GHZ game using the quantum strategy
-    operation PlayQuantumGHZ_Reference (strategies : (Qubit => Bool)[]) : Bool[] {
+    // Task 2.3. Play the W game using the quantum strategy
+    operation PlayQuantumW_Reference (strategies : (Qubit => Bool)[]) : Bool[] {
 
         using (qs = Qubit[3]) {
             CreateEntangledTriple_Reference(qs);

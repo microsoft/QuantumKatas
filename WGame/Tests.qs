@@ -45,7 +45,7 @@ namespace Quantum.Kata.WGame {
         mutable wins = 0;
         for (i in 0..N - 1) {
             let rst = inputs[RandomInt(Length(inputs))];
-            let abc = PlayClassicalGHZ_Reference(strategy, rst);
+            let abc = PlayClassicalW_Reference(strategy, rst);
             if (WinCondition_Reference(rst, abc)) {
                 set wins = wins + 1;
             }
@@ -70,20 +70,20 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    operation T14_PlayClassicalGHZ_Test () : Unit {
+    operation T14_PlayClassicalW_Test () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
         for (rst in inputs) {
             for (mode in 0..3) {
-                let result = PlayClassicalGHZ(TestStrategy(_, mode), rst);
-                let expected = PlayClassicalGHZ_Reference(TestStrategy(_, mode), rst);
+                let result = PlayClassicalW(TestStrategy(_, mode), rst);
+                let expected = PlayClassicalW_Reference(TestStrategy(_, mode), rst);
                 AllEqualityFactB(result, expected, $"Unexpected result for rst={rst}");
             }
         }
     }
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum GHZ
+    // Part II. Quantum W game
     //////////////////////////////////////////////////////////////////
 
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
@@ -127,13 +127,13 @@ namespace Quantum.Kata.WGame {
 
 
     // ------------------------------------------------------
-    operation T23_PlayQuantumGHZ_Test () : Unit {
+    operation T23_PlayQuantumW_Test () : Unit {
         for (i in 0..1000) {
             let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
                               QuantumStrategy_Reference(rst[1], _), 
                               QuantumStrategy_Reference(rst[2], _)];
-            let abc = PlayQuantumGHZ(strategies);
+            let abc = PlayQuantumW(strategies);
             EqualityFactB(WinCondition_Reference(rst, abc), true,
                             $"Quantum strategy lost: for rst={rst} the players returned abc={abc}");
         }
