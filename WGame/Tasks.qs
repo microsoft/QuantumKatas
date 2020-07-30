@@ -78,18 +78,33 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 1.3. Best classical strategy
+    // Task 1.3. Simple classical strategy
     // Input: The input bit for one of the players (r, s or t).
-    // Output: A bit that this player will output (a, b or c) to maximize their chance of winning. 
+    // Output: A bit that this player will output (a, b or c) for a good chance of winning. 
     // All players will use the same strategy.
-    // The best classical strategy should win about 6/7 of the time (85.7%).
-    operation BestClassicalStrategy (input : Bool) : Bool {
+    // Any of several possible naive classical strategies that win 6/7 of the time (85.7%).
+    operation SimpleClassicalStrategy (input : Bool) : Bool {
         // ...
         fail "Task 1.3 not implemented yet";
     }
 
 
-    // Task 1.4. Referee classical W game
+    // "Bonus" Task 1.4. Best classical strategy
+    // Input: The input bit for one of the players (r, s or t).
+    // Output: A bit that this player will output (a, b or c) to maximize their chance of winning. 
+    // All players will use the same strategy.
+    // The optimal classical strategy should win just under 90% of the time.
+
+    // NOTE:  Calculus, advanced probability theory, and heavy-duty number crunching
+    //        may come into play here!
+    // Those who are here for the quantum content, I advise proceeding past this, to 1.5.
+    operation BestClassicalStrategy (input : Bool) : Bool {
+        // ...
+        fail "Task 1.4 not implemented yet";
+    }
+
+
+    // Task 1.5. Referee classical W game
     // Inputs:
     //      1) an operation which implements a classical strategy 
     //         (i.e., takes an input bit and produces and output bit),
@@ -98,7 +113,7 @@ namespace Quantum.Kata.WGame {
     //      An array of 3 bits that will be produced if each player uses this strategy.
     operation PlayClassicalW (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         // ...
-        fail "Task 1.4 not implemented yet";
+        fail "Task 1.5 not implemented yet";
     }
 
 

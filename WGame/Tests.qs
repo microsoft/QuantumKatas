@@ -59,8 +59,14 @@ namespace Quantum.Kata.WGame {
 
 
     // ------------------------------------------------------
-    operation T13_BestClassical_Test () : Unit {
-        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.857, 0.02);
+    operation T13_SimpleClassical_Test () : Unit {
+        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, SimpleClassicalStrategy), 0.857, 0.02);
+    }
+
+
+    // ------------------------------------------------------
+    operation T14_BestClassical_Test () : Unit {
+        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.895, 0.02);
     }
 
 
@@ -70,7 +76,7 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    operation T14_PlayClassicalW_Test () : Unit {
+    operation T15_PlayClassicalW_Test () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
         for (rst in inputs) {

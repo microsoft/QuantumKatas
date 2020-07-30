@@ -44,14 +44,27 @@ namespace Quantum.Kata.WGame {
     }
 
 
-    // Task 1.3. Best classical strategy
-    operation BestClassicalStrategy_Reference (input : Bool) : Bool {
-        // One of several simple strategies that reaches optimal classical win probability.
+    // Task 1.3. Simple classical strategy
+    operation SimpleClassicalStrategy_Reference (input : Bool) : Bool {
+        // One of several simple strategies that reaches classical win probability of 6/7.
         return false;
     }
 
 
-    // Task 1.4. Referee classical W game
+    // Task 1.4. Best classical strategy
+    operation BestClassicalStrategy_Reference (input : Bool) : Bool {
+        // The optimal classical strategy that I (R.S.L.S.) am aware of:
+        // - - - If input is true, return true
+        // - - - If input is false, return true with probability (1 - sqrt(6)/3) ~ 0.1835.
+        // This reaches a win rate of roughly 89.5%.
+        if (input) {
+            return true;
+        }
+        return RandomInt(10000) < 1835;
+    }
+
+
+    // Task 1.5. Referee classical W game
     operation PlayClassicalW_Reference (strategy : (Bool => Bool), inputs : Bool[]) : Bool[] {
         return ForEach(strategy, inputs);
     }
