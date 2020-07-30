@@ -52,7 +52,7 @@ namespace Quantum.Kata.WGame {
 
     // Task 1.4. Best classical strategy
     operation BestClassicalStrategy_Reference (input : Bool) : Bool {
-        // The optimal classical strategy, under the condition of symmetrical approaches:
+        // The optimal classical strategy, under the condition that approaches are common to all players:
         // - - - If input is true, return true
         // - - - If input is false, return true with probability 1/3.
         // This reaches a win rate of 31/36, or roughly 86.1%.
