@@ -24,17 +24,16 @@ namespace Quantum.Kata.WGame {
 
     // Task 1.1. Win condition
     function WinCondition_Reference (rst : Bool[], abc : Bool[]) : Bool {
-        mutable rstOnes = 0;
         mutable abcOnes = 0;
-        for (i in rst) { if (i) {set rstOnes = rstOnes + 1;} }
-        for (i in abc) { if (i) {set abcOnes = abcOnes + 1;} }
-        if (rstOnes == 2) {
+        for (i in abc) {
+            if (i) {
+                set abcOnes = abcOnes + 1;
+            }
+        }
+        if (rst[0] or rst[1] or rst[2]) {
             return (abcOnes != 1);
         }
-        if (rstOnes == 1) {
-            return (abcOnes < 3);
-        }
-        return (abcOnes == 1);      // By initial conditions, if rstOnes is not 1 or 2, it must be 0
+        return (abcOnes == 1);
     }
 
 
@@ -46,21 +45,21 @@ namespace Quantum.Kata.WGame {
 
     // Task 1.3. Simple classical strategy
     operation SimpleClassicalStrategy_Reference (input : Bool) : Bool {
-        // One of several simple strategies that reaches classical win probability of 6/7.
-        return false;
+        // One of several simple strategies that reaches classical win probability of 75%.
+        return true;
     }
 
 
     // Task 1.4. Best classical strategy
     operation BestClassicalStrategy_Reference (input : Bool) : Bool {
-        // The optimal classical strategy that I (R.S.L.S.) am aware of:
+        // The optimal classical strategy, under the condition of symmetrical approaches:
         // - - - If input is true, return true
-        // - - - If input is false, return true with probability (1 - sqrt(6)/3) ~ 0.1835.
-        // This reaches a win rate of roughly 89.5%.
+        // - - - If input is false, return true with probability 1/3.
+        // This reaches a win rate of 31/36, or roughly 86.1%.
         if (input) {
             return true;
         }
-        return RandomInt(10000) < 1835;
+        return RandomInt(3) == 0;
     }
 
 

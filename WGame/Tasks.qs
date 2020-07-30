@@ -29,16 +29,17 @@ namespace Quantum.Kata.WGame {
     // |  between players  |  needed to win   |
     // +-------------------+------------------+
     // |         0         |     exactly 1    |
-    // |         1         |    0, 1, or 2    |
     // |         2         |    0, 2, or 3    |
     // +-------------------+------------------+
     
-    // All that is given is that at least one of the input bits is set
-    // to false, leaving seven scenarios that are all equally likely:
+    // Either two of the input bits will be true, or all will be false;
+    // thus, these four scenarios are all equally likely:
 
-    //  F,F,F    T,F,F    F,T,F    F,F,T    T,T,F    T,F,T    F,T,T
+    //          F,F,F     T,T,F     T,F,T     F,T,T
 
     // Like the GHZ and CHSH games, the players can not communicate during the game.
+    // Also, in this form of the game, all the players have to use the same approach, so,
+    // for instance, the team may not have Charlie follow a different protocol from Alice and Bob.
 
     // Each task is wrapped in one operation preceded by the
     // description of the task. Each task has a unit test associated
@@ -55,9 +56,11 @@ namespace Quantum.Kata.WGame {
     // Input:
     //     1) Alice, Bob and Charlie's input bits (r, s and t), stored as an array of length 3,
     //     2) Alice, Bob and Charlie's output bits (a, b and c), stored as an array of length 3.
-    // The input bits will have zero, one, or two bits set to true.
+    // The input bits will have zero or two bits set to true.
     // Output:
-    //     True if Alice, Bob and Charlie won the W game (see above table),
+    //     True if Alice, Bob and Charlie won the W game
+    //     (one true bit between them if no input bits were true
+    //      or any other number of true bits between them if two input bits were true),
     //     and false otherwise.
     function WinCondition (rst : Bool[], abc : Bool[]) : Bool {
         // ...
@@ -69,9 +72,8 @@ namespace Quantum.Kata.WGame {
     // Input: The input bit for one of the players (r, s or t).
     // Output: A random bit that this player will output (a, b or c).
     // If all players use this strategy, their win odds will be:
-    //    (1/7 x 1/8) (zero input bits true)
-    //  + (3/7 x 7/8) ( one input bit  true)
-    //  + (3/7 x 5/8) ( two input bits true)  =  37/56, or about 66.1% of the time.
+    //    (1/4 x 3/8) (zero input bits true)
+    //  + (3/4 x 5/8) ( two input bits true)  =  9/16, or about 56% of the time.
     operation RandomClassicalStrategy (input : Bool) : Bool {
         // ...
         fail "Task 1.2 not implemented yet";
@@ -82,22 +84,20 @@ namespace Quantum.Kata.WGame {
     // Input: The input bit for one of the players (r, s or t).
     // Output: A bit that this player will output (a, b or c) for a good chance of winning. 
     // All players will use the same strategy.
-    // Any of several possible naive classical strategies that win 6/7 of the time (85.7%).
+    // Any of several possible naive classical strategies that win 3/4 of the time (75%).
     operation SimpleClassicalStrategy (input : Bool) : Bool {
         // ...
         fail "Task 1.3 not implemented yet";
     }
 
 
-    // "Bonus" Task 1.4. Best classical strategy
+    // Task 1.4. Best classical strategy
     // Input: The input bit for one of the players (r, s or t).
     // Output: A bit that this player will output (a, b or c) to maximize their chance of winning. 
-    // All players will use the same strategy.
-    // The optimal classical strategy should win just under 90% of the time.
+    // By rule, all players will use the same strategy.
+    // With this symmetry imposed, the optimal classical strategy should win about 86% of the time.
 
-    // NOTE:  Calculus, advanced probability theory, and heavy-duty number crunching
-    //        may come into play here!
-    // Those who are here for the quantum content, I advise proceeding past this, to 1.5.
+    // Note:  Some intermediate probability theory will be involved here.
     operation BestClassicalStrategy (input : Bool) : Bool {
         // ...
         fail "Task 1.4 not implemented yet";

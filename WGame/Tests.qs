@@ -18,9 +18,6 @@ namespace Quantum.Kata.WGame {
     // to Alice, Bob and Charlie.
     function RefereeBits () : Bool[][] {
         return [[false, false, false],
-                [true, false, false],
-                [false, true, false],
-                [false, false, true],
                 [true, true, false],
                 [false, true, true],
                 [true, false, true]];
@@ -54,19 +51,19 @@ namespace Quantum.Kata.WGame {
     }
 
     operation T12_RandomClassical_Test () : Unit {
-        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, RandomClassicalStrategy), 0.661, 0.02);
+        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, RandomClassicalStrategy), 0.5625, 0.02);
     }
 
 
     // ------------------------------------------------------
     operation T13_SimpleClassical_Test () : Unit {
-        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, SimpleClassicalStrategy), 0.857, 0.02);
+        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, SimpleClassicalStrategy), 0.75, 0.02);
     }
 
 
     // ------------------------------------------------------
     operation T14_BestClassical_Test () : Unit {
-        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.895, 0.02);
+        EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.8611, 0.02);
     }
 
 
@@ -134,15 +131,18 @@ namespace Quantum.Kata.WGame {
 
     // ------------------------------------------------------
     operation T23_PlayQuantumW_Test () : Unit {
-        for (i in 0..1000) {
+        mutable wins = 0;
+        for (i in 1..10000) {
             let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
                               QuantumStrategy_Reference(rst[1], _), 
                               QuantumStrategy_Reference(rst[2], _)];
             let abc = PlayQuantumW(strategies);
-            EqualityFactB(WinCondition_Reference(rst, abc), true,
-                            $"Quantum strategy lost: for rst={rst} the players returned abc={abc}");
+            if (WinCondition_Reference(rst, abc)) {
+                set wins = wins + 1;
+            }
         }
+        EqualityWithinToleranceFact(IntAsDouble(wins) / 10000.0, 0.9375, 0.01);
     }
 
 }
