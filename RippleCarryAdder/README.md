@@ -23,4 +23,4 @@ You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.o
 It is recommended to complete the [BasicGates kata](./../BasicGates/) before this one to get familiar with the basic gates used in quantum computing.
 The list of basic gates available in Q# can be found at [Microsoft.Quantum.Intrinsic](https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.intrinsic).
 
-For the syntax of flow control statements in Q#, see [the Q# documentation](https://docs.microsoft.com/quantum/language/statements#control-flow).
+For the syntax of flow control statements in Q#, see the [Q# user guide](https://docs.microsoft.com/en-us/quantum/user-guide/using-qsharp/control-flow#control-flow).

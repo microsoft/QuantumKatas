@@ -69,7 +69,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
                     set isConstantFunction = false;
                 }
             }
-            ResetAll(x);
         }
         return isConstantFunction;
     }

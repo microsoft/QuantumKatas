@@ -22,7 +22,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     // Task 2. Parity measurement
     operation ParityMeasurement_Reference (qs : Qubit[]) : Int {
-        return Measure([PauliZ, PauliZ], qs) == Zero ? 0 | 1;
+        return MeasureAllZ(qs) == Zero ? 0 | 1;
     }
     
     
@@ -31,7 +31,7 @@ namespace Quantum.Kata.JointMeasurements {
         // Considering only the two middle qubits of the array, their parity for the first state is 0,
         // so the first state belongs to the +1 eigenspace of operator Z ⊗ Z on these qubits;
         // their parity for the second state is 1, so the second state belongs to the -1 eigenspace.
-        return Measure([PauliZ, PauliZ], qs[1 .. 2]) == Zero ? 0 | 1;
+        return MeasureAllZ(qs[1 .. 2]) == Zero ? 0 | 1;
     }
     
     
@@ -56,15 +56,15 @@ namespace Quantum.Kata.JointMeasurements {
     // Task 6*. Controlled X gate with |0⟩ target
     operation ControlledX_Reference (qs : Qubit[]) : Unit {
         H(qs[1]);
-        if (Measure([PauliZ, PauliZ], qs) == One) {
-            X(qs[1]);
-        }
+        
+        if (MeasureAllZ(qs) == One){
+            X(qs[1]);  
+	    }
     }
     
     
     // Task 7**. Controlled X gate with arbitrary target
     operation ControlledX_General_Reference (qs : Qubit[]) : Unit {
-        
         body (...) {
             // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
             // Note the parity notation used in the table of fixups in the paper
@@ -79,7 +79,7 @@ namespace Quantum.Kata.JointMeasurements {
                 let p2 = MeasureAllZ([a, t]);
                 H(a);
                 H(t);
-                let m = MResetZ(a);
+                let m = M(a);
                 
                 // apply fixups
                 if (p2 == One) {
@@ -90,7 +90,6 @@ namespace Quantum.Kata.JointMeasurements {
                 }
             }
         }
-        
         adjoint self;
     }
     

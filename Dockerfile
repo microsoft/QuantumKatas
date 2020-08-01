@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.11.2004.2825
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.12.2007.2031
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -28,6 +28,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
+    ./scripts/prebuild-kata.sh DistinguishUnitaries && \
     ./scripts/prebuild-kata.sh GHZGame && \
     ./scripts/prebuild-kata.sh GraphColoring && \
     ./scripts/prebuild-kata.sh GroversAlgorithm && \
@@ -37,6 +38,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh Measurements && \
     ./scripts/prebuild-kata.sh PhaseEstimation && \
     ./scripts/prebuild-kata.sh QEC_BitFlipCode && \
+    ./scripts/prebuild-kata.sh QFT && \
     ./scripts/prebuild-kata.sh RippleCarryAdder && \
     ./scripts/prebuild-kata.sh SolveSATWithGrover && \
     ./scripts/prebuild-kata.sh SuperdenseCoding && \
@@ -52,6 +54,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
 # To improve performance when running the %package commands (usually Katas' first cell)
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency

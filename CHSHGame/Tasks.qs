@@ -45,20 +45,20 @@ namespace Quantum.Kata.CHSHGame {
 
     // Task 1.2. Alice and Bob's classical strategy
     // In this task you have to implement two functions, one for Alice's classical strategy and one for Bob's.
-    // Note that they are covered by one test, so you have to implement both before attemping the test.
+    // Note that they are covered by one test, so you have to implement both before attempting the test.
 
     // Input: Alice's starting bit (X).
     // Output: The bit that Alice should output (A) to maximize their chance of winning.
     operation AliceClassical (x : Bool) : Bool {
         // ...
-        fail "Alice's strategy in task 1.2 not implemented yet";
+        fail "Alice's classical strategy in task 1.2 not implemented yet";
     }
 
     // Input: Bob's starting bit (Y).
     // Output: The bit that Bob should output (B) to maximize their chance of winning.
     operation BobClassical (y : Bool) : Bool {
         // ...
-        fail "Bob's strategy in task 1.2 not implemented yet";
+        fail "Bob's classical strategy in task 1.2 not implemented yet";
     }
 
 
@@ -92,7 +92,7 @@ namespace Quantum.Kata.CHSHGame {
     // The state of the qubit after the operation does not matter.
     operation AliceQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        fail "Task 2.2 not implemented yet";
+        fail "Alice's quantum strategy in task 2.2 not implemented yet";
     }
 
 
@@ -102,7 +102,9 @@ namespace Quantum.Kata.CHSHGame {
     //      2) Bob's qubit.
     // Goal:  Rotate the qubit π/8 radians around the Y axis in the given direction.
     operation RotateBobQubit (clockwise : Bool, qubit : Qubit) : Unit {
-        // Hint: Ry operation applies a rotation by a given angle in counterclockwise direction.
+        // Hint: Ry operation (rotation about the y axis) applies a rotation by a given angle 
+        // in counterclockwise direction.
+
         // ...
         fail "Task 2.3 not implemented yet";
     }
@@ -117,7 +119,7 @@ namespace Quantum.Kata.CHSHGame {
     // The state of the qubit after the operation does not matter.
     operation BobQuantum (bit : Bool, qubit : Qubit) : Bool {
         // ...
-        fail "Task 2.4 not implemented yet";
+        fail "Bob's quantum strategy in task 2.4 not implemented yet";
     }
 
 
@@ -129,8 +131,7 @@ namespace Quantum.Kata.CHSHGame {
     //
     // Note that this task uses strategies AliceQuantum and BobQuantum 
     // which you've implemented in tasks 2.2 and 2.4, respectively.
-    operation PlayQuantumCHSH (askAlice : (Qubit => Bool), askBob : (Qubit => Bool))
-            : (Bool, Bool) {
+    operation PlayQuantumCHSH (askAlice : (Qubit => Bool), askBob : (Qubit => Bool)) : (Bool, Bool) {
         // ...
         fail "Task 2.5 not implemented yet";
     }
