@@ -33,7 +33,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     operation T11_Eigenstates_ZST_Test () : Unit {
-        for (state in 0..1) {
+        for (state in 0 .. 1) {
             AssertEqualOnZeroState1(Eigenstates_ZST(_, state), Eigenstates_ZST_Reference(_, state));
         }
     }
@@ -41,15 +41,14 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     // helper wrapper to represent operation on one qubit as an operation on an array of qubits
-    operation ArrayWrapperOperation1 (op : (Qubit => Unit is Adj + Ctl), qs : Qubit[]) : Unit
-    is Adj + Ctl {
+    operation ArrayWrapperOperation1 (op : (Qubit => Unit is Adj + Ctl), qs : Qubit[]) : Unit is Adj + Ctl {
         op(qs[0]);
     }
 
 
     operation T12_UnitaryPower_Test () : Unit {
         for (U in [Z, S, T]) { 
-            for (power in 1..5) {
+            for (power in 1 .. 5) {
                 AssertOperationsEqualReferenced(1, ArrayWrapperOperation1(UnitaryPower(U, power), _), 
                                                 ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _));
             }
