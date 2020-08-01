@@ -170,8 +170,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //////////////////////////////////////////////////////////////////
     // Part II. Deutsch-Jozsa Algorithm
     //////////////////////////////////////////////////////////////////
+
+    // Task 2.1. State preparation for Deutsch-Jozsa (or Bernstein-Vazirani) algorithm
+    // Inputs:
+    //      1) N qubits in |0⟩ state (query register)
+    //      2) a qubit in |0⟩ state (answer register)
+    // Goal:
+    //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
+    //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
+    //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
+    operation DJ_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit is Adj {        
+        ApplyToEachA(H, query);
+        X(answer);
+        H(answer);
+    }
     
-    // Task 2.1. Deutsch-Jozsa algorithm implementation
+    // Task 2.2. Deutsch-Jozsa algorithm implementation
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
@@ -203,24 +217,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
     //////////////////////////////////////////////////////////////////
     // Part III. Bernstein-Vazirani Algorithm
-    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////  
     
-    // Task 3.1. State preparation for Bernstein-Vazirani algorithm
-    // Inputs:
-    //      1) N qubits in |0⟩ state (query register)
-    //      2) a qubit in |0⟩ state (answer register)
-    // Goal:
-    //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
-    //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
-    //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
-    operation BV_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit is Adj {        
-        ApplyToEachA(H, query);
-        X(answer);
-        H(answer);
-    }
-    
-    
-    // Task 3.2. Bernstein-Vazirani algorithm implementation
+    // Task 3.1. Bernstein-Vazirani algorithm implementation
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
@@ -240,7 +239,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         using ((x, y) = (Qubit[N], Qubit())) {
             
             // prepare qubits in the right state
-            BV_StatePrep_Reference(x, y);
+            DJ_StatePrep_Reference(x, y);
             
             // apply oracle
             Uf(x, y);
