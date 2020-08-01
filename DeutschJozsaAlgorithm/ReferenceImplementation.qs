@@ -135,7 +135,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             CNOT(q, y);
         }
             
-        // add check for prefix as a multicontrolled NOT
+        // add check for prefix as a multi-controlled NOT
         // true bits of r correspond to 1-controls, false bits - to 0-controls
         within {
             for (i in 0 .. P - 1) {
@@ -167,6 +167,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         CCNOT(x[1], x[2], y);
     }  
     
+
     //////////////////////////////////////////////////////////////////
     // Part II. Deutsch-Jozsa Algorithm
     //////////////////////////////////////////////////////////////////
@@ -206,14 +207,33 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // this variable has to be mutable to allow updating it.
         mutable isConstantFunction = true;
     
-        let r = BV_Algorithm_Reference(N, Uf);
-        
-        for (i in 0 .. N - 1) {
-            set isConstantFunction = isConstantFunction and r[i] == 0;
+        // allocate N qubits for input register and 1 qubit for output
+        using ((x, y) = (Qubit[N], Qubit())) {
+            
+            // prepare qubits in the right state
+            DJ_StatePrep_Reference(x, y);
+            
+            // apply oracle
+            Uf(x, y);
+            
+            // apply Hadamard to each qubit of the input register
+            ApplyToEach(H, x);
+            
+            // measure all qubits of the input register;
+            // the result of each measurement is converted to an Int
+            for (i in 0 .. N - 1) {
+                if (M(x[i]) != Zero) {
+                    set isConstantFunction = false;
+                }
+            }
+            
+            // before releasing the qubits make sure they are all in |0⟩ state
+            Reset(y);
         }
-        
+
         return isConstantFunction;
     }
+
 
     //////////////////////////////////////////////////////////////////
     // Part III. Bernstein-Vazirani Algorithm
@@ -302,7 +322,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
                 set r w/= 0 <- 1;
             }
             
-            // before releasing the qubits make sure they are all in |0⟩ state
             return r;
         }
     }

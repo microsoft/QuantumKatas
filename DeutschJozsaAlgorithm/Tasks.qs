@@ -162,8 +162,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Hint: represent f(x) in terms of AND and ⊕ operations
 
         // ...
-    } 
+    }
     
+
     //////////////////////////////////////////////////////////////////
     // Part II. Deutsch-Jozsa Algorithm
     //////////////////////////////////////////////////////////////////
@@ -176,8 +177,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
-    operation DJ_StatePrep (query : Qubit[], answer : Qubit) : Unit
-    is Adj {
+    operation DJ_StatePrep (query : Qubit[], answer : Qubit) : Unit is Adj {
             // ...
     }
     
@@ -228,6 +228,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // ...
     }
     
+
     //////////////////////////////////////////////////////////////////
     // Part III. Bernstein-Vazirani Algorithm
     //////////////////////////////////////////////////////////////////    
@@ -274,6 +275,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // ...
     }
     
+
     //////////////////////////////////////////////////////////////////
     // Part IV. Come up with your own algorithm!
     //////////////////////////////////////////////////////////////////
