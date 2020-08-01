@@ -16,6 +16,7 @@ namespace Quantum.Kata.GraphColoring {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Diagnostics;
+    open Quantum.Kata.Utils;
     
 
     //////////////////////////////////////////////////////////////////
@@ -133,10 +134,14 @@ namespace Quantum.Kata.GraphColoring {
     // ------------------------------------------------------
     operation T15_ColorEqualityOracle_Nbit_Test () : Unit {
         for (N in 1..4) {
+            ResetQubitCount();
+            
             CheckColorEqualityOracle(N, ColorEqualityOracle_Nbit);
             AssertOperationsEqualReferenced(2*N+1, WrapperOperation(ColorEqualityOracle_Nbit, _),
                                                    WrapperOperation(ColorEqualityOracle_Nbit_Reference, _));
-            // TODO: verify that the oracle doesn't allocate extra qubits
+
+            let nq = GetMaxQubitCount();
+            EqualityFactI(nq, 2*N+1, $"You are not allowed to allocate extra qubits. You allocated {nq - (2*N+1)}");
         }
     }
 
