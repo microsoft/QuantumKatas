@@ -97,17 +97,16 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     // Helper operation which converts marking oracle into phase oracle using an extra qubit
     operation ApplyMarkingOracleAsPhaseOracle (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
         using (target = Qubit()) {
-            // Put the target into the |-⟩ state
-            X(target);
-            H(target);
-                
+            // Put the target into the |-⟩ state and later back to |0⟩ so we can return it
+            within{
+                X(target);
+                H(target);
+            }
             // Apply the marking oracle; since the target is in the |-⟩ state,
             // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            markingOracle(register, target);
-                
-            // Put the target back into |0⟩ so we can return it
-            H(target);
-            X(target);
+            apply{
+                markingOracle(register, target);
+            }    
         }
     }
 
@@ -121,11 +120,13 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
             // apply oracle
             ApplyMarkingOracleAsPhaseOracle(oracle, register);
             // apply inversion about the mean
-            ApplyToEach(H, register);
-            ApplyToEach(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEach(X, register);
-            ApplyToEach(H, register);
+            within{
+                ApplyToEachA(H, register);
+                ApplyToEachA(X, register);
+            }
+            apply{
+                Controlled Z(Most(register), Tail(register));
+            }
         }
     }
 
