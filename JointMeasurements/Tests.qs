@@ -22,6 +22,9 @@ namespace Quantum.Kata.JointMeasurements {
     operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit is Adj), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
         let nTotal = 100;
         mutable nOk = 0;
+        mutable misclassifications = new String[Nstate];
+        mutable count = new Int[Nstate];
+        let empty = misclassifications[0];
         
         using (qs = Qubit[Nqubit]) {
             for (i in 1 .. nTotal) {
@@ -40,6 +43,12 @@ namespace Quantum.Kata.JointMeasurements {
                     set nOk += 1;
                 }
                 
+                // In case it does not match, count the mis-match
+                if (ans != state) {
+                    set misclassifications w/= state <- $"{state} as {ans}";
+                    set count w/= state <- count[state] + 1;
+                }
+
                 if (preserveState) {
                     // check that the state of the qubit after the operation is unchanged
                     Adjoint statePrep(qs, state, alpha);
@@ -50,10 +59,16 @@ namespace Quantum.Kata.JointMeasurements {
                 }
             }
         }
-        
-        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+
+        // Display the number of mis-matches
+        for (i in 0 .. Length(misclassifications) - 1) {
+            if (misclassifications[i] != empty) {
+                Message($"Misclassified {misclassifications[i]}, {count[i]} times");   
+            }
+        }
+
+        Fact(nOk == 100, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state");
     }
-    
     
     // ------------------------------------------------------
     operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
