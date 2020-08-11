@@ -1,338 +1,428 @@
-namespace Quantum.Kata.BoundedKnapsack
-{
+//////////////////////////////////////////////////////////////////////
+// This file contains reference solutions to all tasks.
+// The tasks themselves can be found in Tasks.qs file.
+// We recommend that you try to solve the tasks yourself first,
+// but feel free to look up the solution if you get stuck.
+//////////////////////////////////////////////////////////////////////
+
+namespace Quantum.Kata.BoundedKnapsack {
+
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Math;
-    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Measurement;
-
-    //////////////////////////////////////////////////////////////////
-    // Welcome!
-    //////////////////////////////////////////////////////////////////
-	
-	// The "BoundedKnapsack" quantum kata is a series of exercises designed
-    // to teach you to use Grover Search to solve the Knapsack Problem.
-	// The Knapsack Problem is a prominent computational problem, whose
-	// description can be found at https://en.wikipedia.org/wiki/Knapsack_problem
-
-	// The overall goal in this kata is to solve the Knapsack Optimization Problem,
-	// by running Grover's Algorithm multiple times.
-
-    // The kata covers the following topics:
-    //  - writing operations to perform arithmetic tasks
-	//  - writing oracles to implement constraints based on:
-	//		- The 0-1 Knapsack Problem, a simple version of the Knapsack Problem.
-	//		- The Bounded Knapsack Problem
-    //  - using the oracle with Grover's Algorithm to solve the Knapsack Decision Problem.
-	//  - using Grover's Algorithm repeatedly, to solve the Knapsack Optimization Problem.
-
-	// You may find this kata to be more challenging than other Grover Search
-	// katas, so you might want to try SolveSATWithGrover or GraphColoring first.
-	// Unlike the other katas, whose tasks consist of a series of individual
-	// problems, this kata's tasks each comprise one part of a large
-	// operation to solve one problem.
-	// Hints for the more complicated tasks can be found in the Hints.qs file.
-
-    // Each task is wrapped in one operation preceded by the description of the task.
-    // Each task (except tasks in which you have to write a test) has a unit test associated with it,
-    // which initially fails. Your goal is to fill in the blank (marked with // ... comment)
-    // with some Q# code to make the failing test pass.
 
 
     //////////////////////////////////////////////////////////////////
     // Part I. 0-1 Knapsack Problem
     //////////////////////////////////////////////////////////////////
-
-	// Introduction:
-	// There exist n items, indexed 0 to n-1.
-	// The item with index i has a weight of wᵢ and a profit of pᵢ.
-	// In (a modified version of) the 0-1 Knapsack Decision Problem, we wish to 
-	// determine if we can put a combination of items in a knapsack to have 
-	// a total profit of more than P, while not exceeding a maximum weight W.
-
-	// The following tasks will write an oracle that evaluates whether a
-	// particular register of n qubits, representing an item combination,
-	// satisfies the described conditions.
 	
 
 	// Task 1.1. Read combination from a register
-	// Input: An array of n qubits, which are guaranteed to be in one of the 2ⁿ basis states. The qubit at
-	//        index i represents whether the item with index i is put into the knapsack.
-	// Output: The item combination that this state represents, expressed as a boolean array with length n.
-	//		   The operation should not change the state of the qubits.
-	// Example: For n = 3 and qubit state |101⟩, return [true, false, true].
-	operation MeasureCombination_01 (register : Qubit[]) : Bool[] {
-		// ...
-		return new Bool[0];
+	operation MeasureCombination_01_Reference (register : Qubit[]) : Bool[] {
+		return ResultArrayAsBoolArray(MultiM(register));
 	}
-
+	
 
 	// Task 1.2. Calculate Total Weight or Profit
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An array of n integers, describing either the weight of each item or the profit of each item.
-	//		3) An array of n qubits, which describe whether each item is put into the knapsack
-	//		4) An array of maxTotal qubits in the |0...0⟩ state. It is guaranteed there are enough qubits to hold the total.
-	// Goal: Transform the total array to represent, in little-endian format, the sum of the values of the items that are put in the knapsack.
-	// Example: For n = 4, maxTotal = 5, and values = [1,2,3,4], input state |1001⟩|00000⟩ transforms to |1001⟩|10100⟩, since items 0 and 3 are put
-	//          in the knapsack, and values[0] + values[3] = 1 + 4 = 5.
-	operation CalculateTotalWeightOrProfit_01 (n : Int, values : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl{
-		// ...
+	operation CalculateTotalWeightOrProfit_01_Reference (n : Int, values : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl{
+		// Each qubit in xs determines whether the corresponding value is added.
+		// This process is implemented with a control from xs[i].
+		let TotalLE = LittleEndian(total);
+		for (i in 0..n-1){
+			Controlled IncrementByInteger([register[i]], (values[i], TotalLE));
+		}
 	}
-	
+
 
     // Task 1.3. Compare Qubit Array with Integer (>)
-	// Inputs:
-	//		1) An array of D qubits representing an integer in little-endian format
-	//		2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
-    //      3) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the integer represented by qs is greater than b.
-	// Example: For b = 11, the input state |1011⟩|0⟩ should return as |1011⟩|1⟩, since 1101₂ (13) > 11.
-	operation CompareQubitArrayGreaterThanInt(qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
-		// ...
+    operation CompareQubitArrayGreaterThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+		let D = Length(a);
+
+		// Convert n into array of bits in little endian format
+		let binaryB = IntAsBoolArray(b, D);
+
+		// Iterates descending from the most significant digit, flipping the target qubit
+		// upon finding i such that a[i] > binaryB[i], AND a[j] = binaryB[j] for all j > i.
+		// The X gate flips a[i] to represent whether a[i] and binaryB[i] are equal, to
+		// be used as controls for the Toffoli.
+		// Thus, the Toffoli will only flip the target when a[i] = 1, binaryB[i] = 0, and  
+		// a[j] = 1 for all j > i (meaning a and binaryB have the same digits above i).
+
+		for(i in D-1..-1..0){
+			if (not(binaryB[i])){
+				// Checks if a has a greater bit than b at index i AND all bits above index i have equal values in a and b.
+				Controlled X(a[i..D-1], target);
+				// Flips the qubit if b's corresponding bit is 0.
+				// This temporarily sets the qubit to 1 if the corresponding bits are equal.
+				X(a[i]);
+			}
+		}
+
+		// Uncompute
+		for(i in Length(a)-1..-1..0){
+			if (not(binaryB[i])){
+				X(a[i]);
+			}
+		}
 	}
 
-	
+
     // Task 1.4. Compare Qubit Array with Integer (≤)
-	// Inputs:
-	//		1) An array of D qubits that represent an integer in little-endian format
-	//		2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
-    //      3) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the integer represented by qs is less than or equal to b.
-	// Example: For b = 7, the input state |1010⟩|0⟩ should return as |1010⟩|1⟩, since 0101₂ (5) ≤ 7.
-    operation CompareQubitArrayLeqThanInt (qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
-		// ...
+    operation CompareQubitArrayLeqThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+		// This operation essentially calculates the opposite of the greater-than
+		// comparator, so we can just call CompareQubitArrayGreaterThanInt, and then an X gate.
+		CompareQubitArrayGreaterThanInt_Reference(a, b, target);
+		X(target);
 	}
 
 
 	// Task 1.5. Verify that total weight doesn't exceed limit W
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An array of n integers, such that itemWeights[i] = wᵢ
-	//		4) An array of n qubits, which describe whether each item is put into the knapsack
-	//		5) A qubit in an arbitrary state (target qubit)
-	//		6) An integer maxTotal, the number of qubits to allocate to calculate the weight.
-	// Goal: Flip the state of the target qubit if the total weight is less than or equal to W.
-	operation VerifyWeight_01 (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation VerifyWeight_01_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+		using (TotalWeight = Qubit[maxTotal]){
+			CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
+			CompareQubitArrayLeqThanInt_Reference(TotalWeight, W, target);
+
+			//Uncompute
+			Adjoint CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
+		}
 	}
 
 
 	// Task 1.6. Verify that the total profit exceeds threshold P
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer P, which the total profit must exceed
-	//		3) An integer maxTotal, the number of qubits to allocate to calculate the profit.
-	//		4) An array of n integers, such that itemProfits[i] = pᵢ
-	//		5) An array of n qubits, which describe whether each item is put into the knapsack
-	//		6) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the total profit is greater than P.
-	operation VerifyProfit_01 (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation VerifyProfit_01_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+		using (profit = Qubit[maxTotal]){
+			CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
+			CompareQubitArrayGreaterThanInt_Reference(profit, P, target);
+
+			//Uncompute
+			Adjoint CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
+		}
 	}
 
+
 	// Task 1.7. 0-1 Knapsack Problem Validation Oracle
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An integer P, which the total profit must exceed
-	//		4) An integer maxTotal, the number of qubits to allocate to calculate the profit.
-	//		5) An array of n integers, such that itemWeights[i] = wᵢ
-	//		6) An array of n integers, such that itemProfits[i] = pᵢ
-	//		7) An array of n qubits, which describe whether each item is put into the knapsack
-	//		8) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the weight and profit both satisfy their respective constraints.
-	operation KnapsackValidationOracle_01 (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation KnapsackValidationOracle_01_Reference (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+		using ((outputW, outputP) = (Qubit(), Qubit())){
+			VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
+			VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
+			CCNOT(outputW, outputP, target);
+			Adjoint VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
+			Adjoint VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
+		}
 	}
 
 
     //////////////////////////////////////////////////////////////////
     // Part II. Bounded Knapsack Problem
     //////////////////////////////////////////////////////////////////
-
-	// Introduction:
-	// Unlike in the 0-1 Knapsack Problem, each type of item in the Bounded
-	// Knapsack Problem can have more than one instance. Specifically,
-	// the item type with index i can have from 0 to bᵢ instances.
-	// xᵢ represents the number of instances of item with index i that are
-	// put into the knapsack. Thus, for each i, xᵢ must be bounded by the range [0, bᵢ].
-	// Again, each instance of item i has a weight of wᵢ and a profit of pᵢ.
-
-	// The total weight of the knapsack is the sum of the weights of all the instances
-	// put into the knapsack. The total profit is the sum of the profits of the same instances.
-
-	// For the Bounded Knapsack Decision Problem, we seek a combination xs = [x₀, x₁, ..., xₙ₋₁]
-	// that satisfies the bounds, has total weight at most W, and has total profit more than P.
-
-	// The comparators from Part I can be reused, but the operations for
-	// weight and profit calculation will need to be rewritten.
-
+	
 
 	// Task 2.1. Read combination from a jagged array of qubits
-	// Inputs:
-	//		1) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-	// Output: An integer array of length n, containing the combination that this jagged array represents.
-	//		   The integer at index i in the output array should have value xᵢ.
-	// Example: For state xs = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
-	operation MeasureCombination (xs : Qubit[][]) : Int[] {
-		// ...
-		return new Int[0];
+	operation MeasureCombination_Reference (xs : Qubit[][]) : Int[] {
+		let n = Length(xs);
+		mutable xsCombo = new Int[n];
+		for (i in 0..n-1){
+			set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
+		}
+		return xsCombo;
 	}
 
 
 	// Task 2.2. Convert Qubit Register into Jagged Qubit Array
+	function RegisterAsJaggedArray_Reference (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][]{
+		// Note: Declaring a new qubit array doesn't actually allocate new qubits; it allocates
+		//		 memory to store references to existing qubits.
+		mutable xs = new Qubit[][n];
+		mutable q = 0;
+		for (i in 0..n-1){
+			set xs w/= i <- register[q..q+BinaryLength(itemInstanceBounds[i])-1];
+			set q += BinaryLength(itemInstanceBounds[i]);
+		}
+		return xs;
+	}
 
-	// To facilitate access to the register's qubits within the oracle, the register is reorganized
-	// into qubit groups, that represent, in little-endian format, the number of instances of each item type.
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An array of Q qubits
-	//		3) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-	// Output: A jagged array of n arrays of qubits. Small array i should have enough
-	//         qubits to represent any integer from 0 to bᵢ in little-endian format. Q is defined
-	//         such that there are exactly enough total qubits to perform this transformation.
-	// Example: For n = 3, itemInstanceBounds = [6, 15, 13], and register in state |10111100100⟩, return [|101⟩, |1110⟩, |0100⟩].
-	function RegisterAsJaggedArray (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][]{
-		// ...
-		return new Qubit[][0];
+
+	function BinaryLength (x : Int) : Int {
+		// There are x + 1 integers in the range 0..x, inclusive. Thus, the minimum number of qubits
+		// to hold numbers up to x is log₂(x+1), rounded up.
+		return Ceiling(Lg(IntAsDouble(x+1)));
 	}
 
 
     // Task 2.3. Verification of Bounds Satisfaction
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-	//		3) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-	//		4) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if xᵢ ≤ bᵢ for all i.
-	operation VerifyBounds (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation VerifyBounds_Reference (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
+		using (satisfy = Qubit[n]){
+			for (i in 0..n-1){
+				// Check that each individual xᵢ satisfies the bound.
+				// If the number represented by xs[i] is at most itemInstanceBounds[i] = bᵢ, then the result will be 1, indicating satisfication.
+				CompareQubitArrayLeqThanInt_Reference(xs[i], itemInstanceBounds[i], satisfy[i]);
+			}
+			// If all are satisfied, then the combination xs passes bounds Verification.
+			Controlled X(satisfy, target);
+			for (i in 0..n-1){
+				CompareQubitArrayLeqThanInt_Reference(xs[i], itemInstanceBounds[i], satisfy[i]);
+			}
+		}
 	}
 
-	
+
     // Task 2.4. Increment Qubit Array by Product of an Integer and a different Qubit Array
-	// Inputs:
-	//		1) An integer x
-	//		2) An array of D qubits, representing an arbitrary integer
-	//		3) An second array of D qubits, representing an arbitrary integer
-	// Goal: Increment z by the product of x and y.
-    operation IncrementByProduct (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl{
-		// ...
+    operation IncrementByProduct_Reference (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl{
+		let D = Length(y);
+		let zLE = LittleEndian(z);
+
+		// Calculates each partial product, y[i] · x · 2ⁱ
+		// Thus, the following code adds each partial product to z, if the corresponding qubit in y is 1.
+		// For more information, see https://en.wikipedia.org/wiki/Binary_multiplier#Unsigned_numbers
+		for (i in 0..D-1){
+			Controlled IncrementByInteger([y[i]], (x <<< i, zLE));
+		}
 	}
 
 
-	// Task 2.5. Calculate Total Weight or Profit
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An array of n integers, describing either the weight of each item or the profit of each item.
-	//		3) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-	//		4) An array of qubits in the |0...0⟩ state. It is guaranteed there are enough qubits to hold the total.
-	// Goal: Transform the total array to represent, in little-endian format, the sum of the values of all the instances that are put in the knapsack.
-	operation CalculateTotalWeightOrProfit (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl{
-		// ...
+    // Task 2.5. Calculation of Total Weight
+	operation CalculateTotalWeightOrProfit_Reference (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl{
+		// The item type with index i contributes xᵢ instances to the knapsack, adding values[i] per instance to the total.
+		// Thus, for each item type, we increment the total by their product.
+		for (i in 0..n-1){
+			IncrementByProduct_Reference(values[i], xs[i], total);
+		}
 	}
 
 
 	// Task 2.6. Verify that Weight satisfies limit W
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An integer maxTotal, the number of qubits to allocate to calculate the weight.
-	//		4) An array of n integers, such that itemWeights[i] = wᵢ
-	//		5) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-	//		6) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the total weight is less than or equal to W.
-	operation VerifyWeight (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation VerifyWeight_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
+		using (totalWeight = Qubit[maxTotal]){
+			// Calculate the total weight by using the array with each item's weight.
+			CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
+			CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
+
+			//Uncompute
+			Adjoint CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
+		}
 	}
 
 
 	// Task 2.7. Verify that the total profit exceeds threshold P
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer P, which the total profit must exceed
-	//		3) An integer maxTotal, the number of qubits to allocate to calculate the profit.
-	//		4) An array of n integers, such that itemProfits[i] = pᵢ
-	//		5) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-	//		6) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the total profit is greater than P.
-	operation VerifyProfit (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation VerifyProfit_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
+		using (totalProfit = Qubit[maxTotal]){
+			// Calculate the total profit by using the array with each item's profit.
+			CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
+			CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
+
+			//Uncompute
+			Adjoint CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
+		}
 	}
 
 
 	// Task 2.8. Bounded Knapsack Problem Validation Oracle
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An integer P, which the total profit must exceed
-	//		4) An integer maxTotal, the number of qubits to allocate to calculate the profit.
-	//		5) An array of n integers, such that itemWeights[i] = wᵢ
-	//		6) An array of n integers, such that itemProfits[i] = pᵢ
-	//		7) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-	//		8) An array of Q qubits. Q is the minimum number of qubits necessary to store the xs values.
-	//		9) A qubit in an arbitrary state (target qubit)
-	// Goal: Flip the state of the target qubit if the conditions for the bounds, weight, and profit are all satisfied.
-	operation KnapsackValidationOracle (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-		// ...
+	operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+		let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+		using ((outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit())){
+			// Compute the result of each verification onto separate qubits
+			VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
+			VerifyWeight_Reference(n, W, maxTotal, itemWeights, xs, outputW);
+			VerifyProfit_Reference(n, P, maxTotal, itemProfits, xs, outputP);
+
+			// Compute the final result, which is the AND operation of the three separate results
+			// Accomplished by a triple-control Toffoli.
+			Controlled X([outputB] + [outputW] + [outputP], target);
+
+			Adjoint VerifyProfit_Reference(n, P, maxTotal, itemProfits, xs, outputP);
+			Adjoint VerifyWeight_Reference(n, W, maxTotal, itemWeights, xs, outputW);
+			Adjoint VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
+		}
+	}
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Knapsack Oracle and Grover Search
+    //////////////////////////////////////////////////////////////////
+
+    // Task 3.1. Using Grover Search with Knapsack Oracle to solve (a slightly modified version of the) Knapsack Decision Problem
+    operation GroversAlgorithm_Reference (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : (Int[], Int) {
+        
+        mutable xs_found = new Int[n];
+		mutable P_found = P;
+		mutable correct = false;
+
+		let Q = RegisterSize(n, itemInstanceBounds);
+
+		// We will classically count M (the number of solutions), and calculate the optimal number of Grover Iterations.
+		// In the future, this will be replaced by the quantum counting algorithm.
+		let N = IntAsDouble(1 <<< Q);
+		let m = IntAsDouble(NumberOfSolutions(n, W, P, itemWeights, itemProfits, itemInstanceBounds));
+		if (m == 0.0){
+			return (xs_found, P_found);
+		}
+		// Using the formula for the number of iterations, and rounding to the nearest integer
+		mutable iter = Floor(PI() / 4.0 * Sqrt(N/m)+0.5);
+		mutable attempts = 0;
+
+		using (register = Qubit[Q]){
+			
+			repeat {
+				// Note: The register is not converted into the jagged array before being used in the oracle, because
+				//		 the ApplyToEach operations in the GroverIterations can't directly be called on jagged arrays.
+				GroversAlgorithm_Loop(register, KnapsackValidationOracle_Reference(n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, _, _), iter);
+
+				// Measure the combination that Grover's Algorithm finds.
+				let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+				for (i in 0..n-1){
+					let result = MultiM(xs[i]);
+					set xs_found w/= i <- ResultArrayAsInt(result);
+				}
+
+				// Check that the combination is a valid combination.
+				using (output = Qubit()){
+					KnapsackValidationOracle_Reference(n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, register, output);
+					if (M(output) == One){
+						set correct = true;
+					}
+					Reset(output);
+				}
+
+				// When the valid combination is found, calculate its profit
+				if (correct){
+					using (profit = Qubit[maxTotal]){
+						CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, profit);
+						set P_found = ResultArrayAsInt(MultiM(profit));
+						ResetAll(profit);
+					}
+				}
+                ResetAll(register);
+				set attempts += 1;
+			} until(correct or attempts > 10);
+
+		}
+
+		return (xs_found, P_found);
+		
+    }
+
+	function RegisterSize(n : Int, itemInstanceBounds : Int[]) : Int {
+		// Calculate the total number of qubits for the register, given the bounds array. The item with index i can have 0 to bᵢ instances,
+		// which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BinaryLength is used to faciliate
+		// this calculation. The total number of qubits, Q, is the sum of each individual number of qubits.
+		mutable Q = 0;
+		for (i in 0..n-1){
+			set Q = Q + BinaryLength(itemInstanceBounds[i]);
+		}
+		return Q;
+	}
+
+    // Grover loop implementation taken from SolveSATWithGrover kata.
+    operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
+
+        using (target = Qubit()) {
+            // Put the target into the |-⟩ state
+            X(target);
+            H(target);
+                
+            // Apply the marking oracle; since the target is in the |-⟩ state,
+            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+            markingOracle(register, target);
+                
+            // Put the target back into |0⟩ so we can return it
+            H(target);
+            X(target);
+        }
+    }
+    
+    operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
+        let phaseOracle = OracleConverterImpl(oracle, _);
+        ApplyToEach(H, register);
+            
+        for (i in 1 .. iterations) {
+            phaseOracle(register);
+            ApplyToEach(H, register);
+            ApplyToEach(X, register);
+            Controlled Z(Most(register), Tail(register));
+            ApplyToEach(X, register);
+            ApplyToEach(H, register);
+        }
+    }
+
+
+	// A placeholder for the quantum counting algorithm, which will be implemented in a separate kata.
+	// Calculate value M for the oracle (number of solutions), which is used in determining how many
+	// Grover Iterations are necessary in Grover's Algorithm.
+	function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
+		let Q = RegisterSize(n, itemInstanceBounds);
+		mutable m = 0;
+		for (combo in 0..(1 <<< Q) - 1){
+			let binaryCombo = IntAsBoolArray(combo, Q);
+			let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+
+			// Determine if each combination is a solution.
+			mutable ActualBounds = true;
+			mutable ActualWeight = 0;
+			mutable ActualProfit = 0;
+			for (i in 0..n-1){
+				// If any bound isn't satisfied, then Bounds Verification is not satisfied.
+				if (xsCombo[i] > itemInstanceBounds[i]){
+					set ActualBounds = false;
+				}
+				// Add the weight and profit of all instances of this item type.
+				set ActualWeight += itemWeights[i]*xsCombo[i];
+				set ActualProfit += itemProfits[i]*xsCombo[i];
+			}
+			if (ActualBounds and ActualWeight <= W and ActualProfit > P) {
+				set m += 1;
+			}
+		}
+		return m;
 	}
 
 
-    //////////////////////////////////////////////////////////////////
-    // Part III. Grover Search and Knapsack Optimization Problem
-    //////////////////////////////////////////////////////////////////
-
-    // Task 3.1. Implementing Grover Search with Bounded Knapsack Oracle to solve (a slightly modified version of the) Bounded Knapsack Decision Problem
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An integer P, which the total profit must exceed
-	//		4) An integer maxTotal, the number of qubits to allocate for holding each of the weight and profit.
-	//		5) An array of n integers, such that itemWeights[i] = wᵢ
-	//		6) An array of n integers, such that itemProfits[i] = pᵢ
-	//		7) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-	// Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the bounds, has total weight at most W,
-	//         and has total profit more than P, return a tuple containing that combination and its total profit.
-	//		   Otherwise, return a tuple containing an array of zeroes with length n and the input P value.
-	operation GroversAlgorithm (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : (Int[], Int) {
-		// ...
-        return (new Int[0], 0);
-    }
+	function BoolArrayAsIntArray (n : Int, itemInstanceBounds : Int[], binaryCombo : Bool[]) : Int[]{
+		mutable xsCombo = new Int[n];
+		mutable q = 0;
+		for (i in 0..n-1){
+			set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q..q+BinaryLength(itemInstanceBounds[i])-1]);
+			set q += BinaryLength(itemInstanceBounds[i]);
+		}
+		return xsCombo;
+	}
 	
-
-	// Knapsack Optimization Problem:
-	// The above tasks, when implemented, solve the Bounded Knapsack Decision Problem, which
-	// asks: "Is there a valid combination that has more than P profit?"
-
-	// The more common, applicable, and complex Knapsack Optimization Problem, by contrast,
-	// asks "Which valid combination yields the most profit?", or "What's the highest
-	// achievable profit?", and can be solved by repeatedly answering the Knapsack Decision Problem.
-
-	// Thus, we will solve the Optimization Problem by setting a profit threshold P, repeatedly calling
-	// Grover Search with P, and increasing P every time Grover Search concludes there exists a combination
-	// more profitable than P. When Grover Search determines that there exist no combinations that are
-	// more profitable than P, we will have found the highest achievable profit and thus answered the
-	// Knapsack Optimization Problem.
-	 
 	
-	// Task 3.2. Solving the Bounded Knapsack Optimization Problem
-	// Inputs:
-	//		1) An integer n, the number of items
-	//		2) An integer W, the maximum weight the knapsack can hold
-	//		3) An integer maxTotal, the number of qubits to allocate for holding each of the weight and profit.
-	//		4) An array of n integers, such that itemWeights[i] = wᵢ
-	//		5) An array of n integers, such that itemProfits[i] = pᵢ
-	//		6) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-	// Output: An integer, the value of the highest achievable profit among all combinations that satisfy
-	//         both the instance bounds and weight constraint.
-	
-	operation KnapsackOptimizationProblem (n : Int, W : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
-		// ...
-		return 0;
+	// Task 3.2 Solving the Bounded Knapsack Optimization Problem
+	operation KnapsackOptimizationProblem_Reference (n : Int, W : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
+		// This implementation uses exponential search to search over profit thresholds and find the maximum possible profit.
+		// The Grover Search using the Knapsack Oracle serves as the comparison function.
+		// A description of exponential search is found at https://en.wikipedia.org/wiki/Exponential_search.
+
+		// Determining an upper bound for a search range
+		mutable P_high = 1;
+		mutable upperBoundFound = false;
+		repeat {
+			let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, maxTotal, itemWeights, itemProfits, itemInstanceBounds);
+			if (P_found > P_high) {
+				set P_high = P_high * 2;
+			}
+			else {
+				set upperBoundFound = true;
+			}
+		} until (upperBoundFound);
+
+
+		// Performing binary search in the determined search range
+		mutable P_low = P_high / 2;
+		repeat {
+			let P_middle = (P_low + P_high) / 2;
+			let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, maxTotal, itemWeights, itemProfits, itemInstanceBounds);
+			if (P_found > P_high){
+				set P_low = P_middle;
+			}
+			else{
+				set P_high = P_middle;
+			}
+		} until (P_high - P_low == 1);
+		return P_high;
 	}
 }
