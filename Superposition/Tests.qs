@@ -271,6 +271,21 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+    // ------------------------------------------------------
+    operation T114_AllStatesWithParitySuperposition_Test () : Unit {
+        // remember to repeat the tests (for the small case of N = 2), lest the post-selection solution doesn't detect failure and retry
+        for (i in 1 .. 10) {
+            for (parity in 0 .. 1) {
+                AssertEqualOnZeroState(2, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
+            }
+        }
+        for (N in 3 .. 6) {
+            for (parity in 0 .. 1) {
+                AssertEqualOnZeroState(N, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
+            }
+        }
+    }
+
 
     //////////////////////////////////////////////////////////////////
     // Part II. Arbitrary Rotations

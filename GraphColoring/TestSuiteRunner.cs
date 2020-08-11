@@ -11,6 +11,7 @@ using Microsoft.Quantum.Simulation.XUnit;
 using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
+using Microsoft.Quantum.Katas;
 
 namespace Quantum.Kata.GraphColoring
 {
@@ -30,7 +31,7 @@ namespace Quantum.Kata.GraphColoring
         [OperationDriver(TestNamespace = "Quantum.Kata.GraphColoring")]
         public void TestTarget(TestOperation op)
         {
-            using (var sim = new QuantumSimulator())
+            using (var sim = new CounterSimulator())
             {
                 // OnLog defines action(s) performed when Q# test calls function Message
                 sim.OnLog += (msg) => { output.WriteLine(msg); };

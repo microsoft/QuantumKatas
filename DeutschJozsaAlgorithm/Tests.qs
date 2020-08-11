@@ -11,7 +11,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
-
+    open Microsoft.Quantum.Arrays;
     open Quantum.Kata.Utils;
     
     
@@ -23,8 +23,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
-    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
-    is Adj {        
+    operation ApplyOracleA (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit is Adj {        
         let N = Length(qs);
         oracle(qs[0 .. N - 2], qs[N - 1]);
     }
@@ -88,7 +87,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T15_Oracle_ProductFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
         for (i in 2 .. L) {
@@ -96,9 +95,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
         
         // the mask with all 0's corresponds to Oracle_Zero
-        for (i in 0 .. L - 1) {
-            set r w/= i <- 0;
-        }
+        set r = ConstantArray(10, 0);
         
         for (i in 2 .. L) {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_Zero_Reference);
@@ -123,7 +120,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T16_Oracle_ProductWithNegationFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
         for (i in 2 .. L) {
@@ -159,38 +156,22 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
-    operation T21_BV_StatePrep_Test () : Unit {
+    operation T21_DJ_StatePrep_Test () : Unit {
         
         for (N in 1 .. 10) {
             
             using (qs = Qubit[N + 1]) {
                 // apply operation that needs to be tested
-                BV_StatePrep(qs[0 .. N - 1], qs[N]);
+                DJ_StatePrep(qs[0 .. N - 1], qs[N]);
                 
                 // apply adjoint reference operation
-                Adjoint BV_StatePrep_Reference(qs[0 .. N - 1], qs[N]);
+                Adjoint DJ_StatePrep_Reference(qs[0 .. N - 1], qs[N]);
                 
                 // assert that all qubits end up in |0⟩ state
                 AssertAllZero(qs);
             }
         }
     }
-    
-    // ------------------------------------------------------
-    function AllEqualityFactI (actual : Int[], expected : Int[], message : String) : Unit {
-        
-        let n = Length(actual);
-        if (n != Length(expected)) {
-            fail message;
-        }
-        
-        for (idx in 0 .. n - 1) {
-            if (actual[idx] != expected[idx]) {
-                fail message;
-            }
-        }
-    }
-    
     
     // ------------------------------------------------------
     function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
@@ -205,35 +186,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
         
         return r;
-    }
-    
-    
-    // ------------------------------------------------------
-    operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
-        let oracle = Oracle_ProductFunction_Reference(_, _, r);
-        AllEqualityFactI(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
-
-        let nu = GetOracleCallsCount(oracle);
-        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
-    }
-    
-    
-    operation T22_BV_Algorithm_Test () : Unit {
-        ResetOracleCallsCount();
-        
-        // test BV the way we suggest the learner to test it:
-        // apply the algorithm to reference oracles and check that the output is as expected
-        for (bits in 1 .. 4) {
-            for (n in 0 .. 2 ^ bits - 1) {
-                let r = IntArrFromPositiveInt(n, bits);
-                AssertBVAlgorithmWorks(r);
-            }
-        }
-        
-        AssertBVAlgorithmWorks([1, 1, 1, 0, 0]);
-        AssertBVAlgorithmWorks([1, 0, 1, 0, 1, 0]);
-    }
-    
+    } 
     
     // ------------------------------------------------------
     operation AssertDJAlgorithmWorks (N : Int, oracle : ((Qubit[], Qubit) => Unit), expected : Bool, msg : String) : Unit {
@@ -244,7 +197,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    operation T31_DJ_Algorithm_Test () : Unit {
+    operation T22_DJ_Algorithm_Test () : Unit {
 
         ResetOracleCallsCount();
         
@@ -292,7 +245,33 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertNonameAlgorithmWorks(r);
     }
     
+    // ------------------------------------------------------
+    operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
+        let oracle = Oracle_ProductFunction_Reference(_, _, r);
+        AllEqualityFactI(BV_Algorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
+
+        let nu = GetOracleCallsCount(oracle);
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
+    }
     
+    
+    operation T31_BV_Algorithm_Test () : Unit {
+        ResetOracleCallsCount();
+        
+        // test BV the way we suggest the learner to test it:
+        // apply the algorithm to reference oracles and check that the output is as expected
+        for (bits in 1 .. 4) {
+            for (n in 0 .. 2 ^ bits - 1) {
+                let r = IntArrFromPositiveInt(n, bits);
+                AssertBVAlgorithmWorks(r);
+            }
+        }
+        
+        AssertBVAlgorithmWorks([1, 1, 1, 0, 0]);
+        AssertBVAlgorithmWorks([1, 0, 1, 0, 1, 0]);
+    }
+    
+    // ------------------------------------------------------
     operation T41_Noname_Algorithm_Test () : Unit {
         
         ResetOracleCallsCount();

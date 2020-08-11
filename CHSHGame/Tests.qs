@@ -73,14 +73,17 @@ namespace Quantum.Kata.CHSHGame {
             EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
             Reset(q);
 
+            // apply the Pauli X gate
             X(q);
             EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
             Reset(q);
 
+            // apply the Hadamard gate
             H(q);
             EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
             Reset(q);
 
+            // apply the Pauli X and then the Hadamard gate
             X(q);
             H(q);
             EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
@@ -143,5 +146,4 @@ namespace Quantum.Kata.CHSHGame {
         }
         EqualityWithinToleranceFact(IntAsDouble(wins) / 10000., 0.85, 0.01);
     }
-
 }

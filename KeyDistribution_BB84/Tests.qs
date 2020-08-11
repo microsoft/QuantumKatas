@@ -30,8 +30,8 @@ namespace Quantum.Kata.KeyDistribution {
     operation T12_EqualSuperposition_Test () : Unit {
         using (q = Qubit()) {
             EqualSuperposition(q);
-            DumpMachine(());
-            AssertProb([PauliZ], [q], One, 0.5, "Measuring should produce 0 and 1 with 50/50 chance.", 1e-5);
+            DumpMachine();
+            AssertMeasurementProbability([PauliZ], [q], One, 0.5, "Measuring should produce 0 and 1 with 50/50 chance.", 1e-5);
             Reset(q);
         }
     }
@@ -86,7 +86,6 @@ namespace Quantum.Kata.KeyDistribution {
                 let result = MeasureBobsQubits(qs, bases);
                 Fact(N == Length(result), "The returned array should have the same length as the inputs");
                 Fact(BoolArrayAsInt(state) == BoolArrayAsInt(result), "Some of the measurements were done in the wrong basis");
-                ResetAll(qs);
             }
         }
     }
@@ -123,7 +122,7 @@ namespace Quantum.Kata.KeyDistribution {
 
         for (i in 10 .. 30) {
             set (key1, key2) = GenerateRandomState(i);
-            set errorRate = RandomInt(50) ;
+            set errorRate = RandomInt(50);
             let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
             set result = CheckKeysMatch(key1, key2, errorRate);
 
