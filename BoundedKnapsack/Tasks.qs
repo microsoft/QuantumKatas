@@ -1,4 +1,4 @@
-﻿namespace Quantum.Kata.BoundedKnapsack
+namespace Quantum.Kata.BoundedKnapsack
 {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
@@ -301,8 +301,8 @@
 	//		   Otherwise, return a tuple containing an array of zeroes with length n and the input P value.
 	operation GroversAlgorithm (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : (Int[], Int) {
 		// ...
-        return (new Int[0], 0);
-    }
+		return (new Int[0], 0);
+	}
 	
 
 	// Knapsack Optimization Problem:
