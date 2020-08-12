@@ -71,7 +71,7 @@
 
 // Task 2.5. Calculation of Total Weight
 //
-//	1) How do the weight of an item and the number of instances of that item affect how much weight that item type contributes to the total?
+//  1) How do the weight of an item and the number of instances of that item affect how much weight that item type contributes to the total?
 
 
 
