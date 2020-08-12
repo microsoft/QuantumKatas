@@ -16,7 +16,7 @@
 
 // Task 1.2. Calculate Total Weight or Profit
 //
-//    1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger
+//  1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger
 //
 //  2) How does the state of a qubit in the register affect whether its corresponding value is added into the total?
 
