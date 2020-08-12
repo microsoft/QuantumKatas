@@ -54,7 +54,7 @@
 //  1) For each i, xᵢ can have values from 0 to bᵢ. How many distinct values are thus possible for xᵢ? What's the minimum number of qubits
 //     to hold this many distinct values?
 //
-//  2) Additional information on jagged arrays: https://docs.microsoft.com/en-us/quantum/user-guide/language/types#array-types
+//  2) Additional information on jagged arrays: https://docs.microsoft.com/quantum/user-guide/language/types#array-types
 
 
 
