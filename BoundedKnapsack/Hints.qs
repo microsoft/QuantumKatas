@@ -88,7 +88,7 @@
 
 // Task 3.2. Solving the Bounded Knapsack Optimization Problem
 //
-//	1) The key in this task is choosing an efficient method to adjust the value P over several calls to Grover's Algorithm, to ultimately
+//  1) The key in this task is choosing an efficient method to adjust the value P over several calls to Grover's Algorithm, to ultimately
 //     identify the maximum achievable profit value. The method should minimize the number of calls to Grover's Algorithm and the total number of oracle
 //     oracle calls.
 //
