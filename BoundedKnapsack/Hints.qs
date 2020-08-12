@@ -61,7 +61,7 @@
 
 // Task 2.4. Increment Qubit Array by Product of an Integer and a different Qubit Array
 //
-//	1) Given two classical unsigned integers and their bitstrings, how would you calculate their product? Could you split this product into
+//  1) Given two classical unsigned integers and their bitstrings, how would you calculate their product? Could you split this product into
 //     partial products?
 //
 //  2) Additional information on multiplication: https://en.wikipedia.org/wiki/Binary_multiplier#Binary_numbers
