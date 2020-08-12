@@ -40,7 +40,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.3. Compare Qubit Array with Integer (>)
-    operation CompareQubitArrayGreaterThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+    operation CompareQubitArrayGreaterThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
 		let D = Length(a);
 
 		// Convert n into array of bits in little endian format
@@ -54,7 +54,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 		// a[j] = 1 for all j > i (meaning a and binaryB have the same digits above i).
 
 		for(i in D-1..-1..0){
-			if (not(binaryB[i])){
+			if (not binaryB[i]) {
 				// Checks if a has a greater bit than b at index i AND all bits above index i have equal values in a and b.
 				Controlled X(a[i..D-1], target);
 				// Flips the qubit if b's corresponding bit is 0.
@@ -64,11 +64,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 		}
 
 		// Uncompute
-		for(i in Length(a)-1..-1..0){
-			if (not(binaryB[i])){
-				X(a[i]);
-			}
-		}
+		ApplyPauliFromBitString(PauliX, false, binaryB, a);
 	}
 
 
@@ -84,11 +80,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 	// Task 1.5. Verify that total weight doesn't exceed limit W
 	operation VerifyWeight_01_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
 		using (TotalWeight = Qubit[maxTotal]){
-			CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
-			CompareQubitArrayLeqThanInt_Reference(TotalWeight, W, target);
-
-			//Uncompute
-			Adjoint CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
+			within {
+			    CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
+			} apply {
+			    CompareQubitArrayLeqThanInt_Reference(TotalWeight, W, target);
+			}
 		}
 	}
 
@@ -96,11 +92,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 	// Task 1.6. Verify that the total profit exceeds threshold P
 	operation VerifyProfit_01_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
 		using (profit = Qubit[maxTotal]){
-			CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
-			CompareQubitArrayGreaterThanInt_Reference(profit, P, target);
-
-			//Uncompute
-			Adjoint CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
+			within {
+			    CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
+			} apply {
+			    CompareQubitArrayGreaterThanInt_Reference(profit, P, target);
+			}
 		}
 	}
 
@@ -108,11 +104,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 	// Task 1.7. 0-1 Knapsack Problem Validation Oracle
 	operation KnapsackValidationOracle_01_Reference (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
 		using ((outputW, outputP) = (Qubit(), Qubit())){
-			VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
-			VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
-			CCNOT(outputW, outputP, target);
-			Adjoint VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
-			Adjoint VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
+			within {
+			    VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
+			    VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
+			} apply {
+			    CCNOT(outputW, outputP, target);
+			}
 		}
 	}
 
@@ -124,12 +121,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 	// Task 2.1. Read combination from a jagged array of qubits
 	operation MeasureCombination_Reference (xs : Qubit[][]) : Int[] {
-		let n = Length(xs);
-		mutable xsCombo = new Int[n];
-		for (i in 0..n-1){
-			set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
-		}
-		return xsCombo;
+		return Mapped(Compose(ResultArrayAsInt, MultiM), xs);
 	}
 
 
@@ -179,8 +171,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 		// Calculates each partial product, y[i] · x · 2ⁱ
 		// Thus, the following code adds each partial product to z, if the corresponding qubit in y is 1.
 		// For more information, see https://en.wikipedia.org/wiki/Binary_multiplier#Unsigned_numbers
-		for (i in 0..D-1){
-			Controlled IncrementByInteger([y[i]], (x <<< i, zLE));
+		for ((i, control) in Enumerated(y)) {
+			Controlled IncrementByInteger([control], (x <<< i, zLE));
 		}
 	}
 
