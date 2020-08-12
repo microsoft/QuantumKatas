@@ -33,8 +33,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 		// Each qubit in xs determines whether the corresponding value is added.
 		// This process is implemented with a control from xs[i].
 		let TotalLE = LittleEndian(total);
-		for (i in 0..n-1){
-			Controlled IncrementByInteger([register[i]], (values[i], TotalLE));
+		for ((control, value) in Zip(register, values)) {
+			Controlled IncrementByInteger([control], (value, TotalLE));
 		}
 	}
 
