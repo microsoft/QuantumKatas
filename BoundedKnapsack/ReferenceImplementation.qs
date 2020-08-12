@@ -309,8 +309,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 		// which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BinaryLength is used to faciliate
 		// this calculation. The total number of qubits, Q, is the sum of each individual number of qubits.
 		mutable Q = 0;
-		for (i in 0..n-1){
-			set Q = Q + BinaryLength(itemInstanceBounds[i]);
+		for (bound in itemInstanceBounds){
+			set Q += BinaryLength(bound);
 		}
 		return Q;
 	}
