@@ -44,7 +44,7 @@
 
 // Task 1.4. Compare Qubit Array with Integer (≤)
 //
-//	1) Is it necessary to go through all of the logic like we did in Task 1.3, or is there an easier way to conserve code?
+//  1) Is it necessary to go through all of the logic like we did in Task 1.3, or is there an easier way to conserve code?
 
 
 
