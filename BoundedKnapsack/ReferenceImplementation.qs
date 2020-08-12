@@ -132,32 +132,25 @@ namespace Quantum.Kata.BoundedKnapsack {
 		mutable xs = new Qubit[][n];
 		mutable q = 0;
 		for (i in 0..n-1){
-			set xs w/= i <- register[q..q+BinaryLength(itemInstanceBounds[i])-1];
-			set q += BinaryLength(itemInstanceBounds[i]);
+			set xs w/= i <- register[q..q+BitSizeI(itemInstanceBounds[i])-1];
+			set q += BitSizeI(itemInstanceBounds[i]);
 		}
 		return xs;
-	}
-
-
-	function BinaryLength (x : Int) : Int {
-		// There are x + 1 integers in the range 0..x, inclusive. Thus, the minimum number of qubits
-		// to hold numbers up to x is log₂(x+1), rounded up.
-		return Ceiling(Lg(IntAsDouble(x+1)));
 	}
 
 
     // Task 2.3. Verification of Bounds Satisfaction
 	operation VerifyBounds_Reference (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
 		using (satisfy = Qubit[n]){
-			for (i in 0..n-1){
-				// Check that each individual xᵢ satisfies the bound.
-				// If the number represented by xs[i] is at most itemInstanceBounds[i] = bᵢ, then the result will be 1, indicating satisfication.
-				CompareQubitArrayLeqThanInt_Reference(xs[i], itemInstanceBounds[i], satisfy[i]);
-			}
-			// If all are satisfied, then the combination xs passes bounds Verification.
-			Controlled X(satisfy, target);
-			for (i in 0..n-1){
-				CompareQubitArrayLeqThanInt_Reference(xs[i], itemInstanceBounds[i], satisfy[i]);
+			within {
+				for ((x, b, satisfyBit) in Zip(xs, itemInstanceBounds, satisfy)){
+					// Check that each individual xᵢ satisfies the bound.
+					// If the number represented by x is at most bᵢ, then the result will be 1, indicating satisfication.
+					CompareQubitArrayLeqThanInt_Reference(x, b, satisfyBit);
+				}
+			} apply {
+				// If all are satisfied, then the combination xs passes bounds Verification.
+				Controlled X(satisfy, target);
 			}
 		}
 	}
@@ -177,12 +170,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 	}
 
 
-    // Task 2.5. Calculation of Total Weight
+    // Task 2.5. Calculation of Total Weight or Profit
 	operation CalculateTotalWeightOrProfit_Reference (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl{
 		// The item type with index i contributes xᵢ instances to the knapsack, adding values[i] per instance to the total.
 		// Thus, for each item type, we increment the total by their product.
-		for (i in 0..n-1){
-			IncrementByProduct_Reference(values[i], xs[i], total);
+		for ((value, x) in Zip(values, xs)){
+			IncrementByProduct_Reference(value, x, total);
 		}
 	}
 
@@ -190,12 +183,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 	// Task 2.6. Verify that Weight satisfies limit W
 	operation VerifyWeight_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
 		using (totalWeight = Qubit[maxTotal]){
-			// Calculate the total weight by using the array with each item's weight.
-			CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
-			CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
-
-			//Uncompute
-			Adjoint CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
+			within {
+				// Calculate the total weight
+				CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
+			} apply {
+				CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
+			}
 		}
 	}
 
@@ -203,12 +196,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 	// Task 2.7. Verify that the total profit exceeds threshold P
 	operation VerifyProfit_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
 		using (totalProfit = Qubit[maxTotal]){
-			// Calculate the total profit by using the array with each item's profit.
-			CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
-			CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
-
-			//Uncompute
-			Adjoint CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
+			within {
+				// Calculate the total profit
+				CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
+			} apply {
+				CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
+			}
 		}
 	}
 
@@ -217,18 +210,16 @@ namespace Quantum.Kata.BoundedKnapsack {
 	operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
 		let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
 		using ((outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit())){
-			// Compute the result of each verification onto separate qubits
-			VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
-			VerifyWeight_Reference(n, W, maxTotal, itemWeights, xs, outputW);
-			VerifyProfit_Reference(n, P, maxTotal, itemProfits, xs, outputP);
-
-			// Compute the final result, which is the AND operation of the three separate results
-			// Accomplished by a triple-control Toffoli.
-			Controlled X([outputB] + [outputW] + [outputP], target);
-
-			Adjoint VerifyProfit_Reference(n, P, maxTotal, itemProfits, xs, outputP);
-			Adjoint VerifyWeight_Reference(n, W, maxTotal, itemWeights, xs, outputW);
-			Adjoint VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
+			within {
+				// Compute the result of each verification onto separate qubits
+				VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
+				VerifyWeight_Reference(n, W, maxTotal, itemWeights, xs, outputW);
+				VerifyProfit_Reference(n, P, maxTotal, itemProfits, xs, outputP);
+			} apply {
+				// Compute the final result, which is the AND operation of the three separate results
+				// Accomplished by a triple-control Toffoli.
+				Controlled X([outputB] + [outputW] + [outputP], target);
+			}
 		}
 	}
 
@@ -298,11 +289,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 	function RegisterSize(n : Int, itemInstanceBounds : Int[]) : Int {
 		// Calculate the total number of qubits for the register, given the bounds array. The item with index i can have 0 to bᵢ instances,
-		// which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BinaryLength is used to faciliate
+		// which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BitSizeI is used to faciliate
 		// this calculation. The total number of qubits, Q, is the sum of each individual number of qubits.
 		mutable Q = 0;
 		for (bound in itemInstanceBounds){
-			set Q += BinaryLength(bound);
+			set Q += BitSizeI(bound);
 		}
 		return Q;
 	}
@@ -311,17 +302,15 @@ namespace Quantum.Kata.BoundedKnapsack {
     operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
 
         using (target = Qubit()) {
-            // Put the target into the |-⟩ state
-            X(target);
-            H(target);
-                
-            // Apply the marking oracle; since the target is in the |-⟩ state,
-            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            markingOracle(register, target);
-                
-            // Put the target back into |0⟩ so we can return it
-            H(target);
-            X(target);
+			within {
+				// Put the target into the |-⟩ state
+				X(target);
+				H(target);
+			} apply {
+				// Apply the marking oracle; since the target is in the |-⟩ state,
+				// flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+				markingOracle(register, target);
+			}
         }
     }
     
@@ -374,9 +363,9 @@ namespace Quantum.Kata.BoundedKnapsack {
 	function BoolArrayAsIntArray (n : Int, itemInstanceBounds : Int[], binaryCombo : Bool[]) : Int[]{
 		mutable xsCombo = new Int[n];
 		mutable q = 0;
-		for (i in 0..n-1){
-			set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q..q+BinaryLength(itemInstanceBounds[i])-1]);
-			set q += BinaryLength(itemInstanceBounds[i]);
+		for ((i, b) in (Enumerated(itemInstanceBounds))){
+			set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q..q+BitSizeI(b)-1]);
+			set q += BitSizeI(b);
 		}
 		return xsCombo;
 	}
