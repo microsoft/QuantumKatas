@@ -320,11 +320,12 @@ namespace Quantum.Kata.BoundedKnapsack {
             
         for (i in 1 .. iterations) {
             phaseOracle(register);
-            ApplyToEach(H, register);
-            ApplyToEach(X, register);
-            Controlled Z(Most(register), Tail(register));
-            ApplyToEach(X, register);
-            ApplyToEach(H, register);
+			within {
+				ApplyToEach(H, register);
+				ApplyToEach(X, register);
+			} apply {
+				Controlled Z(Most(register), Tail(register));
+			}
         }
     }
 
