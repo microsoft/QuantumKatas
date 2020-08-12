@@ -78,7 +78,7 @@
 
 // Task 3.1. Using Grover Search with Knapsack Oracle to solve (a slightly modified version of the) Knapsack Decision Problem
 //
-//	1) How many total qubits are necessary for the register? You may want to revisit Hint #1 for Task 2.2.
+//  1) How many total qubits are necessary for the register? You may want to revisit Hint #1 for Task 2.2.
 //
 //  2) If you know how to implement the quantum counting algorithm in Q#, feel free to do so. Otherwise, you might consider
 //     using the iteration method in the GraphColoring kata, or classicaly calculating the ideal number of iterations.
