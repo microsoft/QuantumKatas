@@ -25,7 +25,7 @@
 
 // Task 1.3. Compare Qubit Array with Integer (>)
 //
-//	1) Given two classical bitstrings, what would be the most straightforward way to compare them?
+//  1) Given two classical bitstrings, what would be the most straightforward way to compare them?
 //
 //  2) Are the more significant bits or the less significants bits more important in the comparison of two integers?
 //
