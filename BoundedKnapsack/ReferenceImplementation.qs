@@ -31,7 +31,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     // Task 1.2. Calculate Total Weight or Profit
     operation CalculateTotalWeightOrProfit_01_Reference (n : Int, values : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl{
         // Each qubit in xs determines whether the corresponding value is added.
-        // This process is implemented with a control from xs[i].
+        // This process is implemented with a control from the register.
         let TotalLE = LittleEndian(total);
         for ((control, value) in Zip(register, values)) {
             Controlled IncrementByInteger([control], (value, TotalLE));
@@ -79,11 +79,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 1.5. Verify that total weight doesn't exceed limit W
     operation VerifyWeight_01_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-        using (TotalWeight = Qubit[maxTotal]){
+        using (totalWeight = Qubit[maxTotal]){
             within {
-                CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, TotalWeight);
+                CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, totalWeight);
             } apply {
-                CompareQubitArrayLeqThanInt_Reference(TotalWeight, W, target);
+                CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
             }
         }
     }
@@ -91,11 +91,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 1.6. Verify that the total profit exceeds threshold P
     operation VerifyProfit_01_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-        using (profit = Qubit[maxTotal]){
+        using (totalProfit = Qubit[maxTotal]){
             within {
-                CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, profit);
+                CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, totalProfit);
             } apply {
-                CompareQubitArrayGreaterThanInt_Reference(profit, P, target);
+                CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
             }
         }
     }
