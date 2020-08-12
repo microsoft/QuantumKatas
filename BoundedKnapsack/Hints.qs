@@ -16,7 +16,7 @@
 
 // Task 1.2. Calculate Total Weight or Profit
 //
-//	1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger
+//    1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger
 //
 //  2) How does the state of a qubit in the register affect whether its corresponding value is added into the total?
 
@@ -32,7 +32,7 @@
 //  3) If we begin at the most significant bits and iterate downwards, at what point can we conclude whether a or b is larger?
 //
 //  4) Answer to previous question: We can conclude which one is larger upon arriving at the highest bit that has different value
-//	   in a and b. Example: If a = 10101101₂ (173) and b = 10100011₂ (163), the highest 4 digits are the same in a and b. The digit with
+//       in a and b. Example: If a = 10101101₂ (173) and b = 10100011₂ (163), the highest 4 digits are the same in a and b. The digit with
 //     little-endian index 3 (5th from the left) is the highest bit that has different values in a and b. Since it is 1 in a and 0 in b,
 //     we conclude a > b.
 //
