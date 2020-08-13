@@ -82,10 +82,10 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/quantum/resources/relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
 
-Updating the Katas to a different QDK version can be done using PowerShell script [updateQDKVersion](https://github.com/microsoft/QuantumKatas/blob/master/scripts/updateQDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
+Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/master/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/updateQDKVersion.ps1 0.12.20072031
+   PS> ./scripts/Update-QDKVersion.ps1 0.12.20072031
 ```
 
 > Currently the version format of `iqsharp-base` used in the `DOCKERFILE` is different from the QDK version format; see issue [#420](https://github.com/microsoft/QuantumKatas/issues/420) for more details.
