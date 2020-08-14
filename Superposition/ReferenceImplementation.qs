@@ -272,6 +272,46 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+    // ------------------------------------------------------
+    // Task 1.14. Superposition of all bit strings of the given parity
+    // Inputs:
+    //      1) N qubits in |0..0⟩ state (stored in an array of length N).
+    //      2) An int "parity".
+    // Goal: change the state to an equal superposition of all basis states that have
+    //       an even number of 1s in them if "parity" = 0, or
+    //       an odd number of 1s in them if "parity" = 1.
+    operation AllStatesWithParitySuperposition_Reference (qs : Qubit[], parity : Int) : Unit is Adj + Ctl {
+        // base of recursion: if N = 1, set the qubit to parity
+        let N = Length(qs);
+        if (N == 1) {
+            if (parity == 1) {
+                X(qs[0]);
+            }
+        } else {
+            // split the first qubit into 0 and 1 (with equal amplitudes!)
+            H(qs[0]);
+            // prep 0 ⊗ state with the same parity and 1 ⊗ state with the opposite parity
+            (ControlledOnInt(0, AllStatesWithParitySuperposition_Reference))(qs[0 .. 0], (qs[1 ...], parity));
+            (ControlledOnInt(1, AllStatesWithParitySuperposition_Reference))(qs[0 .. 0], (qs[1 ...], 1 - parity));
+        }
+    }
+
+    // Alternative solution, based on post-selection
+    operation AllStatesWithParitySuperposition_Postselection (qs : Qubit[], parity : Int) : Unit {
+        using (anc = Qubit()) {
+            // Create equal superposition of all basis states
+            ApplyToEach(H, qs);
+            // Calculate the parity of states using CNOTs
+            ApplyToEach(CNOT(_, anc), qs);
+            let res = MResetZ(anc);
+            // Now, if we got measurement result that matches parity, we're good; 
+            // otherwise we can apply X to any one qubit to get our result!
+            if ((res == Zero ? 0 | 1) != parity) {
+                X(qs[0]);
+            }
+        }
+    }
+
 
     //////////////////////////////////////////////////////////////////
     // Part II. Arbitrary Rotations
