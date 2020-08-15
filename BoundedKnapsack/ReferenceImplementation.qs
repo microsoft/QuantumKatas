@@ -121,7 +121,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 2.1. Read combination from a jagged array of qubits
     operation MeasureCombination_Reference (xs : Qubit[][]) : Int[] {
-        return Mapped(Compose(ResultArrayAsInt, MultiM), xs);
+		let n = Length(xs);
+		mutable xsCombo = new Int[n];
+		for (i in 0..n-1){
+			set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
+		}
+		return xsCombo;
     }
 
 
