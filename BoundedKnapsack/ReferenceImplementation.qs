@@ -263,9 +263,7 @@ namespace Quantum.Kata.BoundedKnapsack {
                 // Check that the combination is a valid combination.
                 using (output = Qubit()){
                     KnapsackValidationOracle_Reference(n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, register, output);
-                    if (MResetZ(output) == One){
-                        set correct = true;
-                    }
+                    set correct = IsResultOne(MResetZ(output));
                 }
 
                 // When the valid combination is found, calculate its profit
