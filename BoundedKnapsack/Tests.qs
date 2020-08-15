@@ -535,7 +535,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for xs = {xsCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    Fact((actualProfit > P) == output, $"Unexpected result for xs = {xsCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
                     ResetAll(register);
                     Reset(target);
                 }
