@@ -313,7 +313,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         }
     }
     
-    operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
+    internal operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         let phaseOracle = OracleConverterImpl(oracle, _);
         ApplyToEach(H, register);
             
@@ -332,7 +332,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     // A placeholder for the quantum counting algorithm, which will be implemented in a separate kata.
     // Calculate value M for the oracle (number of solutions), which is used in determining how many
     // Grover Iterations are necessary in Grover's Algorithm.
-    function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
+    internal function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
         let Q = RegisterSize(n, itemInstanceBounds);
         mutable m = 0;
         for (combo in 0..(1 <<< Q) - 1){
@@ -360,7 +360,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    function BoolArrayAsIntArray (n : Int, itemInstanceBounds : Int[], binaryCombo : Bool[]) : Int[]{
+    internal function BoolArrayAsIntArray (n : Int, itemInstanceBounds : Int[], binaryCombo : Bool[]) : Int[]{
         mutable xsCombo = new Int[n];
         mutable q = 0;
         for ((i, b) in (Enumerated(itemInstanceBounds))){
