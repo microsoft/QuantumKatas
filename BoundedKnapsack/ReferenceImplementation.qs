@@ -143,7 +143,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     operation VerifyBounds_Reference (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         using (satisfy = Qubit[n]) {
             within {
-                for ((x, b, satisfyBit) in Zip(xs, itemInstanceBounds, satisfy)) {
+                for ((x, b, satisfyBit) in Zip3(xs, itemInstanceBounds, satisfy)) {
                     // Check that each individual xᵢ satisfies the bound.
                     // If the number represented by x is at most bᵢ, then the result will be 1, indicating satisfication.
                     CompareQubitArrayLeqThanInt_Reference(x, b, satisfyBit);
@@ -173,7 +173,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     operation CalculateTotalWeightOrProfit_Reference (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl {
         // The item type with index i contributes xᵢ instances to the knapsack, adding values[i] per instance to the total.
         // Thus, for each item type, we increment the total by their product.
-        for ((value, x) in Zip(values, XS)) {
+        for ((value, x) in Zip(values, xs)) {
             IncrementByProduct_Reference(value, x, total);
         }
     }
@@ -318,8 +318,8 @@ namespace Quantum.Kata.BoundedKnapsack {
         for (i in 1 .. iterations) {
             phaseOracle(register);
             within {
-                ApplyToEach(H, register);
-                ApplyToEach(X, register);
+                ApplyToEachA(H, register);
+                ApplyToEachA(X, register);
             } apply {
                 Controlled Z(Most(register), Tail(register));
             }
