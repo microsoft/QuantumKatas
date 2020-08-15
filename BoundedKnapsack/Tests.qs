@@ -182,7 +182,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(actualProfit > P) == output, $"Unexpected result for xs = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    Fact((actualProfit > P) == output, $"Unexpected result for xs = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
                     ResetAll(xs);
                     Reset(target);
                 }
