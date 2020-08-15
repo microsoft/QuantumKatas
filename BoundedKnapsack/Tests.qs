@@ -93,7 +93,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     for (b in 0 .. (1 <<< D) - 1){
                         CompareQubitArrayGreaterThanInt(register, b, target);
                         let output = (M(target)==One);
-                        Fact(not XOR(a > b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
+                        Fact((a > b) == output, $"Unexpected result for a = {a}, b = {b} : {output}");
                         Reset(target);
                     }
                     ResetAll(register);
@@ -117,7 +117,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     for (b in 0 .. (1 <<< D) - 1){
                         CompareQubitArrayLeqThanInt(register, b, target);
                         let output = (M(target)==One);
-                        Fact(not XOR(a <= b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
+                        Fact((a <= b) == output, $"Unexpected result for a = {a}, b = {b} : {output}");
                         Reset(target);
                     }
                     ResetAll(register);
@@ -150,7 +150,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
+                    Fact((actualWeight <= W) == output, $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
                     ResetAll(xs);
                     Reset(target);
                 }
@@ -182,7 +182,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for xs = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    Fact(actualProfit > P) == output, $"Unexpected result for xs = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
                     ResetAll(xs);
                     Reset(target);
                 }
@@ -216,7 +216,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W and actualProfit > P, output), $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    Fact((actualWeight <= W and actualProfit > P) == output, $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
                     ResetAll(xs);
                     Reset(target);
                 }
@@ -364,7 +364,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualBounds, output), $"Unexpected result for xs = {xsCombo}, itemInstanceBounds = {itemInstanceBounds} : {output}");
+                    Fact(actualBounds == output, $"Unexpected result for xs = {xsCombo}, itemInstanceBounds = {itemInstanceBounds} : {output}");
                     ResetAll(register);
                     Reset(target);
                 }
@@ -491,7 +491,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
+                    Fact((actualWeight <= W) == output, $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
                     ResetAll(register);
                     Reset(target);
                 }
@@ -586,7 +586,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualBounds and actualWeight <= W and actualProfit > P, output), $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds}, P = {P} : {output}");
+                    Fact((actualBounds and actualWeight <= W and actualProfit > P) == output, $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds}, P = {P} : {output}");
                     ResetAll(register);
                     Reset(target);
                 }
@@ -628,7 +628,7 @@ namespace Quantum.Kata.BoundedKnapsack
             let valid = actualBounds and actualWeight <= W and actualProfit > P;
 
             // Assert that the output from Grover's Algorithm is correct.
-            Fact(not XOR(valid, P < P_max), $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {xs_found}");
+            Fact(valid == (P < P_max), $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {xs_found}");
             ResetAll(register);
             Reset(target);
         }
