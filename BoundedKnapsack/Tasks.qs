@@ -34,7 +34,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // Unlike the other katas, whose tasks consist of a series of individual
     // problems, this kata's tasks each comprise one part of a large
     // operation to solve one problem.
-    // Hints for the more complicated tasks can be found in the Hints.qs file.
+    // Hints for the more complicated tasks can be found in the Hints.md file.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -174,8 +174,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     // Task 2.1. Read combination from a jagged array of qubits
-    // Inputs:
-    //        1) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
+    // Input:
+    //        A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
     // Output: An integer array of length n, containing the combination that this jagged array represents.
     //           The integer at index i in the output array should have value xᵢ.
     // Example: For state xs = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
