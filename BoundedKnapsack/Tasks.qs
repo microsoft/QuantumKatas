@@ -90,7 +90,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
     //      3) A qubit in an arbitrary state (target qubit)
     // Goal: Flip the state of the target qubit if the integer represented by qs is greater than b.
-    // Example: For b = 11, the input state |1011⟩|0⟩ should return as |1011⟩|1⟩, since 1101₂ (13) > 11.
+    // Example: For b = 11, the input state |1011⟩|0⟩ should return as |1011⟩|1⟩, since 1101₂ = 13 > 11.
     operation CompareQubitArrayGreaterThanInt(qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
         // ...
     }
@@ -102,7 +102,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
     //      3) A qubit in an arbitrary state (target qubit)
     // Goal: Flip the state of the target qubit if the integer represented by qs is less than or equal to b.
-    // Example: For b = 7, the input state |1010⟩|0⟩ should return as |1010⟩|1⟩, since 0101₂ (5) ≤ 7.
+    // Example: For b = 7, the input state |1010⟩|0⟩ should return as |1010⟩|1⟩, since 0101₂ = 5 ≤ 7.
     operation CompareQubitArrayLeqThanInt (qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
         // ...
     }
