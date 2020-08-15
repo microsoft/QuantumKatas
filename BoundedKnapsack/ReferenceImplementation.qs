@@ -298,7 +298,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
     // Grover loop implementation taken from SolveSATWithGrover kata.
-    operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
+    internal operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
 
         using (target = Qubit()) {
             within {
