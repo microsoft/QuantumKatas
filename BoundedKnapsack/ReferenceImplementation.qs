@@ -29,12 +29,12 @@ namespace Quantum.Kata.BoundedKnapsack {
     
 
     // Task 1.2. Calculate Total Weight or Profit
-    operation CalculateTotalWeightOrProfit_01_Reference (n : Int, values : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl{
+    operation CalculateTotalWeightOrProfit_01_Reference (n : Int, values : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl {
         // Each qubit in xs determines whether the corresponding value is added.
         // This process is implemented with a control from the register.
-        let TotalLE = LittleEndian(total);
+        let totalLE = LittleEndian(total);
         for ((control, value) in Zip(register, values)) {
-            Controlled IncrementByInteger([control], (value, TotalLE));
+            Controlled IncrementByInteger([control], (value, totalLE));
         }
     }
 
@@ -69,7 +69,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.4. Compare Qubit Array with Integer (≤)
-    operation CompareQubitArrayLeqThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+    operation CompareQubitArrayLeqThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
         // This operation essentially calculates the opposite of the greater-than
         // comparator, so we can just call CompareQubitArrayGreaterThanInt, and then an X gate.
         CompareQubitArrayGreaterThanInt_Reference(a, b, target);
@@ -78,8 +78,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.5. Verify that total weight doesn't exceed limit W
-    operation VerifyWeight_01_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-        using (totalWeight = Qubit[maxTotal]){
+    operation VerifyWeight_01_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        using (totalWeight = Qubit[maxTotal]) {
             within {
                 CalculateTotalWeightOrProfit_01_Reference(n, itemWeights, register, totalWeight);
             } apply {
@@ -90,8 +90,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.6. Verify that the total profit exceeds threshold P
-    operation VerifyProfit_01_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-        using (totalProfit = Qubit[maxTotal]){
+    operation VerifyProfit_01_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        using (totalProfit = Qubit[maxTotal]) {
             within {
                 CalculateTotalWeightOrProfit_01_Reference(n, itemProfits, register, totalProfit);
             } apply {
@@ -102,8 +102,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.7. 0-1 Knapsack Problem Validation Oracle
-    operation KnapsackValidationOracle_01_Reference (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
-        using ((outputW, outputP) = (Qubit(), Qubit())){
+    operation KnapsackValidationOracle_01_Reference (n : Int, W : Int, P : Int, maxTotal : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        using ((outputW, outputP) = (Qubit(), Qubit())) {
             within {
                 VerifyWeight_01_Reference(n, W, maxTotal, itemWeights, register, outputW);
                 VerifyProfit_01_Reference(n, P, maxTotal, itemProfits, register, outputP);
@@ -126,12 +126,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.2. Convert Qubit Register into Jagged Qubit Array
-    function RegisterAsJaggedArray_Reference (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][]{
+    function RegisterAsJaggedArray_Reference (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][] {
         // Note: Declaring a new qubit array doesn't actually allocate new qubits; it allocates
-        //         memory to store references to existing qubits.
+        //       memory to store references to existing qubits.
         mutable xs = new Qubit[][n];
         mutable q = 0;
-        for (i in 0..n-1){
+        for (i in 0..n-1) {
             set xs w/= i <- register[q..q+BitSizeI(itemInstanceBounds[i])-1];
             set q += BitSizeI(itemInstanceBounds[i]);
         }
@@ -140,10 +140,10 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.3. Verification of Bounds Satisfaction
-    operation VerifyBounds_Reference (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-        using (satisfy = Qubit[n]){
+    operation VerifyBounds_Reference (n : Int, itemInstanceBounds : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        using (satisfy = Qubit[n]) {
             within {
-                for ((x, b, satisfyBit) in Zip(xs, itemInstanceBounds, satisfy)){
+                for ((x, b, satisfyBit) in Zip(xs, itemInstanceBounds, satisfy)) {
                     // Check that each individual xᵢ satisfies the bound.
                     // If the number represented by x is at most bᵢ, then the result will be 1, indicating satisfication.
                     CompareQubitArrayLeqThanInt_Reference(x, b, satisfyBit);
@@ -157,8 +157,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.4. Increment Qubit Array by Product of an Integer and a different Qubit Array
-    operation IncrementByProduct_Reference (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl{
-        let D = Length(y);
+    operation IncrementByProduct_Reference (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl {
         let zLE = LittleEndian(z);
 
         // Calculates each partial product, y[i] · x · 2ⁱ
@@ -171,18 +170,18 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.5. Calculation of Total Weight or Profit
-    operation CalculateTotalWeightOrProfit_Reference (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl{
+    operation CalculateTotalWeightOrProfit_Reference (n : Int, values : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl {
         // The item type with index i contributes xᵢ instances to the knapsack, adding values[i] per instance to the total.
         // Thus, for each item type, we increment the total by their product.
-        for ((value, x) in Zip(values, xs)){
+        for ((value, x) in Zip(values, XS)) {
             IncrementByProduct_Reference(value, x, total);
         }
     }
 
 
     // Task 2.6. Verify that Weight satisfies limit W
-    operation VerifyWeight_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-        using (totalWeight = Qubit[maxTotal]){
+    operation VerifyWeight_Reference (n: Int, W : Int, maxTotal : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        using (totalWeight = Qubit[maxTotal]) {
             within {
                 // Calculate the total weight
                 CalculateTotalWeightOrProfit_Reference(n, itemWeights, xs, totalWeight);
@@ -194,8 +193,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.7. Verify that the total profit exceeds threshold P
-    operation VerifyProfit_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
-        using (totalProfit = Qubit[maxTotal]){
+    operation VerifyProfit_Reference (n: Int, P : Int, maxTotal : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        using (totalProfit = Qubit[maxTotal]) {
             within {
                 // Calculate the total profit
                 CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, totalProfit);
@@ -207,9 +206,9 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.8. Bounded Knapsack Problem Validation Oracle
-    operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, maxTotal: Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
-        using ((outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit())){
+        using ((outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit())) {
             within {
                 // Compute the result of each verification onto separate qubits
                 VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
@@ -287,7 +286,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         
     }
 
-    function RegisterSize(n : Int, itemInstanceBounds : Int[]) : Int {
+    internal function RegisterSize(n : Int, itemInstanceBounds : Int[]) : Int {
         // Calculate the total number of qubits for the register, given the bounds array. The item with index i can have 0 to bᵢ instances,
         // which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BitSizeI is used to faciliate
         // this calculation. The total number of qubits, Q, is the sum of each individual number of qubits.
