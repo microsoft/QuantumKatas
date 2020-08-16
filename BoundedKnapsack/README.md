@@ -1,4 +1,4 @@
-#Welcome!
+# Welcome!
 
 The "BoundedKnapsack" quantum kata is a series of exercises designed to teach you to use Grover Search to solve the Knapsack Problem. The Knapsack Problem is a prominent computational problem that is very applicable in industries like e-commerce. The overall goal in this kata is to solve the Knapsack Optimization Problem, by running Grover's Algorithm multiple times. You will write oracles that describe the Knapsack Problem, and use these oracles in Grovers Algorithm to solve the Knapsack Problem.
 
