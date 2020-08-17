@@ -15,6 +15,7 @@ USER root
 # Install Python dependencies for the Python visualization and tutorial notebooks
 RUN pip install -I --no-cache-dir \
         matplotlib \
+        numpy \
         pytest && \
 # Give permissions to the jovyan user
     chown -R ${USER} ${HOME} && \
