@@ -24,7 +24,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         // apply operation to the |0⟩ state and measure: |0⟩ means I, |1⟩ means X
         using (q = Qubit()) {
             unitary(q);
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
 
@@ -38,7 +38,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             H(q);
             unitary(q);
             H(q);
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
 
@@ -54,7 +54,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             unitary(q);
             unitary(q);
             H(q);
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
 
@@ -71,7 +71,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             } apply {
                 X(q);
             }
-            return MResetZ(q) == Zero ? 0 | 1;
+            return M(q) == Zero ? 0 | 1;
         }
     }
     
@@ -90,7 +90,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             H(qs[0]);
             // |0⟩ means it was Z, |1⟩ means -Z
 
-            return MResetZ(qs[0]) == Zero ? 0 | 1;
+            return M(qs[0]) == Zero ? 0 | 1;
         }
     }
 
@@ -105,7 +105,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             } apply {
                 Controlled unitary(qs[0..0], (2.0 * PI(), qs[1]));
             }
-            return MResetZ(qs[0]) == Zero ? 1 | 0;
+            return M(qs[0]) == Zero ? 1 | 0;
         }
     }
 
@@ -127,7 +127,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             }
 
             // 0 means it was Y
-            return MResetZ(qs[0]) == Zero ? 0 | 1;
+            return M(qs[0]) == Zero ? 0 | 1;
         }
     }
     
@@ -276,7 +276,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         // apply to |00⟩ and measure 2nd qubit: CNOT will do nothing, I ⊗ X will change to |01⟩
         using (qs = Qubit[2]) {
             unitary(qs);
-            return MResetZ(qs[1]) == One ? 0 | 1;
+            return M(qs[1]) == One ? 0 | 1;
         }
     }
 
@@ -289,7 +289,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         using (qs = Qubit[2]) {
             within { X(qs[1]); }
             apply { unitary(qs); }
-            return MResetZ(qs[0]) == Zero ? 0 | 1;
+            return M(qs[0]) == Zero ? 0 | 1;
         }
     }
 
@@ -303,7 +303,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
             X(qs[1]);
             unitary(qs);
             Reset(qs[1]);
-            return MResetZ(qs[0]) == Zero ? 0 | 1;
+            return M(qs[0]) == Zero ? 0 | 1;
         }
     }
 
