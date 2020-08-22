@@ -421,6 +421,27 @@ namespace Quantum.Kata.Superposition {
         }
     }
 
+	// ------------------------------------------------------
+    // Task 2.8 Prepare Superposition of Basis States with the Same Parity
+    // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
+    // Goal: This problem can be treated as another post-selection state preparation task. We start by preparing an equal superposition of all basis states and allocating an extra qubit. 
+	// This time we use the extra qubit to calculate the parity of the input state: applying a series of CNOT gates, each one with one of the input qubits as control and the extra qubit as a target,
+	// will compute the parity of the state. Now we measure the extra qubit: if the measurement result matches our parity, we're done — the input qubits collapsed to an equal superposition of all states that have this parity. 
+	// If the measurement result is the opposite, we can retry the whole process
+
+    operation Superposition_Basis_withParity_Reference(qs : Qubit[], parity : Int) : Unit {
+        using (ancilla = Qubit()) {
+            // Create equal superposition of all basis states
+            ApplyToEach(H, qs);
+            // Calculate the parity of states using CNOTs
+            ApplyToEach(CNOT(_, ancilla), qs);
+            let res = MResetZ(ancilla);
+            if ((res == Zero ? 0 | 1) != parity) {
+                X(qs[0]);
+            }
+        }
+    }
+
     // Iterative solution (equivalent to the WState_Arbitrary_Reference, but with the recursion unrolled)
     // Circuit for N=4: https://algassert.com/quirk#circuit={%22cols%22:[[1,1,1,%22~95cq%22],[1,1,%22~erlf%22,%22%E2%97%A6%22],[1,%22~809j%22,%22%E2%97%A6%22,%22%E2%97%A6%22],[%22X%22,%22%E2%97%A6%22,%22%E2%97%A6%22,%22%E2%97%A6%22]],%22gates%22:[{%22id%22:%22~809j%22,%22name%22:%22FS_2%22,%22matrix%22:%22{{%E2%88%9A%C2%BD,-%E2%88%9A%C2%BD},{%E2%88%9A%C2%BD,%E2%88%9A%C2%BD}}%22},{%22id%22:%22~erlf%22,%22name%22:%22FS_3%22,%22matrix%22:%22{{%E2%88%9A%E2%85%94,-%E2%88%9A%E2%85%93},{%E2%88%9A%E2%85%93,%E2%88%9A%E2%85%94}}%22},{%22id%22:%22~95cq%22,%22name%22:%22FS_4%22,%22matrix%22:%22{{%E2%88%9A%C2%BE,-%C2%BD},{%C2%BD,%E2%88%9A%C2%BE}}%22}]}
     operation WState_Arbitrary_Iterative (qs : Qubit[]) : Unit is Adj {

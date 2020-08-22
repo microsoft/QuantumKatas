@@ -269,4 +269,15 @@ namespace Quantum.Kata.Superposition {
     operation WState_Arbitrary (qs : Qubit[]) : Unit {
         // ...
     }
+
+	
+    // Task 2.8 Prepare Superposition of Basis States with the Same Parity
+    // Input: N qubits in |0...0⟩ state (N is not necessarily a power of 2).
+    // Goal: This problem can be treated as another post-selection state preparation task. We start by preparing an equal superposition of all basis states and allocating an extra qubit. 
+	// This time we use the extra qubit to calculate the parity of the input state: applying a series of CNOT gates, each one with one of the input qubits as control and the extra qubit as a target,
+	// will compute the parity of the state. Now we measure the extra qubit: if the measurement result matches our parity, we're done — the input qubits collapsed to an equal superposition of all states that have this parity. 
+	// If the measurement result is the opposite, we can retry the whole process
+    operation Superposition_Basis_withParity (qs : Qubit[], parity : Int) : Unit {
+        // ...
+    }
 }
