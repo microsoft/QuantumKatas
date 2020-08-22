@@ -200,6 +200,23 @@ namespace Quantum.Kata.Superposition {
     }
 
 
+    // Task 1.14. Superposition of all bit strings of the given parity
+    // Inputs:
+    //      1) N qubits in |0..0⟩ state (stored in an array of length N).
+    //      2) An int "parity".
+    // Goal: change the state to an equal superposition of all basis states that have
+    //       an even number of 1s in them if "parity" = 0, or
+    //       an odd number of 1s in them if "parity" = 1.
+    // Example: for N = 2, the goal state would be (|00⟩ + |11⟩) / sqrt(2) if "parity" = 0,
+    //       and (|01⟩ + |10⟩) / sqrt(2) if "parity" = 1.
+    operation AllStatesWithParitySuperposition (qs : Qubit[], parity : Int) : Unit {
+        // Hint: remember that you can call the solution recursively.
+        //       You are allowed to modify the signature of the method to include adjoint and/or controlled variants.
+
+        // ...
+    }
+
+
     //////////////////////////////////////////////////////////////////
     // Part II. Arbitrary Rotations
     //////////////////////////////////////////////////////////////////
