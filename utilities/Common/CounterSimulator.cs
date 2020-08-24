@@ -90,7 +90,7 @@ namespace Microsoft.Quantum.Katas
                 _sim = m;
             }
 
-            public override Func<QVoid, QVoid> Body => (__in) =>
+            public override Func<QVoid, QVoid> __Body__ => (__in) =>
             {
                 _sim._operationsCount.Clear();
                 _sim._multiQubitOperations = 0;
@@ -110,7 +110,7 @@ namespace Microsoft.Quantum.Katas
                 _sim = m;
             }
 
-            public override Func<T, long> Body => (__in) =>
+            public override Func<T, long> __Body__ => (__in) =>
             {
                 var oracle = __in;
 
@@ -136,7 +136,7 @@ namespace Microsoft.Quantum.Katas
                 _sim = m;
             }
 
-            public override Func<QVoid, long> Body => (__in) =>
+            public override Func<QVoid, long> __Body__ => (__in) =>
             {
                 return _sim._multiQubitOperations;
             };
@@ -214,7 +214,7 @@ namespace Microsoft.Quantum.Katas
                 _sim = m;
             }
 
-            public override Func<QVoid, QVoid> Body => (__in) =>
+            public override Func<QVoid, QVoid> __Body__ => (__in) =>
             {
                 _sim._qubitsAllocated = 0;
                 _sim._maxQubitsAllocated = 0;
@@ -234,7 +234,7 @@ namespace Microsoft.Quantum.Katas
                 _sim = m;
             }
 
-            public override Func<QVoid, long> Body => (__in) =>
+            public override Func<QVoid, long> __Body__ => (__in) =>
             {
                 return _sim._maxQubitsAllocated;
             };
