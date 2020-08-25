@@ -60,7 +60,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Calculate and measure the weight with qubits
                     CalculateTotalWeightOrProfit_01(n, itemWeights, xs, totalWeight);
-                    mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
+                    let measuredWeight = ResultArrayAsInt(MultiM(totalWeight));
+
 
                     // Calculate the weight classically
                     mutable actualWeight = 0;
