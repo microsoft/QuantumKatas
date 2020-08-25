@@ -17,20 +17,15 @@ namespace Quantum.Kata.BoundedKnapsack
     open Quantum.Kata.Utils;
 
 
-    //////////////////////////////////////////////////////////////////
-    // Part I. 0-1 Knapsack Problem
-    //////////////////////////////////////////////////////////////////
-
-
-    // Hardcoded sets of 0-1 Knapsack Problem parameters, for testing the operations
+    // Hardcoded sets of 0-1 knapsack problem parameters, for testing the operations
     // The function returns an array of tuples, each representing a set of parameters.
-    // The contents of each tuple include: n, W, P, maxTotal, itemWeights, itemProfits (in that order).
-    function ExampleSets_01 () : (Int, Int, Int, Int, Int[], Int[])[] {
-        return [(2, 6, 3, 5, [2,5], [1,3]),
-                (3, 12, 15, 5, [2,3,10], [2,3,15]),
-                (3, 9, 5, 5, [6,3,1], [5,2,1]),
-                (4, 4, 9, 5, [1,2,3,1], [2,4,9,2]),
-                (5, 16, 16, 5, [7,7,2,3,3], [3,2,9,6,5])];
+    // The contents of each tuple include: n, W, P, itemWeights, itemProfits (in that order).
+    function ExampleSets_01 () : (Int, Int, Int, Int[], Int[])[] {
+        return [(2, 6, 3, [2,5], [1,3]),
+                (3, 12, 15, [2,3,10], [2,3,15]),
+                (3, 9, 5, [6,3,1], [5,2,1]),
+                (4, 4, 9, [1,2,3,1], [2,4,9,2]),
+                (5, 16, 16, [7,7,2,3,3], [3,2,9,6,5])];
     }
 
 
@@ -38,11 +33,11 @@ namespace Quantum.Kata.BoundedKnapsack
         for (n in 1..4){
             // Iterate through all possible combinations.
             for (combo in 0 .. (1 <<< n) - 1){
-                using (register = Qubit[n)){
+                using (selectedItems = Qubit[n)){
                     // Prepare the register so that it contains the integer a in little-endian format.
                     let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
-                    let measuredCombo = MeasureCombination_01(register);
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+                    let measuredCombo = MeasureCombination_01(selectedItems);
                     Fact(BoolArrayAsInt(measuredCombo) == combo, $"Unexpected result for combination {binaryCombo} : {measuredCombo}");
                 }
             }
@@ -50,20 +45,32 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T12_CalculateTotalWeightOrProfit_01_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((xs, totalWeight) = (Qubit[n], Qubit[maxTotal])){
+    operation T12_NumQubitsTotalValue_01_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
+            let numQubitsTotalWeight = NumQubitsTotalValue_01(itemWeights);
+            Fact(numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights), $"Unexpected result for itemWeights = {itemWeights} : {numQubitsTotalWeight}");
+            
+            let numQubitsTotalProfit = NumQubitsTotalValue_01(itemProfits);
+            Fact(numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits), $"Unexpected result for itemProfits = {itemProfits} : {numQubitsTotalProfit}");
+        }
+    }
+
+
+    operation T13_CalculateTotalValueOfSelectedItems_01_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
+            let numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights);
+            using ((selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight])){
                 // Iterate through all possible combinations of items.
                 for (combo in 0..(1 <<< n) - 1){
                     // Prepare the register so that it represents the combination.
                     let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, xs);
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
 
                     // Reset the counter of measurements done
                     ResetOracleCallsCount();
 
                     // Calculate and measure the weight with qubits
-                    CalculateTotalWeightOrProfit_01(n, itemWeights, xs, totalWeight);
+                    CalculateTotalValueOfSelectedItems_01(itemWeights, selectedItems, totalWeight);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -80,8 +87,8 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(actualWeight == MeasuredWeight, $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights} : {MeasuredWeight}");
-                    ResetAll(xs);
+                    Fact(actualWeight == MeasuredWeight, $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights} : {MeasuredWeight}");
+                    ResetAll(selectedItems);
                     ResetAll(totalWeight);
                 }
             }
@@ -89,14 +96,14 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T13_CompareQubitArrayGreaterThanInt_Test () : Unit {
+    operation T14_CompareQubitArrayGreaterThanInt_Test () : Unit {
         for (D in 1..4){
             // Iterate through all possible left operands a.
             for (a in 0 .. (1 <<< D) - 1){
-                using ((register, target) = (Qubit[D], Qubit())){
+                using ((selectedItems, target) = (Qubit[D], Qubit())){
                     // Prepare the register so that it contains the integer a in little-endian format.
                     let binaryA = IntAsBoolArray(a, D);
-                    ApplyPauliFromBitString(PauliX, true, binaryA, register);
+                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
                                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -107,7 +114,7 @@ namespace Quantum.Kata.BoundedKnapsack
                         // Reset the counter of measurements done
                         ResetOracleCallsCount();
 
-                        CompareQubitArrayGreaterThanInt(register, b, target);
+                        CompareQubitArrayGreaterThanInt(selectedItems, b, target);
                     
                         // Make sure the solution didn't use any measurements
                         Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -117,28 +124,28 @@ namespace Quantum.Kata.BoundedKnapsack
                         Fact(not XOR(a > b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
                         Reset(target);
                     }
-                    ResetAll(register);
+                    ResetAll(selectedItems);
                 }
             }
         }
     }
 
 
-    operation T14_CompareQubitArrayLeqThanInt_Test () : Unit {
+    operation T15_CompareQubitArrayLeqThanInt_Test () : Unit {
         for (D in 1..4){
             // Iterate through all possible left operands a.
             for (a in 0 .. (1 <<< D) - 1){
-                using ((register, target) = (Qubit[D], Qubit())){
+                using ((selectedItems, target) = (Qubit[D], Qubit())){
                     // Prepare the register so that it contains the integer a in little-endian format.
                     let binaryA = IntAsBoolArray(a, D);
-                    ApplyPauliFromBitString(PauliX, true, binaryA, register);
+                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
 
                     // Iterate through all possible right operands b.
                     for (b in 0 .. (1 <<< D) - 1){
                         // Reset the counter of measurements done
                         ResetOracleCallsCount();
 
-                        CompareQubitArrayLeqThanInt(register, b, target);
+                        CompareQubitArrayLeqThanInt(selectedItems, b, target);
                     
                         // Make sure the solution didn't use any measurements
                         Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -148,27 +155,27 @@ namespace Quantum.Kata.BoundedKnapsack
                         Fact(not XOR(a <= b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
                         Reset(target);
                     }
-                    ResetAll(register);
+                    ResetAll(selectedItems);
                 }
             }
         }
     }
 
 
-    operation T15_VerifyWeight_01_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((xs, target) = (Qubit[n], Qubit())){
+    operation T16_VerifyWeight_01_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
+            using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
                 for (combo in 0..(1 <<< n) - 1){
                     // Prepare the register so that it represents the combination.
                     let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, xs);
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
                     
                     // Reset the counter of measurements done
                     ResetOracleCallsCount();
 
                     // Verify the weight with qubits
-                    VerifyWeight_01(n, W, maxTotal, itemWeights, xs, target);
+                    VerifyWeight_01(n, W, itemWeights, selectedItems, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -185,8 +192,8 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
-                    ResetAll(xs);
+                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
+                    ResetAll(selectedItems);
                     Reset(target);
                 }
             }
@@ -194,20 +201,20 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T16_VerifyProfit_01_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((xs, target) = (Qubit[n], Qubit())){
+    operation T17_VerifyProfit_01_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
+            using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
                 for (combo in 0..(1 <<< n) - 1){
                     // Prepare the register so that it represents the combination.
                     let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, xs);
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
                     
                     // Reset the counter of measurements done
                     ResetOracleCallsCount();
 
                     // Verify the profit with qubits
-                    VerifyProfit_01(n, P, maxTotal, itemProfits, xs, target);
+                    VerifyProfit_01(n, P, itemProfits, selectedItems, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -224,8 +231,8 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for xs = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
-                    ResetAll(xs);
+                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for selectedItems = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    ResetAll(selectedItems);
                     Reset(target);
                 }
             }
@@ -233,20 +240,20 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T17_KnapsackValidationOracle_01_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((xs, target) = (Qubit[n], Qubit())){
+    operation T18_KnapsackValidationOracle_01_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
+            using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
                 for (combo in 0..(1 <<< n) - 1){
                     // Prepare the register so that it represents the combination.
                     let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, xs);
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
                     
                     // Reset the counter of measurements done
                     ResetOracleCallsCount();
 
                     // Verify the combination with qubits
-                    KnapsackValidationOracle_01(n, W, P, maxTotal, itemWeights, itemProfits, xs, target);
+                    KnapsackValidationOracle_01(n, W, P, itemWeights, itemProfits, selectedItems, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -265,8 +272,8 @@ namespace Quantum.Kata.BoundedKnapsack
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W and actualProfit > P, output), $"Unexpected result for xs = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
-                    ResetAll(xs);
+                    Fact(not XOR(actualWeight <= W and actualProfit > P, output), $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
+                    ResetAll(selectedItems);
                     Reset(target);
                 }
             }
@@ -278,24 +285,24 @@ namespace Quantum.Kata.BoundedKnapsack
     // Part II. Bounded Knapsack Problem
     //////////////////////////////////////////////////////////////////
     
-    // Hardcoded sets of Knapsack Problem parameters, for testing the operations
+    // Hardcoded sets of knapsack problem parameters, for testing the operations
     // The function returns an array of tuples, each representing a set of parameters.
-    // The contents of each tuple include: n, W, P, maxTotal, itemWeights, itemProfits, P_max (in that order).
+    // The contents of each tuple include: n, W, P, itemWeights, itemProfits, P_max (in that order).
     // Note: For each set, P is a sample profit threshold for testing that set in the
-    //         Knapsack Decision Problem. P_max is the maximum profit achievable within the
+    //         knapsack decision problem. P_max is the maximum profit achievable within the
     //         given bounds and weight constraints of that set (i.e. the solution to the
-    //         Knapsack Optimization Problem). P and P_max will never actually be used in the
+    //         knapsack optimization problem). P and P_max will never actually be used in the
     //         same test.
-    function ExampleSets () : (Int, Int, Int, Int, Int[], Int[], Int[], Int)[] {
-        return [(2, 30, 10, 7, [2,5], [1,3], [7,5], 17),
-                (3, 24, 16, 7, [2,3,10], [2,3,15], [6,5,2], 24),
-                (3, 16, 5, 7, [6,3,1], [5,2,1], [4,7,2], 13),
-                (4, 14, 24, 7, [1,2,3,1], [2,4,9,2], [4,3,2,3], 34)];
+    function ExampleSets () : (Int, Int, Int, Int[], Int[], Int[], Int)[] {
+        return [(2, 30, 10, [2,5], [1,3], [7,5], 17),
+                (3, 24, 16, [2,3,10], [2,3,15], [6,5,2], 24),
+                (3, 16, 5, [6,3,1], [5,2,1], [4,7,2], 13),
+                (4, 14, 24, [1,2,3,1], [2,4,9,2], [4,3,2,3], 34)];
     }
 
 
     operation T21_MeasureCombination_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -317,7 +324,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Convert the quantum register.
-                    let xs = RegisterAsJaggedArray(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -340,7 +347,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     operation T22_RegisterAsJaggedArray_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -387,7 +394,7 @@ namespace Quantum.Kata.BoundedKnapsack
     
 
     operation T23_VerifyBounds_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -467,7 +474,7 @@ namespace Quantum.Kata.BoundedKnapsack
                             Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                             let measuredZ = ResultArrayAsInt(MultiM(qz));
-                            Fact(measuredZ == (z + x*y)%(1 <<< D), $"Unexpected result for x = {x}, y = {y}, z = {z} : {measuredZ}");
+                            Fact(measuredZ == (z + x*y) % (1 <<< D), $"Unexpected result for x = {x}, y = {y}, z = {z} : {measuredZ}");
                             ResetAll(qz);
                         }
                         ResetAll(qy);
@@ -478,13 +485,27 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T25_CalculateTotalWeightOrProfit_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+    operation T25_NumQubitsTotalValue_Reference_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+            let numQubitsTotalWeight = NumQubitsTotalValue(itemWeights, itemInstanceBounds);
+            Fact(numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds), $"Unexpected result for itemWeights = {itemWeights}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalWeight}");
+            
+            let numQubitsTotalProfit = NumQubitsTotalValue(itemProfits, itemInstanceBounds);
+            Fact(numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceBounds), $"Unexpected result for itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalProfit}");
+        }
+    }
+
+
+    operation T26_CalculateTotalValueOfSelectedItems_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
 
-            using ((register, totalWeight, totalProfit) = (Qubit[Q], Qubit[maxTotal], Qubit[maxTotal])){
+            let numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds);
+            let numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceBounds);
+
+            using ((register, totalWeight, totalProfit) = (Qubit[Q], Qubit[numQubitsTotalWeight], Qubit[numQubitsTotalProfit])){
                 // It will be too time-intensive to iterate through all possible combinations of items,
                 // so a random selection of combinations will be used for testing.
                 mutable combos = new Int[2*Q];
@@ -503,8 +524,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Calculate and measure the total weight and profit with qubits
                     let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
-                    CalculateTotalWeightOrProfit(n, itemWeights, xs, totalWeight);
-                    CalculateTotalWeightOrProfit(n, itemProfits, xs, totalProfit);
+                    CalculateTotalValueOfSelectedItems(n, itemWeights, xs, totalWeight);
+                    CalculateTotalValueOfSelectedItems(n, itemProfits, xs, totalProfit);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -534,8 +555,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T26_VerifyWeight_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+    operation T27_VerifyWeight_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -559,7 +580,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Verify the weight with qubits
                     let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
-                    VerifyWeight(n, W, maxTotal, itemWeights, xs, target);
+                    VerifyWeight(n, W, itemWeights, xs, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -585,8 +606,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T27_VerifyProfit_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+    operation T28_VerifyProfit_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -610,7 +631,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Verify the profit with qubits
                     let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
-                    VerifyProfit(n, P, maxTotal, itemProfits, xs, target);
+                    VerifyProfit(n, P, itemProfits, xs, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -636,8 +657,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T28_KnapsackValidationOracle_Test () : Unit {
-        for ((n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+    operation T29_KnapsackValidationOracle_Test () : Unit {
+        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
             let Q = RegisterSize(n, itemInstanceBounds);
@@ -661,7 +682,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Verify the combination with qubits
                     let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
-                    KnapsackValidationOracle(n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, register, target);
+                    KnapsackValidationOracle(n, W, P, itemWeights, itemProfits, itemInstanceBounds, register, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -701,14 +722,14 @@ namespace Quantum.Kata.BoundedKnapsack
 
     operation T31_GroversAlgorithm_Test () : Unit {
         let testSets = ExampleSets();
-        let (n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
+        let (n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
 
         // Calculate the total number of qubits
         let Q = RegisterSize(n, itemInstanceBounds);
 
         using ((register, target) = (Qubit[Q], Qubit())){
 
-            let (xs_found, P_found) = GroversAlgorithm(n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds);
+            let (xs_found, P_found) = GroversAlgorithm(n, W, P, itemWeights, itemProfits, itemInstanceBounds);
 
             // Verify the found combination classically (should be valid if P < P_max)
             mutable actualBounds = true;
@@ -725,7 +746,7 @@ namespace Quantum.Kata.BoundedKnapsack
             }
             let valid = actualBounds and actualWeight <= W and actualProfit > P;
 
-            // Assert that the output from Grover's Algorithm is correct.
+            // Assert that the output from Grover's algorithm is correct.
             Fact(not XOR(valid, P < P_max), $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {xs_found}");
             ResetAll(register);
             Reset(target);
@@ -734,9 +755,9 @@ namespace Quantum.Kata.BoundedKnapsack
 
     operation T32_KnapsackOptimizationProblem_Test() : Unit {
         let testSets = ExampleSets();
-        let (n, W, P, maxTotal, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
+        let (n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
 
-        let P_max_found = KnapsackOptimizationProblem(n, W, maxTotal, itemWeights, itemProfits, itemInstanceBounds);
+        let P_max_found = KnapsackOptimizationProblem(n, W, itemWeights, itemProfits, itemInstanceBounds);
         Fact(P_max_found == P_max, $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {P_max_found}, should be {P_max}");
     }
 
