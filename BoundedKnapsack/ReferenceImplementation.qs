@@ -29,15 +29,15 @@ namespace Quantum.Kata.BoundedKnapsack {
         return ResultArrayAsBoolArray(MultiM(register));
     }
 
-	
-	// Task 1.2. Calculate the number of qubits necessary to hold the maximum total value
-	function NumQubitsTotalValue_01_Reference (itemValues : Int[]) : Int {
-		mutable maxValue = 0;
+    
+    // Task 1.2. Calculate the number of qubits necessary to hold the maximum total value
+    function NumQubitsTotalValue_01_Reference (itemValues : Int[]) : Int {
+        mutable maxValue = 0;
         for (itemValue in itemValues){
             set maxValue += itemValue;
         }
         return BitSizeI(maxValue);
-	}
+    }
     
 
     // Task 1.3. Calculate total value of selected items
@@ -116,11 +116,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.8. 0-1 knapsack problem validation oracle
-    operation KnapsackValidationOracle_01_Reference (W : Int, P : Int itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+    operation KnapsackValidationOracle_01_Reference (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         using ((outputW, outputP) = (Qubit(), Qubit())) {
             within {
-                VerifyWeight_01_Reference(W itemWeights, register, outputW);
-                VerifyProfit_01_Reference(P itemProfits, register, outputP);
+                VerifyWeight_01_Reference(W, itemWeights, register, outputW);
+                VerifyProfit_01_Reference(P, itemProfits, register, outputP);
             } apply {
                 CCNOT(outputW, outputP, target);
             }
@@ -135,12 +135,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 2.1. Read combination from a jagged array of qubits
     operation MeasureCombination_Reference (xs : Qubit[][]) : Int[] {
-		let n = Length(xs);
-		mutable xsCombo = new Int[n];
-		for (i in 0..n-1){
-			set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
-		}
-		return xsCombo;
+        let n = Length(xs);
+        mutable xsCombo = new Int[n];
+        for (i in 0..n-1){
+            set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
+        }
+        return xsCombo;
     }
 
 
@@ -187,16 +187,16 @@ namespace Quantum.Kata.BoundedKnapsack {
         }
     }
 
-	
-	// Task 2.5. Calculate the number of qubits necessary to hold the maximum total value
-	function NumQubitsTotalValue_Reference (itemValues : Int[], itemInstanceBounds : Int[]) : Int {
+    
+    // Task 2.5. Calculate the number of qubits necessary to hold the maximum total value
+    function NumQubitsTotalValue_Reference (itemValues : Int[], itemInstanceBounds : Int[]) : Int {
         let n = Length(itemValues);
-		mutable maxValue = 0;
+        mutable maxValue = 0;
         for (i in 0..n-1){
             set maxValue += itemValues[i] * itemInstanceBounds[i];
         }
         return BitSizeI(maxValue);
-	}
+    }
 
 
     // Task 2.6. Calculate total value of selected items
