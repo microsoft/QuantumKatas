@@ -1,11 +1,17 @@
 // Licensed under the MIT license.
 
+//////////////////////////////////////////////////////////////////////
+// This file contains parts of the testing harness. 
+// You should not modify anything in this file.
+// The tasks themselves can be found in Tasks.qs file.
+//////////////////////////////////////////////////////////////////////
+
 using Microsoft.Quantum.Simulation.XUnit;
 using Microsoft.Quantum.Simulation.Simulators;
 using Xunit.Abstractions;
 using System.Diagnostics;
 
-namespace Quantum.Kata.BoundedKnapsack
+namespace Quantum.Kata.GraphColoring
 {
     public class TestSuiteRunner
     {
