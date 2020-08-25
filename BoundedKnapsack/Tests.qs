@@ -33,7 +33,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for (n in 1..4){
             // Iterate through all possible combinations.
             for (combo in 0 .. (1 <<< n) - 1){
-                using (selectedItems = Qubit[n]){
+                using (selectedItems = Qubit[n)){
                     // Prepare the register so that it contains the integer a in little-endian format.
                     let binaryCombo = IntAsBoolArray(combo, n);
                     ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
@@ -48,10 +48,10 @@ namespace Quantum.Kata.BoundedKnapsack
     operation T12_NumQubitsTotalValue_01_Test () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             let numQubitsTotalWeight = NumQubitsTotalValue_01(itemWeights);
-            Fact(numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights), $"Unexpected result for itemWeights = {itemWeights} : {numQubitsTotalWeight}");
+            Fact(numQubitsTotalWeight == NumQubitsTotalValue_01_Reference(itemWeights), $"Unexpected result for itemWeights = {itemWeights} : {numQubitsTotalWeight}");
             
             let numQubitsTotalProfit = NumQubitsTotalValue_01(itemProfits);
-            Fact(numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits), $"Unexpected result for itemProfits = {itemProfits} : {numQubitsTotalProfit}");
+            Fact(numQubitsTotalProfit == NumQubitsTotalValue_01_Reference(itemProfits), $"Unexpected result for itemProfits = {itemProfits} : {numQubitsTotalProfit}");
         }
     }
 
@@ -289,10 +289,10 @@ namespace Quantum.Kata.BoundedKnapsack
     // The function returns an array of tuples, each representing a set of parameters.
     // The contents of each tuple include: n, W, P, itemWeights, itemProfits, P_max (in that order).
     // Note: For each set, P is a sample profit threshold for testing that set in the
-    //         knapsack decision problem. P_max is the maximum profit achievable within the
-    //         given bounds and weight constraints of that set (i.e. the solution to the
-    //         knapsack optimization problem). P and P_max will never actually be used in the
-    //         same test.
+    //       knapsack decision problem. P_max is the maximum profit achievable within the
+    //       given bounds and weight constraints of that set (i.e. the solution to the
+    //       knapsack optimization problem). P and P_max will never actually be used in the
+    //       same test.
     function ExampleSets () : (Int, Int, Int, Int[], Int[], Int[], Int)[] {
         return [(2, 30, 10, [2,5], [1,3], [7,5], 17),
                 (3, 24, 16, [2,3,10], [2,3,15], [6,5,2], 24),
@@ -488,10 +488,10 @@ namespace Quantum.Kata.BoundedKnapsack
     operation T25_NumQubitsTotalValue_Reference_Test () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
             let numQubitsTotalWeight = NumQubitsTotalValue(itemWeights, itemInstanceBounds);
-            Fact(numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds), $"Unexpected result for itemWeights = {itemWeights}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalWeight}");
+            Fact(numQubitsTotalWeight == NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds), $"Unexpected result for itemWeights = {itemWeights}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalWeight}");
             
             let numQubitsTotalProfit = NumQubitsTotalValue(itemProfits, itemInstanceBounds);
-            Fact(numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceBounds), $"Unexpected result for itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalProfit}");
+            Fact(numQubitsTotalProfit == NumQubitsTotalValue_Reference(itemProfits, itemInstanceBounds), $"Unexpected result for itemProfits = {itemProfits}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalProfit}");
         }
     }
 
