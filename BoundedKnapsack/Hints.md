@@ -1,5 +1,3 @@
-// Licensed under the MIT license.
-
 //////////////////////////////////////////////////////////////////////
 // This file contains hints to all tasks.
 // The tasks themselves can be found in Tasks.qs file.
