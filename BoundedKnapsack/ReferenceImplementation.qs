@@ -94,7 +94,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         let numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights);
         using (totalWeight = Qubit[numQubitsTotalWeight]) {
             within {
-                CalculateTotalWeightOrProfit_01_Reference(itemWeights, register, totalWeight);
+                CalculateTotalValueOfSelectedItems_01_Reference(itemWeights, register, totalWeight);
             } apply {
                 CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
             }
@@ -107,7 +107,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         let numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits);
         using (totalProfit = Qubit[numQubitsTotalProfit]) {
             within {
-                CalculateTotalWeightOrProfit_01_Reference(itemProfits, register, totalProfit);
+                CalculateTotalValueOfSelectedItems_01_Reference(itemProfits, register, totalProfit);
             } apply {
                 CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
             }
@@ -244,8 +244,8 @@ namespace Quantum.Kata.BoundedKnapsack {
             within {
                 // Compute the result of each verification onto separate qubits
                 VerifyBounds_Reference(n, itemInstanceBounds, xs, outputB);
-                VerifyWeight_Reference(W, itemWeights, xs, outputW);
-                VerifyProfit_Reference(P, itemProfits, xs, outputP);
+                VerifyWeight_Reference(W, itemWeights, itemInstanceBounds, xs, outputW);
+                VerifyProfit_Reference(P, itemProfits, itemInstanceBounds, xs, outputP);
             } apply {
                 // Compute the final result, which is the AND operation of the three separate results
                 // Accomplished by a triple-control Toffoli.
@@ -302,7 +302,7 @@ namespace Quantum.Kata.BoundedKnapsack {
                 if (correct){
                     let numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits);
                     using (profit = Qubit[numQubitsTotalProfit]){
-                        CalculateTotalWeightOrProfit_Reference(n, itemProfits, xs, profit);
+                        CalculateTotalValueOfSelectedItems_Reference(n, itemProfits, xs, profit);
                         set P_found = ResultArrayAsInt(MultiM(profit));
                         ResetAll(profit);
                     }
