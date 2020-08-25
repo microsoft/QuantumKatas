@@ -33,7 +33,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for (n in 1..4){
             // Iterate through all possible combinations.
             for (combo in 0 .. (1 <<< n) - 1){
-                using (selectedItems = Qubit[n)){
+                using (selectedItems = Qubit[n]){
                     // Prepare the register so that it contains the integer a in little-endian format.
                     let binaryCombo = IntAsBoolArray(combo, n);
                     ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
