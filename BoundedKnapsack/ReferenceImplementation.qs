@@ -302,7 +302,7 @@ namespace Quantum.Kata.BoundedKnapsack {
                 if (correct){
                     let numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits);
                     using (profit = Qubit[numQubitsTotalProfit]){
-                        CalculateTotalValueOfSelectedItems_Reference(n, itemProfits, xs, profit);
+                        CalculateTotalValueOfSelectedItems_Reference(itemProfits, xs, profit);
                         set P_found = ResultArrayAsInt(MultiM(profit));
                         ResetAll(profit);
                     }
