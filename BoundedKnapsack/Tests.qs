@@ -253,7 +253,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Verify the combination with qubits
-                    KnapsackValidationOracle_01(n, W, P, itemWeights, itemProfits, selectedItems, target);
+                    KnapsackValidationOracle_01(W, P, itemWeights, itemProfits, selectedItems, target);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
