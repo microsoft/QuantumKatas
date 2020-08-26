@@ -4,6 +4,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <IsPackable>false</IsPackable>
     <RootNamespace>Quantum.Kata.Superposition</RootNamespace>
+    <IQSharpLoadAutomatically>true</IQSharpLoadAutomatically>
   </PropertyGroup>
 
   <ItemGroup>
