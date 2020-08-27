@@ -17,6 +17,4 @@ If ($Env:TOOLS_DIR -eq $null) { $Env:TOOLS_DIR =  [IO.Path]::GetFullPath((Join-P
 If ($Env:NUGET_OUTDIR -eq $null) { $Env:NUGET_OUTDIR =  (Join-Path $Env:DROPS_DIR "nugets") }
 If (-not (Test-Path -Path $Env:NUGET_OUTDIR)) { [IO.Directory]::CreateDirectory($Env:NUGET_OUTDIR) }
 
-$Env:IQSHARP_LOG_LEVEL = "Debug"
-
 
