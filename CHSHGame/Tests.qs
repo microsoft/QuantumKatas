@@ -13,6 +13,7 @@ namespace Quantum.Kata.CHSHGame {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Random;
+    open Microsoft.Quantum.Math;
 
 
     // ------------------------------------------------------
