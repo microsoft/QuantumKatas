@@ -15,6 +15,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Arrays;
+    open microsoft.quantum.random;
     
     open Quantum.Kata.Utils;
     
@@ -34,7 +35,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         
         for (i in 1 .. nTotal) {
             // get a random integer to define the unitary used
-            let actualIndex = RandomInt(nUnitaries);
+            let actualIndex = DrawRamdomInt(0, nUnitaries);
             
             ResetOracleCallsCount();
 
