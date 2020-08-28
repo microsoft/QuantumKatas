@@ -152,7 +152,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         Fact(GetOracleCallsCount(DrawRandomInt) == 0, "You are not allowed to call DrawRandomInt() in this task");
         Fact(GetOracleCallsCount(RandomIntPow2) == 0, "You are not allowed to call RandomIntPow2() in this task");
         Fact(GetOracleCallsCount(RandomReal) == 0, "You are not allowed to call RandomReal() in this task");
-        Fact(GetOracleCallsCount(DrawRandomReal) == 0, "You are not allowed to call DrawRandomReal() in this task");
+        Fact(GetOracleCallsCount(DrawRandomDouble) == 0, "You are not allowed to call DrawRandomDouble() in this task");
         Fact(GetOracleCallsCount(RandomSingleQubitPauli) == 0, "You are not allowed to call RandomSingleQubitPauli() in this task");
         Fact(GetOracleCallsCount(Random) == 0, "You are not allowed to call Random() in this task");
         ResetOracleCallsCount();
