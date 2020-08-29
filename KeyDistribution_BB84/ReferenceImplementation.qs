@@ -16,6 +16,7 @@ namespace Quantum.Kata.KeyDistribution {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Random;
     
     
     //////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ namespace Quantum.Kata.KeyDistribution {
         mutable array = new Bool[N];
 
         for (i in 0 .. N - 1) {
-            set array w/= i <- RandomInt(2) == 1;
+            set array w/= i <- DrawRandomBool(0.5);
         }
 
         return array;
@@ -158,7 +159,7 @@ namespace Quantum.Kata.KeyDistribution {
         
             // Eve eavesdrops on all qubits, guessing the basis at random
             for (q in qs) {
-                let n = Eavesdrop_Reference(q, RandomInt(2) == 1);
+                let n = Eavesdrop_Reference(q, DrawRandomBool(0.5));
             }
 
             // 3. Bob chooses random basis to measure in
