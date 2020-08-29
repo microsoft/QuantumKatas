@@ -27,7 +27,7 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[nQubit]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, nState);
+                let state = DrawRandomInt(0, nState - 1);
                 
                 // get a random rotation angle to define the exact state of the qubits
                 let alpha = DrawRandomDouble (0.0, 5.0) * PI();

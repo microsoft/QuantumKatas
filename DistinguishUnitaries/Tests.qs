@@ -35,7 +35,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         
         for (i in 1 .. nTotal) {
             // get a random integer to define the unitary used
-            let actualIndex = DrawRandomInt(0, nUnitaries);
+            let actualIndex = DrawRandomInt(0, nUnitaries - 1);
             
             ResetOracleCallsCount();
 

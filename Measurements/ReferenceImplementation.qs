@@ -517,7 +517,7 @@ namespace Quantum.Kata.Measurements {
         //   |+⟩ |   std |     0    |    1/2   |    1/2
         //   |0⟩ |   had |    1/2   |     0    |    1/2
         //   |+⟩ |   had |     0    |     0    |     1
-        let basis = DrawRandomInt(0, 2);
+        let basis = DrawRandomInt(0, 1);
 
         // randomize over std and had
         if (basis == 0) {

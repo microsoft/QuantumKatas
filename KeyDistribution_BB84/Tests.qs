@@ -123,7 +123,7 @@ namespace Quantum.Kata.KeyDistribution {
 
         for (i in 10 .. 30) {
             set (key1, key2) = GenerateRandomState(i);
-            set errorRate = DrawRandomInt(0, 50);
+            set errorRate = DrawRandomInt(0, 49);
             let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
             set result = CheckKeysMatch(key1, key2, errorRate);
 

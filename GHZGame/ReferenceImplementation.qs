@@ -31,7 +31,7 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.2. Random classical strategy
     operation RandomClassicalStrategy_Reference (input : Bool) : Bool {
-        return DrawRandomInt(0, 2) == 1;
+        return DrawRandomInt(0, 1) == 1;
     }
 
 

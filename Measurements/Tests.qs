@@ -164,7 +164,7 @@ namespace Quantum.Kata.Measurements {
         using (qs = Qubit[nQubits]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, nStates);
+                let state = DrawRandomInt(0, nStates - 1);
 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state);
@@ -667,7 +667,7 @@ namespace Quantum.Kata.Measurements {
         using (qs = Qubit[Nqubit]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, Nstate);
+                let state = DrawRandomInt(0, Nstate - 1);
 
                 // do state prep: convert |0⟩ to outcome with return equal to state
                 statePrep(qs[0], state);
@@ -715,7 +715,7 @@ namespace Quantum.Kata.Measurements {
             for (i in 1 .. nTotal) {
 
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, Nstate);
+                let state = DrawRandomInt(0, Nstate - 1);
 
                 // do state prep: convert |0⟩ to outcome with return equal to state
                 statePrep(qs[0], state);
@@ -801,7 +801,7 @@ namespace Quantum.Kata.Measurements {
 
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, Nstate);
+                let state = DrawRandomInt(0, Nstate - 1);
 
                 // do state prep: convert |0⟩ to outcome with return equal to state
                 statePrep(qs[0], state);

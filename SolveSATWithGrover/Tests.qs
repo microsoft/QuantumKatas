@@ -166,7 +166,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     operation Generate_SAT_Clause (nVar : Int, nTerms : Int) : (Int, Bool)[] {
-        mutable nVarInClause = (nTerms > 0) ? nTerms | (DrawRandomInt(0, 4) + 1);
+        mutable nVarInClause = (nTerms > 0) ? nTerms | (DrawRandomInt(0, 3) + 1);
         if (nVarInClause > nVar) {
             set nVarInClause = nVar;
         }
@@ -177,10 +177,10 @@ namespace Quantum.Kata.GroversAlgorithm {
         for (k in 0 .. nVarInClause - 1) {
             mutable nextInd = -1;
             repeat { 
-                set nextInd = DrawRandomInt(0, nVar);
+                set nextInd = DrawRandomInt(0, nVar - 1);
             } until (not usedVariables[nextInd])
             fixup {}
-            set clause w/= k <- (nextInd, DrawRandomInt(0, 2) > 0);
+            set clause w/= k <- (nextInd, DrawRandomInt(0, 1) > 0);
             set usedVariables w/= nextInd <- true;
         }
         return clause;
@@ -189,7 +189,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     operation T15_Oracle_SATClause_Test () : Unit {
         for (i in 1..10) {
-            let nVar = DrawRandomInt(0, 5) + 3;
+            let nVar = DrawRandomInt(0, 4) + 3;
             let clause = Generate_SAT_Clause(nVar, i);
 
             Message($"Testing SAT clause instance {SATClauseAsString(clause)}...");
@@ -216,7 +216,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     operation Generate_SAT_Instance (nTerms : Int) : (Int, (Int, Bool)[][]) {
-        let nVar = DrawRandomInt(0, 5) + 3;
+        let nVar = DrawRandomInt(0, 4) + 3;
         let nClause = DrawRandomInt(0, 2 * nVar) + 1;
         mutable problem = new (Int, Bool)[][nClause];
 
