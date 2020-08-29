@@ -30,7 +30,7 @@ namespace Quantum.Kata.JointMeasurements {
                 let state = DrawRandomInt(0, nState - 1);
                 
                 // get a random rotation angle to define the exact state of the qubits
-                let alpha = DrawRandomDouble (0.0, 5.0) * PI();
+                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);

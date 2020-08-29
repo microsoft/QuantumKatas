@@ -33,7 +33,7 @@ namespace Quantum.Kata.CHSHGame {
     operation T12_ClassicalStrategy_Test () : Unit {
         mutable wins = 0;
         for (i in 1..1000) {
-            let x = DrawRandomInt (0, 1) == 1 ? true | false;
+            let x = DrawRandomInt(0, 1) == 1 ? true | false;
             let y = DrawRandomInt(0, 1) == 1 ? true | false;
             let (a, b) = (AliceClassical(x), BobClassical(y));
             if ((x and y) == (a != b)) {

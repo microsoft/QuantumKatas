@@ -276,7 +276,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         using (register = Qubit[3]) {
             
             for (idxError in 0 .. Length(errors) - 1) {
-                let θ = DrawRandomDouble(0.0, 12.0);
+                let θ = DrawRandomDouble(0.0, 1.0);
                 let statePrep = BoundCA([H, Rz(θ, _)]);
                 mutable errorStr = "no error";
                 if (idxError > 0) {
