@@ -59,6 +59,8 @@ Each kata is a separate project that includes:
   solution to the Deutsch–Jozsa problem to a classical one.
 * **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
   Learn more about Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
+* **[Quantum classification](./tutorials/QuantumClassification/)**.
+  Learn about circuit-centric classifiers and the quantum machine learning library included in the QDK.
 
 ## List of Katas <a name="kata-topics" /> ##
 
