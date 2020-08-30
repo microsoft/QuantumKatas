@@ -241,7 +241,9 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
     // Task 2.4. Identity, CNOTs or SWAP?
     // Input: An operation that implements a two-qubit unitary transformation:
-    //        either the identity (I ⊗ I gate), the CNOT gate or the SWAP gate.
+    //        either the identity (I ⊗ I gate), 
+    //        the CNOT gate with one of the qubits as control and the other qubit as a target, 
+    //        or the SWAP gate.
     // The operation will accept an array of qubits as input, but it will fail if the array is empty or has one or more than two qubits.
     // The operation will have Adjoint and Controlled variants defined.
     // Output: 0 if the given operation is the I ⊗ I gate,
