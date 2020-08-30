@@ -14,6 +14,7 @@ namespace Quantum.Kata.KeyDistribution {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Random;
     
     
     //////////////////////////////////////////////////////////////////
@@ -122,7 +123,7 @@ namespace Quantum.Kata.KeyDistribution {
 
         for (i in 10 .. 30) {
             set (key1, key2) = GenerateRandomState(i);
-            set errorRate = RandomInt(50);
+            set errorRate = DrawRandomInt(0, 49);
             let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
             set result = CheckKeysMatch(key1, key2, errorRate);
 

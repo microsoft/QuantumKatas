@@ -16,6 +16,7 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Logical;
+    open Microsoft.Quantum.Random;
 
 
     //////////////////////////////////////////////////////////////////
@@ -30,7 +31,7 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 1.2. Random classical strategy
     operation RandomClassicalStrategy_Reference (input : Bool) : Bool {
-        return RandomInt(2) == 1;
+        return DrawRandomInt(0, 1) == 1;
     }
 
 
