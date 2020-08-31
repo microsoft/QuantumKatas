@@ -229,13 +229,12 @@ namespace Quantum.Kata.DistinguishUnitaries {
     operation DistinguishPaulis_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation to the 1st qubit of a Bell state and measure in Bell basis
         using (qs = Qubit[2]) {
-            H(qs[0]);
-            CNOT(qs[0], qs[1]);
-
-            unitary(qs[0]);
-
-            CNOT(qs[0], qs[1]);
-            H(qs[0]);
+            within {
+                H(qs[0]);
+                CNOT(qs[0], qs[1]);
+            } apply {
+                unitary(qs[0]);
+            }
 
             // after this I -> 00, X -> 01, Y -> 11, Z -> 10
             let ind = MeasureInteger(LittleEndian(qs));
@@ -296,8 +295,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     operation DistinguishTwoQubitUnitaries_Reference (unitary : (Qubit[] => Unit is Adj+Ctl)) : Int {
         // first run: apply to |11⟩; CNOT₁₂ will give |10⟩, CNOT₂₁ will give |01⟩, II and SWAP will remain |11⟩
         using (qs = Qubit[2]) {
-            X(qs[0]);
-            X(qs[1]);
+            ApplyToEach(X, qs);
             unitary(qs);
             let ind = MeasureInteger(LittleEndian(qs));
             if (ind == 1 or ind == 2) {
