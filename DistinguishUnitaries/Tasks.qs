@@ -159,7 +159,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
 
-    // Task 1.10. Rz or R1 (fixed angle)?
+    // Task 1.10*. Rz or R1 (fixed angle)?
     // Inputs:
     //      1) An angle θ ∊ [0.01π; 0.99π].
     //      2) An operation that implements a single-qubit unitary transformation:

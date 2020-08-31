@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.DistinguishUnitaries {    
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Arithmetic;
@@ -202,7 +203,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
                     set measuredOne = true;
                 }
                 // if we try several times and still only get |0⟩s, chances are that it is Rz
-            } until (attempt == 4 or measuredOne) 
+            } until (attempt == 5 or measuredOne) 
             fixup {
                 set attempt += 1;
             }
@@ -211,33 +212,12 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
 
-    // Task 1.10. Rz or R1 (fixed angle)?
+    // Task 1.10*. Rz or R1 (fixed angle)?
     // Output: 0 if the given operation is the Rz(θ) gate,
     //         1 if the given operation is the R1(θ) gate.
     operation DistinguishRzFromR1WithAngle_Reference (theta : Double, unitary : (Qubit => Unit is Adj+Ctl)) : Int {
-        // TODO: fix the reference solution to pass
-        using (qs = Qubit[2]) {
-            mutable attempt = 1;
-            mutable measuredOne = false;
-            repeat {
-                let times = ComputeRepetitions(theta, 2, 0.05);
-                within {
-                    H(qs[0]);
-                } apply {
-                    for (_ in 1..times) {
-                        Controlled unitary(qs[0..0], qs[1]);
-                    }
-                    Controlled Rz(qs[0..0], (2.0 * PI(), qs[1]));
-                }
-                if (MResetZ(qs[0]) == One) {
-                    set measuredOne = true;
-                }
-            } until (attempt == 20 or measuredOne) 
-            fixup {
-                set attempt += 1;
-            }
-            return measuredOne ? 1 | 0;
-        }
+        // library solution that uses direct access to the simulator for speedup and reliability
+        return Floor(EstimateRealOverlapBetweenStates(ApplyToEachA(H, _), ApplyToEachCA(unitary, _), ApplyToEachCA(R1(theta, _), _), 1, 10000));
     }
 
 

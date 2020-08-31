@@ -157,10 +157,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // ------------------------------------------------------
     operation T110_DistinguishRzFromR1WithAngle_Test () : Unit {
         for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
-            Message("------------------------------------");
-            Message($"{theta} -> {ComputeRepetitions(theta, 2, 0.005)}");
             DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), R1(theta, _)]), DistinguishRzFromR1WithAngle(theta, _), -1);
-            Message("Passed!");
         }
     }
     
