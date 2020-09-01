@@ -1,3 +1,4 @@
+// Copyright (c) Wenjun Hou.
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.BoundedKnapsack
