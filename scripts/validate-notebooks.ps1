@@ -51,6 +51,12 @@ function Validate {
     if (Test-Path $CheckNotebook)  {
         Remove-Item $CheckNotebook
     }
+    if (Test-Path "bin") {
+        Remove-Item "bin" -Recurse
+    }
+    if (Test-Path "obj") {
+        Remove-Item "obj" -Recurse
+    }
 
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
@@ -125,6 +131,7 @@ if ($Notebook -ne "") {
     }
 
     for ($i = $StartIndex; $i -le $EndIndex -and $i -le $AllItems.Length - 1; $i++) {
+        Write-Host "Validating $AllItems[$i]"
         Validate $AllItems[$i]
     }
 }
