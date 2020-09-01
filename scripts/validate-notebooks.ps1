@@ -68,6 +68,7 @@ function Validate {
     # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
     # unless $ErrorActionPreference is set to 'Continue'.
     $ErrorActionPreference = 'Continue'
+    $env:IQSHARP_AUTO_LOAD_PACKAGES = "Microsoft.Quantum.Standard,Microsoft.Quantum.Katas,Microsoft.Quantum.Xunit"
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
         jupyter nbconvert $CheckNotebook --execute --ExecutePreprocessor.startup_timeout=300 --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
