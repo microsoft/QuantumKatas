@@ -19,6 +19,7 @@ namespace Quantum.Kata.Measurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Logical;
+    open Microsoft.Quantum.Random;
 
 
     //////////////////////////////////////////////////////////////////
@@ -516,7 +517,7 @@ namespace Quantum.Kata.Measurements {
         //   |+⟩ |   std |     0    |    1/2   |    1/2
         //   |0⟩ |   had |    1/2   |     0    |    1/2
         //   |+⟩ |   had |     0    |     0    |     1
-        let basis = RandomInt(2);
+        let basis = DrawRandomInt(0, 1);
 
         // randomize over std and had
         if (basis == 0) {

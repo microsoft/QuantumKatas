@@ -14,6 +14,7 @@ namespace Quantum.Kata.Superposition {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Random;
 
 
     // ------------------------------------------------------
@@ -252,7 +253,7 @@ namespace Quantum.Kata.Superposition {
             repeat {
                 mutable ok = true;
                 for (i in 0 .. 3) {
-                    set numbers w/= i <- RandomInt(1 <<< N);
+                    set numbers w/= i <- DrawRandomInt(0, 1 <<< N - 1);
                     for (j in 0 .. i - 1) {
                         if (numbers[i] == numbers[j]) {
                             set ok = false;

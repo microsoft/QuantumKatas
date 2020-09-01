@@ -15,7 +15,7 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
-
+    open Microsoft.Quantum.Random;
 
     function SignFromBool (input : Bool) : Int {
         return input ? 1 | -1;
@@ -73,8 +73,8 @@ namespace Quantum.Kata.MagicSquareGame {
     operation RunTrials (n : Int, moves : ((Int, Int) => (Int[], Int[]))) : Int {
         mutable wins = 0;
         for (i in 1..n) {
-            let rowIndex = RandomInt(3);
-            let columnIndex = RandomInt(3);
+            let rowIndex = DrawRandomInt(0, 2);
+            let columnIndex = DrawRandomInt(0, 2);
             let (alice, bob) = moves(rowIndex, columnIndex);
             if (WinCondition_Reference(rowIndex, columnIndex, alice, bob)) {
                 set wins += 1;
