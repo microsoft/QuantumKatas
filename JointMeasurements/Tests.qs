@@ -14,6 +14,7 @@ namespace Quantum.Kata.JointMeasurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Random;
     
     open Quantum.Kata.Utils;
     
@@ -26,10 +27,10 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[nQubit]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = RandomInt(nState);
+                let state = DrawRandomInt(0, nState - 1);
                 
                 // get a random rotation angle to define the exact state of the qubits
-                let alpha = RandomReal(5) * PI();
+                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);
