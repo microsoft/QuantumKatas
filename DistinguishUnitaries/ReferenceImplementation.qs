@@ -217,7 +217,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the R1(θ) gate.
     operation DistinguishRzFromR1WithAngle_Reference (theta : Double, unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // library solution that uses direct access to the simulator for speedup and reliability
-        return Floor(EstimateRealOverlapBetweenStates(ApplyToEachA(H, _), ApplyToEachCA(unitary, _), ApplyToEachCA(R1(theta, _), _), 1, 10000));
+        return Floor(EstimateRealOverlapBetweenStates(ApplyToEachA(H, _), ApplyToEachCA(unitary, _), ApplyToEachCA(R1(theta, _), _), 1, 100000));
     }
 
 
