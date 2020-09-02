@@ -35,7 +35,6 @@ namespace Quantum.Kata.JointMeasurements {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
                 let state = RandomInt(nStates);
-
                 // get a random rotation angle to define the exact state of the qubits
                 let alpha = RandomReal(5) * PI();
                 
@@ -244,7 +243,7 @@ namespace Quantum.Kata.JointMeasurements {
         // Check that the implementation of ControlledX_General doesn't call multi-qubit gates (other than itself)
         using (qs = Qubit[2]) {
             // prepare a non-trivial input state
-            ApplyToEach(H, qs);
+            ApplyToEachA(H, qs);
 
             ResetOracleCallsCount();
             
@@ -256,7 +255,7 @@ namespace Quantum.Kata.JointMeasurements {
  
             // apply adjoint reference operation and adjoint of state prep
             CNOT(qs[0], qs[1]);
-            ApplyToEach(H, qs);
+            ApplyToEachA(H, qs);
 
             // assert that all qubits end up in |0⟩ state
             AssertAllZero(qs);

@@ -22,8 +22,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     
     // Task 2. Encoding Codewords
-    operation Encode_Reference (register : Qubit[]) : Unit
-    is Adj {        
+    operation Encode_Reference (register : Qubit[]) : Unit is Adj {        
         ApplyToEachA(CNOT(Head(register), _), Rest(register));
     }
     
