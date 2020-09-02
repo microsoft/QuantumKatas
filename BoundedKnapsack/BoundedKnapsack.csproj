@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Quantum.Katas" Version="0.12.20082513" />
     <PackageReference Include="Microsoft.Quantum.Standard" Version="0.12.20072031" />
     <PackageReference Include="Microsoft.Quantum.Development.Kit" Version="0.12.20072031" />
     <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.12.20072031" />
