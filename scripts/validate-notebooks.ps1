@@ -64,17 +64,26 @@ function Validate {
     # Convert %kata to %check_kata
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
+    # For build 0.12.20082513, work around an IQ# package load timing issue by forcing all necessary packages to be loaded up-front.
+    # This issue was fixed by https://github.com/microsoft/iqsharp/pull/302 and this workaround can be removed after the next release.
+    $env:IQSHARP_AUTO_LOAD_PACKAGES = (
+        "Microsoft.Quantum.Standard",
+        "Microsoft.Quantum.Standard.Visualization",
+        "Microsoft.Quantum.Katas",
+        "Microsoft.Quantum.Xunit",
+        "Microsoft.Quantum.MachineLearning"
+    ) -join ","
+
     # Run Jupyter nbconvert to execute the kata.
     # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
     # unless $ErrorActionPreference is set to 'Continue'.
     $ErrorActionPreference = 'Continue'
-    $env:IQSHARP_AUTO_LOAD_PACKAGES = "Microsoft.Quantum.Standard,Microsoft.Quantum.Katas,Microsoft.Quantum.Xunit"
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --ExecutePreprocessor.startup_timeout=300 --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --ExecutePreprocessor.startup_timeout=300 --ExecutePreprocessor.timeout=180 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --ExecutePreprocessor.startup_timeout=300 --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --ExecutePreprocessor.startup_timeout=300 --ExecutePreprocessor.timeout=180 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
