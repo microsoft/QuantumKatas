@@ -105,19 +105,19 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation T01_SingleQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, 0, ["|00⟩", "|11⟩"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, 0, ["(1/√2)|00⟩ + (1/√2)|11>", "(1/√2)|01⟩ + (1/√2)|10>"]);
     }
     
     
     // ------------------------------------------------------
     operation T02_ParityMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, 0, ["|00⟩", "|10⟩"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, 0, ["(1/√2)|00⟩ + (1/√2)|11>", "(1/√2)|01⟩ + (1/√2)|10>"]);
     }
     
     
     // ------------------------------------------------------
     operation T03_GHZOrGHZWithX_Test () : Unit {
-        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, 0, ["|0000⟩", "|0011⟩"]);
+        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, 0, ["(1/√2)|0000⟩ + (1/√2)|1111>", "(1/√2)|0011⟩ + (1/√2)|1100>"]);
     }
     
     
@@ -153,11 +153,9 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
     operation T04_GHZOrWState_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|00⟩", "|01⟩"]);
-        DistinguishStates_MultiQubit(4, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|0000⟩", "|0001⟩"]);
-        DistinguishStates_MultiQubit(6, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|000000⟩", "|000001⟩"]);
-        DistinguishStates_MultiQubit(8, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|00000000⟩", "|00000001⟩"]);
-        DistinguishStates_MultiQubit(10, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|0000000000⟩", "|0000000001⟩"]);
+        for (i in 1..5){
+            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["GHZ State", "W State"]);
+		}
     }
     
     
@@ -178,7 +176,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation T05_DifferentBasis_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, 0, ["|00⟩", "|01⟩"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, 0, ["𝛼|00⟩+𝛽|01⟩+𝛽|10⟩+𝛼|11⟩", "𝛼|00⟩−𝛽|01⟩+𝛽|10⟩−𝛼|11⟩"]);
     }
     
     
