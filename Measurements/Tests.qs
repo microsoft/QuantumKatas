@@ -70,13 +70,14 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T101_IsQubitOne_Test () : Unit {
         DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne, ["|0⟩", "|1⟩"]);
     }
 
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T102_InitializeQubit_Test () : Unit {
         using (q = Qubit()) {
             for (i in 0 .. 36) {
@@ -105,7 +106,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T103_IsQubitPlus_Test () : Unit {
         DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus, ["|-⟩", "|+⟩"]);
     }
@@ -125,7 +126,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T104_IsQubitA_Test () : Unit {
         // cross-test
         // alpha = 0.0 or PI() => !isQubitOne
@@ -222,7 +223,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T105_ZeroZeroOrOneOne_Test () : Unit {
         DistinguishStates_MultiQubit(2, 2, StatePrep_ZeroZeroOrOneOne, ZeroZeroOrOneOne, 0, ["|00⟩", "|11⟩"]);
     }
@@ -242,7 +243,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T106_BasisStateMeasurement_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement, 0, ["|00⟩", "|01⟩", "|10⟩", "|11⟩"]);
     }
@@ -280,7 +281,7 @@ namespace Quantum.Kata.Measurements {
             [BoolArrayAsKetState(b1), BoolArrayAsKetState(b2)]);
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T107_TwoBitstringsMeasurement_Test () : Unit {
         mutable b1 = [false, true];
         mutable b2 = [true, false];
@@ -405,7 +406,7 @@ namespace Quantum.Kata.Measurements {
                                      [IntArrayAsStateName(nQubits, bits1), IntArrayAsStateName(nQubits, bits2)]);
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T108_SuperpositionOneMeasurement_Test () : Unit {
         // note that bit strings in the comments (big endian) are the reverse of the bit strings passed to the solutions (little endian)
         CheckSuperpositionBitstringsOneMeasurement(2, [2],  // [10]
@@ -447,6 +448,7 @@ namespace Quantum.Kata.Measurements {
                                      [IntArrayAsStateName(nQubits, bits1), IntArrayAsStateName(nQubits, bits2)]);
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T109_SuperpositionMeasurement_Test () : Unit {
         // note that bit strings in the comments (big endian) are the reverse of the bit strings passed to the solutions (little endian)
         CheckSuperpositionBitstringsMeasurement(2, [2],  // [10]
@@ -507,6 +509,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T110_AllZerosOrWState_Test () : Unit {
 
         for (i in 2 .. 6) {
@@ -535,7 +538,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T111_GHZOrWState_Test () : Unit {
         for (i in 2 .. 6) {
             DistinguishStates_MultiQubit(i, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|GHZ⟩", "|W⟩"]);
@@ -562,7 +565,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T112_BellState_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_BellState, BellState, 0, ["|Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2)", 
                                                                                "|Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)", 
@@ -582,7 +585,7 @@ namespace Quantum.Kata.Measurements {
         H(qs[1]);
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T113_TwoQubitState_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitState, TwoQubitState, 0, ["(|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2", 
                                                                                        "(|00⟩ - |01⟩ + |10⟩ - |11⟩) / 2", 
@@ -612,7 +615,7 @@ namespace Quantum.Kata.Measurements {
         SWAP(qs[0], qs[1]);
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T114_TwoQubitStatePartTwo_Test () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_TwoQubitStatePartTwo, TwoQubitStatePartTwo, 0, ["(+|00⟩ - |01⟩ - |10⟩ - |11⟩) / 2", 
                                                                                                      "(-|00⟩ + |01⟩ - |10⟩ - |11⟩) / 2", 
@@ -622,7 +625,6 @@ namespace Quantum.Kata.Measurements {
 
 
     // ------------------------------------------------------
-
     operation StatePrep_ThreeQubitMeasurement (qs : Qubit[], state : Int) : Unit is Adj {
 
         WState_Arbitrary_Reference(qs);
@@ -638,6 +640,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T115_ThreeQubitMeasurement_Test () : Unit {
         DistinguishStates_MultiQubit(3, 2, StatePrep_ThreeQubitMeasurement, ThreeQubitMeasurement, 0, 
             ["1/sqrt(3) (|100⟩ + ω |010⟩ + ω² |001⟩)", 
@@ -688,7 +691,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T201_IsQubitZeroOrPlus_Test () : Unit {
         DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, StatePrep_IsQubitZeroOrPlus, IsQubitPlusOrZero);
     }
@@ -764,7 +767,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T202_IsQubitZeroOrPlusSimpleUSD_Test () : Unit {
         USD_DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, 0.1, StatePrep_IsQubitZeroOrPlus, IsQubitPlusZeroOrInconclusiveSimpleUSD);
     }
@@ -825,6 +828,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T203_IsQubitNotInABC_Test () : Unit {
         ABC_DistinguishStates_MultiQubit_Threshold(1, 3, StatePrep_IsQubitNotInABC, IsQubitNotInABC);
     }
