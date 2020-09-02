@@ -86,7 +86,6 @@ namespace Quantum.Kata.KeyDistribution {
                 let result = MeasureBobsQubits(qs, bases);
                 Fact(N == Length(result), "The returned array should have the same length as the inputs");
                 Fact(BoolArrayAsInt(state) == BoolArrayAsInt(result), "Some of the measurements were done in the wrong basis");
-                ResetAll(qs);
             }
         }
     }

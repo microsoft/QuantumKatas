@@ -25,9 +25,7 @@ namespace Quantum.Kata.PhaseEstimation {
     //////////////////////////////////////////////////////////////////
     
     // Task 1.1. Inputs to QPE: eigenstates of Z/S/T gates.
-    operation Eigenstates_ZST_Reference (q : Qubit, state : Int) : Unit
-    is Adj {
-        
+    operation Eigenstates_ZST_Reference (q : Qubit, state : Int) : Unit is Adj {
         if (state == 1) {
             X(q);
         }
@@ -35,9 +33,8 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation UnitaryPowerImpl_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, q : Qubit) : Unit
-    is Adj + Ctl {
-        for (i in 1..power) {
+    operation UnitaryPowerImpl_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, q : Qubit) : Unit is Adj + Ctl {
+        for (_ in 1 .. power) {
             U(q);
         }
     }
@@ -65,9 +62,8 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    operation Oracle_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, target : Qubit[]) : Unit 
-    is Adj + Ctl{
-        for (i in 1 .. power) {
+    operation Oracle_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, target : Qubit[]) : Unit is Adj + Ctl{
+        for (_ in 1 .. power) {
             U(target[0]);
         }
     }
@@ -87,7 +83,6 @@ namespace Quantum.Kata.PhaseEstimation {
             let phase = IntAsDouble(MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE))) / IntAsDouble(1 <<< n);
 
             ResetAll(eigenstate);
-            ResetAll(phaseRegister);
             return phase;
         }
     }
@@ -98,17 +93,18 @@ namespace Quantum.Kata.PhaseEstimation {
     // We let exp(2πiθ) denote the eigenvalue of U corresponding to eigenstate P|0⟩.
     // This function will return an approximation of θ.
     operation QPE_Reference_QFT (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj), n : Int) : Double {
+        
         using ((eigenstate, phaseRegister) = (Qubit(), Qubit[n])) {
             // Prepare the eigenstate of U
             P(eigenstate);
 
             // Put phaseRegister into a uniform superposition of all computational basis states.
-            ApplyToEach(H, phaseRegister);
+            ApplyToEachA(H, phaseRegister);
 
             // Apply controlled U gates so that |k⟩ gets transformed into exp(2πikθ)|k⟩.
             // Here |k⟩ is encoded in little-endian format in phaseRegister.
             for (i in 0 .. n - 1) {
-                let powU = UnitaryPower_Reference(U, 1 <<< i); // powU = U^(2^i)
+                let powU = UnitaryPower_Reference(U, 1 <<< i); // powU = U^(2ⁱ)
                 Controlled powU([phaseRegister[i]], eigenstate);
             }
 
@@ -121,12 +117,12 @@ namespace Quantum.Kata.PhaseEstimation {
             // Measure out an integer that is close to θ*2^n.
             let phaseRegisterMeasurement = MeasureInteger(LittleEndian(phaseRegister));
 
-            // Clean up qubits.
-            ResetAll([eigenstate] + phaseRegister);
+            // Clean up eigenstate qubits
+            Reset(eigenstate);
 
             // Scale our measurement down to [0, 1) and return our estimate.
-            let phase_estimate = IntAsDouble(phaseRegisterMeasurement) / IntAsDouble(1 <<< n);
-            return phase_estimate;
+            let phaseEstimate = IntAsDouble(phaseRegisterMeasurement) / IntAsDouble(1 <<< n);
+            return phaseEstimate;
         }
     }
 
@@ -137,16 +133,19 @@ namespace Quantum.Kata.PhaseEstimation {
     
     // Task 2.1. Single-bit phase estimation
     operation SingleBitPE_Reference (U : (Qubit => Unit is Adj + Ctl), P : (Qubit => Unit is Adj)) : Int {
+        
         using ((control, eigenstate) = (Qubit(), Qubit())) {
             // prepare the eigenstate |ψ⟩
             P(eigenstate);
 
-            H(control);
-            Controlled U([control], eigenstate);
-            H(control);
+            within {
+                H(control);     
+            } apply {
+                Controlled U([control], eigenstate);
+            }
 
             let eigenvalue = M(control) == Zero ? 1 | -1;
-            ResetAll([control, eigenstate]);
+            Reset(eigenstate);
             return eigenvalue;
         }
     }
@@ -167,9 +166,11 @@ namespace Quantum.Kata.PhaseEstimation {
             repeat {
                 set iter += 1;
 
-                H(control);
-                Controlled U([control], eigenstate);
-                H(control);
+                within {
+                    H(control);     
+                } apply {
+                    Controlled U([control], eigenstate);
+                }
 
                 let meas = MResetZ(control);
                 set (measuredZero, measuredOne) = (measuredZero or meas == Zero, measuredOne or meas == One);
@@ -196,7 +197,7 @@ namespace Quantum.Kata.PhaseEstimation {
             S(control);
             H(control);
 
-            let eigenvalue = MResetZ(control) == Zero ? 0.75 | 0.25;
+            let eigenvalue = M(control) == Zero ? 0.75 | 0.25;
             Reset(eigenstate);
             return eigenvalue;
         }
