@@ -19,57 +19,72 @@ namespace Quantum.Kata.JointMeasurements {
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
-    operation DistinguishStates_MultiQubit (Nqubit : Int, Nstate : Int, statePrep : ((Qubit[], Int, Double) => Unit is Adj), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
+    operation DistinguishStates_MultiQubit (nQubits : Int,
+                                            nStates : Int,
+                                            statePrep : ((Qubit[], Int, Double) => Unit is Adj),
+                                            testImpl : (Qubit[] => Int),
+                                            measurementsPerRun : Int,
+                                            stateNames : String[]) : Unit {
         let nTotal = 100;
-        mutable nOk = 0;
-        mutable misclassifications = new String[Nstate];
-        mutable count = new Int[Nstate];
-        let empty = misclassifications[0];
-        
-        using (qs = Qubit[Nqubit]) {
+        // misclassifications will store the number of times state i has been classified as state j (dimension nStates^2)
+        mutable misclassifications = new Int[nStates * nStates];
+        // unknownClassifications will store the number of times state i has been classified as some invalid state (index < 0 or >= nStates)
+        mutable unknownClassifications = new Int[nStates];
+                
+        using (qs = Qubit[nQubits]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = RandomInt(Nstate);
-                
+                let state = RandomInt(nStates);
+
                 // get a random rotation angle to define the exact state of the qubits
                 let alpha = RandomReal(5) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);
-                
-                // get the solution's answer and verify that it's a match
+
+                if (measurementsPerRun > 0) {
+                    ResetOracleCallsCount();
+                }
+                // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
                 let ans = testImpl(qs);
-                if (ans == state) {
-                    set nOk += 1;
+                if ((ans >= 0) and (ans < nStates)) {
+                    // classification result is a valid state index - check if is it correct
+                    if (ans != state) {
+                        set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
+                    }
                 }
-                
-                // In case it does not match, count the mis-match
-                if (ans != state) {
-                    set misclassifications w/= state <- $"{state} as {ans}";
-                    set count w/= state <- count[state] + 1;
+                else {
+                    // classification result is an invalid state index - file it separately
+                    set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
+                }
+                // if we have a max number of measurements per solution run specified, check that it is not exceeded
+                if (measurementsPerRun > 0) {
+                    let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+                    EqualityFactB(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
                 }
 
-                if (preserveState) {
-                    // check that the state of the qubit after the operation is unchanged
-                    Adjoint statePrep(qs, state, alpha);
-                    AssertAllZero(qs);
-                } else {
-                    // we're not checking the state of the qubit after the operation
-                    ResetAll(qs);
-                }
+                // we're not checking the state of the qubit after the operation
+                ResetAll(qs);
             }
         }
-
-        // Display the number of mis-matches
-        for (i in 0 .. Length(misclassifications) - 1) {
-            if (misclassifications[i] != empty) {
-                Message($"Misclassified {misclassifications[i]}, {count[i]} times");   
+        
+        mutable totalMisclassifications = 0;
+        for (i in 0 .. nStates - 1) {
+            for (j in 0 .. nStates - 1) {
+                if (misclassifications[(i * nStates) + j] != 0) {
+                    set totalMisclassifications += misclassifications[i * nStates + j];
+                    Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
+                }
+            }
+            if (unknownClassifications[i] != 0) {
+                set totalMisclassifications += unknownClassifications[i];
+                Message($"Misclassified {stateNames[i]} as Unknown State in {unknownClassifications[i]} test runs.");
             }
         }
-
-        Fact(nOk == 100, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state");
+        // This check will tell the total number of failed classifications
+        Fact(totalMisclassifications == 0, $"{totalMisclassifications} test runs out of {nTotal} returned incorrect state (see output for details).");
     }
-    
+
     // ------------------------------------------------------
     operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
@@ -90,19 +105,19 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation T01_SingleQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, false);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, 0, ["|00⟩", "|11⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T02_ParityMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, true);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, 0, ["|00⟩", "|10⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T03_GHZOrGHZWithX_Test () : Unit {
-        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, true);
+        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, 0, ["|0000⟩", "|0011⟩"]);
     }
     
     
@@ -137,11 +152,12 @@ namespace Quantum.Kata.JointMeasurements {
         }
     }
     
-    
     operation T04_GHZOrWState_Test () : Unit {
-        for (i in 1 .. 5) {
-            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true);
-        }
+        DistinguishStates_MultiQubit(2, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|00⟩", "|01⟩"]);
+        DistinguishStates_MultiQubit(4, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|0000⟩", "|0001⟩"]);
+        DistinguishStates_MultiQubit(6, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|000000⟩", "|000001⟩"]);
+        DistinguishStates_MultiQubit(8, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|00000000⟩", "|00000001⟩"]);
+        DistinguishStates_MultiQubit(10, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["|0000000000⟩", "|0000000001⟩"]);
     }
     
     
@@ -162,7 +178,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation T05_DifferentBasis_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, 0, ["|00⟩", "|01⟩"]);
     }
     
     
