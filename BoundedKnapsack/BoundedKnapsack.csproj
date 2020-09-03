@@ -4,11 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="premerge\**" />
-    <EmbeddedResource Remove="premerge\**" />
-    <QsharpCompile Remove="premerge\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Katas" Version="0.12.20082513" />
@@ -23,18 +18,5 @@
 
   <ItemGroup>
     <QsharpCompile Include="Hints.md" />
-    <QsharpCompile Include="Hints.md" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System">
-      <HintPath>System</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>System.Data</HintPath>
-    </Reference>
-    <Reference Include="System.Xml">
-      <HintPath>System.Xml</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
