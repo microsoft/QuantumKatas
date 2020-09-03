@@ -14,8 +14,7 @@ namespace Quantum.Kata.JointMeasurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
-    open Microsoft.Quantum.Random;
-    
+
     open Quantum.Kata.Utils;
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
@@ -25,6 +24,7 @@ namespace Quantum.Kata.JointMeasurements {
                                             statePrep : ((Qubit[], Int, Double) => Unit is Adj),
                                             testImpl : (Qubit[] => Int),
                                             measurementsPerRun : Int,
+                                            preserveState : Bool,
                                             stateNames : String[]) : Unit {
         let nTotal = 100;
         // misclassifications will store the number of times state i has been classified as state j (dimension nStates^2)
@@ -35,9 +35,9 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[nQubits]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, nState - 1);
+                let state = RandomInt(nStates);
                 // get a random rotation angle to define the exact state of the qubits
-                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
+                let alpha = RandomReal(5) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);
@@ -57,14 +57,22 @@ namespace Quantum.Kata.JointMeasurements {
                     // classification result is an invalid state index - file it separately
                     set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
                 }
+                                
                 // if we have a max number of measurements per solution run specified, check that it is not exceeded
                 if (measurementsPerRun > 0) {
                     let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
                     EqualityFactB(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
                 }
 
-                // we're not checking the state of the qubit after the operation
-                ResetAll(qs);
+                if (preserveState) {
+                    // check that the state of the qubit after the operation is unchanged
+                    Adjoint statePrep(qs, state, alpha);
+                    AssertAllZero(qs);
+                } else {
+                    // we're not checking the state of the qubit after the operation
+                    ResetAll(qs);
+                }
+
             }
         }
         
@@ -105,19 +113,19 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation T01_SingleQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, 0, ["(1/√2)|00⟩ + (1/√2)|11>", "(1/√2)|01⟩ + (1/√2)|10>"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, 0, false, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T02_ParityMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, 0, ["(1/√2)|00⟩ + (1/√2)|11>", "(1/√2)|01⟩ + (1/√2)|10>"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, 0, true, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T03_GHZOrGHZWithX_Test () : Unit {
-        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, 0, ["(1/√2)|0000⟩ + (1/√2)|1111>", "(1/√2)|0011⟩ + (1/√2)|1100>"]);
+        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, 0, true, ["α|0000⟩ + β|1111⟩", "α|0011⟩ + β|1100⟩"]);
     }
     
     
@@ -154,7 +162,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     operation T04_GHZOrWState_Test () : Unit {
         for (i in 1..5){
-            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, 0, ["GHZ State", "W State"]);
+            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, 0, true, ["GHZ State", "W State"]);
 		}
     }
     
@@ -176,7 +184,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation T05_DifferentBasis_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, 0, ["𝛼|00⟩+𝛽|01⟩+𝛽|10⟩+𝛼|11⟩", "𝛼|00⟩−𝛽|01⟩+𝛽|10⟩−𝛼|11⟩"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, 0, true, ["α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩", "α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩"]);
     }
     
     
