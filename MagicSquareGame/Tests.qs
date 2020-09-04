@@ -21,6 +21,7 @@ namespace Quantum.Kata.MagicSquareGame {
         return input ? 1 | -1;
     }
 
+    @Test("QuantumSimulator")
     operation T11_ValidMove_Test () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
@@ -42,6 +43,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T12_WinCondition_Test () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
@@ -87,6 +89,7 @@ namespace Quantum.Kata.MagicSquareGame {
         return (AliceClassical(rowIndex), BobClassical(columnIndex));
     }
 
+    @Test("QuantumSimulator")
     operation T13_ClassicalStrategy_Test() : Unit {
         let wins = RunTrials(1000, ClassicalRunner);
         Fact(wins >= 850, $"The classical strategy implemented is not optimal: win rate {IntAsDouble(wins) / 1000.}");
@@ -108,6 +111,7 @@ namespace Quantum.Kata.MagicSquareGame {
         }
     }
 
+    @Test("QuantumSimulator")
     operation T21_CreateEntangledState_Test () : Unit {
         AssertEqualOnZeroState(4, CreateEntangledState, CreateEntangledState_Reference);
     }
@@ -156,6 +160,7 @@ namespace Quantum.Kata.MagicSquareGame {
         return ApplyMagicObservables_Reference(GetMagicObservables(row, column), _);
     }
 
+    @Test("QuantumSimulator")
     operation T22_GetMagicObservables_Test () : Unit {
         // Since there can be multiple magic squares with different observables, 
         // the test checks the listed properties of the return values rather than the values themselves.
@@ -175,6 +180,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T23_ApplyMagicObservables_Test () : Unit {
         // Try all pairs of observables and all signs, and check the unitary equality
         for (sign in [-1, 1]) {
@@ -189,6 +195,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T24_MeasureObservables_Test () : Unit {
         using (qs = Qubit[2]) {
             for (sign in [-1, 1]) {
@@ -222,6 +229,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T25_MeasureOperator_Test () : Unit {
         using (qs = Qubit[2]) {
             for (sign in [-1, 1]) {
@@ -262,6 +270,7 @@ namespace Quantum.Kata.MagicSquareGame {
         return referee(AliceQuantum(rowIndex, _), BobQuantum(columnIndex, _));
     }
 
+    @Test("QuantumSimulator")
     operation T26_QuantumStrategy_Test () : Unit {
         let N = 1000;
         let wins = RunTrials(N, QuantumRunner(PlayQuantumMagicSquare_Reference, _, _));
@@ -270,6 +279,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T27_PlayQuantumMagicSquare_Test () : Unit {
         let N = 1000;
         let wins = RunTrials(N, QuantumRunner(PlayQuantumMagicSquare, _, _));
