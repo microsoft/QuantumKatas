@@ -58,6 +58,24 @@ function Validate {
     # Convert %kata to %check_kata
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
+    # For build 0.12.20082513, work around an IQ# package load timing issue by forcing all necessary packages to be loaded up-front.
+    # This issue was fixed by https://github.com/microsoft/iqsharp/pull/302. This can be removed after the Katas are updated to the next release.
+    try {
+        $version = (dotnet tool list --tool-path $Env:TOOLS_DIR | Select-String -Pattern "microsoft.quantum.iqsharp").ToString().Split(
+            " ", [System.StringSplitOptions]::RemoveEmptyEntries)[1]
+        if ($version -eq "0.12.20082513") {
+            $env:IQSHARP_AUTO_LOAD_PACKAGES = (
+                "Microsoft.Quantum.Standard",
+                "Microsoft.Quantum.Katas",
+                "Microsoft.Quantum.Xunit",
+                "Microsoft.Quantum.MachineLearning"
+            ) -join ","
+            Write-Host ("Set IQSHARP_AUTO_LOAD_PACKAGES: " + $env:IQSHARP_AUTO_LOAD_PACKAGES)
+        }
+    } catch {
+        Write-Host ("Failed to read iqsharp version: " + $_)
+    }
+
     # Run Jupyter nbconvert to execute the kata.
     # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
     # unless $ErrorActionPreference is set to 'Continue'.
