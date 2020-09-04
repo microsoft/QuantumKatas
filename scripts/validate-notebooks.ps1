@@ -66,9 +66,7 @@ function Validate {
         if ($version -eq "0.12.20082513") {
             $env:IQSHARP_AUTO_LOAD_PACKAGES = (
                 "Microsoft.Quantum.Standard",
-                "Microsoft.Quantum.Katas",
-                "Microsoft.Quantum.Xunit",
-                "Microsoft.Quantum.MachineLearning"
+                "Microsoft.Quantum.Xunit"
             ) -join ","
             Write-Host ("Set IQSHARP_AUTO_LOAD_PACKAGES: " + $env:IQSHARP_AUTO_LOAD_PACKAGES)
         }
@@ -82,10 +80,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=180 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=180 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
