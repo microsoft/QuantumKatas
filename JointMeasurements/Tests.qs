@@ -83,6 +83,7 @@ namespace Quantum.Kata.JointMeasurements {
         Fact(totalMisclassifications == 0, $"{totalMisclassifications} test runs out of {nTotal} returned incorrect state (see output for details).");
     }
 
+
     // ------------------------------------------------------
     operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
@@ -150,8 +151,9 @@ namespace Quantum.Kata.JointMeasurements {
         }
     }
     
+
     operation T04_GHZOrWState_Test () : Unit {
-        for (i in 1..5){
+        for (i in 1 .. 5) {
             DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true, ["GHZ State", "W State"]);
         }
     }
