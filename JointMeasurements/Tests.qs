@@ -14,6 +14,7 @@ namespace Quantum.Kata.JointMeasurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Random;
 
     open Quantum.Kata.Utils;
     
@@ -34,9 +35,9 @@ namespace Quantum.Kata.JointMeasurements {
         using (qs = Qubit[nQubits]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = RandomInt(nStates);
+                let state = DrawRandomInt(0, nStates - 1);
                 // get a random rotation angle to define the exact state of the qubits
-                let alpha = RandomReal(5) * PI();
+                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);
@@ -62,7 +63,6 @@ namespace Quantum.Kata.JointMeasurements {
                     // we're not checking the state of the qubit after the operation
                     ResetAll(qs);
                 }
-
             }
         }
         
@@ -174,7 +174,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation T05_DifferentBasis_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true, ["α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩", "α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩"]);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true, 
+            ["α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩", "α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩"]);
     }
     
     
