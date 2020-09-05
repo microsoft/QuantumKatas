@@ -153,7 +153,7 @@ namespace Quantum.Kata.JointMeasurements {
     operation T04_GHZOrWState_Test () : Unit {
         for (i in 1..5){
             DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true, ["GHZ State", "W State"]);
-		}
+        }
     }
     
     
