@@ -66,7 +66,8 @@ function Validate {
         if ($version -eq "0.12.20082513") {
             $env:IQSHARP_AUTO_LOAD_PACKAGES = (
                 "Microsoft.Quantum.Standard",
-                "Microsoft.Quantum.Xunit"
+                "Microsoft.Quantum.Xunit",
+                "Microsoft.Quantum.Katas"
             ) -join ","
             Write-Host ("Set IQSHARP_AUTO_LOAD_PACKAGES: " + $env:IQSHARP_AUTO_LOAD_PACKAGES)
         }
