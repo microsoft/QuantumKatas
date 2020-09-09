@@ -1,6 +1,12 @@
 name: $(Build.Major).$(Build.Minor).$(BuildId)
 trigger:
-- master
+- main
+
+pr:
+- main
+- feature/*
+- features/*
+- release/*
 
 variables:
   Build.Major: 1

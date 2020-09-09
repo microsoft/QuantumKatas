@@ -1,0 +1,28 @@
+name: Sync QDK repos
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-repos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - id: AzureKeyVault
+        uses: Azure/get-keyvault-secrets@v1.0
+        with:
+          keyvault: 'kv-qdk-build'
+          secrets: 'qdkBuildPAT'
+
+      - name: 'Trigger QDK sync build'
+        uses: Azure/pipelines@releases/v1
+        with:
+          azure-devops-project-url: 'https://dev.azure.com/ms-quantum-public/Microsoft Quantum (public)'
+          azure-pipeline-name: 'microsoft.qdk.sync' 
+          azure-devops-token: ${{ steps.AzureKeyVault.outputs.qdkBuildPAT }}
