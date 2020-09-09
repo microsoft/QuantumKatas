@@ -9,10 +9,11 @@ We're so glad you asked!
 * [Improving Documentation](#improving-documentation)
 
 * [Contributing Code](#contributing-code)
-   * [Improving Existing Katas](#improving-existing-katas)
-   * [Contributing New Katas](#contributing-new-katas)
-   * [Testing the Katas](#testing-the-katas)
-   * [Style Guide](#style-guide)
+   * [Improving existing katas](#improving-existing-katas)
+   * [Contributing new katas](#contributing-new-katas)
+   * [Style guide](#style-guide)
+   * [Updating the Katas to the new QDK version](#updating-the-Katas-to-the-new-QDK-version)
+   * [Validating your changes](#validating-your-changes)
 
 * [Contributor License Agreement](#contributor-license-agreement)
 
@@ -64,20 +65,6 @@ If you want to create a kata for some topic, start by checking the roadmap to se
 If somebody is already working on this topic, you can try to find them (using the repository issues) and coordinate with them.
 If the topic you want is not claimed, or is not on the list, go ahead and let us know you'll be working on it by creating an issue.
 
-### Testing the Katas
-
-You can use Jupyter Notebook front-end of the kata you're working on to validate the kata (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project).
-
-To validate the kata, use the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script. 
-For example, to validate BasicGates kata run the following command from the PowerShell prompt from the root directory of the QuantumKatas project:
-
-```powershell
-   PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
-```
-
-To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/qjupyter) 
-and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
-
 ### Style Guide
 
 * We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/quantum/contributing/style-guide) in our Q# code. 
@@ -91,7 +78,53 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
   it's usually better to extract this code into a generalized "framework" operation and use it in several tests than to duplicate it with small variations in each test.
 * Avoid platform-dependent code: all katas should work on Windows 10, macOS and Linux, and both in Visual Studio and in Visual Studio Code/command line.
 
-### Contributor License Agreement
+### Updating the Katas to the new QDK version
+
+The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/quantum/resources/relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
+
+Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/master/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
+
+```powershell
+   PS> ./scripts/Update-QDKVersion.ps1 0.12.20072031
+```
+
+> Currently the version format of `iqsharp-base` used in the `DOCKERFILE` is different from the QDK version format; see issue [#420](https://github.com/microsoft/QuantumKatas/issues/420) for more details.
+
+After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
+
+
+### Validating your changes
+
+When you contribute any code to the Katas, you need to validate that everything works the way it is supposed to work. Here are the key points to check (they might or might not be applicable to your change, depending on what you modified):
+
+1. **Local development**  
+   1. Check that the kata/tutorial you modified builds using `dotnet build` (if you modified the files in the project).
+   2. Check that the notebook version of the kata/tutorial opens using `jupyter notebook` (if you modified the notebook file).
+   3. Check that the reference solutions for the tasks pass the tests.  
+      You can use Jupyter Notebook front-end of the kata you're working on to validate this (i.e., to check that all tasks have correct reference solutions for them, and that all tests used in the notebook actually exist in the project).  
+      
+      To validate the kata, use the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script. 
+      For example, to validate BasicGates kata run the following command from the PowerShell prompt from the root directory of the QuantumKatas project:
+
+      ```powershell
+         PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
+      ```
+
+      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/qjupyter) 
+and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
+
+   4. If you do a bulk update of the katas, testing each of them individually will take too much time; you can streamline the testing using the scripts used by our continuous integration. 
+   It is also a good idea to check a representative kata (we recommend [Measurements](https://github.com/microsoft/QuantumKatas/tree/master/Measurements)) manually to see if there is any issue not covered by automated checks, such as different error format, a dramatic performance degradation etc.
+
+2. **Running on Binder**  
+   The Katas can be run online on [Binder](https://mybinder.org); when you make a potentially breaking change (such as an update to the new QDK version or modifying any package dependencies), you need to make sure that this still works.  
+   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) and change account name (`microsoft`) and branch (`master`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
+
+3. **Continuous integration**  
+   When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.
+
+
+## Contributor License Agreement
 
 Most code contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
@@ -101,7 +134,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
 provided by the bot. You will only need to do this once across all repos using our CLA.
 
-### Code of Conduct
+## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
