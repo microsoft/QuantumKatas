@@ -10,8 +10,8 @@
     <Description>Microsoft's Quantum Katas support.</Description>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageReleaseNotes>See: https://docs.microsoft.com/en-us/quantum/relnotes/</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/Microsoft/QuantumKatas/raw/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/master/Microsoft.Quantum.Katas</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Microsoft/QuantumKatas/raw/main/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/main/Microsoft.Quantum.Katas</PackageProjectUrl>
     <PackageIcon>qdk-nuget-icon.png</PackageIcon>
     <PackageTags>Quantum Q# Qsharp</PackageTags>
   </PropertyGroup>
