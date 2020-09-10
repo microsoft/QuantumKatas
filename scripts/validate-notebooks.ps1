@@ -64,10 +64,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
@@ -112,7 +112,8 @@ if ($Notebook -ne "") {
     $AllItems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
-        -Exclude $not_ready
+        -Exclude $not_ready `
+        | Sort-Object Name
 
     # If the start index is not set, set it to 0 to check all notebooks
     if ($StartIndex -lt 0) {
