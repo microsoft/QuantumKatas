@@ -8,7 +8,7 @@ but are forbidden from communicating with each other afterwards.
 Nonlocal games show that quantum entanglement can be used to increase the players' chance of winning 
 beyond what would be possible with a purely classical strategy.
 
-You can [run the MagicSquareGame kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=MagicSquareGame%2FMagicSquareGame.ipynb)!
+You can [run the MagicSquareGame kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=MagicSquareGame%2FMagicSquareGame.ipynb)!
 
 #### Theory
 
