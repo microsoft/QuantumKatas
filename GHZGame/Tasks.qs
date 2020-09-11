@@ -25,9 +25,8 @@ namespace Quantum.Kata.GHZGame {
     // zero or two bits set to true and three or one bits set to false.
     // The trick is, the players can not communicate during the game.
 
-    // *   '∨' is the standard bitwise OR operator
-    // *   '⊕' is the exclusive or, or XOR operator,
-    // *    so 'P ⊕ Q' is true if exactly one of P and Q is true.
+    //  * '∨' is the standard bitwise OR operator
+    //  * '⊕' is the exclusive or, or XOR operator, so 'P ⊕ Q' is true if exactly one of P and Q is true.
 
     // Each task is wrapped in one operation preceded by the
     // description of the task. Each task has a unit test associated

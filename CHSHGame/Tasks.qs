@@ -20,9 +20,8 @@ namespace Quantum.Kata.CHSHGame {
     // they have to return new bits (Alice returns A and Bob returns B)
     // so that X ∧ Y = A ⊕ B.* The trick is, they can not communicate during the game.
 
-    // *   '∧' is the standard bitwise AND operator
-    // *   '⊕' is the exclusive or, or XOR operator,
-    // *    so 'P ⊕ Q' is true if exactly one of P and Q is true.
+    //  * '∧' is the standard bitwise AND operator
+    //  * '⊕' is the exclusive or, or XOR operator, so 'P ⊕ Q' is true if exactly one of P and Q is true.
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task has a unit test associated with it, which initially fails. 
