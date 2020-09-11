@@ -93,6 +93,7 @@ $not_ready =
 @(
     'Check.ipynb',
     'CHSHGame.ipynb',
+    'Workbook_CHSHGame.ipynb',
     'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
