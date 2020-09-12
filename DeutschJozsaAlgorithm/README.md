@@ -1,6 +1,6 @@
 # Welcome!
 
-You can [run the DeutschJozsaAlgorithm kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=DeutschJozsaAlgorithm%2FDeutschJozsaAlgorithm.ipynb)!
+You can [run the DeutschJozsaAlgorithm kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=DeutschJozsaAlgorithm%2FDeutschJozsaAlgorithm.ipynb)!
 
 This kata covers several well-studied algorithms and concepts. 
 
