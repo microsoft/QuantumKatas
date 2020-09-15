@@ -130,7 +130,7 @@ Each kata is a separate project that includes:
 
 ## Run the katas and tutorials online <a name="run-online" /> ##
 
-The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
+The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
 
 > While running the Katas online is the easiest option to get started, if you want to save your progress and enjoy better performance, we recommend you to choose the local option. 
 
@@ -167,7 +167,7 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 > Both Visual Studio 2019 and Visual Studio Code make it easy to clone repositories from within your development environment.
 > For details, see the [Visual Studio 2019](https://docs.microsoft.com/en-us/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
-If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/master.zip.
+If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/main.zip.
 
 
 ### Run a kata as a Jupyter Notebook <a name="kata-as-notebook" /> ###
