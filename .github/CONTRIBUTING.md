@@ -82,7 +82,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/quantum/resources/relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
 
-Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/master/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
+Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
    PS> ./scripts/Update-QDKVersion.ps1 0.12.20072031
@@ -114,11 +114,11 @@ When you contribute any code to the Katas, you need to validate that everything 
 and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
 
    4. If you do a bulk update of the katas, testing each of them individually will take too much time; you can streamline the testing using the scripts used by our continuous integration. 
-   It is also a good idea to check a representative kata (we recommend [Measurements](https://github.com/microsoft/QuantumKatas/tree/master/Measurements)) manually to see if there is any issue not covered by automated checks, such as different error format, a dramatic performance degradation etc.
+   It is also a good idea to check a representative kata (we recommend [Measurements](https://github.com/microsoft/QuantumKatas/tree/main/Measurements)) manually to see if there is any issue not covered by automated checks, such as different error format, a dramatic performance degradation etc.
 
 2. **Running on Binder**  
    The Katas can be run online on [Binder](https://mybinder.org); when you make a potentially breaking change (such as an update to the new QDK version or modifying any package dependencies), you need to make sure that this still works.  
-   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=index.ipynb) and change account name (`microsoft`) and branch (`master`) in the url to your Github username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
+   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
 
 3. **Continuous integration**  
    When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.

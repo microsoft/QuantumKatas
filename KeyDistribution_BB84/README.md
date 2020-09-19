@@ -2,7 +2,7 @@
 
 The **Quantum Key Distribution** kata is a series of exercises designed to teach you about a neat quantum technology where you can use qubits to exchange secure cryptographic keys. In particular, you will work through implementing and testing a quantum key distribution protocol called [BB84](https://en.wikipedia.org/wiki/BB84).
 
-You can [run the KeyDistribution_BB84 kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=KeyDistribution_BB84%2FKeyDistribution_BB84.ipynb)!
+You can [run the KeyDistribution_BB84 kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=KeyDistribution_BB84%2FKeyDistribution_BB84.ipynb)!
 
 ### Background
 
