@@ -213,4 +213,33 @@ namespace Quantum.Kata.QFT {
         // ...
         return -1;
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Powers and roots of the QFT
+    //////////////////////////////////////////////////////////////////
+    
+    // Task 3.1. Implement powers of the QFT
+    // Inputs:
+    //      1) A register of n qubits in an arbitrary state.
+    //      2) An integer P (0 ≤ P ≤ 2²⁰ - 1).
+    // 
+    // Goal: Transform state |x⟩ into state QFTᴾ |x⟩, 
+    //       where QFT is the quantum Fourier transform implemented in part I.
+    // Note: Your solution has to run fast for any P in the given range!
+    operation QFTPower (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
+
+
+    // Task 3.2. Implement roots of the QFT
+    // Inputs:
+    //      1) A register of n qubits in an arbitrary state.
+    //      2) An integer P (2 ≤ P ≤ 8).
+    // Goal: Transform state |x⟩ into state V |x⟩, where Vᴾ = QFT.
+    //       In other words, implement a P-th root of the QFT.
+    //       You can implement the required unitary up to a global phase.
+    operation QFTRoot (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
+        // ...
+    }
 }
