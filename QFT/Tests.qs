@@ -242,4 +242,50 @@ namespace Quantum.Kata.QFT {
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Powers and roots of the QFT
+    //////////////////////////////////////////////////////////////////
+    
+    // slow brute-force implementation of QFT integer power to test on small cases
+    internal operation QFTPower_Slow (P : Int, inputRegister : Qubit[]) : Unit is Adj {
+        for (_ in 1 .. P) {
+            QFT(BigEndian(inputRegister));
+        }
+    }
+
+
+    operation T31_QFTPower_Test () : Unit {
+        // small tests: check correctness of our approach on small-ish powers on 4-qubit register
+        for (p in 0 .. 20) {
+            let testOp = QFTPower_Reference(p, _); 
+            let refOp  = QFTPower_Slow(p, _); 
+            AssertOperationsEqualReferenced(4, testOp, refOp);
+        }
+
+        // large tests: check speed and correctness both
+        for (n in 1 .. 9) {
+            let power = (2 <<< (n + 10)) - 1;
+            let testOp = QFTPower(power, _); 
+            let refOp  = QFTPower_Reference(power, _); 
+              
+            AssertOperationsEqualReferenced(n, testOp, refOp);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T32_QFTRoot_Test () : Unit {
+        for (n in 2 .. 8) {
+            for (p in 2 .. 8) {
+                let testOp = QFTRoot(p, _); 
+
+                // we only compare the solution's powers to the QFT (big endian), 
+                // not the solution to reference solution, since we're accepting any root
+                AssertOperationsEqualReferenced(
+                    n, OperationPow(testOp, p), QuantumFourierTransform_Reference
+                );
+            }
+        }
+    }
 }
