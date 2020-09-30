@@ -21,9 +21,12 @@ namespace Quantum.Kata.GHZGame {
 
     // Each of them is given a bit (r, s and t respectively), and
     // they have to return new bits (a, b and c respectively) so
-    // that  r ∨ s ∨ t = a ⊕ b ⊕ c. The input bits will have 
+    // that  r ∨ s ∨ t = a ⊕ b ⊕ c.* The input bits will have 
     // zero or two bits set to true and three or one bits set to false.
     // The trick is, the players can not communicate during the game.
+
+    //  * '∨' is the standard bitwise OR operator
+    //  * '⊕' is the exclusive or, or XOR operator, so 'P ⊕ Q' is true if exactly one of P and Q is true.
 
     // Each task is wrapped in one operation preceded by the
     // description of the task. Each task has a unit test associated
