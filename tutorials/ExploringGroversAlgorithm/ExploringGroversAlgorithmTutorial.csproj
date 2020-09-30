@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <RootNamespace>Quantum.Kata.ExploringGroversAlgorithm</RootNamespace>
+    <IQSharpLoadAutomatically>true</IQSharpLoadAutomatically>
   </PropertyGroup>
   
   <ItemGroup>
