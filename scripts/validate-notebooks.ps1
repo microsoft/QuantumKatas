@@ -133,7 +133,6 @@ if ($Notebook -ne "") {
     }
 
     for ($i = $StartIndex; $i -le $EndIndex -and $i -le $AllItems.Length - 1; $i++) {
-        Write-Host "Validating $AllItems[$i]"
         Validate $AllItems[$i]
     }
 }
