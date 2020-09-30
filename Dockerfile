@@ -58,7 +58,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
-# To improve performance when running the %package commands (usually Katas' first cell)
+# To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve packages dependencies again (as it was already done
 # during the prebuild steps above).
