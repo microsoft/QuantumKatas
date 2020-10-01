@@ -47,7 +47,7 @@ namespace Quantum.Kata.SimonsAlgorithm
                 throw new ArgumentException($"Vectors have different sizes [{vector1.Count} != {vector2.Count}]");
             }
 
-            return new BooleanVector(vector1.Zip(vector2, (val1, val2) => val1 ^ val2));
+            return new BooleanVector(vector1.Zipped(vector2, (val1, val2) => val1 ^ val2));
         }
 
         public static BooleanVector operator -(BooleanVector vector1, BooleanVector vector2)
