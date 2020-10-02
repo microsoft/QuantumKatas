@@ -70,10 +70,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.startup_timeout=240 --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=240 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.startup_timeout=240 --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=240 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
