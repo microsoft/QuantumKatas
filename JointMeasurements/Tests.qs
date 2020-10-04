@@ -14,32 +14,47 @@ namespace Quantum.Kata.JointMeasurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
-    
+    open Microsoft.Quantum.Random;
+
     open Quantum.Kata.Utils;
     
     // "Framework" operation for testing multi-qubit tasks for distinguishing states of an array of qubits
     // with Int return
-    operation DistinguishStates_MultiQubit (nQubit : Int, nState : Int, statePrep : ((Qubit[], Int, Double) => Unit is Adj), testImpl : (Qubit[] => Int), preserveState : Bool) : Unit {
+    operation DistinguishStates_MultiQubit (nQubits : Int,
+                                            nStates : Int,
+                                            statePrep : ((Qubit[], Int, Double) => Unit is Adj),
+                                            testImpl : (Qubit[] => Int),
+                                            preserveState : Bool,
+                                            stateNames : String[]) : Unit {
         let nTotal = 100;
-        mutable nOk = 0;
-        
-        using (qs = Qubit[nQubit]) {
+        // misclassifications will store the number of times state i has been classified as state j (dimension nStates^2)
+        mutable misclassifications = new Int[nStates * nStates];
+        // unknownClassifications will store the number of times state i has been classified as some invalid state (index < 0 or >= nStates)
+        mutable unknownClassifications = new Int[nStates];
+                
+        using (qs = Qubit[nQubits]) {
             for (i in 1 .. nTotal) {
                 // get a random integer to define the state of the qubits
-                let state = RandomInt(nState);
-                
+                let state = DrawRandomInt(0, nStates - 1);
                 // get a random rotation angle to define the exact state of the qubits
-                let alpha = RandomReal(5) * PI();
+                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
                 
                 // do state prep: convert |0...0⟩ to outcome with return equal to state
                 statePrep(qs, state, alpha);
-                
-                // get the solution's answer and verify that it's a match
+
+                // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
                 let ans = testImpl(qs);
-                if (ans == state) {
-                    set nOk += 1;
+                if ((ans >= 0) and (ans < nStates)) {
+                    // classification result is a valid state index - check if is it correct
+                    if (ans != state) {
+                        set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
+                    }
                 }
-                
+                else {
+                    // classification result is an invalid state index - file it separately
+                    set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
+                }
+
                 if (preserveState) {
                     // check that the state of the qubit after the operation is unchanged
                     Adjoint statePrep(qs, state, alpha);
@@ -51,10 +66,24 @@ namespace Quantum.Kata.JointMeasurements {
             }
         }
         
-        EqualityFactI(nOk, nTotal, $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state.");
+        mutable totalMisclassifications = 0;
+        for (i in 0 .. nStates - 1) {
+            for (j in 0 .. nStates - 1) {
+                if (misclassifications[(i * nStates) + j] != 0) {
+                    set totalMisclassifications += misclassifications[i * nStates + j];
+                    Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
+                }
+            }
+            if (unknownClassifications[i] != 0) {
+                set totalMisclassifications += unknownClassifications[i];
+                Message($"Misclassified {stateNames[i]} as Unknown State in {unknownClassifications[i]} test runs.");
+            }
+        }
+        // This check will tell the total number of failed classifications
+        Fact(totalMisclassifications == 0, $"{totalMisclassifications} test runs out of {nTotal} returned incorrect state (see output for details).");
     }
-    
-    
+
+
     // ------------------------------------------------------
     operation StatePrep_ParityMeasurement (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
@@ -75,19 +104,19 @@ namespace Quantum.Kata.JointMeasurements {
     
     // ------------------------------------------------------
     operation T01_SingleQubitMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, false);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, false, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T02_ParityMeasurement_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, true);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, true, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
     operation T03_GHZOrGHZWithX_Test () : Unit {
-        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, true);
+        DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, true, ["α|0000⟩ + β|1111⟩", "α|0011⟩ + β|1100⟩"]);
     }
     
     
@@ -122,10 +151,10 @@ namespace Quantum.Kata.JointMeasurements {
         }
     }
     
-    
+
     operation T04_GHZOrWState_Test () : Unit {
         for (i in 1 .. 5) {
-            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true);
+            DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true, ["GHZ State", "W State"]);
         }
     }
     
@@ -147,7 +176,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     operation T05_DifferentBasis_Test () : Unit {
-        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true);
+        DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true, 
+            ["α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩", "α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩"]);
     }
     
     

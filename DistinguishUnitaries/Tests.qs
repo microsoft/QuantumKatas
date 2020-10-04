@@ -15,6 +15,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Random;
     
     open Quantum.Kata.Utils;
     
@@ -34,7 +35,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         
         for (i in 1 .. nTotal) {
             // get a random integer to define the unitary used
-            let actualIndex = RandomInt(nUnitaries);
+            let actualIndex = DrawRandomInt(0, nUnitaries - 1);
             
             ResetOracleCallsCount();
 
@@ -83,29 +84,35 @@ namespace Quantum.Kata.DistinguishUnitaries {
     
     // ------------------------------------------------------
     // A pair of helper wrappers used to differentiate the unitary we pass as an argument from gates used normally
-    operation SingleQubitGateWrapper (unitary : (Qubit => Unit is Adj+Ctl), register : Qubit) : Unit is Adj+Ctl {
-        unitary(register);
+    internal operation SingleQubitGateWrapper<'UInput> (unitary : ('UInput => Unit is Adj+Ctl), input : 'UInput) : Unit is Adj+Ctl {
+        unitary(input);
     }
 
-    function SingleQubitGateAsUnitary (unitary : (Qubit => Unit is Adj+Ctl)) : (Qubit => Unit is Adj+Ctl) {
+    internal function SingleQubitGateAsUnitary<'UInput> (unitary : ('UInput => Unit is Adj+Ctl)) : ('UInput => Unit is Adj+Ctl) {
         return SingleQubitGateWrapper(unitary, _);
     }
 
 
-    operation T11_DistinguishIfromX_Test () : Unit {
-        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary, [I, X]), DistinguishIfromX, 1);
+    operation T101_DistinguishIfromX_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, X]), DistinguishIfromX, 1);
     }
     
     
     // ------------------------------------------------------
-    operation T12_DistinguishIfromZ_Test () : Unit {
-        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary, [I, Z]), DistinguishIfromZ, 1);
+    operation T102_DistinguishIfromZ_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, Z]), DistinguishIfromZ, 1);
     }
     
     
     // ------------------------------------------------------
-    operation T13_DistinguishZfromS_Test () : Unit {
-        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary, [Z, S]), DistinguishZfromS, 2);
+    operation T103_DistinguishZfromS_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Z, S]), DistinguishZfromS, 2);
+    }
+    
+    
+    // ------------------------------------------------------
+    operation T104_DistinguishHfromX_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [H, X]), DistinguishHfromX, 2);
     }
     
     
@@ -116,8 +123,48 @@ namespace Quantum.Kata.DistinguishUnitaries {
         Z(q);
     }
 
-    operation T14_DistinguishZfromMinusZ_Test () : Unit {
-        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary, [Z, BoundCA([Z, MinusOne])]), DistinguishZfromMinusZ, 1);
+    operation T105_DistinguishZfromMinusZ_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Z, BoundCA([Z, MinusOne])]), DistinguishZfromMinusZ, 1);
+    }
+
+
+    // ------------------------------------------------------
+    operation T106_DistinguishRzFromR1_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<(Double, Qubit)>, [Rz, R1]), DistinguishRzFromR1, 1);
+    }
+
+
+    // ------------------------------------------------------
+    operation T107_DistinguishYfromXZ_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Y, BoundCA([Z, X])]), DistinguishYfromXZ, 2);
+    }
+    
+    
+    // ------------------------------------------------------
+    operation T108_DistinguishYfromXZWithPhases_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Y, BoundCA([Z, X, MinusOne]), BoundCA([Y, MinusOne]), BoundCA([Z, X])]), DistinguishYfromXZWithPhases, 3);
+    }
+
+
+    // ------------------------------------------------------
+    operation T109_DistinguishRzFromRy_Test () : Unit {
+        for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
+            DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), Ry(theta, _)]), DistinguishRzFromRy(theta, _), -1);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    operation T110_DistinguishRzFromR1WithAngle_Test () : Unit {
+        for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
+            DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), R1(theta, _)]), DistinguishRzFromR1WithAngle(theta, _), -1);
+        }
+    }
+    
+
+    // ------------------------------------------------------
+    operation T111_DistinguishPaulis_Test () : Unit {
+        DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, X, Y, Z]), DistinguishPaulis, 1);
     }
 
 
@@ -135,8 +182,36 @@ namespace Quantum.Kata.DistinguishUnitaries {
         CNOT(qs[0], qs[1]);
     }
 
-    operation T21_DistinguishIXfromCNOT_Test () : Unit {
+    operation T201_DistinguishIXfromCNOT_Test () : Unit {
         DistinguishUnitaries_Framework([IXWrapper, CNOTWrapper], DistinguishIXfromCNOT, 1);
     }
 
+    // ------------------------------------------------------
+    operation ReverseCNOTWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
+        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
+        CNOT(qs[1], qs[0]);
+    }
+
+    operation T202_CNOTDirection_Test () : Unit {
+        DistinguishUnitaries_Framework([CNOTWrapper, ReverseCNOTWrapper], CNOTDirection, 1);
+    }
+
+    // ------------------------------------------------------
+    operation SWAPWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
+        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
+        SWAP(qs[1], qs[0]);
+    }
+
+    operation T203_DistinguishCNOTfromSWAP_Test () : Unit {
+        DistinguishUnitaries_Framework([CNOTWrapper, SWAPWrapper], DistinguishCNOTfromSWAP, 1);
+    }
+
+    // ------------------------------------------------------
+    operation IdentityWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
+        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
+    }
+
+    operation T204_DistinguishTwoQubitUnitaries_Test () : Unit {
+        DistinguishUnitaries_Framework([IdentityWrapper, CNOTWrapper, ReverseCNOTWrapper, SWAPWrapper], DistinguishTwoQubitUnitaries, 2);
+    }
 }

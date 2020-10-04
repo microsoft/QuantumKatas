@@ -14,7 +14,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Arrays;
     open Quantum.Kata.Utils;
-    
+    open Microsoft.Quantum.Random;
 
     // Exercise 1.
     operation T1_RandomBit_Test () : Unit {
@@ -149,8 +149,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
     operation CheckRandomCalls () : Unit {
         Fact(GetOracleCallsCount(RandomInt) == 0, "You are not allowed to call RandomInt() in this task");
+        Fact(GetOracleCallsCount(DrawRandomInt) == 0, "You are not allowed to call DrawRandomInt() in this task");
         Fact(GetOracleCallsCount(RandomIntPow2) == 0, "You are not allowed to call RandomIntPow2() in this task");
         Fact(GetOracleCallsCount(RandomReal) == 0, "You are not allowed to call RandomReal() in this task");
+        Fact(GetOracleCallsCount(DrawRandomDouble) == 0, "You are not allowed to call DrawRandomDouble() in this task");
         Fact(GetOracleCallsCount(RandomSingleQubitPauli) == 0, "You are not allowed to call RandomSingleQubitPauli() in this task");
         Fact(GetOracleCallsCount(Random) == 0, "You are not allowed to call Random() in this task");
         ResetOracleCallsCount();
