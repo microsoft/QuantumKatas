@@ -9,7 +9,7 @@ using the same basic components and the same algorithm.
 to reduce the number of ancillary qubits needed.
 * Finally, part IV covers building an in-place quantum subtractor.
 
-You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
+You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
 
 #### Theory
 

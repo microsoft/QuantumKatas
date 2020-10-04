@@ -198,4 +198,47 @@ namespace Quantum.Kata.QFT {
         let bitsBE = MultiM(register);
         return ResultArrayAsInt(Reversed(bitsBE));
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Powers and roots of the QFT
+    //////////////////////////////////////////////////////////////////
+    
+    // Task 3.1. Implement powers of the QFT
+    operation QFTPower_Reference (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
+        // Use the fact that QFT⁴ = I
+        for (_ in 1 .. (P % 4)) {
+            QuantumFourierTransform_Reference(inputRegister);
+        }
+    }
+
+
+    // Task 3.2. Implement roots of the QFT
+    // Follow p.16 of https://arxiv.org/pdf/quant-ph/0309121.pdf
+    internal operation Circ (qs : LittleEndian, alpha : Double) : Unit is Adj + Ctl {
+        within {
+            Adjoint QFTLE(qs);
+        } apply {
+            ApplyDiagonalUnitary(
+                [0.0, -alpha, -2.0*alpha, alpha],
+                qs
+            );
+        }
+    }
+
+
+    operation QFTRoot_Reference (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
+        using (aux = Qubit[2]) {
+            let Q = QuantumFourierTransform_Reference;
+            let Q2 = OperationPowCA(Q, 2);
+            within {
+                ApplyToEachCA(H, aux);
+                Controlled Adjoint Q([aux[0]], inputRegister);
+                Controlled Adjoint Q2([aux[1]], inputRegister);
+            } apply {
+                Circ(LittleEndian(aux), PI() / (2.0 * IntAsDouble(P))); 
+            }
+        }
+    }
+
 }
