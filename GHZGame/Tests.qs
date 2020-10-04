@@ -13,6 +13,7 @@ namespace Quantum.Kata.GHZGame {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Random;
 
     // All possible starting bits (r, s and t) that the referee can give
     // to Alice, Bob and Charlie.
@@ -41,7 +42,7 @@ namespace Quantum.Kata.GHZGame {
         let inputs = RefereeBits();
         mutable wins = 0;
         for (_ in 0 .. N - 1) {
-            let rst = inputs[RandomInt(Length(inputs))];
+            let rst = inputs[DrawRandomInt(0, Length(inputs) - 1)];
             let abc = PlayClassicalGHZ_Reference(strategy, rst);
             if (WinCondition_Reference(rst, abc)) {
                 set wins = wins + 1;
@@ -125,7 +126,7 @@ namespace Quantum.Kata.GHZGame {
     // ------------------------------------------------------
     operation T23_PlayQuantumGHZ_Test () : Unit {
         for (_ in 0 .. 1000) {
-            let rst = (RefereeBits())[RandomInt(Length(RefereeBits()))];
+            let rst = (RefereeBits())[DrawRandomInt(0, Length(RefereeBits()) - 1)];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
                               QuantumStrategy_Reference(rst[1], _), 
                               QuantumStrategy_Reference(rst[2], _)];
