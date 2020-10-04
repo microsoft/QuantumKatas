@@ -64,10 +64,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
@@ -85,7 +85,7 @@ function Validate {
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * CHSH and MagicSquare games require implementing two code cells at once before running the test, 
 #    so the first of the cells implemented is guaranteed to fail.
-#  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
+#  * GraphColoring and SolveSATWithGrover (and its Workbook) have tasks for which the correct solution fails or times out with relatively high probability.
 #  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
 # 
@@ -93,9 +93,11 @@ $not_ready =
 @(
     'Check.ipynb',
     'CHSHGame.ipynb',
+    'Workbook_CHSHGame.ipynb',
     'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
+    'Workbook_SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
     'VisualizingGroversAlgorithm.ipynb',
     'ComplexArithmetic.ipynb',
@@ -112,7 +114,8 @@ if ($Notebook -ne "") {
     $AllItems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
-        -Exclude $not_ready
+        -Exclude $not_ready `
+        | Sort-Object Name
 
     # If the start index is not set, set it to 0 to check all notebooks
     if ($StartIndex -lt 0) {
