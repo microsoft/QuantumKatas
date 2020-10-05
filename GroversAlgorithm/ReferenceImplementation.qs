@@ -118,9 +118,11 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Task 2.3. The Grover iteration
     operation GroverIteration_Reference (register : Qubit[], oracle : (Qubit[] => Unit is Adj)) : Unit is Adj {
         oracle(register);
-        HadamardTransform_Reference(register);
-        ConditionalPhaseFlip_Reference(register);
-        HadamardTransform_Reference(register);
+        within {
+            HadamardTransform_Reference(register);
+        } apply {
+            ConditionalPhaseFlip_Reference(register);
+        }
     }
     
     
