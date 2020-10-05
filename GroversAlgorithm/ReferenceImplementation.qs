@@ -13,7 +13,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Math; // To use PI
+    open Microsoft.Quantum.Math;
 
     
     //////////////////////////////////////////////////////////////////
@@ -109,6 +109,9 @@ namespace Quantum.Kata.GroversAlgorithm {
         } apply {
             Controlled Z(Most(register), Tail(register));
         }
+        // To fix the global phase difference, use the following line :
+        // For more details refer to the following Quantum SE question : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
+        R(PauliI, 2.0 * PI(), register[0]);
     }
     
     
