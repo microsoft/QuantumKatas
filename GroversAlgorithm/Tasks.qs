@@ -137,7 +137,6 @@ namespace Quantum.Kata.GroversAlgorithm {
     
         // Hint 1: Let's do instead I - 2|0...0⟩⟨0...0|, i.e. flipping the phase of only  |0...0⟩. 
         // This however introduces a global phase of −1.
-        
         // It is fine if this implementation is used for Grover's search algorithm itself, since the 
         // global phase will remain global and not be observable. However, if this implementation
         // is used as a building block for other algorithms, in particular quantum counting algorithm,
