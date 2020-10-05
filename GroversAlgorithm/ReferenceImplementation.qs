@@ -98,7 +98,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         
         // To fix the global phase difference, use the following line :
         // For more details refer to the following Quantum SE question : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
-        R(PauliI, 2.0 * PI(), register[0]);
+        R(PauliI, PI(), register[0]);
     }
     
     
@@ -111,7 +111,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         }
         // To fix the global phase difference, use the following line :
         // For more details refer to the following Quantum SE question : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
-        R(PauliI, 2.0 * PI(), register[0]);
+        R(PauliI, PI(), register[0]);
     }
     
     
