@@ -4,7 +4,7 @@
 $ErrorActionPreference = 'Stop'
 
 & "$PSScriptRoot/set-env.ps1"
-
+$all_ok = $True
 
 function Build-One {
   param(
@@ -22,6 +22,10 @@ function Build-One {
   $script:all_ok = ($LastExitCode -eq 0) -and $script:all_ok
 }
 
-# Build all Katas solutions:
+# Build all Katas solutions
 Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
 | ForEach-Object { Build-One $_.FullName }
+
+if (-not $all_ok) {
+    throw "At least one project failed building. Check the logs."
+}

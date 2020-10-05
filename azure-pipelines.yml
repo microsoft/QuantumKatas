@@ -1,6 +1,11 @@
 name: $(Build.Major).$(Build.Minor).$(BuildId)
-trigger:
-- master
+
+trigger: none
+
+pr:
+- main
+- feature/*
+- release/*
 
 variables:
   Build.Major: 1
@@ -33,15 +38,15 @@ jobs:
     - template: scripts/steps-init.yml
 
     - powershell: ./validate-unicode.ps1
-      displayName: "Validating unicode characters"
+      displayName: "Validating Unicode characters"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
     - powershell: ./validate-projects.ps1
       displayName: "Validating C# projects"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-  - job: validate_notebooks
-    displayName: 'Validate Notebooks'
+  - job: validate_notebooks_part_1
+    displayName: 'Validate Notebooks (part 1)'
     strategy:
       matrix:
         linux:
@@ -55,7 +60,26 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: ./validate-notebooks.ps1
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 19'
+      displayName: "Validating notebooks"
+      workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
+  - job: validate_notebooks_part_2
+    displayName: 'Validate Notebooks (part 2)'
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool: 
+      vmImage: $(imageName)
+    steps:
+    - template: scripts/steps-init.yml
+
+    - powershell: './validate-notebooks.ps1 -startindex 20'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 

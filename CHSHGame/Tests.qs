@@ -9,10 +9,11 @@
 
 namespace Quantum.Kata.CHSHGame {
 
-    open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Random;
+    open Microsoft.Quantum.Math;
 
 
     // ------------------------------------------------------
@@ -32,8 +33,8 @@ namespace Quantum.Kata.CHSHGame {
     operation T12_ClassicalStrategy_Test () : Unit {
         mutable wins = 0;
         for (i in 1..1000) {
-            let x = RandomInt(2) == 1 ? true | false;
-            let y = RandomInt(2) == 1 ? true | false;
+            let x = DrawRandomInt(0, 1) == 1 ? true | false;
+            let y = DrawRandomInt(0, 1) == 1 ? true | false;
             let (a, b) = (AliceClassical(x), BobClassical(y));
             if ((x and y) == (a != b)) {
                 set wins = wins + 1;
@@ -73,14 +74,17 @@ namespace Quantum.Kata.CHSHGame {
             EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
             Reset(q);
 
+            // apply the Pauli X gate
             X(q);
             EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
             Reset(q);
 
+            // apply the Hadamard gate
             H(q);
             EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
             Reset(q);
 
+            // apply the Pauli X and then the Hadamard gate
             X(q);
             H(q);
             EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
@@ -134,8 +138,8 @@ namespace Quantum.Kata.CHSHGame {
     operation T25_PlayQuantumCHSH_Test () : Unit {
         mutable wins = 0;
         for (i in 1..10000) {
-            let x = RandomInt(2) == 1 ? true | false;
-            let y = RandomInt(2) == 1 ? true | false;
+            let x = DrawRandomInt(0, 1) == 1 ? true | false;
+            let y = DrawRandomInt(0, 1) == 1 ? true | false;
             let (a, b) = PlayQuantumCHSH(AliceQuantum(x, _), BobQuantum(y, _));
             if ((x and y) == (a != b)) {
                 set wins = wins + 1;
@@ -143,5 +147,4 @@ namespace Quantum.Kata.CHSHGame {
         }
         EqualityWithinToleranceFact(IntAsDouble(wins) / 10000., 0.85, 0.01);
     }
-
 }

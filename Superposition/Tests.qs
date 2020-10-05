@@ -14,6 +14,7 @@ namespace Quantum.Kata.Superposition {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Random;
 
 
     // ------------------------------------------------------
@@ -252,7 +253,7 @@ namespace Quantum.Kata.Superposition {
             repeat {
                 mutable ok = true;
                 for (i in 0 .. 3) {
-                    set numbers w/= i <- RandomInt(1 <<< N);
+                    set numbers w/= i <- DrawRandomInt(0, 1 <<< N - 1);
                     for (j in 0 .. i - 1) {
                         if (numbers[i] == numbers[j]) {
                             set ok = false;
@@ -268,6 +269,21 @@ namespace Quantum.Kata.Superposition {
             }
 
             AssertEqualOnZeroState(N, FourBitstringSuperposition(_, bits), FourBitstringSuperposition_Reference(_, bits), false, "");
+        }
+    }
+
+    // ------------------------------------------------------
+    operation T114_AllStatesWithParitySuperposition_Test () : Unit {
+        // remember to repeat the tests (for the small case of N = 2), lest the post-selection solution doesn't detect failure and retry
+        for (i in 1 .. 10) {
+            for (parity in 0 .. 1) {
+                AssertEqualOnZeroState(2, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
+            }
+        }
+        for (N in 3 .. 6) {
+            for (parity in 0 .. 1) {
+                AssertEqualOnZeroState(N, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
+            }
         }
     }
 
