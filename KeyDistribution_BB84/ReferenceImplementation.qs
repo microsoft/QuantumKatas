@@ -82,7 +82,7 @@ namespace Quantum.Kata.KeyDistribution {
         // If Alice and Bob used the same basis, they will have the same value of the bit.
         // The shared key consists of those bits.
         mutable key = new Bool[0];
-        for ((a, b, bit) in Zip3(basesAlice, basesBob, measurementsBob)) {
+        for ((a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob)) {
             if (a == b) {
                 set key += [bit];
             }
