@@ -51,6 +51,12 @@ function Validate {
     if (Test-Path $CheckNotebook)  {
         Remove-Item $CheckNotebook
     }
+    if (Test-Path "bin") {
+        Remove-Item "bin" -Recurse
+    }
+    if (Test-Path "obj") {
+        Remove-Item "obj" -Recurse
+    }
 
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
@@ -64,10 +70,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 

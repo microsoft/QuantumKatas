@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.12.20072031
+        PS> ./Update-QDKVersion.ps1 -Version 0.12.20100504
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
@@ -79,5 +79,4 @@ $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
              $_
          }
     } | Set-Content -Path $ps1Path
-
 
