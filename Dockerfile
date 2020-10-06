@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.12.20082513
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.12.20100504
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -58,7 +58,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
-# To improve performance when running the %package commands (usually Katas' first cell)
+# To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve packages dependencies again (as it was already done
 # during the prebuild steps above).
