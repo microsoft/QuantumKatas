@@ -81,7 +81,7 @@ namespace Quantum.Kata.GraphColoring {
 
                     // verify the return value
                     Fact(Length(result) == K, $"Unexpected number of colors for N = {N}, K = {K} : {Length(result)}");
-                    for ((expected, actual) in Zip(expectedColors, result)) {
+                    for ((expected, actual) in Zipped(expectedColors, result)) {
                         Fact(expected == actual, $"Unexpected color for N = {N}, K = {K} : expected {expectedColors}, got {result}");
                     }
 

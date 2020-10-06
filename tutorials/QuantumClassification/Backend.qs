@@ -38,7 +38,7 @@ namespace Microsoft.Quantum.Kata.QuantumClassification {
         // convert training data and labels into a single data structure
         let samples = Mapped(
             LabeledSample,
-            Zip(trainingVectors, trainingLabels)
+            Zipped(trainingVectors, trainingLabels)
         );
         let (optimizedModel, nMisses) = TrainSequentialClassifier(
             Mapped(
