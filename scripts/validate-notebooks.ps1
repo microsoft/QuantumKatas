@@ -51,6 +51,12 @@ function Validate {
     if (Test-Path $CheckNotebook)  {
         Remove-Item $CheckNotebook
     }
+    if (Test-Path "bin") {
+        Remove-Item "bin" -Recurse
+    }
+    if (Test-Path "obj") {
+        Remove-Item "obj" -Recurse
+    }
 
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
@@ -64,10 +70,10 @@ function Validate {
     $ErrorActionPreference = 'Continue'
     if ($env:SYSTEM_DEBUG -eq "true") {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
     } else {
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
+        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
     }
     $ErrorActionPreference = 'Stop'
 
@@ -85,7 +91,7 @@ function Validate {
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * CHSH and MagicSquare games require implementing two code cells at once before running the test, 
 #    so the first of the cells implemented is guaranteed to fail.
-#  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
+#  * GraphColoring and SolveSATWithGrover (and its Workbook) have tasks for which the correct solution fails or times out with relatively high probability.
 #  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
 # 
@@ -97,6 +103,7 @@ $not_ready =
     'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
+    'Workbook_SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
     'VisualizingGroversAlgorithm.ipynb',
     'ComplexArithmetic.ipynb',
