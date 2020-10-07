@@ -24,9 +24,56 @@ RUN pip install -I --no-cache-dir \
 # From now own, just run things as the jovyan user
 USER ${USER}
 
+RUN cd ${HOME} && \
+# Call dotnet restore for each project to pre-populate NuGet cache
+    dotnet restore BasicGates && \
+    dotnet restore CHSHGame && \
+    dotnet restore DeutschJozsaAlgorithm && \
+    dotnet restore DistinguishUnitaries && \
+    dotnet restore GHZGame && \
+    dotnet restore GraphColoring && \
+    dotnet restore GroversAlgorithm && \
+    dotnet restore JointMeasurements && \
+    dotnet restore KeyDistribution_BB84 && \
+    dotnet restore MagicSquareGame && \
+    dotnet restore Measurements && \
+    dotnet restore PhaseEstimation && \
+    dotnet restore QEC_BitFlipCode && \
+    dotnet restore QFT && \
+    dotnet restore RippleCarryAdder && \
+    dotnet restore SolveSATWithGrover && \
+    dotnet restore SuperdenseCoding && \
+    dotnet restore Superposition && \
+    dotnet restore Teleportation && \
+    dotnet restore TruthTables && \
+    dotnet restore UnitaryPatterns && \
+    dotnet restore tutorials/ComplexArithmetic && \
+    dotnet restore tutorials/ExploringDeutschJozsaAlgorithm && \
+    dotnet restore tutorials/ExploringGroversAlgorithm && \
+    dotnet restore tutorials/LinearAlgebra && \
+    dotnet restore tutorials/MultiQubitGates && \
+    dotnet restore tutorials/MultiQubitSystems && \
+    dotnet restore tutorials/QuantumClassification && \
+    dotnet restore tutorials/Qubit && \
+    dotnet restore tutorials/RandomNumberGeneration && \
+    dotnet restore tutorials/SingleQubitGates && \
+# To improve performance when loading packages at IQ# kernel initialization time,
+# we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
+# resolution won't attempt to resolve packages dependencies again (as it was already done
+# during the dotnet restore steps above).
+# The downside is that only packages that were already downloaded to .nuget/packages folder
+# will be available to get loaded.
+# Users that require loading additional packages should use the iqsharp-base image instead.
+    rm ${HOME}/NuGet.config && \
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\
+          <configuration>\
+              <packageSources>\
+                   <clear />\
+              </packageSources>\
+          </configuration>\
+    " > ${HOME}/.nuget/NuGet/NuGet.Config && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
-RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
@@ -57,22 +104,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
-    ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
-# To improve performance when loading packages at IQ# kernel initialization time,
-# we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
-# resolution won't attempt to resolve packages dependencies again (as it was already done
-# during the prebuild steps above).
-# The downside is that online packages that were already downloaded to .nuget/packages folder
-# will be available to get loaded.
-# Users that require loading additional packages should use the iqsharp-base image instead.
-    rm ${HOME}/NuGet.config && \
-    echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\
-          <configuration>\
-              <packageSources>\
-                   <clear />\
-              </packageSources>\
-          </configuration>\
-    " > ${HOME}/.nuget/NuGet/NuGet.Config
+    ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb
 
 # Set the working directory to $HOME (/home/jovyan/)
 WORKDIR ${HOME}
