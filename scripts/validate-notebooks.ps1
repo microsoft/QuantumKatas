@@ -37,6 +37,10 @@ Param(
 & "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
+# Populate NuGet cache for utility projects
+dotnet restore "$PSScriptRoot/../utilities/Microsoft.Quantum.Katas"
+dotnet restore "$PSScriptRoot/../utilities/DumpUnitary"
+
 function Validate {
     Param($Notebook)
 

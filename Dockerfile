@@ -26,6 +26,8 @@ USER ${USER}
 
 RUN cd ${HOME} && \
 # Call dotnet restore for each project to pre-populate NuGet cache
+    dotnet restore utilities/Microsoft.Quantum.Katas && \
+    dotnet restore utilities/DumpUnitary && \
     dotnet restore BasicGates && \
     dotnet restore CHSHGame && \
     dotnet restore DeutschJozsaAlgorithm && \
