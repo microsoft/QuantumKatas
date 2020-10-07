@@ -37,10 +37,6 @@ Param(
 & "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
-# Restore all Katas solutions to populate NuGet cache
-Get-ChildItem (Join-Path $PSScriptRoot '..') -Recurse -Include '*.sln' -Exclude 'Microsoft.Quantum.Katas.sln' `
-| ForEach-Object { dotnet restore $_.FullName }
-
 function Validate {
     Param($Notebook)
 
@@ -69,7 +65,10 @@ function Validate {
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
     try {
-        # Disable NuGet package loading, since all necessary packages should be cached at this point
+        # Populate NuGet cache for this project
+        dotnet restore
+
+        # Disable NuGet package loading, since all required packages should be cached at this point
         "<?xml version=""1.0"" encoding=""utf-8""?>
             <configuration>
                 <packageSources>
