@@ -33,6 +33,8 @@ Param(
     [int]$EndIndex = -1.0
 )
 
+
+& "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
 function Validate {
