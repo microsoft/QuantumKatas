@@ -81,7 +81,7 @@ function Validate {
         if ($env:SYSTEM_DEBUG -eq "true") {
             jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG
         } else {
-            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300
         }
 
         # if jupyter returns an error code, report that this notebook is invalid:
