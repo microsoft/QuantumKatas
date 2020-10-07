@@ -33,13 +33,7 @@ Param(
     [int]$EndIndex = -1.0
 )
 
-
-& "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
-
-# Populate NuGet cache for utility projects
-dotnet restore "$PSScriptRoot/../utilities/Microsoft.Quantum.Katas"
-dotnet restore "$PSScriptRoot/../utilities/DumpUnitary"
 
 function Validate {
     Param($Notebook)
@@ -82,11 +76,17 @@ function Validate {
         " | Out-File ./NuGet.Config -Encoding utf8
 
         # Run Jupyter nbconvert to execute the kata.
+        # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
+        # unless $ErrorActionPreference is set to 'Continue'.
+        $ErrorActionPreference = 'Continue'
         if ($env:SYSTEM_DEBUG -eq "true") {
-            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
         } else {
-            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
         }
+        $ErrorActionPreference = 'Stop'
 
         # if jupyter returns an error code, report that this notebook is invalid:
         if ($LastExitCode -ne 0) {
