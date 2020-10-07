@@ -26,7 +26,7 @@ USER ${USER}
 
 RUN cd ${HOME} && \
 # `dotnet restore` for each folder to ensure NuGet cache is fully populated
-    for solution in $(find . -type f -name "*.sln"); do dotnet restore "$file"; done && \
+    for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
     ./scripts/prebuild-kata.sh BasicGates && \
