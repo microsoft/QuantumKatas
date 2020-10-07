@@ -68,7 +68,7 @@ function Validate {
         # Populate NuGet cache for this project
         dotnet restore
 
-        # Disable NuGet package loading, since all required packages should be cached at this point
+        # Clear NuGet package sources, since all required packages should be cached at this point
         "<?xml version=""1.0"" encoding=""utf-8""?>
             <configuration>
                 <packageSources>
