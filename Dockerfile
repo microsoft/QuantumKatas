@@ -25,7 +25,7 @@ RUN pip install -I --no-cache-dir \
 USER ${USER}
 
 RUN cd ${HOME} && \
-# `dotnet restore` for each folder to ensure NuGet cache is fully populated
+# `dotnet restore` for each solution to ensure NuGet cache is fully populated
     for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
@@ -63,7 +63,7 @@ RUN cd ${HOME} && \
 # To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve package dependencies again (as it was already done
-# during the dotnet restore steps above).
+# during the prebuild steps above).
 # The downside is that only packages that were already downloaded to .nuget/packages folder
 # will be available to get loaded.
 # Users that require loading additional packages should use the iqsharp-base image instead.

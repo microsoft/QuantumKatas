@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20100504" />
-    <PackageReference Include="Microsoft.Quantum.Standard.Visualization" Version="0.12.20100504" />
   </ItemGroup>
 
   <ItemGroup>
