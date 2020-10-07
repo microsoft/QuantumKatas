@@ -47,14 +47,14 @@ RUN cd ${HOME} && \
     dotnet restore Teleportation && \
     dotnet restore TruthTables && \
     dotnet restore UnitaryPatterns && \
-    dotnet restore tutorials/ComplexArithmetic && \
+    #dotnet restore tutorials/ComplexArithmetic && \
     dotnet restore tutorials/ExploringDeutschJozsaAlgorithm && \
     dotnet restore tutorials/ExploringGroversAlgorithm && \
-    dotnet restore tutorials/LinearAlgebra && \
+    #dotnet restore tutorials/LinearAlgebra && \
     dotnet restore tutorials/MultiQubitGates && \
     dotnet restore tutorials/MultiQubitSystems && \
     dotnet restore tutorials/QuantumClassification && \
-    dotnet restore tutorials/Qubit && \
+    #dotnet restore tutorials/Qubit && \
     dotnet restore tutorials/RandomNumberGeneration && \
     dotnet restore tutorials/SingleQubitGates && \
 # To improve performance when loading packages at IQ# kernel initialization time,
