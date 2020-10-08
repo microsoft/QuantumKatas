@@ -68,7 +68,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row == col;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T01_MainDiagonal_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, MainDiagonal, MainDiagonal_Pattern);
@@ -81,7 +81,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return true;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T02_AllNonZero_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, AllNonZero, AllNonZero_Pattern);
@@ -94,7 +94,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row / 2 == col / 2;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T03_BlockDiagonal_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, BlockDiagonal, BlockDiagonal_Pattern);
@@ -110,7 +110,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row / (size / 2) == col / (size / 2);
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T04_Quarters_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Quarters, Quarters_Pattern);
@@ -126,7 +126,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row % 2 == col % 2;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T05_EvenChessPattern_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, EvenChessPattern, EvenChessPattern_Pattern);
@@ -142,7 +142,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row % 2 != col % 2;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T06_OddChessPattern_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, OddChessPattern, OddChessPattern_Pattern);
@@ -155,7 +155,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row == (size - 1) - col;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T07_Antidiagonal_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Antidiagonal, Antidiagonal_Pattern);
@@ -168,7 +168,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return (row / 2) % 2 == (col / 2) % 2;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T08_ChessPattern2x2_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, ChessPattern2x2, ChessPattern2x2_Pattern);
@@ -191,7 +191,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return true;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T09_TwoPatterns_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, TwoPatterns, TwoPatterns_Pattern);
@@ -217,7 +217,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return true;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T10_IncreasingBlocks_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, IncreasingBlocks, IncreasingBlocks_Pattern);
@@ -230,7 +230,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return row == col or row == (size - 1) - col;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T11_XWing_Fighter_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, XWing_Fighter, XWing_Fighter_Pattern);
@@ -245,7 +245,7 @@ namespace Quantum.Kata.UnitaryPatterns {
                row / s2 != col / s2 and row % s2 == col % s2;
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T12_Rhombus_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, Rhombus, Rhombus_Pattern);
@@ -263,7 +263,7 @@ namespace Quantum.Kata.UnitaryPatterns {
                (row == s2 - 1 or row == s2) and (col == s2 - 1 or col == s2);
     }
     
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_TIE_Fighter_Test () : Unit {
         for (n in 2 .. 5) {
             AssertOperationMatrixMatchesPattern(n, TIE_Fighter, TIE_Fighter_Pattern);
@@ -284,7 +284,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return size != 8 ? false | A[row][col];         
     }
     
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T14_Creeper_Test () : Unit {
         AssertOperationMatrixMatchesPattern(3, Creeper, Creeper_Pattern);
     }
@@ -294,7 +294,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         return (row - 1) <= col;
     }
     
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T15_Hessenberg_Matrix_Test () : Unit {
         for (n in 2 .. 4) {
             AssertOperationMatrixMatchesPattern(n, Hessenberg_Matrix, Hessenberg_Matrix_Pattern);

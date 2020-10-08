@@ -21,13 +21,14 @@ namespace Quantum.Kata.KeyDistribution {
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
 
+    @Test("QuantumSimulator")
     operation T11_DiagonalBasis_Test () : Unit {
         for (i in 1 .. 5) {
             AssertOperationsEqualReferenced(i, DiagonalBasis, DiagonalBasis_Reference);
         }
     }
 
-
+    @Test("QuantumSimulator")
     operation T12_EqualSuperposition_Test () : Unit {
         using (q = Qubit()) {
             EqualSuperposition(q);
@@ -42,6 +43,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
 
+    @Test("QuantumSimulator")
     operation T21_RandomArray_Test () : Unit {
         // The test checks that the operation does not return always the same array.
         let N = 30;
@@ -63,7 +65,7 @@ namespace Quantum.Kata.KeyDistribution {
         return (RandomArray_Reference(N), RandomArray_Reference(N));
     }
 
-
+    @Test("QuantumSimulator")
     operation T22_PrepareAlicesQubits_Test () : Unit {
         for (N in 2 .. 10) {
             let (bases, state) = GenerateRandomState(N);
@@ -77,6 +79,7 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T23_MeasureBobsQubits_Test () : Unit {
         for (N in 2 .. 10) {
             let (bases, state) = GenerateRandomState(N);
@@ -93,6 +96,7 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T24_GenerateSharedKey_Test () : Unit {
         for (N in 10 .. 30) {
             let basesAlice = RandomArray_Reference(N);
@@ -107,6 +111,7 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T25_CheckKeysMatch_Test () : Unit {
         // Hard-coded test to validate that the solution checks the right relation with error rate
         mutable key1 = ConstantArray(10, false);
@@ -136,6 +141,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
 
+    @Test("QuantumSimulator")
     operation T31_Eavesdrop_Test () : Unit {
         using (q = Qubit()) {
             // q = 0, Real value: b = rectangular, Input: b = rectangular
