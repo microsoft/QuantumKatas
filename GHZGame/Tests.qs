@@ -24,6 +24,7 @@ namespace Quantum.Kata.GHZGame {
                 [true, false, true]];
     }
 
+    @Test("QuantumSimulator")
     operation T11_WinCondition_Test () : Unit {
         for (rst in RefereeBits()) {
             for (i in 0 .. 1 <<< 3 - 1) {
@@ -51,12 +52,14 @@ namespace Quantum.Kata.GHZGame {
         return IntAsDouble(wins) / IntAsDouble(N);
     }
 
+    @Test("QuantumSimulator")
     operation T12_RandomClassical_Test () : Unit {
         EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, RandomClassicalStrategy), 0.5, 0.02);
     }
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T13_BestClassical_Test () : Unit {
         EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.75, 0.02);
     }
@@ -67,7 +70,7 @@ namespace Quantum.Kata.GHZGame {
         return mode == 0 ? false | mode == 1 ? true | mode == 2 ? input | not input;
     }
 
-
+    @Test("QuantumSimulator")
     operation T14_PlayClassicalGHZ_Test () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
@@ -97,12 +100,14 @@ namespace Quantum.Kata.GHZGame {
         }
     }
 
+    @Test("QuantumSimulator")
     operation T21_CreateEntangledTriple_Test () : Unit {
         AssertEqualOnZeroState(3, CreateEntangledTriple, CreateEntangledTriple_Reference);
     }
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T22_QuantumStrategy_Test () : Unit {
         using (q = Qubit()) {
             EqualityFactB(QuantumStrategy(false, q), false, "|0⟩ not measured as false");
@@ -124,6 +129,7 @@ namespace Quantum.Kata.GHZGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T23_PlayQuantumGHZ_Test () : Unit {
         for (_ in 0 .. 1000) {
             let rst = (RefereeBits())[DrawRandomInt(0, Length(RefereeBits()) - 1)];

@@ -14,7 +14,7 @@ namespace Quantum.Kata.SuperdenseCoding {
     
     
     // ------------------------------------------------------
-        
+    @Test("QuantumSimulator")    
     operation T1_CreateEntangledPair_Test () : Unit {
         using ((q1, q2) = (Qubit(), Qubit())) {
 
@@ -66,17 +66,17 @@ namespace Quantum.Kata.SuperdenseCoding {
         }
     }
     
-    
+    @Test("QuantumSimulator")
     operation T2_EncodeMessageInQubit_Test () : Unit {
         TestProtocol(ComposeProtocol(EncodeMessageInQubit, DecodeMessageFromQubits_Reference, _));
     }
     
-    
+    @Test("QuantumSimulator")
     operation T3_DecodeMessageFromQubits_Test () : Unit {
         TestProtocol(ComposeProtocol(EncodeMessageInQubit_Reference, DecodeMessageFromQubits, _));
     }
     
-    
+    @Test("QuantumSimulator")
     operation T4_SuperdenseCodingProtocol_Test () : Unit {
         TestProtocol(SuperdenseCodingProtocol);
     }

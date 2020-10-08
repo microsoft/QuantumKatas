@@ -21,12 +21,14 @@ RUN pip install -I --no-cache-dir \
     chown -R ${USER} ${HOME} && \
     chmod +x ${HOME}/scripts/*.sh
 
-# From now own, just run things as the jovyan user
+# From now on, just run things as the jovyan user
 USER ${USER}
 
+RUN cd ${HOME} && \
+# `dotnet restore` for each solution to ensure NuGet cache is fully populated
+    for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
-RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
@@ -60,9 +62,9 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
 # To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
-# resolution won't attempt to resolve packages dependencies again (as it was already done
+# resolution won't attempt to resolve package dependencies again (as it was already done
 # during the prebuild steps above).
-# The downside is that online packages that were already downloaded to .nuget/packages folder
+# The downside is that only packages that were already downloaded to .nuget/packages folder
 # will be available to get loaded.
 # Users that require loading additional packages should use the iqsharp-base image instead.
     rm ${HOME}/NuGet.config && \
