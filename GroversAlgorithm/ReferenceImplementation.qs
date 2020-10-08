@@ -110,7 +110,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             Controlled Z(Most(register), Tail(register));
         }
         // To fix the global phase difference, use the following line :
-        R(PauliI, 2*PI(), register[0]); // Note : We used 2*PI to add a global phase of PI, as R operation rotates qubit by 𝜃/2
+        R(PauliI, 2.0 * PI(), register[0]); // Note : We used 2*PI to add a global phase of PI, as R operation rotates qubit by 𝜃/2
         // For more details refer to the following Quantum SE question : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
     }
     
