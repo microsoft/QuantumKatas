@@ -63,7 +63,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 1.5. N-bit color equality oracle (no extra qubits)
     operation ColorEqualityOracle_Nbit_Reference (c0 : Qubit[], c1 : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         within {
-            for ((q0, q1) in Zip(c0, c1)) {
+            for ((q0, q1) in Zipped(c0, c1)) {
                 // compute XOR of q0 and q1 in place (storing it in q1)
                 CNOT(q0, q1);
             }
@@ -95,7 +95,7 @@ namespace Quantum.Kata.GraphColoring {
         let nEdges = Length(edges);
         using (conflictQubits = Qubit[nEdges]) {
             within {
-                for (((start, end), conflictQubit) in Zip(edges, conflictQubits)) {
+                for (((start, end), conflictQubit) in Zipped(edges, conflictQubits)) {
                     // Check that endpoints of the edge have different colors:
                     // apply ColorEqualityOracle_Nbit_Reference oracle; if the colors are the same the result will be 1, indicating a conflict
                     ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1], 
