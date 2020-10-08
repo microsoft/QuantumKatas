@@ -335,7 +335,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         TwosComplement_Reference(a);
         
         // Add 2ᴺ - a and b to get (2ᴺ + b - a) mod 2ᴺ = (b-a) mod 2ᴺ 
-        AdderModuloNbits_Reference(a,b,diff);
+        AdderModuloNbits_Reference(a, b, diff);
         
         // Transform 2ᴺ - a back to a by applying Two's Complement again.  
         TwosComplement_Reference(a);
