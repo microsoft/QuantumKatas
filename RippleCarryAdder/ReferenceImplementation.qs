@@ -351,9 +351,7 @@ namespace Quantum.Kata.RippleCarryAdder {
             let carries = [tempCarry] + a;
 
             // Compute carry bits
-            for (i in 0 .. N-1) {
-                Majority_Reference(a[i], b[i], carries[i]);
-            }
+            ApplyToEachA(Majority_Reference, Zipped3(a, b, carries));
 
             // No need to save last (N+1)th carry bit as Addition is Modulo 2ᴺ
             
