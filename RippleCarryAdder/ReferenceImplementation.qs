@@ -367,6 +367,6 @@ namespace Quantum.Kata.RippleCarryAdder {
         // Notice that Task 5.4 is actually the Adjoint of Task 5.3. 
         // Task 5.3 maps (a,b) -> (a,(a+b)mod2ᴺ). Let c = (a+b)mod2ᴺ
         // Task 5.4 maps (a,b) -> (a,(b-a)mod2ᴺ). So Task 5.4 will maps (a,c) -> (a,(c-a)mod2ᴺ) = (a,((a+b)mod2ᴺ-a)mod2ᴺ) = (a,b).
-        Adjoint InPlaceAdderModuloNbits_Reference (a,b);
+        Adjoint InPlaceAdderModuloNbits_Reference(a, b);
     }
 }
