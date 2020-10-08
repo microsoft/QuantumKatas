@@ -135,11 +135,31 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
     operation ConditionalPhaseFlip (register : Qubit[]) : Unit is Adj {
     
-        // Hint 1: Note that quantum states are defined up to a global phase.
-        // Thus the state obtained as a result of this operation is the same
-        // as the state obtained by flipping the sign of only the |0...0⟩ state.
+        // Hint 1: Let's do instead I - 2|0...0⟩⟨0...0|, i.e. flipping the phase of only  |0...0⟩. 
+        // This however introduces a global phase of −1.
+        // It is fine if this implementation is used for Grover's search algorithm itself, since the 
+        // global phase will remain global and not be observable. However, if this implementation
+        // is used as a building block for other algorithms, in particular quantum counting algorithm,
+        // which converts the global phase difference into the relative phase,
+        // this can cause very interesting bugs. See an extended discussion in this Quantum Computing SE question.
+        // Link : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
+        // However, the effect of extra global phase introduced in the circuit can be nullified by adding back
+        // global phase of  −1  back to the circuit
+        
             
         // Hint 2: You can use the same trick as in the oracle converter task.
+        // Alternatively, consider the Controlled Z gate, applied with most of the qubits as control and the last qubit as target.
+        // Controlled Z(|𝑠0𝑠1…𝑠𝑛−2⟩,|𝑠𝑛−1⟩)  leaves all basis states except  |1...11⟩  unchanged.
+        // It adds a −1 phase to that state : |1...11⟩ → −|1...11⟩ 
+        // Remember that 𝑍|0⟩ = |0⟩ and 𝑍|1⟩ = −|1⟩.
+        // You need to modify it to add the −1 phase to only the |0...00⟩ state instead.
+        
+        // Hint 3: Let's denote  𝐺  as Grover iteration with eigenvalues  𝑒𝜄𝜃  and  𝑒𝜄(2𝜋−𝜃)  and
+        // 𝐺′  as the Grover iteration with an extra global phase of  −1  .
+        // Now,  𝐺′=−𝐺  will have eigenvalues multiplied by  −1  :  −𝑒𝜄𝜃  and  −𝑒𝜄(2𝜋−𝜃) .
+        // Now, let  𝐺″  be the new Grover iteration which does not suffer from the extra global phase.
+        // So, when we add back the phase of  −1  to  𝐺′ , we get  𝐺″ = −𝐺′ = −(−𝐺) = 𝐺  which is the desired grover iteration.
+        // Given that  𝑒𝜄𝜋 = −1  , we can use a R operation(https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.r)
             
         // ...
     }
