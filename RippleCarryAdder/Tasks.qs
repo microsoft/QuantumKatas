@@ -415,4 +415,5 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation InPlaceSubtractorModuloNbits (a : Qubit[], b : Qubit[]) : Unit is Adj {
         // ...
     }
+    
 }
