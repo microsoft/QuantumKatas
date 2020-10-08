@@ -343,20 +343,17 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     // Task 5.4. In Place Adder Modulo 2ᴺ
     operation InPlaceAdderModuloNbits_Reference (a : Qubit[], b : Qubit[]) : Unit is Adj {
-        // Modification of Solution of Task 3.5 (Last Carry bit isn't saved)
-        
-        let N = Length(a);
-        
+        // Modification of Solution of Task 3.5 (Last Carry bit isn't saved)    
         using (tempCarry = Qubit()) {
             let carries = [tempCarry] + a;
 
             // Compute carry bits
             ApplyToEachA(Majority_Reference, Zipped3(a, b, carries));
-
+            
             // No need to save last (N+1)th carry bit as Addition is Modulo 2ᴺ
             
             // Restore inputs and ancilla, compute sum
-            ApplyToEachA(UnMajorityAdd_Reference, Reversed(Zipped(a, b, carries)));
+            ApplyToEachA(UnMajorityAdd_Reference, Reversed(Zipped3(a, b, carries)));
         }
     }
     
