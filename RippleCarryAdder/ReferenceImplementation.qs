@@ -323,11 +323,9 @@ namespace Quantum.Kata.RippleCarryAdder {
         
         // Do (a+1) mod 2ᴺ
      
-        X(a[0]); // Increment the least significant bit
-     
         // Since we are incrementing by One, we flip the next bit only if all previous bits are 0.
-        for(i in 1 .. Length(a)-1){
-            (ControlledOnInt(0,X))(a[0..i-1], a[i]); 
+        for (prefix in Prefixes(a)) {
+            (ControlledOnInt(0, X))(Most(prefix), Tail(prefix));
         }
     }
     
