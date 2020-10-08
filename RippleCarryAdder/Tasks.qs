@@ -354,7 +354,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // However in quantum computing information cannot be erased that easily. 
     // This extra qubit is left changed after the operation. 
     // We need to modify the computation itself so that the last carry qubit is not computed or not used at all.
-    // In this part we will now try to implement Operations which either do not use this extra qubit as input.
+    // In this part we will now try to implement operations which either do not use this extra qubit as input.
 
     // Task 5.1. Adder Modulo 2ᴺ
     // Inputs:
