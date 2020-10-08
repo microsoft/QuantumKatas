@@ -68,29 +68,33 @@ namespace Quantum.Kata.Superposition {
         op(qs[0]);
     }
 
-
+    @Test("QuantumSimulator")
     operation T101_PlusState_Test () : Unit {
         AssertEqualOnZeroState(1, ArrayWrapperOperation(PlusState, _), ArrayWrapperOperationA(PlusState_Reference, _), true, "");
     }
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T102_MinusState_Test () : Unit {
         AssertEqualOnZeroState(1, ArrayWrapperOperation(MinusState, _), ArrayWrapperOperationA(MinusState_Reference, _), true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T103_AllBasisVectors_TwoQubits_Test () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, AllBasisVectors_TwoQubits, AllBasisVectors_TwoQubits_Reference, true, "");
     }    
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T104_AllBasisVectorWithPhaseFlip_TwoQubits_Test() : Unit {
         AssertEqualOnZeroState(2, AllBasisVectorWithPhaseFlip_TwoQubits, AllBasisVectorWithPhaseFlip_TwoQubits_Reference, true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T105_AllBasisVectorsWithPhases_TwoQubits_Test () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, AllBasisVectorsWithPhases_TwoQubits, AllBasisVectorsWithPhases_TwoQubits_Reference, true, "");
@@ -98,12 +102,14 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T106_BellState_Test () : Unit {
         AssertEqualOnZeroState(2, BellState, BellState_Reference, true, "");
     }
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T107_AllBellStates_Test () : Unit {
         for (i in 0 .. 3) {
             AssertEqualOnZeroState(2, AllBellStates(_, i), AllBellStates_Reference(_, i), true, $"index = {i}");
@@ -112,6 +118,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T108_GHZ_State_Test () : Unit {
         // for N = 1 it's just |+⟩
         AssertEqualOnZeroState(1, GHZ_State, ArrayWrapperOperationA(PlusState_Reference, _), true, "N = 1");
@@ -127,6 +134,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T109_AllBasisVectorsSuperposition_Test () : Unit {
         // for N = 1 it's just |+⟩
         AssertEqualOnZeroState(1, AllBasisVectorsSuperposition, ArrayWrapperOperationA(PlusState_Reference, _), true, "N = 1");
@@ -141,6 +149,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T110_EvenOddNumbersSuperposition_Test () : Unit {
         for (n in 1 .. 2) {
             for (isEven in [false, true]) {
@@ -157,6 +166,7 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T111_ZeroAndBitstringSuperposition_Test () : Unit {
         // compare with results of previous operations
         mutable b = [true];
@@ -185,7 +195,8 @@ namespace Quantum.Kata.Superposition {
                                           ZeroAndBitstringSuperposition_Reference(_, b), false, "");
     }
 
-       // ------------------------------------------------------
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T112_TwoBitstringSuperposition_Test () : Unit {
         // open tests
         // diff in the first position
@@ -235,6 +246,7 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T113_FourBitstringSuperposition_Test () : Unit {
 
         // cross-tests
@@ -273,6 +285,7 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T114_AllStatesWithParitySuperposition_Test () : Unit {
         // remember to repeat the tests (for the small case of N = 2), lest the post-selection solution doesn't detect failure and retry
         for (i in 1 .. 10) {
@@ -292,6 +305,7 @@ namespace Quantum.Kata.Superposition {
     // Part II. Arbitrary Rotations
     //////////////////////////////////////////////////////////////////
 
+    @Test("QuantumSimulator")
     operation T201_UnequalSuperposition_Test () : Unit {
         // cross-test
         AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.5 * PI()), _), ApplyToEachA(X, _), true, "α = 0.5 π");
@@ -308,26 +322,31 @@ namespace Quantum.Kata.Superposition {
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T202_ControlledRotation_Test () : Unit {
         AssertEqualOnZeroState(2, ControlledRotation, ControlledRotation_Reference, true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T203_ThreeStates_TwoQubits_Test () : Unit {
         AssertEqualOnZeroState(2, ThreeStates_TwoQubits, ThreeStates_TwoQubits_Reference, true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T204_ThreeStates_TwoQubits_Phases_Test () : Unit {
         AssertEqualOnZeroState(2, ThreeStates_TwoQubits_Phases, ThreeStates_TwoQubits_Phases_Reference, true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T205_Hardy_State_Test () : Unit {
         AssertEqualOnZeroState(2, Hardy_State, Hardy_State_Reference, true, "");
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T206_WState_PowerOfTwo_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         AssertEqualOnZeroState(1, WState_PowerOfTwo, ApplyToEachA(X, _), true, "N = 1");
@@ -342,6 +361,7 @@ namespace Quantum.Kata.Superposition {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T207_WState_Arbitrary_Test () : Unit {
         // separate check for N = 1 (return must be |1⟩)
         AssertEqualOnZeroState(1, WState_Arbitrary, ApplyToEachA(X, _), true, "N = 1");

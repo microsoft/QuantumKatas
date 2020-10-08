@@ -17,6 +17,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     open Microsoft.Quantum.Random;
 
     // Exercise 1.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T1_RandomBit_Test () : Unit {
         Message("Testing...");
         CheckFlatDistribution(RandomBit_Wrapper, 1, 0.4, 0.6, 1000, 450);
@@ -27,6 +28,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 2.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T2_RandomTwoBits_Test () : Unit {
         Message("Testing...");
         CheckFlatDistribution(RandomTwoBits_Wrapper, 2, 1.4, 1.6, 1000, 200);
@@ -37,6 +39,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
     
     // Exercise 3.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T3_RandomNBits_Test () : Unit {
         Message("Testing N = 1...");
         CheckFlatDistribution(RandomNBits, 1, 0.4, 0.6, 1000, 450);
@@ -107,6 +110,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 4.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T4_WeightedRandomBit_Test () : Unit {
         ResetOracleCallsCount();
         CheckXPercentZero(0.0);

@@ -206,6 +206,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [BinaryXor(bits)];
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T11_LowestBitSum_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(LowestBitSum, _);
         let refOp = QubitArrayOperationWrapper3(LowestBitSum_Reference, _);
@@ -219,6 +220,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [bits[0] and bits[1]];
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T12_LowestBitCarry_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(LowestBitCarry, _);
         let refOp = QubitArrayOperationWrapper3(LowestBitCarry_Reference, _);
@@ -228,6 +230,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_OneBitAdder_Test () : Unit {
         let testOp = QubitArrayOperationWrapper4(OneBitAdder, _);
         let refOp = QubitArrayOperationWrapper4(OneBitAdder_Reference, _);
@@ -241,6 +244,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [BinaryXor(bits)];
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T14_HighBitSum_Test () : Unit {
         let testOp = QubitArrayOperationWrapper4(HighBitSum, _);
         let refOp = QubitArrayOperationWrapper4(HighBitSum_Reference, _);
@@ -254,6 +258,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [(bits[0] and bits[1]) or (bits[2] and (bits[0] or bits[1]))];
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T15_HighBitCarry_Test () : Unit {
         let testOp = QubitArrayOperationWrapper4(HighBitCarry, _);
         let refOp = QubitArrayOperationWrapper4(HighBitCarry_Reference, _);
@@ -263,6 +268,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T16_TwoBitAdder_Test () : Unit {
         let testOp = QubitArrayAdderWrapper(2, TwoBitAdder, _);
         let refOp = QubitArrayAdderWrapper(2, TwoBitAdder_Reference, _);
@@ -272,6 +278,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T17_ArbitraryAdder_Test () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
         for (nQubitsInRegister in 1 .. 4) {
@@ -298,6 +305,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T21_LowestBitSumInPlace_Test () : Unit {
         let testOp = QubitArrayOperationWrapper2(LowestBitSumInPlace, _);
         let refOp = QubitArrayOperationWrapper2(LowestBitSumInPlace_Reference, _);
@@ -307,6 +315,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T22_OneBitAdderInPlace_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(OneBitAdderInPlace, _);
         let refOp = QubitArrayOperationWrapper3(OneBitAdderInPlace_Reference, _);
@@ -316,6 +325,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T23_HighBitSumInPlace_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(HighBitSumInPlace, _);
         let refOp = QubitArrayOperationWrapper3(HighBitSumInPlace_Reference, _);
@@ -325,6 +335,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T24_TwoBitAdderInPlace_Test () : Unit {
         let testOp = QubitArrayInPlaceAdderWrapper(2, TwoBitAdderInPlace, _);
         let refOp = QubitArrayInPlaceAdderWrapper(2, TwoBitAdderInPlace_Reference, _);
@@ -334,6 +345,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T25_ArbitraryAdderInPlace_Test () : Unit {
         for (i in 1 .. 4) {
             let testOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryAdderInPlace, _);
@@ -358,6 +370,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [cout, ab, ac];
     }
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T31_Majority_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(Majority, _);
         let refOp = QubitArrayOperationWrapper3(Majority_Reference, _);
@@ -377,6 +390,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         return [a2, b2, c2];
     }
     
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T32_UnMajorityAdd_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(UnMajorityAdd, _);
         let refOp = QubitArrayOperationWrapper3(UnMajorityAdd_Reference, _);
@@ -386,6 +400,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T33_OneBitMajUmaAdder_Test () : Unit {
         let testOp = QubitArrayOperationWrapper3(OneBitMajUmaAdder, _);
         let refOp = QubitArrayOperationWrapper3(OneBitMajUmaAdder_Reference, _);
@@ -394,6 +409,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T34_TwoBitMajUmaAdder_Test () : Unit {
         // Commented out lines check that this task uses a specific number of Majority and UMA gates
         // (as opposed to using an adder from part II).
@@ -413,6 +429,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T35_ArbitraryMajUmaAdder_Test () : Unit {
         // This algorithm is much faster, so a 5 qubit test is feasible
         for (i in 1 .. 5) {
@@ -433,6 +450,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T41_Subtractor_Test () : Unit {
         for (i in 1 .. 5) {
             let testOp = QubitArrayInPlaceAdderWrapper(i, Subtractor, _);

@@ -23,6 +23,7 @@ namespace Quantum.Kata.GraphColoring {
     // Part I. Colors representation and manipulation
     //////////////////////////////////////////////////////////////////
 
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T11_InitializeColor_Test () : Unit {
         for (N in 1 .. 4) {
             using (register = Qubit[N]) {
@@ -39,6 +40,7 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T12_MeasureColor_Test () : Unit {
         for (N in 1 .. 4) {
             using (register = Qubit[N]) {
@@ -60,6 +62,7 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_MeasureColoring_Test () : Unit {
         for (K in 1 .. 3) {
         for (N in 1 .. 3) {
@@ -123,7 +126,7 @@ namespace Quantum.Kata.GraphColoring {
         op(qs[0 .. N - 1], qs[N .. 2 * N - 1], qs[2 * N]);
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T14_ColorEqualityOracle_2bit_Test () : Unit {
         CheckColorEqualityOracle(2, ColorEqualityOracle_2bit);
         AssertOperationsEqualReferenced(5, WrapperOperation(ColorEqualityOracle_2bit, _),
@@ -132,6 +135,7 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T15_ColorEqualityOracle_Nbit_Test () : Unit {
         for (N in 1..4) {
             ResetQubitCount();
@@ -169,7 +173,7 @@ namespace Quantum.Kata.GraphColoring {
         // in the interest of keeping test runtime reasonable we're limiting most of the testing to graphs with 5 vertices or fewer.
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T21_IsVertexColoringValid_Test () : Unit {
         let testCases = ExampleGraphs();
 
@@ -250,7 +254,7 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T22_VertexColoringOracle_Test () : Unit {
         // Run test on all test cases except the last one
         for ((V, edges) in Most(ExampleGraphs())) {
@@ -258,7 +262,7 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
-
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T23_GroversAlgorithm_Test () : Unit {
         for ((V, edges) in ExampleGraphs()) {
             Message($"Running on graph V = {V}, edges = {edges}");
