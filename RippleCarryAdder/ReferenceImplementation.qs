@@ -356,9 +356,7 @@ namespace Quantum.Kata.RippleCarryAdder {
             // No need to save last (N+1)th carry bit as Addition is Modulo 2ᴺ
             
             // Restore inputs and ancilla, compute sum
-            for (i in N-1 .. -1 .. 0) {
-                UnMajorityAdd_Reference(a[i], b[i], carries[i]);
-            }
+            ApplyToEachA(UnMajorityAdd_Reference, Reversed(Zipped(a, b, carries)));
         }
     }
     
