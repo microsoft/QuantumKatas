@@ -44,23 +44,23 @@ namespace Quantum.Kata.TruthTables {
 
     // Task 1. Projective functions (elementary variables)
     //
-    // Goal: Describe the three projective functions f₁, f₂, f₃ represented
-    // by integers. They are 3 input functions i.e. f(x) : {0,1}ⁿ → {0,1},
-    // n being equal to 3.
+    // Goal: Describe the three projective functions x₁, x₂, x₃ represented by integers.
+    // They are 3 input functions i.e. f(x₃,x₂,x₁) : {0,1}³ → {0,1}
     //
-    // f₁ should be true for the following assignments : 001, 011, 101 and 111.
-    // f₂ should be true for the following assignments : 010, 011, 110 and 111.
-    // f₃ should be true for the following assignments : 100, 101, 110 and 111.
+    // Note : We use following the convention:
+    // x₁ is the least-significant input.
+    // x₂ is the second least-significant input.
+    // x₃ is the most-significant input.
     //
-    // Note: We follow the convention that x₁ is the least-significant input.
-    //
-    // Example: The function f₁ is given as an example.
+    // Example: The function x₁ (least-significant input) is given as an
+    //          example.  The function is true for assignments 001, 011, 101,
+    //          and 111 since x₁=1 for all these assignments.
     function ProjectiveTruthTables () : (TruthTable, TruthTable, TruthTable) {
-        let f1 = TruthTable(0b10101010, 3);
-        let f2 = TruthTable(0, 0);           // Update the value of x₂ ...
-        let f3 = TruthTable(0, 0);           // Update the value of x₃ ...
+        let x1 = TruthTable(0b10101010, 3);
+        let x2 = TruthTable(0, 0);           // Update the value of x₂ ...
+        let x3 = TruthTable(0, 0);           // Update the value of x₃ ...
 
-        return (f1, f2, f3);
+        return (x1, x2, x3);
     }
 
 
