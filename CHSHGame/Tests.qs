@@ -73,25 +73,29 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T22_AliceQuantum_Test () : Unit {
-        using (q = Qubit()) {
-            EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
-            Reset(q);
+        for (_ in 1 .. 4) {
+            // repeat 4 times since we are testing a measurement and wrong basis still might get
+            // the correct answer, reduces probability of false positives
+            using (q = Qubit()) {
+                EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
+                Reset(q);
 
-            // apply the Pauli X gate
-            X(q);
-            EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
-            Reset(q);
+                // apply the Pauli X gate
+                X(q);
+                EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
+                Reset(q);
 
-            // apply the Hadamard gate
-            H(q);
-            EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
-            Reset(q);
+                // apply the Hadamard gate
+                H(q);
+                EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
+                Reset(q);
 
-            // apply the Pauli X and then the Hadamard gate
-            X(q);
-            H(q);
-            EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
-            Reset(q);
+                // apply the Pauli X and then the Hadamard gate
+                X(q);
+                H(q);
+                EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
+                Reset(q);
+            }
         }
     }
 
@@ -117,24 +121,28 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T24_BobQuantum_Test () : Unit {
-        using (q = Qubit()) {
-            RotateBobQubit_Reference(false, q);
-            EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
-            Reset(q);
+        for (_ in 1 .. 4) {
+            // repeat 4 times since we are testing a measurement and wrong basis still might get
+            // the correct answer, reduces probability of false positives
+            using (q = Qubit()) {
+                RotateBobQubit_Reference(false, q);
+                EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
+                Reset(q);
 
-            X(q);
-            RotateBobQubit_Reference(false, q);
-            EqualityFactB(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
-            Reset(q);
+                X(q);
+                RotateBobQubit_Reference(false, q);
+                EqualityFactB(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
+                Reset(q);
 
-            RotateBobQubit_Reference(true, q);
-            EqualityFactB(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
-            Reset(q);
+                RotateBobQubit_Reference(true, q);
+                EqualityFactB(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
+                Reset(q);
 
-            X(q);
-            RotateBobQubit_Reference(true, q);
-            EqualityFactB(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
-            Reset(q);
+                X(q);
+                RotateBobQubit_Reference(true, q);
+                EqualityFactB(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
+                Reset(q);
+            }
         }
     }
 
