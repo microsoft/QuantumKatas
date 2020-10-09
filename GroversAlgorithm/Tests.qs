@@ -34,6 +34,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T11_Oracle_AllOnes_Test () : Unit {
         let testOp = QubitArrayWrapperOperation(Oracle_AllOnes, _);
         let refOp = QubitArrayWrapperOperation(Oracle_AllOnes_Reference, _);
@@ -42,6 +43,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T12_Oracle_AlternatingBits_Test () : Unit {
         let testOp = QubitArrayWrapperOperation(Oracle_AlternatingBits, _);
         let refOp = QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _);
@@ -50,6 +52,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T13_Oracle_ArbitraryPattern_Test () : Unit {
         for (n in 2 .. 10) {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
@@ -61,6 +64,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T14_OracleConverter_Test () : Unit {
         for (n in 2 .. 10) {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
@@ -73,18 +77,21 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T21_HadamardTransform_Test () : Unit {
         AssertRegisterOperationsEqual(HadamardTransform, HadamardTransform_Reference);
     }
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T22_ConditionalPhaseFlip_Test () : Unit {
         AssertRegisterOperationsEqual(ConditionalPhaseFlip, ConditionalPhaseFlip_Reference);
     }
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T23_GroverIteration_Test () : Unit {
         for (n in 2 .. 10) {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
@@ -98,6 +105,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T31_GroversSearch_Test () : Unit {
         for (n in 2 .. 10) {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);

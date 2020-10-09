@@ -17,6 +17,7 @@ namespace Quantum.Kata.CHSHGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T11_WinCondition_Test () : Unit {
         for (i in 0..1 <<< 4 - 1) {
             let bits = IntAsBoolArray(i, 4);
@@ -30,6 +31,7 @@ namespace Quantum.Kata.CHSHGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T12_ClassicalStrategy_Test () : Unit {
         mutable wins = 0;
         for (i in 1..1000) {
@@ -61,7 +63,7 @@ namespace Quantum.Kata.CHSHGame {
         }
     }
 
-
+    @Test("QuantumSimulator")
     operation T21_CreateEntangledPair_Test () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, CreateEntangledPair, CreateEntangledPair_Reference);
@@ -69,6 +71,7 @@ namespace Quantum.Kata.CHSHGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T22_AliceQuantum_Test () : Unit {
         using (q = Qubit()) {
             EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
@@ -102,6 +105,7 @@ namespace Quantum.Kata.CHSHGame {
         op(qs[0]);
     }
 
+    @Test("QuantumSimulator")
     operation T23_RotateBobQubit_Test () : Unit {
         AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(true, _), _),
                                         QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _));
@@ -111,6 +115,7 @@ namespace Quantum.Kata.CHSHGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T24_BobQuantum_Test () : Unit {
         using (q = Qubit()) {
             RotateBobQubit_Reference(false, q);
@@ -135,6 +140,7 @@ namespace Quantum.Kata.CHSHGame {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T25_PlayQuantumCHSH_Test () : Unit {
         mutable wins = 0;
         for (i in 1..10000) {
