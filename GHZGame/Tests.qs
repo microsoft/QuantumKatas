@@ -111,7 +111,7 @@ namespace Quantum.Kata.GHZGame {
     operation T22_QuantumStrategy_Test () : Unit {
         for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement, it's possible to get
-            // correct answer with wrong basis, repeating cuts error probability to 0.06^4
+            // correct answer with wrong basis, reduces probability of false positives
             using (q = Qubit()) {
                 EqualityFactB(QuantumStrategy(false, q), false, "|0⟩ not measured as false");
 

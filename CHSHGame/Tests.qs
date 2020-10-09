@@ -75,7 +75,7 @@ namespace Quantum.Kata.CHSHGame {
     operation T22_AliceQuantum_Test () : Unit {
         for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
-            // the correct answer, this cuts the error probability to 0.06^4
+            // the correct answer, reduces probability of false positives
             using (q = Qubit()) {
                 EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
                 Reset(q);
@@ -121,9 +121,9 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T24_BobQuantum_Test () : Unit {
-        for _ in (1 .. 4) {
+        for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
-            // the correct answer, this cuts the error probability to 0.06^4
+            // the correct answer, reduces probability of false positives
             using (q = Qubit()) {
                 RotateBobQubit_Reference(false, q);
                 EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
