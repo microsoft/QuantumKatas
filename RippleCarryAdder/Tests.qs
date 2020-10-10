@@ -465,6 +465,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T51_AdderModuloNbits_Test () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
         for (nQubits in 1 .. 4) {
@@ -476,6 +477,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T52_TwosComplement_Test () : Unit {
         for (nQubits in 1 .. 4) {
             AssertOperationsEqualReferenced(nQubits, TwosComplement, TwosComplement_Reference);
@@ -483,6 +485,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T53_SubtractorModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloNbits, _);
@@ -493,6 +496,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T54_InPlaceAdderModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceAdderModuloNbits, _);
@@ -503,6 +507,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T55_InPlaceSubtractorModuloNbits_Test () : Unit {
         for (nQubits in 1 .. 4) {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceSubtractorModuloNbits, _);
