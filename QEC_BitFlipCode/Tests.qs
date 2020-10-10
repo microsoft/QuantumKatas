@@ -163,7 +163,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         Ry(2.0 * alpha, qs[0]);
     }
     
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T02_Encode_Test () : Unit {
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
@@ -186,7 +186,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         }
     }
     
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T03_DetectErrorOnLeftQubit_Test () : Unit {
         using (register = Qubit[3]) {
             for (i in 0 .. 36) {
@@ -255,7 +255,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
                 [PauliI, PauliI, PauliX]];
     }
     
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T04_CorrectErrorOnLeftQubit_Test () : Unit {
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnLeftQubit);
         let errors = PauliErrors();
@@ -270,7 +270,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 05
     //////////////////////////////////////////////////////////////////////////
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T05_DetectErrorOnAnyQubit_Test () : Unit {
         let errors = PauliErrors();
         
@@ -302,7 +302,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 06
     //////////////////////////////////////////////////////////////////////////
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T06_CorrectErrorOnAnyQubit_Test () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnAnyQubit);
@@ -319,7 +319,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 07
     //////////////////////////////////////////////////////////////////////////
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T07_LogicalX_Test () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalX, CorrectErrorOnAnyQubit_Reference);
@@ -336,7 +336,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 08
     //////////////////////////////////////////////////////////////////////////
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T08_LogicalZ_Test () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalZ, CorrectErrorOnAnyQubit_Reference);

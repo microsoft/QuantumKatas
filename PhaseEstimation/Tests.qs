@@ -31,7 +31,7 @@ namespace Quantum.Kata.PhaseEstimation {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T11_Eigenstates_ZST_Test () : Unit {
         for (state in 0 .. 1) {
             AssertEqualOnZeroState1(Eigenstates_ZST(_, state), Eigenstates_ZST_Reference(_, state));
@@ -45,7 +45,7 @@ namespace Quantum.Kata.PhaseEstimation {
         op(qs[0]);
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T12_UnitaryPower_Test () : Unit {
         for (U in [Z, S, T]) { 
             for (power in 1 .. 5) {
@@ -69,7 +69,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
 
     // ------------------------------------------------------
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T14_QPE_Test () : Unit {
         EqualityWithinToleranceFact(QPE(Z, I, 1), 0.0, 0.25);
         EqualityWithinToleranceFact(QPE(Z, X, 1), 0.5, 0.25);

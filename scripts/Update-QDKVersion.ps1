@@ -80,3 +80,25 @@ $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
          }
     } | Set-Content -Path $ps1Path
 
+$updateps1String = "PS> ./Update-QDKVersion.ps1 -Version $versionRegex"
+$updateps1Path = Join-Path $katasRoot "scripts\Update-QDKVersion.ps1"
+(Get-Content -Path $updateps1Path) | ForEach-Object {
+         $isQuantumPackage = $_ -match $updateps1String
+         if ($isQuantumPackage) {
+             $_ -replace $Matches.oldVersion, $Version
+         } else {
+             $_
+         }
+    } | Set-Content -Path $updateps1Path
+
+$contributingString = "PS> ./scripts/Update-QDKVersion.ps1 $versionRegex"
+$contributingPath = Join-Path $katasRoot ".github\CONTRIBUTING.md"
+(Get-Content -Path $contributingPath) | ForEach-Object {
+         $isQuantumPackage = $_ -match $contributingString
+         if ($isQuantumPackage) {
+             $_ -replace $Matches.oldVersion, $Version
+         } else {
+             $_
+         }
+    } | Set-Content -Path $contributingPath
+
