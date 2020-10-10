@@ -69,6 +69,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return args[0] and args[1];
     }
 
+    @Test("QuantumSimulator")
     operation T11_Oracle_And_Test () : Unit {
         AssertOracleImplementsFunction(2, Oracle_And, And);
 
@@ -83,6 +84,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return args[0] or args[1];
     }
 
+    @Test("QuantumSimulator")
     operation T12_Oracle_Or_Test () : Unit {
         AssertOracleImplementsFunction(2, Oracle_Or, Or);
 
@@ -97,6 +99,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return args[0] != args[1];
     }
 
+    @Test("QuantumSimulator")
     operation T13_Oracle_Xor_Test () : Unit {
         AssertOracleImplementsFunction(2, Oracle_Xor, Xor);
 
@@ -116,6 +119,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return true;
     }
 
+    @Test("QuantumSimulator")
     operation T14_Oracle_AlternatingBits_Test () : Unit {
         let testOp = QubitArrayWrapperOperation(Oracle_AlternatingBits, _);
         let refOp = QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _);
@@ -186,7 +190,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return clause;
     }
 
-
+    @Test("QuantumSimulator")
     operation T15_Oracle_SATClause_Test () : Unit {
         for (i in 1..10) {
             let nVar = DrawRandomInt(3, 7);
@@ -261,6 +265,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T16_Oracle_SAT_Test () : Unit {
         // General SAT oracle should be able to implement all 2SAT problems
         Run2SATTests(Oracle_SAT);
@@ -295,6 +300,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return nOnes == 1;
     }
 
+    @Test("QuantumSimulator")
     operation T21_Oracle_Exactly1One_Test () : Unit {
         AssertOracleImplementsFunction(3, Oracle_Exactly1One, F_Exactly1One);
 
@@ -327,6 +333,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         return true;
     }
 
+    @Test("QuantumSimulator")
     operation T22_Oracle_Exactly1SAT_Test () : Unit {
         // General SAT instances
         for (i in 1..10) {
@@ -356,6 +363,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         }
     }
 
+    @Test("QuantumSimulator")
     operation T32_UniversalGroversAlgorithm_Test () : Unit {
         // AND: 1 solution/4
         RunGroverOnOneInstance(2, [[(0, true)], [(1, true)]]);

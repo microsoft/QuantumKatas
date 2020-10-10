@@ -43,18 +43,21 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T11_Oracle_Zero_Test () : Unit {
         AssertTwoOraclesAreEqual(1 .. 10, Oracle_Zero, Oracle_Zero_Reference);
     }
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T12_Oracle_One_Test () : Unit {
         AssertTwoOraclesAreEqual(1 .. 10, Oracle_One, Oracle_One_Reference);
     }
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T13_Oracle_Kth_Qubit_Test () : Unit {
         let maxQ = 6;
         
@@ -67,6 +70,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T14_Oracle_OddNumberOfOnes_Test () : Unit {
         
         // cross-test: for 1 qubit it's the same as Kth_Qubit for k = 0
@@ -83,7 +87,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertTwoOraclesAreEqual(Length(r) .. Length(r), oracle1(_, _, r), oracle2(_, _, r));
     }
     
-    
+    @Test("QuantumSimulator")
     operation T15_Oracle_ProductFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
@@ -116,7 +120,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertTwoOraclesWithIntAreEqual(r, Oracle_ProductFunction, Oracle_ProductFunction_Reference);
     }
     
-    
+    @Test("QuantumSimulator")
     operation T16_Oracle_ProductWithNegationFunction_Test () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
@@ -137,7 +141,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertTwoOraclesWithIntAreEqual(r, Oracle_ProductWithNegationFunction, Oracle_ProductWithNegationFunction_Reference);
     }
     
-    
+    @Test("QuantumSimulator")
     operation T17_Oracle_HammingWithPrefix_Test () : Unit {
         mutable prefix = [1];
         AssertTwoOraclesAreEqual(1 .. 10, Oracle_HammingWithPrefix(_, _, prefix), Oracle_HammingWithPrefix_Reference(_, _, prefix));
@@ -149,13 +153,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         AssertTwoOraclesAreEqual(3 .. 10, Oracle_HammingWithPrefix(_, _, prefix), Oracle_HammingWithPrefix_Reference(_, _, prefix));
     }
     
-    
+    @Test("QuantumSimulator")
     operation T18_Oracle_MajorityFunction_Test () : Unit {
         AssertTwoOraclesAreEqual(3 .. 3, Oracle_MajorityFunction, Oracle_MajorityFunction_Reference);
     }
     
     
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T21_DJ_StatePrep_Test () : Unit {
         
         for (N in 1 .. 10) {
@@ -196,7 +201,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T22_DJ_Algorithm_Test () : Unit {
 
         ResetOracleCallsCount();
@@ -254,7 +259,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle at most once, and you called it {nu} times");
     }
     
-    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T31_BV_Algorithm_Test () : Unit {
         ResetOracleCallsCount();
         
@@ -272,6 +277,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     // ------------------------------------------------------
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T41_Noname_Algorithm_Test () : Unit {
         
         ResetOracleCallsCount();

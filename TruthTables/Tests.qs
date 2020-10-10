@@ -20,6 +20,7 @@ namespace Quantum.Kata.TruthTables {
         Fact(actual::bits == expected::bits, $"Truth table for {name} is not correct");
     }
 
+    @Test("QuantumSimulator")
     operation T1_ProjectiveTruthTables_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables();
         EqualityFactTT(x1, TruthTable(0b10101010, 3), "x₁");
@@ -27,6 +28,7 @@ namespace Quantum.Kata.TruthTables {
         EqualityFactTT(x3, TruthTable(0b11110000, 3), "x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T2_TTAnd_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTAnd(x1, x2), TruthTable(0b10001000, 3), "x₁ ∧ x₂");
@@ -34,6 +36,7 @@ namespace Quantum.Kata.TruthTables {
         EqualityFactTT(TTAnd(x2, x3), TruthTable(0b11000000, 3), "x₂ ∧ x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T3_TTOr_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTOr(x1, x2), TruthTable(0b11101110, 3), "x₁ ∨ x₂");
@@ -41,6 +44,7 @@ namespace Quantum.Kata.TruthTables {
         EqualityFactTT(TTOr(x2, x3), TruthTable(0b11111100, 3), "x₂ ∨ x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T4_TTXor_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTXor(x1, x2), TruthTable(0b01100110, 3), "x₁ ⊕ x₂");
@@ -48,6 +52,7 @@ namespace Quantum.Kata.TruthTables {
         EqualityFactTT(TTXor(x2, x3), TruthTable(0b00111100, 3), "x₂ ⊕ x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T5_TTNot_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTNot(x1), TruthTable(0b01010101, 3), "¬x₁");
@@ -55,11 +60,13 @@ namespace Quantum.Kata.TruthTables {
         EqualityFactTT(TTNot(x3), TruthTable(0b00001111, 3), "¬x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T6_IfThenElseTruthTable_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTIfThenElse(x1, x2, x3), TruthTable(0b11011000, 3), "if x₁ then x₂ else x₃");
     }
 
+    @Test("QuantumSimulator")
     operation T7_AllMinterms_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let testTT = TTIfThenElse_Reference(x1, x2, x3);
@@ -75,6 +82,7 @@ namespace Quantum.Kata.TruthTables {
         op(Most(qubits), Tail(qubits));
     }
 
+    @Test("QuantumSimulator")
     operation T8_ApplyFunction_Test () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         let tt = TTIfThenElse_Reference(x1, x2, x3);

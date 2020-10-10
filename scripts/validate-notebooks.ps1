@@ -64,23 +64,42 @@ function Validate {
     # Convert %kata to %check_kata
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
-    # Run Jupyter nbconvert to execute the kata.
-    # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
-    # unless $ErrorActionPreference is set to 'Continue'.
-    $ErrorActionPreference = 'Continue'
-    if ($env:SYSTEM_DEBUG -eq "true") {
-        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
-    } else {
-        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
-    }
-    $ErrorActionPreference = 'Stop'
+    try {
+        # Populate NuGet cache for this project
+        dotnet restore
 
-    # if jupyter returns an error code, report that this notebook is invalid:
-    if ($LastExitCode -ne 0) {
-        Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
-        $script:all_ok = $false
+        # Clear NuGet package sources, since all required packages should be cached at this point
+        "<?xml version=""1.0"" encoding=""utf-8""?>
+            <configuration>
+                <packageSources>
+                    <clear />
+                </packageSources>
+            </configuration>
+        " | Out-File ./NuGet.Config -Encoding utf8
+
+        # Run Jupyter nbconvert to execute the kata.
+        # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
+        # unless $ErrorActionPreference is set to 'Continue'.
+        $ErrorActionPreference = 'Continue'
+        if ($env:SYSTEM_DEBUG -eq "true") {
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
+        } else {
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
+        }
+        $ErrorActionPreference = 'Stop'
+
+        # if jupyter returns an error code, report that this notebook is invalid:
+        if ($LastExitCode -ne 0) {
+            Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
+            $script:all_ok = $false
+        }
+    }
+    finally {
+        if (Test-Path ./NuGet.Config) {
+            Remove-Item ./NuGet.Config
+        }
     }
 
     popd
