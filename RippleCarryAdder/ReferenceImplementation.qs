@@ -14,6 +14,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Diagnostics;
     
     
     //////////////////////////////////////////////////////////////////
