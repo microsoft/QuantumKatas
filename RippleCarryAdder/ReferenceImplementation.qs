@@ -14,7 +14,6 @@ namespace Quantum.Kata.RippleCarryAdder {
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Diagnostics;
     
     
     //////////////////////////////////////////////////////////////////
@@ -298,8 +297,6 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation AdderModuloNbits_Reference (a : Qubit[], b : Qubit[], sum : Qubit[]) : Unit is Adj {
         // Modification of Challenge Solution of Task 1.7 (Last Carry bit isn't calculated)
         // Sum qubits are used to store the carry bits, and the sum is calculated as they get cleaned up
-        // Check sum register is in AllZero State.
-        AssertAllZero(sum);
         
         let N = Length(a);
 
@@ -335,9 +332,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     
     // Task 5.3. Subtractor Modulo 2ᴺ
     operation SubtractorModuloNbits_Reference (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
-        // Check diff register is in AllZero State.
-        AssertAllZero(diff);
-        
+    
         // Transform a into its Two's Complement 2ᴺ - a 
         TwosComplement_Reference(a);
         
