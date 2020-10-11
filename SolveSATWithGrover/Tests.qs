@@ -257,9 +257,8 @@ namespace Quantum.Kata.GroversAlgorithm {
         RunCrossTests(Oracle_SAT);
 
         // General SAT instances for 3..6 variables
-
-        for (nVar in 3..6) {
-            let problem = GenerateSATInstance(nVar,-1,-1);
+        for (nVar in 3 .. 6) {
+            let problem = GenerateSATInstance(nVar, nVar - 1, -1);
             Message($"Testing k-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
@@ -322,10 +321,9 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     @Test("QuantumSimulator")
     operation T22_Oracle_Exactly1SAT_Test () : Unit {
-        // General SAT instances
-        // test for 2..6 variables
+        // General SAT instances for 2..6 variables
         for (nVar in 2..6) { 
-            let problem = GenerateSATInstance(nVar,-1,3);
+            let problem = GenerateSATInstance(nVar, nVar - 1, 3);
             Message($"Testing exactly-1 3-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, Oracle_Exactly1_3SAT(_, _, problem), F_Exactly1_SAT(_, problem));
