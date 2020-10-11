@@ -141,11 +141,12 @@ namespace Quantum.Kata.GraphColoring {
             ResetQubitCount();
             
             CheckColorEqualityOracle(N, ColorEqualityOracle_Nbit);
-            AssertOperationsEqualReferenced(2*N+1, WrapperOperation(ColorEqualityOracle_Nbit, _),
-                                                   WrapperOperation(ColorEqualityOracle_Nbit_Reference, _));
 
             let nq = GetMaxQubitCount();
             EqualityFactI(nq, 2*N+1, $"You are not allowed to allocate extra qubits. You allocated {nq - (2*N+1)}");
+
+            AssertOperationsEqualReferenced(2*N+1, WrapperOperation(ColorEqualityOracle_Nbit, _),
+                                                   WrapperOperation(ColorEqualityOracle_Nbit_Reference, _));
         }
     }
 
