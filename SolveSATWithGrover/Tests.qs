@@ -258,13 +258,13 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         // General SAT instances for 3..6 variables
 
-        for (i in 3..6) {
-            let problem = GenerateSatInstance(i,3,-1);
-            Message($"Testing k-SAT instance ({i}, {SATInstanceAsString(problem)})...");
+        for (nVar in 3..6) {
+            let problem = GenerateSATInstance(nVar,-1,-1);
+            Message($"Testing k-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
-            AssertOracleImplementsFunction(i, Oracle_SAT(_, _, problem), F_SAT(_, problem));
+            AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
 
-            AssertOperationsEqualReferenced(i + 1,
+            AssertOperationsEqualReferenced(nVar + 1,
                 QubitArrayWrapperOperation(Oracle_SAT(_, _, problem), _),
                 QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _)
             );
@@ -323,13 +323,14 @@ namespace Quantum.Kata.GroversAlgorithm {
     @Test("QuantumSimulator")
     operation T22_Oracle_Exactly1SAT_Test () : Unit {
         // General SAT instances
-        for (i in 2..6) { // test for 2..6 variables
-            let problem = GenerateSATInstance(i,3,3); // 3 clauses, and each clause 3 terms
-            Message($"Testing exactly-1 3-SAT instance ({i}, {SATInstanceAsString(problem)})...");
+        // test for 2..6 variables
+        for (nVar in 2..6) { 
+            let problem = GenerateSATInstance(nVar,-1,3);
+            Message($"Testing exactly-1 3-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
-            AssertOracleImplementsFunction(i, Oracle_Exactly1_3SAT(_, _, problem), F_Exactly1_SAT(_, problem));
+            AssertOracleImplementsFunction(nVar, Oracle_Exactly1_3SAT(_, _, problem), F_Exactly1_SAT(_, problem));
 
-            AssertOperationsEqualReferenced(i + 1,
+            AssertOperationsEqualReferenced(nVar + 1,
                 QubitArrayWrapperOperation(Oracle_Exactly1_3SAT(_, _, problem), _),
                 QubitArrayWrapperOperation(Oracle_Exactly1_3SAT_Reference(_, _, problem), _)
             );
