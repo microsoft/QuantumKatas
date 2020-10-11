@@ -13,6 +13,7 @@ namespace Quantum.Kata.MultiQubitGates {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Arrays;
 
+    @Test("QuantumSimulator")
     operation T1_CompoundGate_Test () : Unit {
         AssertOperationsEqualReferenced(3, CompoundGate, CompoundGate_Reference);
     }
@@ -31,10 +32,12 @@ namespace Quantum.Kata.MultiQubitGates {
         }
     }
 
+    @Test("QuantumSimulator")
     operation T2_BellState_Test () : Unit {
         AssertEqualOnZeroState(BellState, BellState_Reference);
     }
 
+    @Test("QuantumSimulator")
     operation T3_QubitSwap_Test () : Unit {
         for (N in 2 .. 5) {
             for (j in 0 .. N-2) {
@@ -45,6 +48,7 @@ namespace Quantum.Kata.MultiQubitGates {
         }
     }
 
+    @Test("QuantumSimulator")
     operation T4_ControlledRotation_Test () : Unit {
         for (i in 0 .. 20) {
             let angle = IntAsDouble(i) / 10.0;
@@ -57,6 +61,7 @@ namespace Quantum.Kata.MultiQubitGates {
         op(Most(qs), Tail(qs));
     }
 
+    @Test("QuantumSimulator")
     operation T5_MultiControls_Test () : Unit {
         for (i in 0 .. (2 ^ 4) - 1) {
             let bits = IntAsBoolArray(i, 4);
