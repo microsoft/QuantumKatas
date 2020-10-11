@@ -258,7 +258,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         // General SAT instances for 3..6 variables
 
-        for (i in 3..6) {
+        for (nVar in 3..6) {
             let problem = GenerateSatInstance(i,3,-1);
             Message($"Testing k-SAT instance ({i}, {SATInstanceAsString(problem)})...");
 
