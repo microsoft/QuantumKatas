@@ -1,18 +1,6 @@
 # Introduction
 
-The Quantum Katas are a series of self-paced tutorials to help you learn quantum computing and Q# programming.
-
-:new: *(November 2019)* We've added a set of tutorials that introduce the learner to the most basic concepts used in quantum computing, 
-starting with the necessary math (complex numbers and linear algebra). 
-Read more about the new tutorials [here](https://devblogs.microsoft.com/qsharp/new-tutorials-learn-the-basic-concepts-of-quantum-computing/)
-or head to the [list of tutorials](./index.ipynb) to get started!
-
-:new: *(July 2019)* The Quantum Katas now include Jupyter Notebook tutorials on quantum computing! 
-Each tutorial combines theoretical explanations with Q# code snippets and programming exercises. 
-See [index.ipynb](./index.ipynb) for the list of all tutorials and instructions on running them online.
-
-:new: *(April 2019)* The Quantum Katas are now available as Jupyter Notebooks! 
-See [index.ipynb](./index.ipynb) for the list of all Kata Notebooks and instructions on running them online.
+The Quantum Katas are a collection of self-paced tutorials and programming exercises to help you learn quantum computing and Q# programming.
 
 Each kata is a separate project that includes:
 
@@ -21,10 +9,13 @@ Each kata is a separate project that includes:
 * A testing framework that sets up, runs, and validates your solutions.
   Each task is covered by a [unit test](https://docs.microsoft.com/visualstudio/test/getting-started-with-unit-testing) which initially fails. Once you write the code to make the test pass, you can move on to the next task.
 * Links to quantum computing and Q# reference material you might need to solve the tasks.
-* Hints and reference solutions to help you if you're stuck.
+* Hints, reference solutions and detailed explanations to help you if you're stuck.
+
+The Quantum Katas also include *tutorials* that introduce the learner to the basic concepts and algorithms used in quantum computing, starting with the necessary math (complex numbers and linear algebra). They follow the same pattern of supplementing the theory with Q# demos and hands-on programming exercises. 
 
 ## Table of contents ##
 
+* [Learning path](#learning-path)
 * [List of tutorials](#tutorial-topics)
 * [List of katas](#kata-topics)
 * [Run the katas and tutorials online](#run-online)
@@ -38,58 +29,63 @@ Each kata is a separate project that includes:
 * [Contributing](#contributing)
 * [Code of Conduct](#code-of-conduct)
 
-## List of tutorials <a name="tutorial-topics" /> ##
+## Learning path <a name="learning-path" /> ##
 
-* **[Complex arithmetic](./tutorials/ComplexArithmetic/)**.
+Here is the learning path we suggest you to follow if you are starting to learn quantum computing and quantum programming. Once you're comfortable with the basics, you're welcome to jump ahead to the topics that pique your interest!
+
+#### Quantum Computing Concepts: Qubits and Gates
+
+* **[Complex arithmetic (tutorial)](./tutorials/ComplexArithmetic/)**.
   Learn about complex numbers and the mathematics required to work with quantum computing.
-* **[Linear algebra](./tutorials/LinearAlgebra/)**.
+* **[Linear algebra (tutorial)](./tutorials/LinearAlgebra/)**.
   Learn about vectors and matrices used to represent quantum states and quantum operations.
-* **[The qubit](./tutorials/Qubit/)**.
+* **[The qubit (tutorial)](./tutorials/Qubit/)**.
   Learn what a qubit is.
-* **[Single-qubit gates](./tutorials/SingleQubitGates/)**.
+* **[Single-qubit gates (tutorial)](./tutorials/SingleQubitGates/)**.
   Learn what a quantum gate is and about the most common single-qubit gates.
-* **[Multi-qubit systems](./tutorials/MultiQubitSystems/)**.
-  Learn to represent multi-qubit systems.
-* **[Multi-qubit gates](./tutorials/MultiQubitGates/)**.
-  Learn about the most common multi-qubit gates.
-* **[Random number generation](./tutorials/RandomNumberGeneration/)**.
-  Learn to generate random numbers using the principles of quantum computing.
-* **[Exploring Deutsch–Jozsa algorithm](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
-  Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
-  solution to the Deutsch–Jozsa problem to a classical one.
-* **[Exploring Grover's search algorithm](./tutorials/ExploringGroversAlgorithm/)**.
-  Learn more about Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
-* **[Quantum classification](./tutorials/QuantumClassification/)**.
-  Learn about circuit-centric classifiers and the quantum machine learning library included in the QDK.
-
-## List of Katas <a name="kata-topics" /> ##
-
-#### Quantum computing concepts
-
 * **[Basic quantum computing gates](./BasicGates/)**.
   Learn to apply the most common gates used in quantum computing.
+* **[Multi-qubit systems (tutorial)](./tutorials/MultiQubitSystems/)**.
+  Learn to represent multi-qubit systems.
+* **[Multi-qubit gates (tutorial)](./tutorials/MultiQubitGates/)**.
+  Learn about the most common multi-qubit gates.
 * **[Superposition](./Superposition/)**.
   Learn to prepare superposition states.
+
+#### Quantum Computing Concepts: Measurements
+
 * **[Measurements](./Measurements/)**.
   Learn to distinguish quantum states using measurements.
+* **[Distinguish unitaries](./DistinguishUnitaries/)**.
+  Learn to distinguish unitaries by designing and performing experiments with them.
 * **[Joint measurements](./JointMeasurements/)**.
   Learn about using joint (parity) measurements to distinguish quantum states and to perform state transformations.
 
-#### Simple algorithms
+#### Simple Algorithms
 
+* **[Random number generation (tutorial)](./tutorials/RandomNumberGeneration/)**.
+  Learn to generate random numbers using the principles of quantum computing.
 * **[Teleportation](./Teleportation/)**.
   Implement standard teleportation protocol and its variations.
 * **[Superdense coding](./SuperdenseCoding/)**.
   Implement the superdense coding protocol.
+
+#### Quantum Oracles and Simple Oracle Algorithms
+
+* **[Exploring Deutsch–Jozsa algorithm (tutorial)](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
+  Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
+  solution to the Deutsch–Jozsa problem to a classical one.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
   Learn about quantum oracles which implement classical functions, and implement Bernstein–Vazirani and Deutsch–Jozsa algorithms.
 * **[Simon's algorithm](./SimonsAlgorithm/)**.
   Learn about Simon's algorithm.
 
-#### Grover's algorithm
+#### Grover's search algorithm
 
-* **[Grover's algorithm](./GroversAlgorithm/)**.
+* **[Implementing Grover's algorithm](./GroversAlgorithm/)**.
   Learn about Grover's search algorithm and how to write quantum oracles to use with it.
+* **[Exploring Grover's search algorithm (tutorial)](./tutorials/ExploringGroversAlgorithm/)**.
+  Learn more about Grover's search algorithm, picking up where the [Grover's algorithm kata](./GroversAlgorithm/) left off.
 * **[Solving SAT problems using Grover's algorithm](./SolveSATWithGrover/)**.
   Explore Grover's search algorithm, using SAT problems as an example. Learn to implement quantum oracles based on the problem description instead of a hard-coded answer. Use Grover's algorithm to solve problems with an unknown number of solutions.
 * **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
@@ -121,10 +117,10 @@ Each kata is a separate project that includes:
   Implement the BB84 key distribution algorithm.
 * **[Bit-flip error correcting code](./QEC_BitFlipCode/)**.
   Learn about a 3-qubit error correcting code for protecting against bit-flip errors.
-* **[Distinguish Unitaries](./DistinguishUnitaries/)**.
-  Learn to distinguish unitaries by designing and performing experiments with them.
-* **[Unitary Patterns](./UnitaryPatterns/)**.
+* **[Unitary patterns](./UnitaryPatterns/)**.
   Learn to implement unitaries with matrices that follow certain patterns of zero and non-zero elements.
+* **[Quantum classification (tutorial)](./tutorials/QuantumClassification/)**.
+  Learn about circuit-centric classifiers and the quantum machine learning library included in the QDK.
 
 > For a Q# programming language quick reference sheet, see [Q# Language Quick Reference](./quickref/qsharp-quick-reference.pdf).
 
@@ -139,20 +135,20 @@ The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipyn
 ### Quantum Development Kit Installation <a name="install" /> ###
 
 To use the Quantum Katas locally, you'll need the [Quantum Development Kit](https://docs.microsoft.com/quantum), available for Windows 10, macOS, and Linux.
-If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/install-guide/).
+If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/quantum/quickstarts/).
 
 **If you want to run the katas and tutorials locally as Jupyter Notebooks**:
-1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/install-guide/pyinstall) 
-  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/install-guide/qjupyter).
+1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/quantum/quickstarts/install-python) 
+  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/quantum/quickstarts/install-jupyter).
 2. Several tutorials require installing additional Python packages:
    * "Complex arithmetic" and "Linear algebra" require the [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
    * "Exploring Grover's search algorithm" requires the [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
+   * "Quantum classification" requires [`matplotlib`](https://matplotlib.org/3.1.1/users/installing.html) and [`numpy`](https://numpy.org/install/) packages.
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
-Follow the steps in the QDK install guide [for Visual Studio](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-visual-studio-), 
-[for Visual Studio Code](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-visual-studio-code-) or 
-[for command line with other editors](https://docs.microsoft.com/quantum/install-guide/csinstall#develop-with-q--c-using-the-dotnet-command-line-tool-).
+Follow the steps in the [QDK install guide](https://docs.microsoft.com/quantum/quickstarts/install-command-line) for Visual Studio, 
+ Visual Studio Code or other editors.
 
 
 ### Download the Quantum Katas <a name="download" /> ###
@@ -165,7 +161,7 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 
 > [!TIP]
 > Both Visual Studio 2019 and Visual Studio Code make it easy to clone repositories from within your development environment.
-> For details, see the [Visual Studio 2019](https://docs.microsoft.com/en-us/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
+> For details, see the [Visual Studio 2019](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/main.zip.
 
