@@ -27,6 +27,7 @@ namespace Quantum.Kata.QFT {
         Controlled op([register[0]], register[1]);
     }
 
+    @Test("QuantumSimulator")
     operation T11_OneQubitQFT_Test () : Unit {
         AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(OneQubitQFT, _), 
                                            ArrayWrapperControlledOperation(OneQubitQFT_Reference, _));
@@ -34,6 +35,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T12_Rotation_Test () : Unit {
         // several hardcoded tests for small values of k
         // k = 0: α |0⟩ + β · exp(2πi) |1⟩ = α |0⟩ + β |1⟩ - identity
@@ -69,7 +71,7 @@ namespace Quantum.Kata.QFT {
         return bits;
     }
 
-
+    @Test("QuantumSimulator")
     operation T13_BinaryFractionClassical_Test () : Unit {
         for (n in 1 .. 5) {
             for (exponent in 0 .. (1 <<< n) - 1) {
@@ -91,6 +93,7 @@ namespace Quantum.Kata.QFT {
         Controlled op([qs[0]], (qs[1], qs[2 ...]));
     }
 
+    @Test("QuantumSimulator")
     operation T14_BinaryFractionQuantum_Test () : Unit {
         for (n in 1 .. 5) {
             AssertOperationsEqualReferenced(n + 2, Task14InputWrapper(BinaryFractionQuantum, _), 
@@ -100,6 +103,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T15_BinaryFractionQuantumInPlace_Test () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, BinaryFractionQuantumInPlace, 
@@ -109,6 +113,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T16_ReverseRegister_Test () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, ReverseRegister, 
@@ -128,6 +133,7 @@ namespace Quantum.Kata.QFT {
         QFT(BigEndian(register));
     }
 
+    @Test("QuantumSimulator")
     operation T17_QuantumFourierTransform_Test () : Unit {
         AssertOperationsEqualReferenced(1, QuantumFourierTransform, HWrapper);
 
@@ -141,6 +147,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T18_InverseQFT_Test () : Unit {
         AssertOperationsEqualReferenced(1, InverseQFT, HWrapper);
 
@@ -172,7 +179,7 @@ namespace Quantum.Kata.QFT {
         }
     }
 
-
+    @Test("QuantumSimulator")
     operation T21_PrepareEqualSuperposition_Test () : Unit {
         for (N in 1 .. 5) {
             AssertEqualOnZeroState(N, PrepareEqualSuperposition, PrepareEqualSuperposition_Reference);
@@ -181,6 +188,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T22_PreparePeriodicState_Test () : Unit {
         for (N in 1 .. 5) {
             // cross-test: for F = 0 it's the same as equal superposition of states
@@ -194,6 +202,7 @@ namespace Quantum.Kata.QFT {
     
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T23_PrepareAlternatingState_Test () : Unit {
         for (N in 1 .. 5) {
             AssertEqualOnZeroState(N, PrepareAlternatingState, PrepareAlternatingState_Reference);
@@ -206,7 +215,7 @@ namespace Quantum.Kata.QFT {
         ApplyToEachCA(H, Most(register));
     }
 
-
+    @Test("QuantumSimulator")
     operation T24_PrepareEqualSuperpositionOfEvenStates_Test () : Unit {
         for (N in 1 .. 5) {
             // cross-test: we already know how to prepare a superposition of even states
@@ -217,6 +226,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T25_PrepareSquareWaveSignal_Test () : Unit {
         for (N in 2 .. 5) {
             AssertEqualOnZeroState(N, PrepareSquareWaveSignal, PrepareSquareWaveSignal_Reference);
@@ -225,6 +235,7 @@ namespace Quantum.Kata.QFT {
 
 
     // ------------------------------------------------------
+    @Test("QuantumSimulator")
     operation T26_Frequency_Test () : Unit {
         for (N in 2 .. 5) {
             using (register = Qubit[N]) {
@@ -242,4 +253,51 @@ namespace Quantum.Kata.QFT {
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Powers and roots of the QFT
+    //////////////////////////////////////////////////////////////////
+    
+    // slow brute-force implementation of QFT integer power to test on small cases
+    internal operation QFTPower_Slow (P : Int, inputRegister : Qubit[]) : Unit is Adj {
+        for (_ in 1 .. P) {
+            QFT(BigEndian(inputRegister));
+        }
+    }
+
+    @Test("QuantumSimulator")
+    operation T31_QFTPower_Test () : Unit {
+        // small tests: check correctness of our approach on small-ish powers on 4-qubit register
+        for (p in 0 .. 20) {
+            let testOp = QFTPower_Reference(p, _); 
+            let refOp  = QFTPower_Slow(p, _); 
+            AssertOperationsEqualReferenced(4, testOp, refOp);
+        }
+
+        // large tests: check speed and correctness both
+        for (n in 1 .. 9) {
+            let power = (2 <<< (n + 10)) - 1;
+            let testOp = QFTPower(power, _); 
+            let refOp  = QFTPower_Reference(power, _); 
+              
+            AssertOperationsEqualReferenced(n, testOp, refOp);
+        }
+    }
+
+
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    operation T32_QFTRoot_Test () : Unit {
+        for (n in 2 .. 8) {
+            for (p in 2 .. 8) {
+                let testOp = QFTRoot(p, _); 
+
+                // we only compare the solution's powers to the QFT (big endian), 
+                // not the solution to reference solution, since we're accepting any root
+                AssertOperationsEqualReferenced(
+                    n, OperationPow(testOp, p), QuantumFourierTransform_Reference
+                );
+            }
+        }
+    }
 }

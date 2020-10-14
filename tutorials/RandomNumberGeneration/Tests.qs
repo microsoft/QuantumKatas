@@ -17,6 +17,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     open Microsoft.Quantum.Random;
 
     // Exercise 1.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T1_RandomBit_Test () : Unit {
         Message("Testing...");
         CheckFlatDistribution(RandomBit_Wrapper, 1, 0.4, 0.6, 1000, 450);
@@ -27,6 +28,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 2.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T2_RandomTwoBits_Test () : Unit {
         Message("Testing...");
         CheckFlatDistribution(RandomTwoBits_Wrapper, 2, 1.4, 1.6, 1000, 200);
@@ -37,6 +39,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
     
     // Exercise 3.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T3_RandomNBits_Test () : Unit {
         Message("Testing N = 1...");
         CheckFlatDistribution(RandomNBits, 1, 0.4, 0.6, 1000, 450);
@@ -107,6 +110,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 4.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T4_WeightedRandomBit_Test () : Unit {
         ResetOracleCallsCount();
         CheckXPercentZero(0.0);
@@ -148,13 +152,8 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     operation CheckRandomCalls () : Unit {
-        Fact(GetOracleCallsCount(RandomInt) == 0, "You are not allowed to call RandomInt() in this task");
         Fact(GetOracleCallsCount(DrawRandomInt) == 0, "You are not allowed to call DrawRandomInt() in this task");
-        Fact(GetOracleCallsCount(RandomIntPow2) == 0, "You are not allowed to call RandomIntPow2() in this task");
-        Fact(GetOracleCallsCount(RandomReal) == 0, "You are not allowed to call RandomReal() in this task");
         Fact(GetOracleCallsCount(DrawRandomDouble) == 0, "You are not allowed to call DrawRandomDouble() in this task");
-        Fact(GetOracleCallsCount(RandomSingleQubitPauli) == 0, "You are not allowed to call RandomSingleQubitPauli() in this task");
-        Fact(GetOracleCallsCount(Random) == 0, "You are not allowed to call Random() in this task");
         ResetOracleCallsCount();
     }
 }

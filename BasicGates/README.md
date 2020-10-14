@@ -2,7 +2,7 @@
 
 The Basic Gates kata covers the basic operations (a.k.a. "gates") used in quantum computing, as well as the concept of controlled and adjoint versions of gates.
 
-You can [run the Basic Gates kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/master?filepath=BasicGates%2FBasicGates.ipynb)!
+You can [run the Basic Gates kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=BasicGates%2FBasicGates.ipynb)!
 
 #### Theory
 

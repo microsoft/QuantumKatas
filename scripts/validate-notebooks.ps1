@@ -51,6 +51,12 @@ function Validate {
     if (Test-Path $CheckNotebook)  {
         Remove-Item $CheckNotebook
     }
+    if (Test-Path "bin") {
+        Remove-Item "bin" -Recurse
+    }
+    if (Test-Path "obj") {
+        Remove-Item "obj" -Recurse
+    }
 
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
@@ -58,23 +64,42 @@ function Validate {
     # Convert %kata to %check_kata
     (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
 
-    # Run Jupyter nbconvert to execute the kata.
-    # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
-    # unless $ErrorActionPreference is set to 'Continue'.
-    $ErrorActionPreference = 'Continue'
-    if ($env:SYSTEM_DEBUG -eq "true") {
-        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 --log-level=DEBUG 2>&1 | %{ "$_"}
-    } else {
-        # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        jupyter nbconvert $CheckNotebook --execute  --ExecutePreprocessor.timeout=120 2>&1 | %{ "$_"}
-    }
-    $ErrorActionPreference = 'Stop'
+    try {
+        # Populate NuGet cache for this project
+        dotnet restore
 
-    # if jupyter returns an error code, report that this notebook is invalid:
-    if ($LastExitCode -ne 0) {
-        Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
-        $script:all_ok = $false
+        # Clear NuGet package sources, since all required packages should be cached at this point
+        "<?xml version=""1.0"" encoding=""utf-8""?>
+            <configuration>
+                <packageSources>
+                    <clear />
+                </packageSources>
+            </configuration>
+        " | Out-File ./NuGet.Config -Encoding utf8
+
+        # Run Jupyter nbconvert to execute the kata.
+        # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
+        # unless $ErrorActionPreference is set to 'Continue'.
+        $ErrorActionPreference = 'Continue'
+        if ($env:SYSTEM_DEBUG -eq "true") {
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
+        } else {
+            # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
+            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
+        }
+        $ErrorActionPreference = 'Stop'
+
+        # if jupyter returns an error code, report that this notebook is invalid:
+        if ($LastExitCode -ne 0) {
+            Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
+            $script:all_ok = $false
+        }
+    }
+    finally {
+        if (Test-Path ./NuGet.Config) {
+            Remove-Item ./NuGet.Config
+        }
     }
 
     popd
@@ -85,7 +110,7 @@ function Validate {
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * CHSH and MagicSquare games require implementing two code cells at once before running the test, 
 #    so the first of the cells implemented is guaranteed to fail.
-#  * GraphColoring and SolveSATWithGrover have tasks for which the correct solution fails or times out with relatively high probability.
+#  * GraphColoring and SolveSATWithGrover (and its Workbook) have tasks for which the correct solution fails or times out with relatively high probability.
 #  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
 # 
@@ -93,9 +118,11 @@ $not_ready =
 @(
     'Check.ipynb',
     'CHSHGame.ipynb',
+    'Workbook_CHSHGame.ipynb',
     'GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
+    'Workbook_SolveSATWithGrover.ipynb',
     'ExploringGroversAlgorithmTutorial.ipynb',
     'VisualizingGroversAlgorithm.ipynb',
     'ComplexArithmetic.ipynb',
@@ -112,7 +139,8 @@ if ($Notebook -ne "") {
     $AllItems = Get-ChildItem (Join-Path $PSScriptRoot '..') `
         -Recurse `
         -Include '*.ipynb' `
-        -Exclude $not_ready
+        -Exclude $not_ready `
+        | Sort-Object Name
 
     # If the start index is not set, set it to 0 to check all notebooks
     if ($StartIndex -lt 0) {
