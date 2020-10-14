@@ -66,7 +66,7 @@ def imaginary_power_ref(n):
     return 1 if n % 4 == 0 else -1
 
 @test
-def imaginary_power(fun):
+def imaginary_power_test(fun):
     for i in range(-25, 25):
         n = 2 * i
         expected = imaginary_power_ref(n)

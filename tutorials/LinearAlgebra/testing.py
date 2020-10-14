@@ -192,7 +192,7 @@ def matrix_add_ref(a, b):
     return ans
 
 @test
-def matrix_add(fun):
+def matrix_add_test(fun):
     for i in range(10):
         a = gen_complex_matrix()
         b = gen_complex_matrix(len(a), len(a[0]))
