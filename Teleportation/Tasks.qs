@@ -143,10 +143,10 @@ namespace Quantum.Kata.Teleportation {
     // (|0⟩ - |1⟩) / sqrt(2),
     // (|0⟩ + i|1⟩) / sqrt(2), and
     // (|0⟩ - i|1⟩) / sqrt(2)
-    operation StandardTeleport () : Unit {
+    operation StandardTeleport_Test () : Unit {
         // Hint: You may find your answers for 1.5 and 1.6 useful
 
-        // StandardTeleport appears in the list of unit tests for the solution; run it to verify your code.
+        // StandardTeleport_Test appears in the list of unit tests for the solution; run it to verify your code.
 
         // ...
     }
