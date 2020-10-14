@@ -18,7 +18,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T11_WinCondition_Test () : Unit {
+    operation T11_WinCondition () : Unit {
         for (i in 0..1 <<< 4 - 1) {
             let bits = IntAsBoolArray(i, 4);
             EqualityFactB(
@@ -32,7 +32,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T12_ClassicalStrategy_Test () : Unit {
+    operation T12_ClassicalStrategy () : Unit {
         mutable wins = 0;
         for (i in 1..1000) {
             let x = DrawRandomInt(0, 1) == 1 ? true | false;
@@ -64,7 +64,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
     @Test("QuantumSimulator")
-    operation T21_CreateEntangledPair_Test () : Unit {
+    operation T21_CreateEntangledPair () : Unit {
         // We only check for 2 qubits.
         AssertEqualOnZeroState(2, CreateEntangledPair, CreateEntangledPair_Reference);
     }
@@ -72,7 +72,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T22_AliceQuantum_Test () : Unit {
+    operation T22_AliceQuantum () : Unit {
         for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
             // the correct answer, reduces probability of false positives
@@ -110,7 +110,7 @@ namespace Quantum.Kata.CHSHGame {
     }
 
     @Test("QuantumSimulator")
-    operation T23_RotateBobQubit_Test () : Unit {
+    operation T23_RotateBobQubit () : Unit {
         AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(true, _), _),
                                         QubitToRegisterOperationA(Ry(-2.0 * PI() / 8.0, _), _));
         AssertOperationsEqualReferenced(1, QubitToRegisterOperation(RotateBobQubit(false, _), _),
@@ -120,7 +120,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T24_BobQuantum_Test () : Unit {
+    operation T24_BobQuantum () : Unit {
         for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
             // the correct answer, reduces probability of false positives
@@ -149,7 +149,7 @@ namespace Quantum.Kata.CHSHGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T25_PlayQuantumCHSH_Test () : Unit {
+    operation T25_PlayQuantumCHSH () : Unit {
         mutable wins = 0;
         for (i in 1..10000) {
             let x = DrawRandomInt(0, 1) == 1 ? true | false;

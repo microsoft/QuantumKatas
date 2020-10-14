@@ -192,7 +192,7 @@ def matrix_add_ref(a, b):
     return ans
 
 @test
-def matrix_add_test(fun):
+def matrix_add(fun):
     for i in range(10):
         a = gen_complex_matrix()
         b = gen_complex_matrix(len(a), len(a[0]))
@@ -220,7 +220,7 @@ def scalar_mult_ref(x, a):
     return ans
 
 @test
-def scalar_mult_test(fun):
+def scalar_mult(fun):
     for i in range(10):
         a = gen_complex_matrix()
         x = randcomplex()
@@ -250,7 +250,7 @@ def matrix_mult_ref(a, b):
     return ans
 
 @test
-def matrix_mult_test(fun):
+def matrix_mult(fun):
     for i in range(10):
         a = gen_complex_matrix()
         b = gen_complex_matrix(len(a[0]))
@@ -276,7 +276,7 @@ def matrix_inverse_ref(m):
     return [[d / det, -b / det], [-c / det, a / det]]
 
 @test
-def matrix_inverse_test(fun):
+def matrix_inverse(fun):
     for i in range(10):
         a = None
         det = 0
@@ -308,7 +308,7 @@ def transpose_ref(a):
     return ans
 
 @test
-def transpose_test(fun):
+def transpose(fun):
     for i in range(10):
         a = gen_complex_matrix()
         expected = transpose_ref(a)
@@ -335,7 +335,7 @@ def conjugate_ref(a):
     return ans
 
 @test
-def conjugate_test(fun):
+def conjugate(fun):
     for i in range(10):
         a = gen_complex_matrix()
         expected = conjugate_ref(a)
@@ -356,7 +356,7 @@ def adjoint_ref(a):
     return conjugate_ref(transpose_ref(a))
 
 @test
-def adjoint_test(fun):
+def adjoint(fun):
     for i in range(10):
         a = gen_complex_matrix()
         expected = adjoint_ref(a)
@@ -423,7 +423,7 @@ def is_matrix_unitary_ref(a):
     return True
 
 @test
-def is_matrix_unitary_test(fun):
+def is_matrix_unitary(fun):
     for testId in range(12):
         a = []
         # The first two tests are edge cases, after that unitary and non-unitary matrices alternate
@@ -453,7 +453,7 @@ def inner_prod_ref(v, w):
     return matrix_mult_ref(adjoint_ref(v), w)[0][0]
 
 @test
-def inner_prod_test(fun):
+def inner_prod(fun):
     for i in range(10):
         v = gen_complex_matrix(w = 1)
         w = gen_complex_matrix(len(v), 1)
@@ -478,7 +478,7 @@ def normalize_ref(v):
     return scalar_mult_ref(1 / sqrt(inner_prod_ref(v,v).real), v)
 
 @test
-def normalize_test(fun):
+def normalize(fun):
     for i in range(10):
         v = None
         norm = 0
@@ -502,7 +502,7 @@ def outer_prod_ref(v, w):
     return matrix_mult_ref(v, adjoint_ref(w))
 
 @test
-def outer_prod_test(fun):
+def outer_prod(fun):
     for i in range(10):
         v = gen_complex_matrix(w = 1)
         w = gen_complex_matrix(w = 1)
@@ -540,7 +540,7 @@ def tensor_product_ref(a, b):
     return ans
 
 @test
-def tensor_product_test(fun):
+def tensor_product(fun):
     for i in range(10):
         (a, b) = ([[1, 1, 1]], [[1, 1, 1]])
         while len(a[0]) * len(b[0]) >= 8:
@@ -668,7 +668,7 @@ def find_eigenvector_ref(a, x):
     return ans
 
 @test
-def find_eigenvalue_test(fun):
+def find_eigenvalue(fun):
     for i in range(10):
         (a, expected, v) = (None, None, None)
         if i < 3:
@@ -693,7 +693,7 @@ def find_eigenvalue_test(fun):
 
 # ------------------------------------------------------
 @test
-def find_eigenvector_test(fun):
+def find_eigenvector(fun):
     for i in range(10):
         (a, x) = (None, None)
         if i < 3:
