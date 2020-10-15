@@ -143,7 +143,7 @@ def conjugate_ref(x):
     return (x[0], -x[1])
 
 @test
-def conjugate(fun):
+def conjugate_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         expected = conjugate_ref(x)
@@ -172,7 +172,7 @@ def complex_div_ref(x, y):
     return complex_mult_ref(numer, (1 / denom, 0))
 
 @test
-def complex_div(fun):
+def complex_div_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         y = (0, 0)
@@ -203,7 +203,7 @@ def modulus_ref(x):
     return m.sqrt(complex_mult_ref(x, conjugate_ref(x))[0])
 
 @test
-def modulus(fun):
+def modulus_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         expected = modulus_ref(x)
@@ -227,7 +227,7 @@ def complex_exp_ref(x):
     return (realpow * m.cos(x[1]), realpow * m.sin(x[1]))
 
 @test
-def complex_exp(fun):
+def complex_exp_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         expected = complex_exp_ref(x)
@@ -255,7 +255,7 @@ def complex_exp_real_ref(r, x):
     return complex_exp_ref(complex_mult_ref((lnr, 0), x))
 
 @test
-def complex_exp_real(fun):
+def complex_exp_real_test(fun):
     for i in range(25):
         base = r.random() * r.randint(1, 100)
         if i == 0:
@@ -285,7 +285,7 @@ def polar_convert_ref(x):
     return (modulus_ref(x), m.atan2(x[1], x[0]))
 
 @test
-def polar_convert(fun):
+def polar_convert_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         if i == 0:
@@ -313,7 +313,7 @@ def cartesian_convert_ref(x):
     return (x[0] * m.cos(x[1]), x[0] * m.sin(x[1]))
 
 @test
-def cartesian_convert(fun):
+def cartesian_convert_test(fun):
     for i in range(25):
         x = prep_random_polar()
         expected = cartesian_convert_ref(x)
@@ -342,7 +342,7 @@ def polar_mult_ref(x, y):
     return (x[0] * y[0], angle)
 
 @test
-def polar_mult(fun):
+def polar_mult_test(fun):
     for i in range(25):
         x = prep_random_polar()
         y = prep_random_polar()
@@ -378,7 +378,7 @@ def complex_exp_arbitrary_ref(x, y):
     return complex_mult_ref(complex_exp_real_ref(xp[0], y), complex_exp_ref(complex_mult_ref((0, xp[1]), y)))
 
 @test
-def complex_exp_arbitrary(fun):
+def complex_exp_arbitrary_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         y = prep_random_cartesian()
