@@ -220,7 +220,7 @@ def scalar_mult_ref(x, a):
     return ans
 
 @test
-def scalar_mult(fun):
+def scalar_mult_test(fun):
     for i in range(10):
         a = gen_complex_matrix()
         x = randcomplex()
