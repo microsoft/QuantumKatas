@@ -114,7 +114,7 @@ def complex_mult_ref(x, y):
     return ((x[0] * y[0]) - (x[1] * y[1]), (x[0] * y[1]) + (x[1] * y[0]))
 
 @test
-def complex_mult(fun):
+def complex_mult_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         y = prep_random_cartesian()
