@@ -23,7 +23,7 @@ namespace Microsoft.Quantum.Katas
         public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger, IConfigurationSource configurationSource)
         {
             this.Name = $"%kata";
-            this.Documentation = new Documentation
+            this.Documentation = new Microsoft.Jupyter.Core.Documentation
             {
                 Summary = "Executes a single test.",
                 Description = "Executes a single test, and reports whether the test passed successfully.",

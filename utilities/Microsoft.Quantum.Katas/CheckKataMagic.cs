@@ -21,8 +21,7 @@ namespace Microsoft.Quantum.Katas
         public CheckKataMagic(IOperationResolver resolver, ICompilerService compiler, ILogger<KataMagic> logger)
         {
             this.Name = $"%check_kata";
-            this.Documentation = new Documentation() { Summary = "Checks the reference implementation for a single kata's test." };
-            this.Documentation = new Documentation
+            this.Documentation = new Microsoft.Jupyter.Core.Documentation
             {
                 Summary = "Checks the reference implementation for a single kata's test.",
                 Description =
