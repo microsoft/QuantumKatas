@@ -93,28 +93,28 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T101_DistinguishIfromX_Test () : Unit {
+    operation T101_DistinguishIfromX () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, X]), DistinguishIfromX, 1);
     }
     
     
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T102_DistinguishIfromZ_Test () : Unit {
+    operation T102_DistinguishIfromZ () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, Z]), DistinguishIfromZ, 1);
     }
     
     
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T103_DistinguishZfromS_Test () : Unit {
+    operation T103_DistinguishZfromS () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Z, S]), DistinguishZfromS, 2);
     }
     
     
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T104_DistinguishHfromX_Test () : Unit {
+    operation T104_DistinguishHfromX () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [H, X]), DistinguishHfromX, 2);
     }
     
@@ -127,35 +127,35 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T105_DistinguishZfromMinusZ_Test () : Unit {
+    operation T105_DistinguishZfromMinusZ () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Z, BoundCA([Z, MinusOne])]), DistinguishZfromMinusZ, 1);
     }
 
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T106_DistinguishRzFromR1_Test () : Unit {
+    operation T106_DistinguishRzFromR1 () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<(Double, Qubit)>, [Rz, R1]), DistinguishRzFromR1, 1);
     }
 
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T107_DistinguishYfromXZ_Test () : Unit {
+    operation T107_DistinguishYfromXZ () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Y, BoundCA([Z, X])]), DistinguishYfromXZ, 2);
     }
     
     
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T108_DistinguishYfromXZWithPhases_Test () : Unit {
+    operation T108_DistinguishYfromXZWithPhases () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Y, BoundCA([Z, X, MinusOne]), BoundCA([Y, MinusOne]), BoundCA([Z, X])]), DistinguishYfromXZWithPhases, 3);
     }
 
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T109_DistinguishRzFromRy_Test () : Unit {
+    operation T109_DistinguishRzFromRy () : Unit {
         for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
             DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), Ry(theta, _)]), DistinguishRzFromRy(theta, _), -1);
         }
@@ -164,7 +164,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T110_DistinguishRzFromR1WithAngle_Test () : Unit {
+    operation T110_DistinguishRzFromR1WithAngle () : Unit {
         for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
             DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), R1(theta, _)]), DistinguishRzFromR1WithAngle(theta, _), -1);
         }
@@ -173,7 +173,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T111_DistinguishPaulis_Test () : Unit {
+    operation T111_DistinguishPaulis () : Unit {
         DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [I, X, Y, Z]), DistinguishPaulis, 1);
     }
 
@@ -193,7 +193,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T201_DistinguishIXfromCNOT_Test () : Unit {
+    operation T201_DistinguishIXfromCNOT () : Unit {
         DistinguishUnitaries_Framework([IXWrapper, CNOTWrapper], DistinguishIXfromCNOT, 1);
     }
 
@@ -204,7 +204,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T202_CNOTDirection_Test () : Unit {
+    operation T202_CNOTDirection () : Unit {
         DistinguishUnitaries_Framework([CNOTWrapper, ReverseCNOTWrapper], CNOTDirection, 1);
     }
 
@@ -215,7 +215,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T203_DistinguishCNOTfromSWAP_Test () : Unit {
+    operation T203_DistinguishCNOTfromSWAP () : Unit {
         DistinguishUnitaries_Framework([CNOTWrapper, SWAPWrapper], DistinguishCNOTfromSWAP, 1);
     }
 
@@ -225,7 +225,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T204_DistinguishTwoQubitUnitaries_Test () : Unit {
+    operation T204_DistinguishTwoQubitUnitaries () : Unit {
         DistinguishUnitaries_Framework([IdentityWrapper, CNOTWrapper, ReverseCNOTWrapper, SWAPWrapper], DistinguishTwoQubitUnitaries, 2);
     }
 }

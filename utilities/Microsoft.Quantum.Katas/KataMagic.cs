@@ -31,7 +31,7 @@ namespace Microsoft.Quantum.Katas
                 {
                     "To run a test called `Test`:\n" +
                     "```\n" +
-                    "In []: %kata T101_StateFlip_Test \n",
+                    "In []: %kata T101_StateFlip \n",
                     "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
                     "           // Type X(q);\n",
