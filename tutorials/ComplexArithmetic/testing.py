@@ -85,7 +85,7 @@ def complex_add_ref(x, y):
     return (x[0] + y[0], x[1] + y[1])
 
 @test
-def complex_add(fun):
+def complex_add_test(fun):
     for i in range(25):
         x = prep_random_cartesian()
         y = prep_random_cartesian()
