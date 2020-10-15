@@ -32,7 +32,7 @@ namespace Quantum.Kata.PhaseEstimation {
     }
 
     @Test("QuantumSimulator")
-    operation T11_Eigenstates_ZST_Test () : Unit {
+    operation T11_Eigenstates_ZST () : Unit {
         for (state in 0 .. 1) {
             AssertEqualOnZeroState1(Eigenstates_ZST(_, state), Eigenstates_ZST_Reference(_, state));
         }
@@ -46,7 +46,7 @@ namespace Quantum.Kata.PhaseEstimation {
     }
 
     @Test("QuantumSimulator")
-    operation T12_UnitaryPower_Test () : Unit {
+    operation T12_UnitaryPower () : Unit {
         for (U in [Z, S, T]) { 
             for (power in 1 .. 5) {
                 AssertOperationsEqualReferenced(1, ArrayWrapperOperation1(UnitaryPower(U, power), _), 
@@ -70,7 +70,7 @@ namespace Quantum.Kata.PhaseEstimation {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T14_QPE_Test () : Unit {
+    operation T14_QPE () : Unit {
         EqualityWithinToleranceFact(QPE(Z, I, 1), 0.0, 0.25);
         EqualityWithinToleranceFact(QPE(Z, X, 1), 0.5, 0.25);
 
@@ -101,7 +101,7 @@ namespace Quantum.Kata.PhaseEstimation {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T21_SingleBitPE_Test () : Unit {
+    operation T21_SingleBitPE () : Unit {
         Test1BitPEOnOnePair(Z, I, +1);
         Test1BitPEOnOnePair(Z, X, -1);
         Test1BitPEOnOnePair(X, H, +1);
@@ -121,7 +121,7 @@ namespace Quantum.Kata.PhaseEstimation {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T22_TwoBitPE_Test () : Unit {
+    operation T22_TwoBitPE () : Unit {
         Test2BitPEOnOnePair(Z, I, 0.0);
         Test2BitPEOnOnePair(Z, X, 0.5);
         Test2BitPEOnOnePair(S, X, 0.25);

@@ -28,7 +28,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T11_OneQubitQFT_Test () : Unit {
+    operation T11_OneQubitQFT () : Unit {
         AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(OneQubitQFT, _), 
                                            ArrayWrapperControlledOperation(OneQubitQFT_Reference, _));
     }
@@ -36,7 +36,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T12_Rotation_Test () : Unit {
+    operation T12_Rotation () : Unit {
         // several hardcoded tests for small values of k
         // k = 0: α |0⟩ + β · exp(2πi) |1⟩ = α |0⟩ + β |1⟩ - identity
         AssertOperationsEqualReferenced(2, ArrayWrapperControlledOperation(Rotation(_, 0), _), 
@@ -72,7 +72,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T13_BinaryFractionClassical_Test () : Unit {
+    operation T13_BinaryFractionClassical () : Unit {
         for (n in 1 .. 5) {
             for (exponent in 0 .. (1 <<< n) - 1) {
                 let bits = IntAsIntArray(exponent, n);
@@ -94,7 +94,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T14_BinaryFractionQuantum_Test () : Unit {
+    operation T14_BinaryFractionQuantum () : Unit {
         for (n in 1 .. 5) {
             AssertOperationsEqualReferenced(n + 2, Task14InputWrapper(BinaryFractionQuantum, _), 
                                                    Task14InputWrapper(BinaryFractionQuantum_Reference, _));
@@ -104,7 +104,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T15_BinaryFractionQuantumInPlace_Test () : Unit {
+    operation T15_BinaryFractionQuantumInPlace () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, BinaryFractionQuantumInPlace, 
                                                BinaryFractionQuantumInPlace_Reference);
@@ -114,7 +114,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T16_ReverseRegister_Test () : Unit {
+    operation T16_ReverseRegister () : Unit {
         for (n in 1 .. 6) {
             AssertOperationsEqualReferenced(n, ReverseRegister, 
                                                ReverseRegister_Reference);
@@ -134,7 +134,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T17_QuantumFourierTransform_Test () : Unit {
+    operation T17_QuantumFourierTransform () : Unit {
         AssertOperationsEqualReferenced(1, QuantumFourierTransform, HWrapper);
 
         for (n in 1 .. 5) {
@@ -148,7 +148,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T18_InverseQFT_Test () : Unit {
+    operation T18_InverseQFT () : Unit {
         AssertOperationsEqualReferenced(1, InverseQFT, HWrapper);
 
         for (n in 1 .. 5) {
@@ -180,7 +180,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T21_PrepareEqualSuperposition_Test () : Unit {
+    operation T21_PrepareEqualSuperposition () : Unit {
         for (N in 1 .. 5) {
             AssertEqualOnZeroState(N, PrepareEqualSuperposition, PrepareEqualSuperposition_Reference);
         }
@@ -189,7 +189,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T22_PreparePeriodicState_Test () : Unit {
+    operation T22_PreparePeriodicState () : Unit {
         for (N in 1 .. 5) {
             // cross-test: for F = 0 it's the same as equal superposition of states
             AssertEqualOnZeroState(N, PreparePeriodicState(_, 0), PrepareEqualSuperposition_Reference);
@@ -203,7 +203,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T23_PrepareAlternatingState_Test () : Unit {
+    operation T23_PrepareAlternatingState () : Unit {
         for (N in 1 .. 5) {
             AssertEqualOnZeroState(N, PrepareAlternatingState, PrepareAlternatingState_Reference);
         }
@@ -216,7 +216,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T24_PrepareEqualSuperpositionOfEvenStates_Test () : Unit {
+    operation T24_PrepareEqualSuperpositionOfEvenStates () : Unit {
         for (N in 1 .. 5) {
             // cross-test: we already know how to prepare a superposition of even states
             AssertEqualOnZeroState(N, ApplyHToMostWrapper, PrepareEqualSuperpositionOfEvenStates_Reference);
@@ -227,7 +227,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T25_PrepareSquareWaveSignal_Test () : Unit {
+    operation T25_PrepareSquareWaveSignal () : Unit {
         for (N in 2 .. 5) {
             AssertEqualOnZeroState(N, PrepareSquareWaveSignal, PrepareSquareWaveSignal_Reference);
         }
@@ -236,7 +236,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T26_Frequency_Test () : Unit {
+    operation T26_Frequency () : Unit {
         for (N in 2 .. 5) {
             using (register = Qubit[N]) {
                 for (F in 0 .. (1 <<< N - 1)) {
@@ -266,7 +266,7 @@ namespace Quantum.Kata.QFT {
     }
 
     @Test("QuantumSimulator")
-    operation T31_QFTPower_Test () : Unit {
+    operation T31_QFTPower () : Unit {
         // small tests: check correctness of our approach on small-ish powers on 4-qubit register
         for (p in 0 .. 20) {
             let testOp = QFTPower_Reference(p, _); 
@@ -287,7 +287,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T32_QFTRoot_Test () : Unit {
+    operation T32_QFTRoot () : Unit {
         for (n in 2 .. 8) {
             for (p in 2 .. 8) {
                 let testOp = QFTRoot(p, _); 
