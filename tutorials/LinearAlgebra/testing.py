@@ -250,7 +250,7 @@ def matrix_mult_ref(a, b):
     return ans
 
 @test
-def matrix_mult(fun):
+def matrix_mult_test(fun):
     for i in range(10):
         a = gen_complex_matrix()
         b = gen_complex_matrix(len(a[0]))
