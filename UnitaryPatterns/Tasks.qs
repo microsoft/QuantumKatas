@@ -52,7 +52,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     operation MainDiagonal (qs : Qubit[]) : Unit {
         // The simplest example of such a unitary transformation is represented by an identity matrix. 
         // This means that the operation doesn't need to do anything with the input qubits.
-        // Build the project and run the tests to see that T01_MainDiagonal_Test test passes.
+        // Build the project and run the tests to see that T01_MainDiagonal test passes.
 
         // You are welcome to try and come up with other diagonal unitaries.
         // ...
