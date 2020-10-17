@@ -120,6 +120,7 @@ $not_ready =
     'CHSHGame.ipynb',
     'Workbook_CHSHGame.ipynb',
     'GraphColoring.ipynb',
+    'Workbook_GraphColoring.ipynb',
     'MagicSquareGame.ipynb',
     'SolveSATWithGrover.ipynb',
     'Workbook_SolveSATWithGrover.ipynb',
