@@ -42,7 +42,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 1.3. Read coloring from a register
     operation MeasureColoring_Reference (K : Int, register : Qubit[]) : Int[] {
         let N = Length(register) / K;
-        let colorPartitions = Partitioned(ConstantArray(K - 1, N), register);
+        let colorPartitions = Chunks(N, register);
         return ForEach(MeasureColor_Reference, colorPartitions);
     }
 
