@@ -61,9 +61,15 @@ function Validate {
     # Find the name of the kata's notebook.
     Write-Host "Checking notebook $Notebook."
 
-    # Convert %kata to %check_kata
-    (Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
-
+	if($Notebook -match 'Workbook_*') {
+		# Write workbook data to Check.ipynb artifact
+		(Get-Content $Notebook -Raw) | Set-Content $CheckNotebook -NoNewline
+	}
+	else{
+		# Convert %kata to %check_kata
+		(Get-Content $Notebook -Raw) | ForEach-Object { $_.replace('%kata', '%check_kata') } | Set-Content $CheckNotebook -NoNewline
+	}
+    
     try {
         # Populate NuGet cache for this project
         dotnet restore
