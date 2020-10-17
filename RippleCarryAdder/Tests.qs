@@ -77,12 +77,12 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     operation QubitArrayAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit[], Qubit) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
-        let splits = Partitioned([N, N, N, 1], arr);
+        let splits = Chunks(N, arr);
         op(splits[0], splits[1], splits[2], Tail(arr));
     }
 
     operation QubitArrayInPlaceAdderWrapper (N : Int, op : ((Qubit[], Qubit[], Qubit) => Unit is Adj), arr : Qubit[]) : Unit is Adj {
-        let splits = Partitioned([N, N, 1], arr);
+        let splits = Chunks(N, arr);
         op(splits[0], splits[1], Tail(arr));
     }
 
