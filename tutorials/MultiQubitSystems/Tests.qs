@@ -30,19 +30,23 @@ namespace Quantum.Kata.MultiQubitSystems {
         }
     }
 
-    operation T1_PrepareState1_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T1_PrepareState1 () : Unit {
         AssertEqualOnZeroState(PrepareState1, PrepareState1_Reference);
     }
 
-    operation T2_PrepareState2_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T2_PrepareState2 () : Unit {
         AssertEqualOnZeroState(PrepareState2, PrepareState2_Reference);
     }
 
-    operation T3_PrepareState3_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T3_PrepareState3 () : Unit {
         AssertEqualOnZeroState(PrepareState3, PrepareState3_Reference);
     }
 
-    operation T4_PrepareState4_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T4_PrepareState4 () : Unit {
         AssertEqualOnZeroState(PrepareState4, PrepareState4_Reference);
     }
 }

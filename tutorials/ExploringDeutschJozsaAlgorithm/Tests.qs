@@ -24,7 +24,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 1.
-    operation T1_ClassicalFunction_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T1_ClassicalFunction () : Unit {
         for (N in 1..5) {
             for (x in 0..(1 <<< (N - 1)) - 1) {
                 let ret = Function_MostSignificantBit(x, N);
@@ -54,8 +55,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         Message("    correct!");
     }
 
-
-    operation T2_ClassicalAlgorithm_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T2_ClassicalAlgorithm () : Unit {
         CheckClassicalAlgorithm(4, Function_Zero_Reference, true, "f(x) = 0");
         CheckClassicalAlgorithm(4, Function_One_Reference, true, "f(x) = 1");
         CheckClassicalAlgorithm(4, Function_Xmod2_Reference, false, "f(x) = x mod 2");
@@ -68,7 +69,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //////////////////////////////////////////////////////////////////
     
     // Exercise 3.
-    operation T3_QuantumOracle_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T3_QuantumOracle () : Unit {
         for (N in 1..5) {
             AssertOperationsEqualReferenced(N, PhaseOracle_MostSignificantBit, PhaseOracle_MostSignificantBit_Reference);
         }
@@ -101,8 +103,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
 
     
-    
-    operation T4_QuantumAlgorithm_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T4_QuantumAlgorithm () : Unit {
         ResetOracleCallsCount();
         
         CheckQuantumAlgorithm(4, PhaseOracle_Zero_Reference, true, "f(x) = 0");

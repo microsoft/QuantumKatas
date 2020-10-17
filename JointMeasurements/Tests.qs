@@ -103,19 +103,22 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation T01_SingleQubitMeasurement_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T01_SingleQubitMeasurement () : Unit {
         DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, SingleQubitMeasurement, false, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
-    operation T02_ParityMeasurement_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T02_ParityMeasurement () : Unit {
         DistinguishStates_MultiQubit(2, 2, StatePrep_ParityMeasurement, ParityMeasurement, true, ["α|00⟩ + β|11⟩", "α|01⟩ + β|10⟩"]);
     }
     
     
     // ------------------------------------------------------
-    operation T03_GHZOrGHZWithX_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T03_GHZOrGHZWithX () : Unit {
         DistinguishStates_MultiQubit(4, 2, StatePrep_ParityMeasurement, GHZOrGHZWithX, true, ["α|0000⟩ + β|1111⟩", "α|0011⟩ + β|1100⟩"]);
     }
     
@@ -152,7 +155,8 @@ namespace Quantum.Kata.JointMeasurements {
     }
     
 
-    operation T04_GHZOrWState_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T04_GHZOrWState () : Unit {
         for (i in 1 .. 5) {
             DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true, ["GHZ State", "W State"]);
         }
@@ -174,8 +178,8 @@ namespace Quantum.Kata.JointMeasurements {
         ApplyToEachA(H, qs);
     }
     
-    
-    operation T05_DifferentBasis_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T05_DifferentBasis () : Unit {
         DistinguishStates_MultiQubit(2, 2, StatePrep_DifferentBasis, DifferentBasis, true, 
             ["α|00⟩ + β|01⟩ + β|10⟩ + α|11⟩", "α|00⟩ - β|01⟩ + β|10⟩ - α|11⟩"]);
     }
@@ -198,7 +202,8 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // ------------------------------------------------------
-    operation T06_ControlledX_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T06_ControlledX () : Unit {
         // Note that the way the problem is formulated, we can't just compare two unitaries,
         // we need to create an input state |A⟩ and check that the output state is correct
         using (qs = Qubit[2]) {
@@ -234,8 +239,8 @@ namespace Quantum.Kata.JointMeasurements {
         CNOT(qs[0], qs[1]);
     }
     
-    
-    operation T07_ControlledX_General_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T07_ControlledX_General () : Unit {
         // In this task the gate is supposed to work on all inputs, so we can compare the unitary to CNOT.
         AssertOperationsEqualReferenced(2, CNOTWrapper, ControlledX_General_Reference);
         AssertOperationsEqualReferenced(2, ControlledX_General, ControlledX_General_Reference);
