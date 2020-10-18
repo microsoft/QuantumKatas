@@ -90,6 +90,16 @@ Updating the Katas to a different QDK version can be done using PowerShell scrip
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
 
+### Excluding the tasks so that CI doesn't fail
+Currently some tasks are excluded from validation by adding the appropriate cell tag to the task due to several reasons : 
+- Some tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail(```two_player_game```)
+-  There are some tasks for which the correct solution fails with relatively high probability(```failure_of_correct_solution```) or correct solution times out with relatively high probability(```timeout```)
+- There are some tasks with deliberately invalid code(```invalid_code```)
+- If the solutions to the tasks(Either in ReferenceImplementation or Workbook) are work in progress(```work_in_progress```).
+
+To do this, go to ```View -> Cell Toolbar -> Tags``` to see the cells that have been tagged and to add a new tag to a cell. If there is a new reason for some tasks to be excluded from validation, feel free to update the [exclude_from_validation set](https://github.com/microsoft/QuantumKatas/blob/main/scripts/validate-notebooks.ps1#L92) in ```validate-notebooks.ps1``` script. 
+
+PS : After adding the tags to the jupyter notebook, please do ```View -> Cell Toolbar -> None``` and save your changes through ```Ctrl+S``` or by hitting ```Save and Checkpoint``` button. This is necessary because we don't want learner to see the cell tags associated with each cell when they open the jupyter notebook.
 
 ### Validating your changes
 
