@@ -119,7 +119,8 @@ function Validate {
 #  * GraphColoring and SolveSATWithGrover (and its Workbook) have tasks for which the correct solution fails or times out with relatively high probability.
 #  * ExploringGroversAlgorithm has tasks with deliberately invalid Q# code.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
-# 
+#  * RandomNumberGenerationTutorial have tasks to generate random numbers but if it is run a lot of times then randomly generated numbers will look insufficiently random
+#
 $not_ready = 
 @(
     'Check.ipynb',
@@ -133,7 +134,8 @@ $not_ready =
     'ExploringGroversAlgorithmTutorial.ipynb',
     'VisualizingGroversAlgorithm.ipynb',
     'ComplexArithmetic.ipynb',
-    'LinearAlgebra.ipynb'
+    'LinearAlgebra.ipynb',
+	'RandomNumberGenerationTutorial.ipynb'
 )
 
 
