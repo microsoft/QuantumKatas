@@ -83,16 +83,24 @@ function Validate {
             </configuration>
         " | Out-File ./NuGet.Config -Encoding utf8
 
+		# Specifying tasks that need to be excluded because of various reasons :
+		# two_player_game : These tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail.
+		# failure_of_correct_solution : Tasks for which the correct solution fails with relatively high probability.
+		# timeout : Tasks for which the correct solution times out with relatively high probability.
+		# invalid_code : Tasks with deliberately invalid code
+		# work_in_progress : If the solutions to the tasks(Either in ReferenceImplementation or Workbook) are work_in_progress
+		$exclude_from_validation = "['two_player_game', 'failure_of_correct_solution', 'timeout', 'invalid_code', 'work_in_progress']"
+
         # Run Jupyter nbconvert to execute the kata.
         # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
         # unless $ErrorActionPreference is set to 'Continue'.
         $ErrorActionPreference = 'Continue'
         if ($env:SYSTEM_DEBUG -eq "true") {
             # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
+            jupyter nbconvert $CheckNotebook --TagRemovePreprocessor.remove_cell_tags=$exclude_from_validation  --execute --to html --ExecutePreprocessor.timeout=300 --log-level=DEBUG 2>&1 | %{ "$_"}
         } else {
             # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-            jupyter nbconvert $CheckNotebook --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
+            jupyter nbconvert $CheckNotebook --TagRemovePreprocessor.remove_cell_tags=$exclude_from_validation --execute --to html --ExecutePreprocessor.timeout=300 2>&1 | %{ "$_"}
         }
         $ErrorActionPreference = 'Stop'
 
