@@ -159,6 +159,6 @@ namespace Quantum.Kata.CHSHGame {
                 set wins = wins + 1;
             }
         }
-        EqualityWithinToleranceFact(IntAsDouble(wins) / 10000., 0.85, 0.1);
+        EqualityWithinToleranceFact(IntAsDouble(wins) / 10000., 0.85, 0.5);
     }
 }
