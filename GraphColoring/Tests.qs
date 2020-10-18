@@ -76,7 +76,7 @@ namespace Quantum.Kata.GraphColoring {
                     let result = MeasureColoring(K, register);
 
                     // get the expected coloring by splitting binaryState into parts and converting them into integers
-                    let partitions = Partitioned(ConstantArray(K - 1, N), binaryState);
+                    let partitions = Chunks(N, binaryState);
                     let expectedColors = ForEach(FunctionAsOperation(BoolArrayAsInt), partitions);
 
                     // verify the return value
