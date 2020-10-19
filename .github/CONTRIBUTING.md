@@ -92,12 +92,11 @@ After running this script you should validate that the update didn't introduce a
 
 ### Excluding the tasks so that CI doesn't fail
 Currently some tasks are excluded from validation by adding the appropriate cell tag to the task due to several reasons : 
-- Some tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail(```two_player_game```)
--  There are some tasks for which the correct solution fails with relatively high probability(```failure_of_correct_solution```) or correct solution times out with relatively high probability(```timeout```)
+- Some tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail(```multicell_solution```)
+-  There are some tasks for which the correct solution fails with relatively high probability(```randomized_solution```) or correct solution times out with relatively high probability(```timeout```)
 - There are some tasks with deliberately invalid code(```invalid_code```)
-- If the solutions to the tasks(Either in ReferenceImplementation or Workbook) are work in progress(```work_in_progress```).
 
-To do this, go to ```View -> Cell Toolbar -> Tags``` to see the cells that have been tagged and to add a new tag to a cell. If there is a new reason for some tasks to be excluded from validation, feel free to update the [exclude_from_validation set](https://github.com/microsoft/QuantumKatas/blob/main/scripts/validate-notebooks.ps1#L92) in ```validate-notebooks.ps1``` script. 
+To exclude tasks from validation, go to ```View -> Cell Toolbar -> Tags``` to see the cells that have been tagged and/or to add a new tag to a cell. If there is a new reason for some tasks to be excluded from validation, feel free to update the [exclude_from_validation set](https://github.com/microsoft/QuantumKatas/blob/main/scripts/validate-notebooks.ps1#L91) in ```validate-notebooks.ps1``` script and add an explaination for the new cell tag in ```validate-notebooks.ps1``` script and this contribution guide as well.
 
 PS : After adding the tags to the jupyter notebook, please do ```View -> Cell Toolbar -> None``` and save your changes through ```Ctrl+S``` or by hitting ```Save and Checkpoint``` button. This is necessary because we don't want learner to see the cell tags associated with each cell when they open the jupyter notebook.
 
