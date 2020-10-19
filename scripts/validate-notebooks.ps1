@@ -83,13 +83,12 @@ function Validate {
             </configuration>
         " | Out-File ./NuGet.Config -Encoding utf8
 
-        # Specifying tasks that need to be excluded because of various reasons :
-        # two_player_game : These tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail.
-        # failure_of_correct_solution : Tasks for which the correct solution fails with relatively high probability.
+        # See the explaination for excluding tasks in Contribution guide at https://github.com/microsoft/QuantumKatas/blob/main/.github/CONTRIBUTING.md/#L93
+        # multicell_solution : These tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail.
+        # randomized_solution : Tasks for which the correct solution fails with relatively high probability.
         # timeout : Tasks for which the correct solution times out with relatively high probability.
         # invalid_code : Tasks with deliberately invalid code
-        # work_in_progress : If the solutions to the tasks(Either in ReferenceImplementation or Workbook) are work_in_progress
-        $exclude_from_validation = "['two_player_game', 'failure_of_correct_solution', 'timeout', 'invalid_code', 'work_in_progress']"
+        $exclude_from_validation = "['multicell_solution', 'randomized_solution', 'timeout', 'invalid_code', 'work_in_progress']"
 
         # Run Jupyter nbconvert to execute the kata.
         # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
