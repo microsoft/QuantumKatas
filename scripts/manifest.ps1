@@ -14,3 +14,4 @@
         "..\utilities\Microsoft.Quantum.Katas\bin\$Env:BUILD_CONFIGURATION\netstandard2.1\Microsoft.Quantum.Katas.dll"
     ) | ForEach-Object { Get-Item (Join-Path $PSScriptRoot $_) };
 } | Write-Output;
+
