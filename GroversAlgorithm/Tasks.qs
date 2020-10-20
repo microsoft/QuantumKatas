@@ -191,7 +191,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     //       to find the marked elements of the search space.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
     @Test("QuantumSimulator")
-    operation E2E_GroversSearch () : Unit {
+    operation T32_E2E_GroversSearch () : Unit {
 
         // Hint 1: To check whether the algorithm found the correct answer (i.e., an answer marked as 1 by the oracle), 
         // you can apply the oracle once more to the register after you've measured it and an ancilla qubit,

@@ -212,7 +212,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: use your implementation of Deutsch-Jozsa algorithm from task 3.1 to test
     // each of the oracles you've implemented in part I for being constant or balanced.
     @Test("QuantumSimulator")
-    operation DJ () : Unit {
+    operation T23_E2E_DJ () : Unit {
         // Hint: use Oracle_ProductFunction to implement the scalar product function oracle passed to DJ_Algorithm.
         // Since Oracle_ProductFunction takes three arguments (Qubit[], Qubit and Int[]), 
         // and the operation passed to DJ_Algorithm must take two arguments (Qubit[] and Qubit), 
@@ -224,7 +224,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Hint: use AllEqualityFactI function to assert that the return value of DJ_Algorithm operation 
         // matches the expected value (i.e. the bit vector passed to Oracle_ProductFunction).
 
-        // DJ appears in the list of unit tests for the solution; run it to verify your code.
+        // T23_E2E_DJ appears in the list of unit tests for the solution; run it to verify your code.
 
         // ...
     }
@@ -234,7 +234,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part III. Bernstein-Vazirani Algorithm
     //////////////////////////////////////////////////////////////////    
     
-    // Task 3.2. Bernstein-Vazirani algorithm implementation
+    // Task 3.1. Bernstein-Vazirani algorithm implementation
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
@@ -260,19 +260,19 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     }
     
     
-    // Task 3.3. Testing Bernstein-Vazirani algorithm
+    // Task 3.2. Testing Bernstein-Vazirani algorithm
     // Goal: use your implementation of Bernstein-Vazirani algorithm from task 2.2 to figure out
     // what bit vector the scalar product function oracle from task 1.5 was using.
     // As a reminder, this oracle creates an operation f(x) = Σᵢ 𝑟ᵢ 𝑥ᵢ modulo 2 for a given bit vector r,
     // and Bernstein-Vazirani algorithm recovers that bit vector given the operation.
     @Test("QuantumSimulator")
-    operation BV () : Unit {
+    operation T32_E2E_BV () : Unit {
         // Hint: you will need to use partial application to test oracles such as Oracle_Kth_Qubit and Oracle_ProductFunction;
         // see task 2.3 for a description of how to do that.
 
         // Hint: use the Fact function to assert that the return value of DJ_Algorithm operation matches the expected value
 
-        // BV appears in the list of unit tests for the solution; run it to verify your code.
+        // T32_E2E_BV appears in the list of unit tests for the solution; run it to verify your code.
 
         // ...
     }
