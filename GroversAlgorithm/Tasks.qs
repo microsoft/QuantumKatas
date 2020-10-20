@@ -135,24 +135,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Note: This operation implements operator 2|0...0⟩⟨0...0| - I.
     operation ConditionalPhaseFlip (register : Qubit[]) : Unit is Adj {
     
-        // Hint 1: Note that quantum states are defined up to a global phase. 
+        // Hint 1: Note that quantum states are defined up to a global phase.
         // Thus the state obtained as a result of this operation is the same
         // as the state obtained by flipping the sign of only the |0...0⟩ state.
-        // It is fine if this implementation is used for Grover's search algorithm itself, since the 
-        // global phase will remain global and not be observable. Note that if you choose to implement
-        // the operation with a different global phase, it can have side effects when used as part of other algorithms;
-        // See an extended discussion in this Quantum Computing SE question.
-        // Link : https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
-        // However, the effect of extra global phase introduced in the circuit can be nullified by adding back
-        // global phase of  −1  back to the circuit.
-        
+        // It doesn't matter for Grover's search algorithm itself, since the global phase 
+        // is not observable, but can have side effects when used as part of other algorithms.
+        // See the discussion in https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
             
         // Hint 2: You can use the same trick as in the oracle converter task.
-        // Alternatively, consider the Controlled Z gate, applied with most of the qubits as control and the last qubit as target.
+        // Alternatively, consider using the multi-controlled Z gate.
         
-        // Hint 3: Use an R operation to correct the global phase.
-        // (https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.r).
-            
         // ...
     }
     
