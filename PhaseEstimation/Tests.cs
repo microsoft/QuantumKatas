@@ -35,7 +35,7 @@ namespace T13
         }
 
         [Fact]
-        public void T13_AssertIsEigenstate_Test()
+        public void T13_AssertIsEigenstate()
         {
             using (var sim = new CounterSimulator())
             {

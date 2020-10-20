@@ -57,7 +57,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation PhaseOracle_Zero_Reference (x : Qubit[]) : Unit is Adj {
         // Since f(x) = 0 for all values of x, Uf|y⟩ = |y⟩.
         // This means that the operation doesn't need to do any transformation to the inputs.
-        // Build the project and run the tests to see that T01_Oracle_Zero_Test test passes.
+        // Build the project and run the tests to see that T01_Oracle_Zero test passes.
     }
 
 
