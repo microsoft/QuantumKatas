@@ -42,7 +42,7 @@ namespace Quantum.Kata.Measurements {
         // equals One - either directly or using library function IsResultOne.
         //
         // Replace the returned expression with (M(q) == One).
-        // Then rebuild the project and rerun the tests - T101_IsQubitOne_Test should now pass!
+        // Then rebuild the project and rerun the tests - T101_IsQubitOne should now pass!
 
         return false;
     }

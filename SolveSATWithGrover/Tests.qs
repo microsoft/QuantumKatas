@@ -70,7 +70,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T11_Oracle_And_Test () : Unit {
+    operation T11_Oracle_And () : Unit {
         AssertOracleImplementsFunction(2, Oracle_And, And);
 
         let testOp = QubitArrayWrapperOperation(Oracle_And, _);
@@ -85,7 +85,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T12_Oracle_Or_Test () : Unit {
+    operation T12_Oracle_Or () : Unit {
         AssertOracleImplementsFunction(2, Oracle_Or, Or);
 
         let testOp = QubitArrayWrapperOperation(Oracle_Or, _);
@@ -100,7 +100,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T13_Oracle_Xor_Test () : Unit {
+    operation T13_Oracle_Xor () : Unit {
         AssertOracleImplementsFunction(2, Oracle_Xor, Xor);
 
         let testOp = QubitArrayWrapperOperation(Oracle_Xor, _);
@@ -120,7 +120,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T14_Oracle_AlternatingBits_Test () : Unit {
+    operation T14_Oracle_AlternatingBits () : Unit {
         let testOp = QubitArrayWrapperOperation(Oracle_AlternatingBits, _);
         let refOp = QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _);
 
@@ -191,7 +191,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T15_Oracle_SATClause_Test () : Unit {
+    operation T15_Oracle_SATClause () : Unit {
         for (i in 1..10) {
             let nVar = DrawRandomInt(3, 7);
             let clause = Generate_SAT_Clause(nVar, i);
@@ -219,18 +219,17 @@ namespace Quantum.Kata.GroversAlgorithm {
         return true;
     }
 
-    operation Generate_SAT_Instance (nTerms : Int) : (Int, (Int, Bool)[][]) {
-        let nVar = DrawRandomInt(3, 7);
-        let nClause = DrawRandomInt(1, 2 * nVar);
+    operation GenerateSATInstance (nVar : Int, nClause : Int, nTerms : Int) : (Int, Bool)[][] {
         mutable problem = new (Int, Bool)[][nClause];
 
         for (j in 0..nClause-1) {
             set problem w/= j <- Generate_SAT_Clause(nVar, nTerms);
         }
-        return (nVar, problem);
+        return problem;
     }
 
-    operation Run2SATTests (oracle : ((Qubit[], Qubit, (Int, Bool)[][]) => Unit is Adj)) : Unit {
+
+    operation RunCrossTests (oracle : ((Qubit[], Qubit, (Int, Bool)[][]) => Unit is Adj)) : Unit {
         // Cross-tests:
         // OR oracle
         Message($"Testing 2-SAT instance (2, {SATInstanceAsString([[(0, true), (1, true)]])})...");
@@ -249,30 +248,17 @@ namespace Quantum.Kata.GroversAlgorithm {
         AssertOperationsEqualReferenced(4,
             QubitArrayWrapperOperation(oracle(_, _, [[(1, false), (2, false)], [(0, true), (1, true)], [(1, false), (0, false)], [(2, true), (1, true)]]), _),
             QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _));
-
-        // Standalone tests
-        for (i in 1..8) {
-            let (nVar, problem) = Generate_SAT_Instance(2);
-            Message($"Testing 2-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
-
-            AssertOracleImplementsFunction(nVar, oracle(_, _, problem), F_SAT(_, problem));
-
-            AssertOperationsEqualReferenced(nVar + 1,
-                QubitArrayWrapperOperation(oracle(_, _, problem), _),
-                QubitArrayWrapperOperation(Oracle_SAT_Reference(_, _, problem), _)
-            );
-        }
     }
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T16_Oracle_SAT_Test () : Unit {
+    operation T16_Oracle_SAT () : Unit {
         // General SAT oracle should be able to implement all 2SAT problems
-        Run2SATTests(Oracle_SAT);
+        RunCrossTests(Oracle_SAT);
 
-        // General SAT instances
-        for (i in 1..5) {
-            let (nVar, problem) = Generate_SAT_Instance(-1);
+        // General SAT instances for 3..6 variables
+        for (nVar in 3 .. 6) {
+            let problem = GenerateSATInstance(nVar, nVar - 1, -1);
             Message($"Testing k-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, Oracle_SAT(_, _, problem), F_SAT(_, problem));
@@ -301,7 +287,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T21_Oracle_Exactly1One_Test () : Unit {
+    operation T21_Oracle_Exactly1One () : Unit {
         AssertOracleImplementsFunction(3, Oracle_Exactly1One, F_Exactly1One);
 
         let testOp = QubitArrayWrapperOperation(Oracle_Exactly1One, _);
@@ -334,10 +320,10 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T22_Oracle_Exactly1SAT_Test () : Unit {
-        // General SAT instances
-        for (i in 1..10) {
-            let (nVar, problem) = Generate_SAT_Instance(3);
+    operation T22_Oracle_Exactly1SAT () : Unit {
+        // General SAT instances for 2..6 variables
+        for (nVar in 2..6) { 
+            let problem = GenerateSATInstance(nVar, nVar - 1, 3);
             Message($"Testing exactly-1 3-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
             AssertOracleImplementsFunction(nVar, Oracle_Exactly1_3SAT(_, _, problem), F_Exactly1_SAT(_, problem));
@@ -364,7 +350,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     @Test("QuantumSimulator")
-    operation T32_UniversalGroversAlgorithm_Test () : Unit {
+    operation T32_UniversalGroversAlgorithm () : Unit {
         // AND: 1 solution/4
         RunGroverOnOneInstance(2, [[(0, true)], [(1, true)]]);
 
