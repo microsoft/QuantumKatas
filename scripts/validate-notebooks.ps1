@@ -83,11 +83,8 @@ function Validate {
             </configuration>
         " | Out-File ./NuGet.Config -Encoding utf8
 
-        # See the explaination for excluding tasks in Contribution guide at https://github.com/microsoft/QuantumKatas/blob/main/.github/CONTRIBUTING.md/#L93
-        # multicell_solution : These tasks require implementing two code cells at once before running the test, so the first of the cells implemented is guaranteed to fail.
-        # randomized_solution : Tasks for which the correct solution fails with relatively high probability.
-        # timeout : Tasks for which the correct solution times out with relatively high probability.
-        # invalid_code : Tasks with deliberately invalid code
+        # See the explanation for excluding individual tasks in Contribution guide at 
+        # https://github.com/microsoft/QuantumKatas/blob/main/.github/CONTRIBUTING.md#excluding-individual-tasks-from-validation
         $exclude_from_validation = "['multicell_solution', 'randomized_solution', 'timeout', 'invalid_code', 'work_in_progress']"
 
         # Run Jupyter nbconvert to execute the kata.
@@ -103,7 +100,7 @@ function Validate {
         }
         $ErrorActionPreference = 'Stop'
 
-        # if jupyter returns an error code, report that this notebook is invalid:
+        # if Jupyter returns an error code, report that this notebook is invalid:
         if ($LastExitCode -ne 0) {
             Write-Host "##vso[task.logissue type=error;]Validation errors for $Notebook ."        
             $script:all_ok = $false
@@ -122,8 +119,7 @@ function Validate {
 # List of Notebooks that can't be validated for various reasons:
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
-#  * RandomNumberGenerationTutorial have tasks to generate random numbers but if it is run a lot of times then randomly generated numbers will look insufficiently random
-#
+#  * RandomNumberGenerationTutorial have tasks to generate random numbers but sometimes these numbers will look insufficiently random and fail validation.
 $not_ready = 
 @(
     'Check.ipynb',
