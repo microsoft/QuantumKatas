@@ -213,6 +213,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // This task is not covered by a test and allows you to experiment with running the algorithm.
     //
     // If you want to learn Grover's algorithm itself, try doing the GroversAlgorithm kata first.
+    @Test("QuantumSimulator")
     operation T31_E2E_GroversAlgorithm () : Unit {
 
         // Hint: Experiment with SAT instances with different number of solutions and the number of algorithm iterations 
