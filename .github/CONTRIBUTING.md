@@ -5,18 +5,15 @@ We're so glad you asked!
 **Table of Contents**
 
 * [Reporting Bugs](#reporting-bugs)
-
 * [Improving Documentation](#improving-documentation)
-
 * [Contributing Code](#contributing-code)
    * [Improving existing katas](#improving-existing-katas)
    * [Contributing new katas](#contributing-new-katas)
    * [Style guide](#style-guide)
    * [Updating the Katas to the new QDK version](#updating-the-Katas-to-the-new-QDK-version)
    * [Validating your changes](#validating-your-changes)
-
+      * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
 * [Contributor License Agreement](#contributor-license-agreement)
-
 * [Code of Conduct](#code-of-conduct)
 
 ## Reporting Bugs
@@ -90,7 +87,6 @@ Updating the Katas to a different QDK version can be done using PowerShell scrip
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
 
-
 ### Validating your changes
 
 When you contribute any code to the Katas, you need to validate that everything works the way it is supposed to work. Here are the key points to check (they might or might not be applicable to your change, depending on what you modified):
@@ -120,6 +116,21 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
 
 3. **Continuous integration**  
    When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.
+
+#### Excluding individual tasks from validation
+
+Currently some tasks are excluded from validation performed as part of continuous integration done by the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script.
+This can happen for several reasons: 
+ - Some tasks require implementing several code cells at once before running the test, so the first of the cells implemented is guaranteed to fail the associated test (`multicell_solution`).
+ - For some tasks the correct solution is randomize and fails (`randomized_solution`) or times out (`timeout`) with relatively high probability.
+ - Some code cells contain deliberately invalid code (`invalid_code`) that the learner is supposed to fix.
+
+> Currently all tags are excluded from validation in the same way: the corresponding cells are not executed when the notebook is validated.
+> The different tags are introduced as a form of documenting the reasons for excluding the tasks.
+> If there is a new reason, you can update the `exclude_from_validation` set of tags in the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script and add an explanation for the new tag in this contribution guide.
+
+To exclude a task from validation, open the corresponding Jupyter notebook and choose ```View -> Cell Toolbar -> Tags``` to see and edit the tags for each cell. Add the tag that is the most fitting description of the failure cause to the cell. 
+After you are done with editing the notebook, choose ```View -> Cell Toolbar -> None``` to turn off tags editing view for the subsequent users of this notebook. Finally, save the notebook.
 
 
 ## Contributor License Agreement

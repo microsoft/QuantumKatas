@@ -138,9 +138,13 @@ namespace Quantum.Kata.GroversAlgorithm {
         // Hint 1: Note that quantum states are defined up to a global phase.
         // Thus the state obtained as a result of this operation is the same
         // as the state obtained by flipping the sign of only the |0...0⟩ state.
+        // It doesn't matter for Grover's search algorithm itself, since the global phase 
+        // is not observable, but can have side effects when used as part of other algorithms.
+        // See the discussion in https://quantumcomputing.stackexchange.com/questions/5973/counting-in-q-number-of-solutions/6446#6446
             
         // Hint 2: You can use the same trick as in the oracle converter task.
-            
+        // Alternatively, consider using the multi-controlled Z gate.
+        
         // ...
     }
     
@@ -186,7 +190,8 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Goal: Use your implementation of Grover's algorithm from task 3.1 and the oracles from part 1
     //       to find the marked elements of the search space.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
-    operation E2E_GroversSearch_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T32_E2E_GroversSearch () : Unit {
 
         // Hint 1: To check whether the algorithm found the correct answer (i.e., an answer marked as 1 by the oracle), 
         // you can apply the oracle once more to the register after you've measured it and an ancilla qubit,

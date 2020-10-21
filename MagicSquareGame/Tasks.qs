@@ -6,6 +6,7 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Diagnostics;
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
@@ -243,7 +244,8 @@ namespace Quantum.Kata.MagicSquareGame {
     // Goal:
     //    Use your classical and quantum magic square strategies from tasks 1.3 and 2.6 to
     //    verify their probabilities of winning. Can you make the classical strategy lose?
-    operation MagicSquare_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T31_MagicSquare () : Unit {
         // Hint: You will need to use partial application to use your quantum strategies from task
         // 2.6 with PlayQuantumMagicSquare from task 2.7.
 
@@ -252,7 +254,7 @@ namespace Quantum.Kata.MagicSquareGame {
         // Hint: Use the DrawMagicSquare function in Tests.qs to see what the magic square looks
         // like after Alice and Bob make their moves.
 
-        // MagicSquare_Test appears in the list of unit tests for the solution; run it to verify
+        // T31_MagicSquare appears in the list of unit tests for the solution; run it to verify
         // your code.
 
         // ...

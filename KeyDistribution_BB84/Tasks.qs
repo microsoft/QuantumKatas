@@ -202,8 +202,9 @@ namespace Quantum.Kata.KeyDistribution {
     //       and following the comments in the operation template.
     // 
     // This is an open-ended task and is not covered by a test; 
-    // you can run T26_BB84Protocol_Test to run your code.
-    operation T26_BB84Protocol_Test () : Unit {
+    // you can run T26_BB84Protocol to run your code.
+    @Test("QuantumSimulator")
+    operation T26_BB84Protocol () : Unit {
         // 1. Alice chooses a random set of bits to encode in her qubits 
         //    and a random set of bases to prepare her qubits in.
         // ...
@@ -267,8 +268,9 @@ namespace Quantum.Kata.KeyDistribution {
     // Note that now we should be able to detect Eve and therefore we have to discard some of our key bits!
     //
     // This is an open-ended task and is not covered by a test; 
-    // you can run T32_BB84ProtocolWithEavesdropper_Test to run your code.
-    operation T32_BB84ProtocolWithEavesdropper_Test () : Unit {
+    // you can run T32_BB84ProtocolWithEavesdropper to run your code.
+    @Test("QuantumSimulator")
+    operation T32_BB84ProtocolWithEavesdropper () : Unit {
         // ...
     }
 }
