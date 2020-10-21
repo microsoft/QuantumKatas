@@ -13,15 +13,15 @@ namespace Quantum.Kata.TruthTables {
     // integers.  We use the bits in the binary integer representation
     // as truth values in the truth table of the Boolean function.
 
-    // Formally, a Boolean function is a function f(x) : {0,1}ⁿ → {0,1}
+    // Formally, a Boolean function is a function f(x) : {0, 1}ⁿ → {0, 1}
     // that takes an n-bit input, called input assignment, and produces
     // a 1-bit output, called function value or truth value.
     
     // We can think of an n-variable Boolean function as an integer with at
     // least 2ⁿ binary digits.  Each digit represents the truth value for
-    // each of the 2ⁿ input assignments.  The least-significant bit represents 
+    // each of the 2ⁿ input assignments.  The least significant bit represents 
     // the assignment 00...00, the next one - 00...01, and so on, and 
-    // the most-significant bit represents 11...11.
+    // the most significant bit represents 11...11.
 
     // In Q# we can use the 0b prefix to specify integers in binary notation,
     // which is useful when describing the truth table of a Boolean function.
@@ -45,16 +45,15 @@ namespace Quantum.Kata.TruthTables {
     // Task 1. Projective functions (elementary variables)
     //
     // Goal: Describe the three projective functions x₁, x₂, x₃ represented by integers.
-    // They are 3 input functions i.e. f(x₃,x₂,x₁) : {0,1}³ → {0,1}
+    //       Each of them is a 3-input function, i.e., f(x₃, x₂, x₁) : {0, 1}³ → {0, 1}.
     //
-    // Note : We use following the convention:
-    // x₁ is the least-significant input.
-    // x₂ is the second least-significant input.
-    // x₃ is the most-significant input.
+    // We use the following convention:
+    // x₁ is the least significant input.
+    // x₃ is the most significant input.
     //
-    // Example: The function x₁ (least-significant input) is given as an
-    //          example.  The function is true for assignments 001, 011, 101,
-    //          and 111 since x₁=1 for all these assignments.
+    // Example: The function x₁ (least significant input) is given as an example.
+    //          The function is true for assignments 001, 011, 101, and 111,
+    //          since for all these assignments their least significant bit x₁ = 1.
     function ProjectiveTruthTables () : (TruthTable, TruthTable, TruthTable) {
         let x1 = TruthTable(0b10101010, 3);
         let x2 = TruthTable(0, 0);           // Update the value of x₂ ...
