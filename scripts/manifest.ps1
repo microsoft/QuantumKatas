@@ -17,7 +17,7 @@ param(
 
 & "$PSScriptRoot/set-env.ps1"
 
-@{
+$artifacts = @{
     Packages = @(
         "Microsoft.Quantum.Katas"
     ) | ForEach-Object { Join-Path $Env:NUGET_OUTDIR "$_.$Env:NUGET_VERSION.nupkg" };
