@@ -2,7 +2,7 @@
 
 The Quantum Katas are a collection of self-paced tutorials and programming exercises to help you learn quantum computing and Q# programming.
 
-Each kata is a separate project that includes:
+Each kata is a separate set of exercises that includes:
 
 * A sequence of tasks progressing from easy to hard.
   Each task requires you to fill in some code. The first task might require just one line, and the last one might require rather complicated code.
@@ -16,8 +16,6 @@ The Quantum Katas also include *tutorials* that introduce the learner to the bas
 ## Table of contents ##
 
 * [Learning path](#learning-path)
-* [List of tutorials](#tutorial-topics)
-* [List of katas](#kata-topics)
 * [Run the katas and tutorials online](#run-online)
 * [Run the katas locally](#kata-locally)
   * [Quantum Development Kit installation](#install)
