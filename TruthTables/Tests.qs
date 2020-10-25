@@ -29,6 +29,18 @@ namespace Quantum.Kata.TruthTables {
     }
 
     @Test("QuantumSimulator")
+    operation T2_ExactlyOneBitTrueForThreeInputs () : Unit {
+        let f = ExactlyOneBitTrueForThreeInputs();
+        EqualityFactTT(f, TruthTable(0b00010110, 3), "f(x₁, x₂, x₃)");
+    }
+
+    @Test("QuantumSimulator")
+    operation T3_ExactlyTwoBitsTrueForThreeInputs () : Unit {
+        let f = ExactlyTwoBitsTrueForThreeInputs();
+        EqualityFactTT(f, TruthTable(0b01101000, 3), "f(x₁, x₂, x₃)");
+    }
+
+    @Test("QuantumSimulator")
     operation T2_TTAnd () : Unit {
         let (x1, x2, x3) = ProjectiveTruthTables_Reference();
         EqualityFactTT(TTAnd(x1, x2), TruthTable(0b10001000, 3), "x₁ ∧ x₂");
