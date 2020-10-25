@@ -62,6 +62,27 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
+    // Task 2. Projective function for 3-bit input function if exactly 1 bit out of x₁, x₂ or x₃ is true
+    //
+    // Goal : Describe a 3-input projective function f(x₁, x₂, x₃) which is true if exactly 1 bit out of x₁, x₂ or x₃ is true.
+    // We use the following convention:
+    // x₁ is the least significant input.
+    // x₃ is the most significant input.
+    function ExactlyOneBitTrueForThreeInputs () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f
+        return f;
+    }
+
+    // Task 3. Projective function for 3-bit input function if exactly 2 bits out of x₁, x₂ or x₃ are true
+    //
+    // Goal : Describe a 3-input projective function f(x₁, x₂, x₃) which is true if exactly 2 bits out of x₁, x₂ or x₃ are true.
+    // We use the following convention:
+    // x₁ is the least significant input.
+    // x₃ is the most significant input.
+    function ExactlyTwoBitsTrueForThreeInputs () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f
+        return f;
+    }
 
     // Task 2. Compute AND of two truth tables
     //
