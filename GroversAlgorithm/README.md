@@ -6,7 +6,7 @@ It solves the problem of finding an input to a black box (oracle) that produces 
 You can [run the GroversAlgorithm kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=GroversAlgorithm%2FGroversAlgorithm.ipynb)!
 
 #### Theory
-
+[MS Learn module](https://docs.microsoft.com/en-us/learn/modules/solve-graph-coloring-problems-grovers-search/)
 * The tasks follow the explanation from *Quantum Computation and Quantum Information* by Nielsen and Chuang.
   In the 10th anniversary edition, this is section 6.1.2 on pages 248-251.
 * A different explanation of Grover's algorithm can be found in 
