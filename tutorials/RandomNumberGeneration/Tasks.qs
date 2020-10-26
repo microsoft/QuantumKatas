@@ -38,5 +38,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
         // ...
         return -1;
     }
-
+    
+    // Exercise 5.
+    operation RandomNumberInrange (min : Int, max : Int) : Int {
+        // ...
+        return -1;
+    }
 }

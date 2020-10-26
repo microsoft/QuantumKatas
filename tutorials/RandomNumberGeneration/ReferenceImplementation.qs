@@ -48,4 +48,17 @@ namespace Quantum.Kata.RandomNumberGeneration {
             return M(q) == Zero ? 0 | 1;
         }
     }
+    // Exercise 5.
+    operation RandomNumberInrange (min : Int, max : Int) : Int {
+        mutable output = 0; 
+        repeat {
+            mutable bits = new Result[0]; 
+            for (idxBit in 1..BitSizeI(max)) {
+                set bits += [RandomBit_Reference()]; 
+            }
+            set output = ResultArrayAsInt(bits);
+        } until (output <= max && output >= min);
+        return output;
+        
+    }
 }
