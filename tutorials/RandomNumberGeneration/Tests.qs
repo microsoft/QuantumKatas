@@ -154,10 +154,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
     //Exercise 5
     operation T5_RandomNumberInrange () : Unit {
         Message("Testing...");
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 1, 3, 1.8, 2.2, 1000, 200);
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 27, 312, 160.0, 180.0, 1000, 0);
         CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
-        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
-        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
-        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 1023, 461.0, 563.0, 1000, 0);
     }
 
     operation RandomNumberInrange_Wrapper (min: Int, max: Int) : Int {
@@ -165,14 +165,14 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }    
     
     operation CheckFlatDistributionRange (f : ((Int, Int) => Int), min : Int, max : Int, lowRange : Double, highRange : Double, nRuns : Int, minimumCopiesGenerated : Int) : Unit {
-        mutable counts = ConstantArray(max, 0);
+        mutable counts = ConstantArray(max+1, 0);
         mutable average = 0.0;
 
         ResetOracleCallsCount();
         for (i in 1..nRuns) {
             let val = f(min, max);
             if (val < min or val > max) {
-                fail $"Unexpected number generated. Expected values from 0 to {max - 1}, generated {val}";
+                fail $"Unexpected number generated. Expected values from {min} to {max}, generated {val}";
             }
             set average += IntAsDouble(val);
             set counts w/= val <- counts[val] + 1;
@@ -190,7 +190,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
         }
 
-        for (i in 0..max - 1) {
+        for (i in min..max) {
             if (counts[i] < minimumCopiesGenerated) {
                 fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}";
             }
