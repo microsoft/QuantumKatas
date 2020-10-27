@@ -53,7 +53,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     //open Microsoft.Quantum.Math <-- Uncomment this line for using BitSizeI()
     
     //Using Exercise 1
-    operation RandomNumberInRange_Reference (min : Int, max : Int) : Int {
+    operation RandomNumberInRange_Reference_1 (min : Int, max : Int) : Int {
         mutable output = 0; 
         repeat {
             set output = 0;
@@ -65,7 +65,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         
     }
     //Using Exercise 3
-    operation RandomNumberInRange_Reference (min : Int, max : Int) : Int {
+    operation RandomNumberInRange_Reference_2 (min : Int, max : Int) : Int {
         mutable output = 0; 
         let N = BitSizeI(max);
         repeat {
