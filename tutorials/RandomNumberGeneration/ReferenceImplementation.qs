@@ -49,14 +49,13 @@ namespace Quantum.Kata.RandomNumberGeneration {
         }
     }
     // Exercise 5.
-    operation RandomNumberInrange (min : Int, max : Int) : Int {
+    operation RandomNumberInRange_Reference (min : Int, max : Int) : Int {
         mutable output = 0; 
         repeat {
-            mutable bits = new Result[0]; 
+            set output = 0;
             for (idxBit in 1..BitSizeI(max)) {
-                set bits += [RandomBit_Reference()]; 
+                set output = output * 2 + RandomBit_Reference(); 
             }
-            set output = ResultArrayAsInt(bits);
         } until (output <= max && output >= min);
         return output;
         

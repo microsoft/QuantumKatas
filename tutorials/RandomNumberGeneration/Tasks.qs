@@ -40,7 +40,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
     
     // Exercise 5.
-    operation RandomNumberInrange (min : Int, max : Int) : Int {
+    operation RandomNumberInRange (min : Int, max : Int) : Int {
         // ...
         return -1;
     }

@@ -150,10 +150,58 @@ namespace Quantum.Kata.RandomNumberGeneration {
             }
         }
     }
+    
+    //Exercise 5
+    operation T5_RandomNumberInrange () : Unit {
+        Message("Testing...");
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
+        CheckFlatDistributionRange(RandomNumberInrange_Wrapper, 0, 3, 1.4, 1.6, 1000, 200);
+    }
 
+    operation RandomNumberInrange_Wrapper (min: Int, max: Int) : Int {
+        return RandomNumberInRange(min, max);
+    }    
+    
+    operation CheckFlatDistributionRange (f : ((Int, Int) => Int), min : Int, max : Int, lowRange : Double, highRange : Double, nRuns : Int, minimumCopiesGenerated : Int) : Unit {
+        mutable counts = ConstantArray(max, 0);
+        mutable average = 0.0;
+
+        ResetOracleCallsCount();
+        for (i in 1..nRuns) {
+            let val = f(min, max);
+            if (val < min or val > max) {
+                fail $"Unexpected number generated. Expected values from 0 to {max - 1}, generated {val}";
+            }
+            set average += IntAsDouble(val);
+            set counts w/= val <- counts[val] + 1;
+        }
+        CheckRandomCalls();
+
+        set average = average / IntAsDouble(nRuns);
+        if (average < lowRange or average > highRange) {
+            fail $"Unexpected average of generated numbers. Expected between {lowRange} and {highRange}, got {average}";
+        }
+
+        let median = FindMedian (counts, max, nRuns);
+        if (median < Floor(lowRange) or median > Ceiling(highRange)) {
+            fail $"Unexpected median of generated numbers. Expected between {Floor(lowRange)} and {Ceiling(highRange)}, got {median}.";
+
+        }
+
+        for (i in 0..max - 1) {
+            if (counts[i] < minimumCopiesGenerated) {
+                fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}";
+            }
+        }
+    }
     operation CheckRandomCalls () : Unit {
         Fact(GetOracleCallsCount(DrawRandomInt) == 0, "You are not allowed to call DrawRandomInt() in this task");
         Fact(GetOracleCallsCount(DrawRandomDouble) == 0, "You are not allowed to call DrawRandomDouble() in this task");
         ResetOracleCallsCount();
     }
+    
+    
+    
 }
