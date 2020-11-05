@@ -314,7 +314,6 @@ namespace Quantum.Kata.Measurements {
     //  - must correctly identify |+⟩ state as 1 in at least 10% of the cases.
     //
     // The state of the qubit at the end of the operation does not matter.
-    // You are allowed to use ancilla qubit(s).
     operation IsQubitPlusZeroOrInconclusiveSimpleUSD (q : Qubit) : Int {
         // ...
         return -2;
@@ -332,6 +331,7 @@ namespace Quantum.Kata.Measurements {
     //         0 or 2 if the qubit was in the |B⟩ state,
     //         0 or 1 if the qubit was in the |C⟩ state.
     // The state of the qubit at the end of the operation does not matter.
+    // You can use extra qubit(s) in your solution.
     // Note: in this task you have to succeed with probability 1, i.e., you are never allowed
     //       to give an incorrect answer.
     operation IsQubitNotInABC (q : Qubit) : Int {
