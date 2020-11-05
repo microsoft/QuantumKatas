@@ -48,31 +48,14 @@ namespace Quantum.Kata.RandomNumberGeneration {
             return M(q) == Zero ? 0 | 1;
         }
     }
+
     // Exercise 5.
-    
-    //open Microsoft.Quantum.Math <-- Uncomment this line for using BitSizeI()
-    
-    //Using Exercise 1
-    operation RandomNumberInRange_Reference_1 (min : Int, max : Int) : Int {
+    operation RandomNumberInRange_Reference (min : Int, max : Int) : Int {
+        let nBits = BitSizeI(max);
         mutable output = 0; 
         repeat {
-            set output = 0;
-            for (idxBit in 1..BitSizeI(max)) {
-                set output = output * 2 + RandomBit_Reference(); 
-            }
+            set output = RandomNBits_Reference(nBits); 
         } until (output <= max and output >= min);
         return output;
-        
-    }
-    //Using Exercise 3
-    operation RandomNumberInRange_Reference_2 (min : Int, max : Int) : Int {
-        mutable output = 0; 
-        let N = BitSizeI(max);
-        repeat {
-            set output = RandomNBits_Reference(N); 
-            
-        } until (output <= max and output >= min);
-        return output;
-        
     }
 }
