@@ -29,14 +29,14 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
-    // Task 2. Projective function for 3-bit input function if exactly 1 bit out of x₁, x₂ or x₃ is true
-    function ExactlyOneBitTrueForThreeInputs_Reference () : TruthTable {
+    // Task 2. "Exactly 1 bit is true" function
+    function ExactlyOneBitTrue_Reference () : TruthTable {
         let f = TruthTable(0b00010110, 3);
         return f;
     }
 
-    // Task 3. Projective function for 3-bit input function if exactly 2 bits out of x₁, x₂ or x₃ are true
-    function ExactlyTwoBitsTrueForThreeInputs_Reference () : TruthTable {
+    // Task 3. "Exactly 2 bits are true" function
+    function ExactlyTwoBitsTrue_Reference () : TruthTable {
         let f = TruthTable(0b01101000, 3);
         return f;
     }

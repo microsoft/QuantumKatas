@@ -62,25 +62,21 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
-    // Task 2. Projective function for 3-bit input function if exactly 1 bit out of x₁, x₂ or x₃ is true
+    // Task 2. "Exactly 1 bit is true" function
     //
-    // Goal : Describe a 3-input projective function f(x₁, x₂, x₃) which is true if exactly 1 bit out of x₁, x₂ or x₃ is true.
-    // We use the following convention:
-    // x₁ is the least significant input.
-    // x₃ is the most significant input.
-    function ExactlyOneBitTrueForThreeInputs () : TruthTable {
-        let f = TruthTable(0, 3);            // Update the value of f
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 1 bit out of x₁, x₂ or x₃ is true.
+    function ExactlyOneBitTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
         return f;
     }
 
-    // Task 3. Projective function for 3-bit input function if exactly 2 bits out of x₁, x₂ or x₃ are true
+    // Task 3. "Exactly 2 bits are true" function
     //
-    // Goal : Describe a 3-input projective function f(x₁, x₂, x₃) which is true if exactly 2 bits out of x₁, x₂ or x₃ are true.
-    // We use the following convention:
-    // x₁ is the least significant input.
-    // x₃ is the most significant input.
-    function ExactlyTwoBitsTrueForThreeInputs () : TruthTable {
-        let f = TruthTable(0, 3);            // Update the value of f
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 2 bits out of x₁, x₂ or x₃ is true.
+    function ExactlyTwoBitsTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
         return f;
     }
 
