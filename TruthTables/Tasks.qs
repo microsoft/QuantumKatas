@@ -13,15 +13,15 @@ namespace Quantum.Kata.TruthTables {
     // integers.  We use the bits in the binary integer representation
     // as truth values in the truth table of the Boolean function.
 
-    // Formally, a Boolean function is a function f(x) : {0,1}ⁿ → {0,1}
+    // Formally, a Boolean function is a function f(x) : {0, 1}ⁿ → {0, 1}
     // that takes an n-bit input, called input assignment, and produces
     // a 1-bit output, called function value or truth value.
     
     // We can think of an n-variable Boolean function as an integer with at
     // least 2ⁿ binary digits.  Each digit represents the truth value for
-    // each of the 2ⁿ input assignments.  The least-significant bit represents 
+    // each of the 2ⁿ input assignments.  The least significant bit represents 
     // the assignment 00...00, the next one - 00...01, and so on, and 
-    // the most-significant bit represents 11...11.
+    // the most significant bit represents 11...11.
 
     // In Q# we can use the 0b prefix to specify integers in binary notation,
     // which is useful when describing the truth table of a Boolean function.
@@ -44,13 +44,16 @@ namespace Quantum.Kata.TruthTables {
 
     // Task 1. Projective functions (elementary variables)
     //
-    // Goal: Describe the three projective functions x₁, x₂, x₃ as 3-input
-    //       functions, represented by integers.  Note that we follow the
-    //       convention that x₁ is the least-significant input.
+    // Goal: Describe the three projective functions x₁, x₂, x₃ represented by integers.
+    //       Each of them is a 3-input function, i.e., f(x₃, x₂, x₁) : {0, 1}³ → {0, 1}.
     //
-    // Example: The function x₁ (least-significant input) is given as an
-    //          example.  The function is true for assignments 001, 011, 101,
-    //          and 111.
+    // We use the following convention:
+    // x₁ is the least significant input.
+    // x₃ is the most significant input.
+    //
+    // Example: The function x₁ (least significant input) is given as an example.
+    //          The function is true for assignments 001, 011, 101, and 111,
+    //          since for all these assignments their least significant bit x₁ = 1.
     function ProjectiveTruthTables () : (TruthTable, TruthTable, TruthTable) {
         let x1 = TruthTable(0b10101010, 3);
         let x2 = TruthTable(0, 0);           // Update the value of x₂ ...
@@ -59,8 +62,25 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
+    // Task 2. "Exactly 1 bit is true" function
+    //
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 1 bit out of x₁, x₂ or x₃ is true.
+    function ExactlyOneBitTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
+        return f;
+    }
 
-    // Task 2. Compute AND of two truth tables
+    // Task 3. "Exactly 2 bits are true" function
+    //
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 2 bits out of x₁, x₂ or x₃ is true.
+    function ExactlyTwoBitsTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
+        return f;
+    }
+
+    // Task 4. Compute AND of two truth tables
     //
     // Goal: Compute a truth table that computes the conjunction (AND)
     //       of two truth tables.  Find a way to perform the computation
@@ -78,7 +98,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 3. Compute OR of two truth tables
+    // Task 5. Compute OR of two truth tables
     //
     // Goal: Compute a truth table that computes the disjunction (OR)
     //       of two truth tables.
@@ -87,7 +107,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 4. Compute XOR of two truth tables
+    // Task 6. Compute XOR of two truth tables
     //
     // Goal: Compute a truth table that computes the exclusive-OR (XOR)
     //       of two truth tables.
@@ -96,7 +116,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 5. Compute NOT of a truth table
+    // Task 7. Compute NOT of a truth table
     //
     // Goal: Compute a truth table that computes negation of a truth
     //       table.
@@ -108,7 +128,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 6. Build if-then-else truth table
+    // Task 8. Build if-then-else truth table
     //
     // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen | ttElse
     //       (if ttCond then ttThen else ttElse) by making use of the truth table operations
@@ -118,7 +138,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 7. Find all true input assignments in a truth table
+    // Task 9. Find all true input assignments in a truth table
     //
     // Goal: Return an array that contains all input assignments in a truth table
     //       that have a true truth value.  These input assignments are called minterms.
@@ -136,7 +156,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 8. Apply truth table as a quantum operation
+    // Task 10. Apply truth table as a quantum operation
     //
     // Goal: Apply the X operation on the target qubit, if and only if
     //       the classical state of the controls is a minterm of the truth table.

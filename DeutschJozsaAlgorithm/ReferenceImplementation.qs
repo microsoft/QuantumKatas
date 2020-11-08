@@ -28,7 +28,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Zero_Reference (x : Qubit[], y : Qubit) : Unit is Adj {
         // Since f(x) = 0 for all values of x, |y ⊕ f(x)⟩ = |y⟩.
         // This means that the operation doesn't need to do any transformation to the inputs.
-        // Build the project and run the tests to see that T01_Oracle_Zero_Test test passes.
+        // Build the project and run the tests to see that T01_Oracle_Zero test passes.
     }
     
     
@@ -177,9 +177,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      1) N qubits in |0⟩ state (query register)
     //      2) a qubit in |0⟩ state (answer register)
     // Goal:
-    //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
+    //      1) prepare an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
-    //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
+    //      2) prepare |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
     operation DJ_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit is Adj {        
         ApplyToEachA(H, query);
         X(answer);

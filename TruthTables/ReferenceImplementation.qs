@@ -29,8 +29,20 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
+    // Task 2. "Exactly 1 bit is true" function
+    function ExactlyOneBitTrue_Reference () : TruthTable {
+        let f = TruthTable(0b00010110, 3);
+        return f;
+    }
 
-    // Task 2. Compute AND of two truth tables
+    // Task 3. "Exactly 2 bits are true" function
+    function ExactlyTwoBitsTrue_Reference () : TruthTable {
+        let f = TruthTable(0b01101000, 3);
+        return f;
+    }
+
+
+    // Task 4. Compute AND of two truth tables
     function TTAnd_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -39,7 +51,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 3. Compute OR of two truth tables
+    // Task 5. Compute OR of two truth tables
     function TTOr_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -48,7 +60,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 4. Compute XOR of two truth tables
+    // Task 6. Compute XOR of two truth tables
     function TTXor_Reference(tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;
@@ -57,7 +69,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 5. Compute NOT of a truth tables
+    // Task 7. Compute NOT of a truth tables
     function TTNot_Reference(tt : TruthTable) : TruthTable {
         let (bits, numVars) = tt!;
         let mask = (1 <<< (1 <<< numVars)) - 1;
@@ -65,13 +77,13 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 6. Build if-then-else truth table
+    // Task 8. Build if-then-else truth table
     function TTIfThenElse_Reference (ttCond : TruthTable, ttThen: TruthTable, ttElse : TruthTable) : TruthTable {
         return TTXor_Reference(TTAnd_Reference(ttCond, ttThen), TTAnd_Reference(TTNot_Reference(ttCond), ttElse));
     }
 
 
-    // Task 7. Find all true input assignments in a truth table
+    // Task 9. Find all true input assignments in a truth table
     function AllMinterms_Reference (tt : TruthTable) : Int[] {
         return Mapped(
                    Fst<Int, Bool>,
@@ -83,7 +95,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 8. Apply truth table as a quantum operation
+    // Task 10. Apply truth table as a quantum operation
     operation ApplyXControlledOnFunction_Reference (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
         for (i in AllMinterms_Reference(tt)) {
             (ControlledOnInt(i, X))(controls, target);

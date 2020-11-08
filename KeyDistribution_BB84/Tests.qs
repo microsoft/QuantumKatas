@@ -14,20 +14,22 @@ namespace Quantum.Kata.KeyDistribution {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Convert;
+    open Microsoft.Quantum.Random;
     
     
     //////////////////////////////////////////////////////////////////
     // Part I. Preparation
     //////////////////////////////////////////////////////////////////
 
-    operation T11_DiagonalBasis_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T11_DiagonalBasis () : Unit {
         for (i in 1 .. 5) {
             AssertOperationsEqualReferenced(i, DiagonalBasis, DiagonalBasis_Reference);
         }
     }
 
-
-    operation T12_EqualSuperposition_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T12_EqualSuperposition () : Unit {
         using (q = Qubit()) {
             EqualSuperposition(q);
             DumpMachine();
@@ -41,7 +43,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Part II. BB84 Protocol
     //////////////////////////////////////////////////////////////////
 
-    operation T21_RandomArray_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T21_RandomArray () : Unit {
         // The test checks that the operation does not return always the same array.
         let N = 30;
         let randomArrays = ForEach(RandomArray, [N, N, N]);
@@ -62,8 +65,8 @@ namespace Quantum.Kata.KeyDistribution {
         return (RandomArray_Reference(N), RandomArray_Reference(N));
     }
 
-
-    operation T22_PrepareAlicesQubits_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T22_PrepareAlicesQubits () : Unit {
         for (N in 2 .. 10) {
             let (bases, state) = GenerateRandomState(N);
             using (qs = Qubit[N]) {
@@ -76,7 +79,8 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
-    operation T23_MeasureBobsQubits_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T23_MeasureBobsQubits () : Unit {
         for (N in 2 .. 10) {
             let (bases, state) = GenerateRandomState(N);
             using (qs = Qubit[N]) {
@@ -92,7 +96,8 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
-    operation T24_GenerateSharedKey_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T24_GenerateSharedKey () : Unit {
         for (N in 10 .. 30) {
             let basesAlice = RandomArray_Reference(N);
             let (basesBob, bitsBob) = GenerateRandomState(N);
@@ -106,7 +111,8 @@ namespace Quantum.Kata.KeyDistribution {
 
 
     // ------------------------------------------------------
-    operation T25_CheckKeysMatch_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T25_CheckKeysMatch () : Unit {
         // Hard-coded test to validate that the solution checks the right relation with error rate
         mutable key1 = ConstantArray(10, false);
         mutable key2 = key1 w/ 3 <- true;
@@ -122,7 +128,7 @@ namespace Quantum.Kata.KeyDistribution {
 
         for (i in 10 .. 30) {
             set (key1, key2) = GenerateRandomState(i);
-            set errorRate = RandomInt(50);
+            set errorRate = DrawRandomInt(0, 49);
             let expected = CheckKeysMatch_Reference(key1, key2, errorRate);
             set result = CheckKeysMatch(key1, key2, errorRate);
 
@@ -135,7 +141,8 @@ namespace Quantum.Kata.KeyDistribution {
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
 
-    operation T31_Eavesdrop_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T31_Eavesdrop () : Unit {
         using (q = Qubit()) {
             // q = 0, Real value: b = rectangular, Input: b = rectangular
             let res00 = Eavesdrop(q, false);

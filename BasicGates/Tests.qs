@@ -81,7 +81,8 @@ namespace Quantum.Kata.BasicGates {
 
 
     // ------------------------------------------------------
-    operation T101_StateFlip_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T101_StateFlip () : Unit {
         DumpDiffOnOneQubit(StateFlip, StateFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperControlled(StateFlip, _), 
                                            ArrayWrapperControlled(StateFlip_Reference, _));
@@ -89,7 +90,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T102_BasisChange_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T102_BasisChange () : Unit {
         DumpDiffOnOneQubit(BasisChange, BasisChange_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperControlled(BasisChange, _), 
                                            ArrayWrapperControlled(BasisChange_Reference, _));
@@ -97,7 +99,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T103_SignFlip_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T103_SignFlip () : Unit {
         DumpDiffOnOneQubit(SignFlip, SignFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperControlled(SignFlip, _), 
                                            ArrayWrapperControlled(SignFlip_Reference, _));
@@ -105,7 +108,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T104_AmplitudeChange_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T104_AmplitudeChange () : Unit {
         // pick one rotation angle on which to show difference between solutions
         let dumpAlpha = ((2.0 * PI()) * IntAsDouble(6)) / 36.0;
         Message($"Applying amplitude change with alpha = {dumpAlpha}");
@@ -120,7 +124,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T105_PhaseFlip_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T105_PhaseFlip () : Unit {
         DumpDiffOnOneQubit(PhaseFlip, PhaseFlip_Reference);
         AssertOperationsEqualReferenced(2, ArrayWrapperControlled(PhaseFlip, _), 
                                            ArrayWrapperControlled(PhaseFlip_Reference, _));
@@ -128,7 +133,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T106_PhaseChange_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T106_PhaseChange () : Unit {
         let dumpAlpha = ((2.0 * PI()) * IntAsDouble(10)) / 36.0;
         Message($"Applying phase change with alpha = {dumpAlpha}");
         DumpDiffOnOneQubit(PhaseChange(dumpAlpha,_), PhaseChange_Reference(dumpAlpha,_));
@@ -148,7 +154,8 @@ namespace Quantum.Kata.BasicGates {
         Ry(2.0 * ArcCos(0.6), qs[1]);
     }
 
-    operation T107_GlobalPhaseChange_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T107_GlobalPhaseChange () : Unit {
         // use the controlled version of unitaries for showing the difference, since it's hard to observe on non-controlled versions
         Message("Showing effect of controlled-GlobalPhaseChange");
         DumpDiff(2, StatePrepForControlled, 
@@ -206,21 +213,24 @@ namespace Quantum.Kata.BasicGates {
 
 
     // ------------------------------------------------------
-    operation T108_BellStateChange1_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T108_BellStateChange1 () : Unit {
         DumpDiff(2, StatePrep_BellState(_, 0), BellStateChange1, BellStateChange1_Reference);
         VerifyBellStateConversion(BellStateChange1, 0, 1);
     }
     
     
     // ------------------------------------------------------
-    operation T109_BellStateChange2_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T109_BellStateChange2 () : Unit {
         DumpDiff(2, StatePrep_BellState(_, 0), BellStateChange2, BellStateChange2_Reference);
         VerifyBellStateConversion(BellStateChange2, 0, 2);
     }
     
     
     // ------------------------------------------------------
-    operation T110_BellStateChange3_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T110_BellStateChange3 () : Unit {
         DumpDiff(2, StatePrep_BellState(_, 0), BellStateChange3, BellStateChange3_Reference);
         Message("If the desired and the actual states match but the test doesn't pass, check whether your solution introduces a global phase; it shouldn't!");
         VerifyBellStateConversion(BellStateChange3, 0, 3);
@@ -232,7 +242,8 @@ namespace Quantum.Kata.BasicGates {
         Ry(2.0 * (2.0 * PI() * 6.0) / 36.0, Head(qs));
     }
 
-    operation T201_TwoQubitGate1_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T201_TwoQubitGate1 () : Unit {
         DumpDiff(2, StatePrepRy, TwoQubitGate1, TwoQubitGate1_Reference);
 
         // Note that the way the problem is formulated, we can't just compare two unitaries,
@@ -261,7 +272,8 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T202_TwoQubitGate2_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T202_TwoQubitGate2 () : Unit {
         DumpDiff(2, ApplyToEachCA(H, _), TwoQubitGate2, TwoQubitGate2_Reference);
         using (qs = Qubit[2]) {
             within {
@@ -296,8 +308,8 @@ namespace Quantum.Kata.BasicGates {
         SWAP(qs[0], qs[1]);
     }
     
-    
-    operation T203_TwoQubitGate3_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T203_TwoQubitGate3 () : Unit {
         DumpDiff(2, StatePrepMiscAmplitudes, TwoQubitGate3, TwoQubitGate3_Reference);
         AssertOperationsEqualReferenced(2, SwapWrapper, TwoQubitGate3_Reference);
         AssertOperationsEqualReferenced(2, TwoQubitGate3, TwoQubitGate3_Reference);
@@ -305,14 +317,16 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    operation T204_ToffoliGate_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T204_ToffoliGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, ToffoliGate, ToffoliGate_Reference);
         AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
     
     
     // ------------------------------------------------------
-    operation T205_FredkinGate_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T205_FredkinGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, FredkinGate, FredkinGate_Reference);
         AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }

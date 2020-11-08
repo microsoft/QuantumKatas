@@ -51,13 +51,15 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     
     // ------------------------------------------------------
-    operation Q11_Oracle_CountBits_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation Q11_Oracle_CountBits () : Unit {
         AssertTwoOraclesAreEqual(1 .. 10, Oracle_CountBits, Oracle_CountBits_Reference);
     }
     
     
     // ------------------------------------------------------
-    operation Q12_Oracle_BitwiseRightShift_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation Q12_Oracle_BitwiseRightShift () : Unit {
         for (n in 2 .. 6) {
             AssertTwoOraclesWithOutputArrAreEqual(n, n, Oracle_BitwiseRightShift, Oracle_BitwiseRightShift_Reference);
         }
@@ -69,8 +71,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         AssertTwoOraclesAreEqual(Length(A) .. Length(A), oracle1(_, _, A), oracle2(_, _, A));
     }
     
-    
-    operation Q13_Oracle_OperatorOutput_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation Q13_Oracle_OperatorOutput () : Unit {
         // cross-tests
         // the mask for all 1's should behave the same as Oracle_CountBits
         mutable A = ConstantArray(11, 1);
@@ -114,8 +116,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         AssertOperationsEqualReferenced(inputSize + 1, sol, refSol);
     }
     
-    
-    operation Q14_Oracle_MultidimensionalOperatorOutput_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation Q14_Oracle_MultidimensionalOperatorOutput () : Unit {
         
         mutable A = [[1, 1], [0, 0]];
         AssertTwoOraclesWithIntMatrixAreEqual(A, Oracle_MultidimensionalOperatorOutput, Oracle_MultidimensionalOperatorOutput_Reference);
@@ -139,8 +141,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         AssertTwoOraclesWithDifferentOutputsAreEqual(5, Oracle_MultidimensionalOperatorOutput(_, _, [B]), Oracle_CountBits_Reference);
     }
     
-    
-    operation Q21_StatePrep_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation Q21_StatePrep () : Unit {
         for (N in 1 .. 10) {
             using (qs = Qubit[N]) {
                 // apply operation that needs to be tested

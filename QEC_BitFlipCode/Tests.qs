@@ -16,6 +16,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Bitwise;
+    open Microsoft.Quantum.Random;
     
     open Quantum.Kata.Utils;
     
@@ -107,8 +108,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         }
     }
     
-    
-    operation T01_MeasureParity_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T01_MeasureParity () : Unit {
         // test on all basis states
         for (bits in 0 .. 7) {
             let bitsStr = ToString_Bitmask(bits);
@@ -162,8 +163,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         Ry(2.0 * alpha, qs[0]);
     }
     
-    
-    operation T02_Encode_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T02_Encode () : Unit {
         for (i in 0 .. 36) {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(StatePrep_Rotate(_, alpha), Encode, Encode_Reference);
@@ -185,8 +186,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         }
     }
     
-    
-    operation T03_DetectErrorOnLeftQubit_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T03_DetectErrorOnLeftQubit () : Unit {
         using (register = Qubit[3]) {
             for (i in 0 .. 36) {
                 let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
@@ -254,8 +255,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
                 [PauliI, PauliI, PauliX]];
     }
     
-    
-    operation T04_CorrectErrorOnLeftQubit_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T04_CorrectErrorOnLeftQubit () : Unit {
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnLeftQubit);
         let errors = PauliErrors();
         
@@ -269,13 +270,14 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 05
     //////////////////////////////////////////////////////////////////////////
 
-    operation T05_DetectErrorOnAnyQubit_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T05_DetectErrorOnAnyQubit () : Unit {
         let errors = PauliErrors();
         
         using (register = Qubit[3]) {
             
             for (idxError in 0 .. Length(errors) - 1) {
-                let θ = RandomReal(12);
+                let θ = DrawRandomDouble(0.0, 1.0);
                 let statePrep = BoundCA([H, Rz(θ, _)]);
                 mutable errorStr = "no error";
                 if (idxError > 0) {
@@ -300,7 +302,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 06
     //////////////////////////////////////////////////////////////////////////
 
-    operation T06_CorrectErrorOnAnyQubit_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T06_CorrectErrorOnAnyQubit () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnAnyQubit);
         let errors = PauliErrors();
@@ -316,7 +319,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 07
     //////////////////////////////////////////////////////////////////////////
 
-    operation T07_LogicalX_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T07_LogicalX () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalX, CorrectErrorOnAnyQubit_Reference);
         let errors = PauliErrors();
@@ -332,7 +336,8 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 08
     //////////////////////////////////////////////////////////////////////////
 
-    operation T08_LogicalZ_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T08_LogicalZ () : Unit {
         
         let partialBind = BindErrorCorrectionRound(Encode_Reference, _, LogicalZ, CorrectErrorOnAnyQubit_Reference);
         let errors = PauliErrors();

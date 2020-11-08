@@ -15,7 +15,8 @@ namespace Quantum.Kata.Teleportation {
     
     
     // ------------------------------------------------------
-    operation T11_Entangle_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T11_Entangle () : Unit {
         using ((q0, q1) = (Qubit(), Qubit())) {
             // Apply operation that needs to be tested
             Entangle(q0, q1);
@@ -123,7 +124,8 @@ namespace Quantum.Kata.Teleportation {
     
     // Test the 'SendMessage' operation by using it as one part of full teleportation,
     // taking reference implementation for the other parts.
-    operation T12_SendMessage_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T12_SendMessage () : Unit {
         let teleport = ComposeTeleportation(StatePrep_BellState(_, _, 0), SendMessage, ReconstructMessage_Reference, _, _, _);
         TeleportTestLoop(teleport);
     }
@@ -131,14 +133,16 @@ namespace Quantum.Kata.Teleportation {
     
     // Test the 'ReconstructMessage' operation by using it as one part of full teleportation,
     // taking reference implementation for the other parts.
-    operation T13_ReconstructMessage_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T13_ReconstructMessage () : Unit {
         let teleport = ComposeTeleportation(StatePrep_BellState(_, _, 0), SendMessage_Reference, ReconstructMessage, _, _, _);
         TeleportTestLoop(teleport);
     }
     
     
     // Test the full Teleport operation
-    operation T14_StandardTeleport_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T14_StandardTeleport () : Unit {
         TeleportTestLoop(StandardTeleport);
     }
     
@@ -175,40 +179,44 @@ namespace Quantum.Kata.Teleportation {
     
     // Test the 'PrepareAndSendMessage' operation by using it as one part of full teleportation,
     // taking reference implementation for the other parts.
-    operation T15_PrepareAndSendMessage_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T15_PrepareAndSendMessage () : Unit {
         TeleportPreparedStateTestLoop(PrepareAndSendMessage, ReconstructAndMeasureMessage_Reference);
     }
     
     
     // Test the 'ReconstructAndMeasureMessage' operation by using it as one part of full teleportation,
     // taking reference implementation for the other parts.
-    operation T16_ReconstructAndMeasureMessage_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T16_ReconstructAndMeasureMessage () : Unit {
         TeleportPreparedStateTestLoop(PrepareAndSendMessage_Reference, ReconstructAndMeasureMessage);
     }
     
     
     // ------------------------------------------------------
     // Test variations of the teleport protocol using different state prep procedures
-    operation T21_ReconstructMessage_PhiMinus_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T21_ReconstructMessage_PhiMinus () : Unit {
         let teleport = ComposeTeleportation(StatePrep_BellState(_, _, 1), SendMessage_Reference, ReconstructMessage_PhiMinus, _, _, _);
         TeleportTestLoop(teleport);
     }
     
-    
-    operation T22_ReconstructMessage_PsiPlus_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T22_ReconstructMessage_PsiPlus () : Unit {
         let teleport = ComposeTeleportation(StatePrep_BellState(_, _, 2), SendMessage_Reference, ReconstructMessage_PsiPlus, _, _, _);
         TeleportTestLoop(teleport);
     }
     
-    
-    operation T23_ReconstructMessage_PsiMinus_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T23_ReconstructMessage_PsiMinus () : Unit {
         let teleport = ComposeTeleportation(StatePrep_BellState(_, _, 3), SendMessage_Reference, ReconstructMessage_PsiMinus, _, _, _);
         TeleportTestLoop(teleport);
     }
     
     
     // ------------------------------------------------------
-    operation T31_MeasurementFreeTeleport_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T31_MeasurementFreeTeleport () : Unit {
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;
         
@@ -228,7 +236,8 @@ namespace Quantum.Kata.Teleportation {
     
     
     // ------------------------------------------------------
-    operation T41_EntangleThreeQubits_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T41_EntangleThreeQubits () : Unit {
         
         using ((qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit())) {
             // Apply operation that needs to be tested
@@ -242,8 +251,8 @@ namespace Quantum.Kata.Teleportation {
         }
     }
     
-    
-    operation T42_ReconstructMessageWhenThreeEntangledQubits_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T42_ReconstructMessageWhenThreeEntangledQubits () : Unit {
         
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;

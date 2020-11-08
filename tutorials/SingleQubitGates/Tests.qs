@@ -47,32 +47,38 @@ namespace Quantum.Kata.SingleQubitGates {
     }
 
     // Exercise 1.
-    operation T1_ApplyY_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T1_ApplyY () : Unit {
         AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(ApplyY, _), ControlledArrayWrapperOperation(Y, _));
     }
 
     // Exercise 2.
-    operation T2_GlobalPhaseI_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T2_GlobalPhaseI () : Unit {
         AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(GlobalPhaseI, _), ControlledArrayWrapperOperation(GlobalPhaseI_Reference, _));
     }
 
     // Exercise 3.
-    operation T3_SignFlipOnZero_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T3_SignFlipOnZero () : Unit {
         AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(SignFlipOnZero, _), ControlledArrayWrapperOperation(SignFlipOnZero_Reference, _));
     }
 
     // Exercise 4.
-    operation T4_PrepareMinus_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T4_PrepareMinus () : Unit {
         AssertEqualOnZeroState(PrepareMinus, PrepareMinus_Reference);
     }
 
     // Exercise 5.
-    operation T5_ThreeQuatersPiPhase_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T5_ThreeQuatersPiPhase () : Unit {
         AssertOperationsEqualReferenced(2, ControlledArrayWrapperOperation(ThreeQuatersPiPhase, _), ControlledArrayWrapperOperation(ThreeQuatersPiPhase_Reference, _));
     }
 
     // Exercise 6.
-    operation T6_PrepareRotatedState_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T6_PrepareRotatedState () : Unit {
         for (i in 0 .. 10) {
             AssertEqualOnZeroState(PrepareRotatedState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _),  
                                    PrepareRotatedState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _));
@@ -80,7 +86,8 @@ namespace Quantum.Kata.SingleQubitGates {
     }
 
     // Exercise 7.
-    operation T7_PrepareArbitraryState_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T7_PrepareArbitraryState () : Unit {
         for (i in 0 .. 10) {
             for (j in 0 .. 10) {
                 AssertEqualOnZeroState(PrepareArbitraryState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _), 

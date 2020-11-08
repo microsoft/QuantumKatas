@@ -39,7 +39,7 @@ namespace Quantum.Kata.Superposition {
     operation PlusState (q : Qubit) : Unit {
         // Hadamard gate H will convert |0⟩ state to |+⟩ state.
         // Type the following: H(q);
-        // Then rebuild the project and rerun the tests - T01_PlusState_Test should now pass!
+        // Then rebuild the project and rerun the tests - T01_PlusState should now pass!
 
         // ...
     }
@@ -195,6 +195,23 @@ namespace Quantum.Kata.Superposition {
     //          the state you need to prepare is (|010⟩ + |100⟩ + |001⟩ + |110⟩) / 2.
     operation FourBitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         // Hint: remember that you can allocate extra qubits.
+
+        // ...
+    }
+
+
+    // Task 1.14. Superposition of all bit strings of the given parity
+    // Inputs:
+    //      1) N qubits in |0..0⟩ state (stored in an array of length N).
+    //      2) An int "parity".
+    // Goal: change the state to an equal superposition of all basis states that have
+    //       an even number of 1s in them if "parity" = 0, or
+    //       an odd number of 1s in them if "parity" = 1.
+    // Example: for N = 2, the goal state would be (|00⟩ + |11⟩) / sqrt(2) if "parity" = 0,
+    //       and (|01⟩ + |10⟩) / sqrt(2) if "parity" = 1.
+    operation AllStatesWithParitySuperposition (qs : Qubit[], parity : Int) : Unit {
+        // Hint: remember that you can call the solution recursively.
+        //       You are allowed to modify the signature of the method to include adjoint and/or controlled variants.
 
         // ...
     }
