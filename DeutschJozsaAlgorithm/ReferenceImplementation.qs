@@ -135,7 +135,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             CNOT(q, y);
         }
             
-        // add check for prefix as a multicontrolled NOT
+        // add check for prefix as a multi-controlled NOT
         // true bits of r correspond to 1-controls, false bits - to 0-controls
         within {
             for (i in 0 .. P - 1) {
@@ -165,14 +165,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         CCNOT(x[0], x[1], y);
         CCNOT(x[0], x[2], y);
         CCNOT(x[1], x[2], y);
-    }
+    }  
     
-    
+
     //////////////////////////////////////////////////////////////////
-    // Part II. Bernstein-Vazirani Algorithm
+    // Part II. Deutsch-Jozsa Algorithm
     //////////////////////////////////////////////////////////////////
-    
-    // Task 2.1. State preparation for Bernstein-Vazirani algorithm
+
+    // Task 2.1. State preparation for Deutsch-Jozsa (or Bernstein-Vazirani) algorithm
     // Inputs:
     //      1) N qubits in |0⟩ state (query register)
     //      2) a qubit in |0⟩ state (answer register)
@@ -180,14 +180,66 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      1) create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩ on query register
     //         (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) )
     //      2) create |-⟩ state (|-⟩ = (|0⟩ - |1⟩) / sqrt(2)) on answer register
-    operation BV_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit is Adj {        
+    operation DJ_StatePrep_Reference (query : Qubit[], answer : Qubit) : Unit is Adj {        
         ApplyToEachA(H, query);
         X(answer);
         H(answer);
     }
     
+    // Task 2.2. Deutsch-Jozsa algorithm implementation
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
+    //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
+    // You are guaranteed that the function f implemented by the oracle is either
+    // constant (returns 0 on all inputs or 1 on all inputs) or
+    // balanced (returns 0 on exactly one half of the input domain and 1 on the other half).
+    // Output:
+    //      true if the function f is constant
+    //      false if the function f is balanced
     
-    // Task 2.2. Bernstein-Vazirani algorithm implementation
+    // Note: a trivial approach is to call the oracle multiple times:
+    //       if the values for more than half of the possible inputs are the same, the function is constant.
+    // Quantum computing allows to perform this task in just one call to the oracle; try to implement this algorithm.
+    operation DJ_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Bool {
+        
+        // Declare variable in which the result will be accumulated;
+        // this variable has to be mutable to allow updating it.
+        mutable isConstantFunction = true;
+    
+        // allocate N qubits for input register and 1 qubit for output
+        using ((x, y) = (Qubit[N], Qubit())) {
+            
+            // prepare qubits in the right state
+            DJ_StatePrep_Reference(x, y);
+            
+            // apply oracle
+            Uf(x, y);
+            
+            // apply Hadamard to each qubit of the input register
+            ApplyToEach(H, x);
+            
+            // measure all qubits of the input register;
+            // the result of each measurement is converted to an Int
+            for (i in 0 .. N - 1) {
+                if (M(x[i]) != Zero) {
+                    set isConstantFunction = false;
+                }
+            }
+            
+            // before releasing the qubits make sure they are all in |0⟩ state
+            Reset(y);
+        }
+
+        return isConstantFunction;
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Bernstein-Vazirani Algorithm
+    //////////////////////////////////////////////////////////////////  
+    
+    // Task 3.1. Bernstein-Vazirani algorithm implementation
     // Inputs:
     //      1) the number of qubits in the input register N for the function f
     //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
@@ -207,7 +259,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         using ((x, y) = (Qubit[N], Qubit())) {
             
             // prepare qubits in the right state
-            BV_StatePrep_Reference(x, y);
+            DJ_StatePrep_Reference(x, y);
             
             // apply oracle
             Uf(x, y);
@@ -228,46 +280,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             Reset(y);
             return r;
         }
-    }
-    
-    
-    //////////////////////////////////////////////////////////////////
-    // Part III. Deutsch-Jozsa Algorithm
-    //////////////////////////////////////////////////////////////////
-    
-    // Task 3.1. Deutsch-Jozsa algorithm implementation
-    // Inputs:
-    //      1) the number of qubits in the input register N for the function f
-    //      2) a quantum operation which implements the oracle |x⟩|y⟩ -> |x⟩|y ⊕ f(x)⟩, where
-    //         x is N-qubit input register, y is 1-qubit answer register, and f is a Boolean function
-    // You are guaranteed that the function f implemented by the oracle is either
-    // constant (returns 0 on all inputs or 1 on all inputs) or
-    // balanced (returns 0 on exactly one half of the input domain and 1 on the other half).
-    // Output:
-    //      true if the function f is constant
-    //      false if the function f is balanced
-    
-    // Note: a trivial approach is to call the oracle multiple times:
-    //       if the values for more than half of the possible inputs are the same, the function is constant.
-    // Quantum computing allows to perform this task in just one call to the oracle; try to implement this algorithm.
-    operation DJ_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Bool {
-        
-        // Declare variable in which the result will be accumulated;
-        // this variable has to be mutable to allow updating it.
-        mutable isConstantFunction = true;
-        
-        // Hint: even though Deutsch-Jozsa algorithm operates on a wider class of functions
-        // than Bernstein-Vazirani (i.e. functions which can not be represented as a scalar product, such as f(x) = 1),
-        // it can be expressed as running Bernstein-Vazirani algorithm
-        // and then post-processing the return value classically:
-        // the function is constant if and only if all elements of the returned array are false
-        let r = BV_Algorithm_Reference(N, Uf);
-        
-        for (i in 0 .. N - 1) {
-            set isConstantFunction = isConstantFunction and r[i] == 0;
-        }
-        
-        return isConstantFunction;
     }
     
     
@@ -310,7 +322,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
                 set r w/= 0 <- 1;
             }
             
-            // before releasing the qubits make sure they are all in |0⟩ state
             return r;
         }
     }
