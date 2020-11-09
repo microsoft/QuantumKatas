@@ -139,7 +139,7 @@ namespace Quantum.Kata.GraphColoring {
     operation T15_ColorEqualityOracle_Nbit () : Unit {
         for (N in 1..4) {            
             within {
-                AllowAtMostNQubits(2*N+1, "You are not allowed to allocate extra qubits.");
+                AllowAtMostNQubits(2*N+1, "You are not allowed to allocate extra qubits");
             } apply {
                 CheckColorEqualityOracle(N, ColorEqualityOracle_Nbit);
             }
