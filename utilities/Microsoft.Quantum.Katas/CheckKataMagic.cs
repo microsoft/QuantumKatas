@@ -212,7 +212,7 @@ namespace Microsoft.Quantum.Katas
         /// test's namespace
         /// </summary>
         public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}");
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}");
 
         /// <summary>
         /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
@@ -220,7 +220,6 @@ namespace Microsoft.Quantum.Katas
         /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
         /// </summary>
         public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}_Reference");
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
     }
 }
-

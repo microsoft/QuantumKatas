@@ -219,7 +219,7 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
         {
-            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.FullName}");
             Logger.LogDebug($"Resolved {userAnswer.FullName} to {skeletonAnswer}");
             if (skeletonAnswer != null)
             {
@@ -230,4 +230,3 @@ namespace Microsoft.Quantum.Katas
         }
     }
 }
-
