@@ -6,6 +6,7 @@ namespace Quantum.Kata.GraphColoring {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Arrays;
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
