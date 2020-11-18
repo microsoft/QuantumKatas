@@ -37,7 +37,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part I. Classical Magic Square Game
     //////////////////////////////////////////////////////////////////
 
-    // Task 1.1.1. Validate Alice's moves
+    // Task 1.1.1. Validate Alice's move
     // In this task you have to implement function for validating Alice's move.
 
     // Input: The signs Alice chose for each cell in her row,
