@@ -37,9 +37,8 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part I. Classical Magic Square Game
     //////////////////////////////////////////////////////////////////
 
-    // Task 1.1. Validate Alice and Bob's moves
-    // In this task you have to implement two functions, one for validating Alice's move and one for validating Bob's move.
-    // Note that they are covered by one test, so you have to implement both before attempting the test.
+    // Task 1.1.1. Validate Alice's move
+    // In this task you have to implement function for validating Alice's move.
 
     // Input: The signs Alice chose for each cell in her row,
     //        represented as an Int array of length 3.
@@ -47,8 +46,11 @@ namespace Quantum.Kata.MagicSquareGame {
     //         the array has an even number of minus signs), and false otherwise.
     function ValidAliceMove (cells : Int[]) : Bool {
         // ...
-        fail "Validating Alice's move in task 1.1 not implemented yet";
+        fail "Validating Alice's move in task 1.1.1 not implemented yet";
     }
+
+    // Task 1.1.2. Validate Bob's move
+    // In this task you have to implement function for validating Bob's move.
 
     // Input: The signs Bob chose for each cell in his column,
     //        represented as an Int array of length 3.
@@ -56,7 +58,7 @@ namespace Quantum.Kata.MagicSquareGame {
     //         the array has an odd number of minus signs), and false otherwise.
     function ValidBobMove (cells : Int[]) : Bool {
         // ...
-        fail "Validating Bob's move in task 1.1 not implemented yet";
+        fail "Validating Bob's move in task 1.1.2 not implemented yet";
     }
 
 

@@ -22,25 +22,36 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T11_ValidMove () : Unit {
+    operation T111_ValidAliceMove () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
             let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
             Fact(ValidAliceMove(cells) == ValidAliceMove_Reference(cells),
                  $"Incorrect Alice move validity for {cells}");
-            Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
-                 $"Incorrect Bob move validity for {cells}");
         }
 
         // Moves with numbers other than +1 and -1 should be rejected.
         for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
             Fact(ValidAliceMove(cellsOutOfRange) == false,
                  $"Invalid Alice move judged valid for {cellsOutOfRange}");
+        }
+    }
+
+    @Test("QuantumSimulator")
+    operation T112_ValidBobMove () : Unit {
+        // Try all moves with +1 and -1.
+        for (i in 0..1 <<< 3 - 1) {
+            let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
+            Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
+                 $"Incorrect Bob move validity for {cells}");
+        }
+
+        // Moves with numbers other than +1 and -1 should be rejected.
+        for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
             Fact(ValidBobMove(cellsOutOfRange) == false,
                  $"Invalid Bob move judged valid for {cellsOutOfRange}");
         }
     }
-
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
