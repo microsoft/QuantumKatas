@@ -85,7 +85,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         for (q in x) {
             X(q);  // undo even flips and flip the odds
         }
-
+        
         Controlled X(x, y);
 
         for (i in IndexRange(x)) {
@@ -98,6 +98,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 6.
     operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
     is Adj {
+        // number of the form | x_n, x_n-1, ..., x_2, x_1>
         Message("Implement me!");
     }
 
