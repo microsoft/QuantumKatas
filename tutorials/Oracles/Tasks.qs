@@ -17,58 +17,62 @@ namespace Quantum.Kata.Oracles {
     // Part I. Introduction to Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
+    // Exercise 1.
     function Is_Seven(x: String) : Bool {
         // ...
-        Message("Implement me!");
         return false;
     }
 
+    // Exercise 2.
     operation Phase_7_Oracle (x : Qubit[]) : Unit 
     is Adj {
         // ...
-        Message("Implement me!");
     }
 
+    // Exercise 3.
     operation Marking_7_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
         // ...
-        Message("Implement me!");
     }
 
     //////////////////////////////////////////////////////////////////
     // Part II. Phase Kickback
     //////////////////////////////////////////////////////////////////
 
+    // Exercise 4.
     function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
         // ...
-        Message("Implement me!");
+        // Right now we return this function to allow this function to compile.
+        // This return statement will have to be replaced with your own implementation.
+        return Phase_7_Oracle;
     }
 
     //////////////////////////////////////////////////////////////////
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
+    // Exercise 5.
     operation Alternating_1_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
         // ...
-        Message("Implement me!");
     }
 
+    // Exercise 6.
     operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
     is Adj {
         // ...
-        Message("Implement me!");
+
     }
 
+    // Exercise 7.
     operation Alternating_2_Oracle(x: Qubit[]) : Unit
     is Adj {
         // ...
-        Message("Implement me!");
     }
 
+    // Exercise 8.
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
         // ...
-        Message("Implement me!");
     }
 }
