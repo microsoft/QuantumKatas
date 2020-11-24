@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+//////////////////////////////////////////////////////////////////
+// This file is a back end for the tasks in Deutsch-Jozsa algorithm tutorial.
+// We strongly recommend to use the Notebook version of the tutorial
+// to enjoy the full experience.
+//////////////////////////////////////////////////////////////////
+
 namespace Quantum.Kata.Oracles {
 
     open Microsoft.Quantum.Canon;
@@ -12,16 +18,20 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     function Is_Seven(x: String) : Bool {
+        // ...
         Message("Implement me!");
+        return false;
     }
 
     operation Phase_7_Oracle (x : Qubit[]) : Unit 
     is Adj {
+        // ...
         Message("Implement me!");
     }
 
     operation Marking_7_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
+        // ...
         Message("Implement me!");
     }
 
@@ -30,21 +40,9 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+        // ...
         Message("Implement me!");
-        //return ConstructPhaseOracle(markingOracle, _);
     }
-
-    // operation ConstructPhaseOracle(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
-    // is Adj {
-    //     using (minus = Qubit()) {
-    //         within {
-    //             X(minus);
-    //             H(minus);
-    //         } apply {
-    //             markingOracle(qubits, minus);
-    //         }
-    //     }
-    // }
 
     //////////////////////////////////////////////////////////////////
     // Part III. Implementing Quantum Oracles
@@ -52,21 +50,25 @@ namespace Quantum.Kata.Oracles {
 
     operation Alternating_1_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
+        // ...
         Message("Implement me!");
     }
 
     operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
     is Adj {
+        // ...
         Message("Implement me!");
     }
 
     operation Alternating_2_Oracle(x: Qubit[]) : Unit
     is Adj {
+        // ...
         Message("Implement me!");
     }
 
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
+        // ...
         Message("Implement me!");
     }
 }
