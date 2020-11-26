@@ -40,7 +40,7 @@ namespace Quantum.Kata.Oracles {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    function E4_Oracle_Converter() : Unit {
+    function E4_Apply_Phase_Oracle() : Unit {
 
     }
 
