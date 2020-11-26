@@ -19,7 +19,7 @@ try {
 if ($install) {
     try {
         Write-Host ("Installing Microsoft.Quantum.IQSharp at $Env:TOOLS_DIR")
-        dotnet tool install Microsoft.Quantum.IQSharp --version 0.13.20102604 --tool-path $Env:TOOLS_DIR
+        dotnet tool install Microsoft.Quantum.IQSharp --version 0.14.2011120240 --tool-path $Env:TOOLS_DIR
 
         # dotnet-iqsharp writes some output to stderr, which causes Powershell to throw
         # unless $ErrorActionPreference is set to 'Continue'.
