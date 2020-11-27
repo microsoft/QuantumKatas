@@ -45,9 +45,15 @@ namespace Quantum.Kata.Oracles {
     }
 
 
+    // // ------------------------------------------------------
+    // @Test("QuantumSimulator")
+    // function E5_Alternating_1_Oracle() : Unit {
+
+    // }
+
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    function E5_Alternating_1_Oracle() : Unit {
+    function E5_Or_Oracle() : Unit {
 
     }
 
@@ -61,14 +67,7 @@ namespace Quantum.Kata.Oracles {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    function E7_Alternating_2_Oracle() : Unit {
-
-    }
-
-
-    // ------------------------------------------------------
-    @Test("QuantumSimulator")
-    function E8_Or_Oracle() : Unit {
+    function E7_kth_Excluded_Or() : Unit {
 
     }
 }

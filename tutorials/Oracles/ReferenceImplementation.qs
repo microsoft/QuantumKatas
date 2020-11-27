@@ -71,77 +71,13 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
+    // Controlled Z(x[:n-2], x[n-1])
+    // Controlled Z(x[...n-2])
+    // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
+    // 
+    // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
+
     // Exercise 5.
-    operation Alternating_1_Oracle(x: Qubit[], y: Qubit) : Unit
-    is Adj {
-        for (i in IndexRange(x)) {
-            if (i % 2 == 0) {  // flip even values
-                X(x[i]);
-            }
-        }
-
-        Controlled X(x, y);
-
-        for (q in x) {
-            X(q);  // undo even flips and flip the odds
-        }
-        
-        Controlled X(x, y);
-
-        for (i in IndexRange(x)) {
-            if (i % 2 == 1) {  // undo odd flips
-                X(x[i]);
-            }
-        }
-    }
-
-    // Exercise 6.
-    operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
-    is Adj {
-        // number of the form | x_n, x_n-1, ..., x_2, x_1>
-        Message("Implement me!");
-    }
-
-    // Exercise 7.
-    operation Alternating_2_Oracle(x: Qubit[]) : Unit
-    is Adj {
-        for (i in IndexRange(x)) {
-            if (i % 2 == 0) {  // flip even values
-                X(x[i]);
-            }
-        }
-
-        using (one = Qubit()) {
-            X(one);
-            Controlled Z(x, one);
-            X(one);
-        }
-
-        // Controlled Z(x[:n-2], x[n-1])
-        // Controlled Z(x[...n-2])
-        // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
-        // 
-        // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
-
-
-        for (q in x) {
-            X(q);  // undo even flips and flip the odds
-        }
-
-        using (one = Qubit()) {
-            X(one);
-            Controlled Z(x, one);
-            X(one);
-        }
-
-        for (i in IndexRange(x)) {
-            if (i % 2 == 1) {  // undo odd flips
-                X(x[i]);
-            }
-        }
-    }
-
-    // Exercise 8.
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
         for (q in x) {
@@ -154,5 +90,18 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         for (q in x) {
             X(q);  // undo changes to input
         }
+    }
+
+    // Exercise 6.
+    operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
+    is Adj {
+        // ...
+
+    }
+
+    // Exercise 7.
+    operation kth_Excluded_Or(x: Qubit[], k: Int) : Unit
+    is Adj {
+        // ...
     }
 }

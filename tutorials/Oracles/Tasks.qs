@@ -52,7 +52,7 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 5.
-    operation Alternating_1_Oracle(x: Qubit[], y: Qubit) : Unit
+    operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
         // ...
     }
@@ -65,13 +65,7 @@ namespace Quantum.Kata.Oracles {
     }
 
     // Exercise 7.
-    operation Alternating_2_Oracle(x: Qubit[]) : Unit
-    is Adj {
-        // ...
-    }
-
-    // Exercise 8.
-    operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
+    operation kth_Excluded_Or(x: Qubit[], k: Int) : Unit
     is Adj {
         // ...
     }
