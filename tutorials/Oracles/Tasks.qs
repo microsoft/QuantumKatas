@@ -69,4 +69,20 @@ namespace Quantum.Kata.Oracles {
     is Adj {
         // ...
     }
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. More Oracles! Implementation and Testing
+    //////////////////////////////////////////////////////////////////
+
+    // Exercise 8.
+    operation Arbitrary_Pattern_Oracle(x: Qubit[], y: Qubit, b: Bool[]) : Unit 
+    is Adj {
+        // ...
+    }
+
+    // Exercise 9.
+    operation Meeting_Oracle(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
+    is Adj {
+        // ...
+    }
 }

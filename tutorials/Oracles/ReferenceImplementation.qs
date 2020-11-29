@@ -30,7 +30,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 2.
     operation Phase_7_Oracle_Reference(x : Qubit[]) : Unit 
     is Adj {
-        Message("Implement me!");
+        Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
     }
 
     // Exercise 3.
@@ -43,21 +43,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part II. Phase Kickback
     //////////////////////////////////////////////////////////////////
 
+    // _ is partial application
+    // 
+    // https://en.wikipedia.org/wiki/Partial_application
+
     // Exercise 4.
-    function Oracle_Converter_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
-        // _ is partial application
-        // 
-        // https://en.wikipedia.org/wiki/Partial_application
-
-        return ConstructPhaseOracle_Reference(markingOracle, _);
-    }
-
-    operation ConstructPhaseOracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
+    operation Apply_Phase_Oracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
     is Adj {
         using (minus = Qubit()) {
-            // within - apply
-            // this block tells you to first do the within block, then do the apply
-            // then do the adjoint of the within block.
             within {
                 X(minus);
                 H(minus);
@@ -80,27 +73,41 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 5.
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
-        for (q in x) {
-            X(q);
-        }
-
-        X(y);  // flip y
-        Controlled X(x, y);  // flip y again if input x was all zeros
-
-        for (q in x) {
-            X(q);  // undo changes to input
+        within {
+            for (q in x) {
+                X(q);
+            }
+        } apply {
+            X(y);  // flip y
+            Controlled X(x, y);  // flip y again if input x was all zeros
         }
     }
 
     // Exercise 6.
-    operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
+    operation kth_Spin_Up_Reference(x: Qubit[], k: Int) : Unit 
     is Adj {
         // ...
 
     }
 
     // Exercise 7.
-    operation kth_Excluded_Or(x: Qubit[], k: Int) : Unit
+    operation kth_Excluded_Or_Reference(x: Qubit[], k: Int) : Unit
+    is Adj {
+        // ...
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. More Oracles! Implementation and Testing
+    //////////////////////////////////////////////////////////////////
+
+    // Exercise 8.
+    operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, b: Bool[]) : Unit 
+    is Adj {
+        // ...
+    }
+
+    // Exercise 9.
+    operation Meeting_Oracle_Reference(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
     is Adj {
         // ...
     }

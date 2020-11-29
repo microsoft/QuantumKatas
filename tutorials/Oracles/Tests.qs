@@ -70,5 +70,19 @@ namespace Quantum.Kata.Oracles {
     function E7_kth_Excluded_Or() : Unit {
 
     }
+
+
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    function E8_Arbitrary_Pattern_Oracle() : Unit {
+
+    }
+
+
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    function E9_Meeting_Oracle() : Unit {
+
+    }
 }
     
