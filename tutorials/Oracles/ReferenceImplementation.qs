@@ -64,12 +64,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
-    // Controlled Z(x[:n-2], x[n-1])
-    // Controlled Z(x[...n-2])
-    // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
-    // 
-    // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
-
     // Exercise 5.
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
     is Adj {
@@ -86,14 +80,32 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 6.
     operation kth_Spin_Up_Reference(x: Qubit[], k: Int) : Unit 
     is Adj {
-        // ...
+        using (minus = Qubit()) {
+            within {
+                X(minus);
+                H(minus);
+            } apply {
+                CNOT(x[k], minus);
+            }
+        }
 
     }
 
     // Exercise 7.
     operation kth_Excluded_Or_Reference(x: Qubit[], k: Int) : Unit
     is Adj {
-        // ...
+        using (minus = Qubit()) {
+            within {
+                X(minus);
+                H(minus);
+            } apply {
+                // TODO: need to slice the kth element out of this array
+                // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
+                // 
+                // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
+                Or_Oracle(x, minus);
+            }
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -103,12 +115,28 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 8.
     operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, b: Bool[]) : Unit 
     is Adj {
-        // ...
+        within {
+            for (i in IndexRange(x)) {
+                if (not b[i]) {
+                    X(x[i]);
+                }
+            }
+        } apply {
+            Controlled X(x, y);
+        }
     }
 
     // Exercise 9.
     operation Meeting_Oracle_Reference(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
     is Adj {
-        // ...
+        using (q = Qubit[Length(x)]) {
+            within {
+                for (i in IndexRange(q)) {
+                    CCNOT(x[i], jasmine[i], q[i]);
+                }
+            } apply {
+                Controlled X(q, z);
+            }
+        }
     }
 }
