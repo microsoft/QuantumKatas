@@ -8,7 +8,7 @@
 // but feel free to look up the solution if you get stuck.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.DeutschJozsaAlgorithm {
+namespace Quantum.Kata.Oracles {
     
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Diagnostics;
@@ -60,12 +60,16 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
     }
 
+    function Oracle_Converter_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+        return Apply_Phase_Oracle_Reference(markingOracle, _);
+    }
+
     //////////////////////////////////////////////////////////////////
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
     // Exercise 5.
-    operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
+    operation Or_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
     is Adj {
         within {
             for (q in x) {
@@ -88,7 +92,6 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
                 CNOT(x[k], minus);
             }
         }
-
     }
 
     // Exercise 7.

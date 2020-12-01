@@ -40,11 +40,13 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 4.
-    function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+    operation Apply_Phase_Oracle(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
+    is Adj {
         // ...
-        // Right now we return this function to allow this function to compile.
-        // This return statement will have to be replaced with your own implementation.
-        return Phase_7_Oracle;
+    }
+
+    function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+        return Apply_Phase_Oracle(markingOracle, _);
     }
 
     //////////////////////////////////////////////////////////////////
