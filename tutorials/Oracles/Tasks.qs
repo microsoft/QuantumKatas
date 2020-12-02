@@ -18,7 +18,7 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 1.
-    function Is_Seven(x: String) : Bool {
+    function Is_Seven(x: Bool[]) : Bool {
         // ...
         return false;
     }
@@ -63,7 +63,6 @@ namespace Quantum.Kata.Oracles {
     operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
     is Adj {
         // ...
-
     }
 
     // Exercise 7.
@@ -83,6 +82,12 @@ namespace Quantum.Kata.Oracles {
     }
 
     // Exercise 9.
+    operation Arbitrary_Pattern_Oracle_Challenge(x: Qubit[], b: Bool[]) : Unit 
+    is Adj {
+        // ...
+    }
+
+    // Exercise 10.
     operation Meeting_Oracle(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
     is Adj {
         // ...

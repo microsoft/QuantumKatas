@@ -16,15 +16,31 @@ namespace Quantum.Kata.Oracles {
     open Microsoft.Quantum.Canon;
 
 
-
     //////////////////////////////////////////////////////////////////
     // Part I. Introduction to Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
     // Exercise 1.
-    function Is_Seven_Reference(x: String) : Bool {
-        // ...
-        return false;
+    function Is_Seven_Reference(x: Bool[]) : Bool {
+        let n = Length(x);
+
+        if (n < 3) {
+            return false;
+        }
+
+        for (i in IndexRange(x)) {
+            if (i == n-1 or i == n-2 or i == n-3) {
+                if (not x[i]) {
+                    return false;
+                }
+            } else {
+                if (x[i]) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
 
     // Exercise 2.
@@ -102,14 +118,19 @@ namespace Quantum.Kata.Oracles {
                 X(minus);
                 H(minus);
             } apply {
-                // TODO: need to slice the kth element out of this array
-                // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
-                // 
-                // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
-                Or_Oracle(x, minus);
+                //Or_Oracle(Exclude([k], x), minus);
+                Or_Oracle(x[0..k-1] + x[k+1..Length(x)-1], minus);
             }
         }
     }
+
+    // TODO: need to slice the kth element out of this array
+    // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
+    // 
+    // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
+    //
+    // https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.exclude
+
 
     //////////////////////////////////////////////////////////////////
     // Part IV. More Oracles! Implementation and Testing
@@ -129,7 +150,26 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
+    // and oracle with no extra qubits:
+    // Controlled Z(q[0..Length(q)-2], q[Length(q) - 1])
+    //
+    // negate everything and apply AND = OR
+    //
+    // take in some q 
+        // 1) negate everything - applying X
+        // 2) apply the AND oracle
+        // 3) flip everything back
+        // 4) 
+    //
+    //
+
     // Exercise 9.
+    operation Arbitrary_Pattern_Oracle_Challenge_Reference(x: Qubit[], b: Bool[]) : Unit 
+    is Adj {
+        // ...
+    }
+
+    // Exercise 10.
     operation Meeting_Oracle_Reference(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
     is Adj {
         using (q = Qubit[Length(x)]) {

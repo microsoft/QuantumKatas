@@ -16,11 +16,30 @@ namespace Quantum.Kata.Oracles {
 
     // ------------------------------------------------------
     // Helper functions
+    operation ApplyOracle (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
+    is Adj {
+        let N = Length(qs);
+        oracle(qs[0 .. N - 2], qs[N - 1]);
+    }
+
+    operation AssertTwoOraclesAreEqual (nQubits : Range, 
+        oracle1 : ((Qubit[], Qubit) => Unit is Adj), 
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
+        let sol = ApplyOracle(_, oracle1);
+        let refSol = ApplyOracle(_, oracle2);
+        
+        for (i in nQubits) {
+            AssertOperationsEqualReferenced(i + 1, sol, refSol);
+        }
+    }
+
+    // https://github.com/microsoft/QuantumKatas/blob/main/DeutschJozsaAlgorithm/Tests.qs#L19
 
 
     // ------------------------------------------------------
-    function Check_Classical_Oracle(x: String, expected: Bool) : Unit {
+    function Check_Classical_Oracle(x: Bool[]) : Unit {
         let actual = Is_Seven(x);
+        let expected = Is_Seven_Reference(x);
 
         if (actual != expected) {
             fail $"    Failed on test case x = {x}. got {actual}, expected {expected}";
@@ -29,11 +48,12 @@ namespace Quantum.Kata.Oracles {
     
     @Test("QuantumSimulator")
     function E1_Classical_Oracle() : Unit {
-        Check_Classical_Oracle("111", true);
-        Check_Classical_Oracle("010101", false);
-        Check_Classical_Oracle("0", false);
-        Check_Classical_Oracle("1000111", false);
-        Check_Classical_Oracle("1110", false);
+        Check_Classical_Oracle([true, true, true]);
+        Check_Classical_Oracle([false, false, false]);
+        Check_Classical_Oracle([false]);
+        Check_Classical_Oracle([true]);
+        Check_Classical_Oracle([true, false, false, false, true, true, true]);
+        Check_Classical_Oracle([true, true, true, false]);
     }
 
 
@@ -49,9 +69,10 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E3_Marking_Quantum_Oracle() : Unit {
-        AssertOperationsEqualReferenced(3, 
-                                        Oracle_Converter_Reference(Marking_7_Oracle),
-                                        Oracle_Converter_Reference(Marking_7_Oracle_Reference));
+        //AssertOperationsEqualReferenced(3, 
+        //                                Oracle_Converter_Reference(Marking_7_Oracle),
+        //                                Oracle_Converter_Reference(Marking_7_Oracle_Reference));
+        AssertTwoOraclesAreEqual(1..10, Marking_7_Oracle, Marking_7_Oracle_Reference);
     }
 
 
@@ -73,30 +94,22 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E5_Or_Oracle() : Unit {
-        for (N in 1..5) {
-            AssertOperationsEqualReferenced(N, 
-                                            Oracle_Converter_Reference(Or_Oracle),
-                                            Oracle_Converter_Reference(Or_Oracle_Reference));
-        }
+        AssertTwoOraclesAreEqual(1..10, Or_Oracle, Or_Oracle_Reference);
+        // for (N in 1..5) {
+        //     AssertOperationsEqualReferenced(N, 
+        //                                     Oracle_Converter_Reference(Or_Oracle),
+        //                                     Oracle_Converter_Reference(Or_Oracle_Reference));
+        // }
     }
 
 
     // ------------------------------------------------------
-    operation kth_Element_Apply_Oracle(phaseOracle: ((Qubit[], Int) => Unit is Adj), qubits: Qubit[], n: Int) : Unit
-    is Adj {
-        phaseOracle(qubits, n);
-    }
-
-    function kth_Element_Oracle_Converter(phaseOracle: ((Qubit[], Int) => Unit is Adj), n: Int) : (Qubit[] => Unit is Adj) {
-        return kth_Element_Apply_Oracle(phaseOracle, _, n);
-    }
-    
     @Test("QuantumSimulator")
     operation E6_kth_Spin_Up() : Unit {
         for (N in 1..5) {
-            AssertOperationsEqualReferenced(7,
-                                            kth_Element_Oracle_Converter(kth_Spin_Up, N),
-                                            kth_Element_Oracle_Converter(kth_Spin_Up_Reference, N));
+            AssertOperationsEqualReferenced(N,
+                                            kth_Spin_Up(_, N/2),
+                                            kth_Spin_Up_Reference(_, N/2));
         }
     }
 
@@ -105,9 +118,9 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     operation E7_kth_Excluded_Or() : Unit {
         for (N in 1..5) {
-            AssertOperationsEqualReferenced(7,
-                                            kth_Element_Oracle_Converter(kth_Excluded_Or, N),
-                                            kth_Element_Oracle_Converter(kth_Excluded_Or_Reference, N));
+            AssertOperationsEqualReferenced(N,
+                                            kth_Excluded_Or(_, N/2),
+                                            kth_Excluded_Or_Reference(_, N/2));
         }
     }
 
@@ -118,11 +131,33 @@ namespace Quantum.Kata.Oracles {
         
     }
 
+    
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    operation E9_Arbitrary_Pattern_Oracle_Challenge() : Unit {
+        for (N in 1..4) {            
+            within {
+                AllowAtMostNQubits(N, "You are not allowed to allocate extra qubits");
+            } apply {
+                AssertOperationsEqualReferenced(N,
+                                                Arbitrary_Pattern_Oracle_Challenge(_, [false]),
+                                                Arbitrary_Pattern_Oracle_Challenge_Reference(_, [false]));
+            }
+        }
+    }
+
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation E9_Meeting_Oracle() : Unit {
+    operation E10_Meeting_Oracle() : Unit {
 
     }
+
+    //From Mariia Mykhailova to Everyone: 11:17 AM https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.exclude 
+    //From Mariia Mykhailova to Everyone: 11:25 AM https://github.com/microsoft/QuantumKatas/blob/main/DeutschJozsaAlgorithm/Tests.qs#L19 
+    //From Mariia Mykhailova to Everyone: 11:36 AM https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.r 
+    //From Mariia Mykhailova to Everyone: 11:47 AM https://github.com/microsoft/QuantumKatas/pull/560/files 
+    //From Mariia Mykhailova to Everyone: 11:55 AM https://github.com/microsoft/QuantumKatas/blob/main/RippleCarryAdder/Tests.qs#L122 
+    //From Mariia Mykhailova to Everyone: 12:01 PM https://github.com/microsoft/QuantumKatas/blob/main/GraphColoring/Tests.qs#L66
 }
     
