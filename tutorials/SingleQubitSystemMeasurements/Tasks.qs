@@ -38,7 +38,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         return false;
     }
 
-    // Exercise 6. |A❭ and |B❭?
+    // Exercise 7. |A❭ and |B❭?
     operation MeasurementAB (alpha : Double, q : Qubit) : Bool {
         // ...
         return false;
