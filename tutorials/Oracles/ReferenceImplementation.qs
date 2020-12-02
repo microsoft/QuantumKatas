@@ -175,10 +175,23 @@ namespace Quantum.Kata.Oracles {
         using (q = Qubit[Length(x)]) {
             within {
                 for (i in IndexRange(q)) {
+                    // flip q[i] if both x and jasmine are free on the given day
+                    X(x[i]);
+                    X(jasmine[i]);
                     CCNOT(x[i], jasmine[i], q[i]);
+
+                    // undo
+                    X(x[i]);
+                    X(jasmine[i]);
                 }
             } apply {
+                X(z);  // flip to allow for a meeting
+
+                // flip z back if both parties, x and jasmine, are busy
+                // every day of the week.
+                ApplyToEachA(X, q);
                 Controlled X(q, z);
+                ApplyToEachA(X, q);
             }
         }
     }
