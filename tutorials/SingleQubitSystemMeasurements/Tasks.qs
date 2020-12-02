@@ -21,7 +21,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // Exercise 3. Distinguish |+❭ and |-❭ using Measure operation
-    operation IsQubitPlus (q : Qubit) : Bool {
+    operation IsQubitMinus (q : Qubit) : Bool {
         // ...
         return false;
     }
@@ -37,4 +37,11 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         // ...
         return false;
     }
+
+    // Exercise 6. |A❭ and |B❭?
+    operation MeasurementAB (alpha : Double, q : Qubit) : Bool {
+        // ...
+        return false;
+    }
 }
+

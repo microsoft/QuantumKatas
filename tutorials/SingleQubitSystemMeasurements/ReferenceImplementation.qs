@@ -13,12 +13,12 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     open Microsoft.Quantum.Math;
     
     // Exercise 2.
-    operation IsQubitOne_Reference (q : Qubit) : Bool {
+    operation IsQubitZero_Reference (q : Qubit) : Bool {
         return M(q) == Zero;
     }
 
     // Exercise 3.
-    operation IsQubitPlus_Reference (q : Qubit) : Bool {
+    operation IsQubitMinus_Reference (q : Qubit) : Bool {
         return Measure([PauliX], [q]) == Zero;
     }
 
@@ -32,5 +32,13 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     operation IsQubitA_Reference (alpha: Double, q : Qubit) : Bool { 
         Rx(-2.0 * alpha, q);
         return M(q) == Zero;
+    }
+
+    // Exercise 7.
+    operation MeasurementAB_Reference (alpha: Double, q : Qubit) : Bool { 
+        Rx(-2.0 * alpha, q);
+        let is_A = M(q) == Zero;
+        Rx(2.0 * alpha, q);
+        return is_A;
     }
 }

@@ -13,6 +13,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Random;
 
     open Quantum.Kata.Utils;
@@ -22,7 +23,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
 
     // "Framework" operation for testing single-qubit tasks for distinguishing states of one qubit
     // with Bool return
-    operation DistinguishTwoStates (statePrep : ((Qubit, Int) => Unit), testImpl : (Qubit => Bool), stateName : String[]) : Unit {
+    operation DistinguishTwoStates (statePrep : ((Qubit, Int) => Unit is Adj), testImpl : (Qubit => Bool), stateName : String[], checkFinalState : Bool) : Unit {
         let nTotal = 100;
         let nStates = 2;
         mutable misclassifications = new Int[nStates];
@@ -42,9 +43,14 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
                 if (ans != (state == 1)) {
                     set misclassifications w/= state <- misclassifications[state] + 1;
                 }
-
-                // we're not checking the state of the qubit after the operation
-                Reset(q);
+                
+                // If the final state is to be verified, check if it matches the measurement outcome
+                if (checkFinalState) {
+                    Adjoint statePrep(q, state);
+                    AssertQubit(Zero, q);
+                } else {
+                    Reset(q);
+                }
             }
         }
         
@@ -63,7 +69,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // ------------------------------------------------------
     // Exercise 2. Distinguish |0❭ and |1❭
     // ------------------------------------------------------
-    operation StatePrep_IsQubitZero (q : Qubit, state : Int) : Unit {
+    operation StatePrep_IsQubitZero (q : Qubit, state : Int) : Unit is Adj {
         if (state == 0) {
             // convert |0⟩ to |1⟩
             X(q);
@@ -71,8 +77,8 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T1_IsQubitZero () : Unit {
-        DistinguishTwoStates(StatePrep_IsQubitZero, IsQubitZero, ["|1⟩", "|0⟩"]);
+    operation T2_IsQubitZero () : Unit {
+        DistinguishTwoStates(StatePrep_IsQubitZero, IsQubitZero, ["|1⟩", "|0⟩"], false);
     }
 
 
@@ -80,8 +86,8 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // ------------------------------------------------------
     // Exercise 3. Distinguish |+❭ and |-❭ using Measure operation
     // ------------------------------------------------------
-    operation StatePrep_IsQubitPlus (q : Qubit, state : Int) : Unit {
-        if (state == 0) {
+    operation StatePrep_IsQubitMinus (q : Qubit, state : Int) : Unit is Adj {
+        if (state == 1) {
             // convert |0⟩ to |-⟩
             X(q);
             H(q);
@@ -92,8 +98,8 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T3_IsQubitPlus () : Unit {
-        DistinguishTwoStates(StatePrep_IsQubitPlus, IsQubitPlus, ["|-⟩", "|+⟩"]);
+    operation T3_IsQubitMinus () : Unit {
+        DistinguishTwoStates(StatePrep_IsQubitMinus, IsQubitMinus, ["|+⟩", "|-⟩"], false);
     }
 
     // ------------------------------------------------------
@@ -102,7 +108,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
 
     // |\psi + ⟩ =   0.6 * |0⟩ + 0.8 * |1⟩,
     // |\psi + ⟩ =   -0.8 * |0⟩ + 0.6 * |1⟩.
-    operation StatePrep_IsQubitPsiPlus (q : Qubit, state : Int) : Unit {
+    operation StatePrep_IsQubitPsiPlus (q : Qubit, state : Int) : Unit is Adj {
         if (state == 0) {
             // convert |0⟩ to |psi -⟩
             X(q);
@@ -119,7 +125,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         // alpha = 0.0 or PI() => !isQubitOne
         // alpha = PI() / 2.0 => isQubitOne
         DistinguishTwoStates(StatePrep_IsQubitPsiPlus, IsQubitSpecificState, 
-            ["|psi-⟩", "|psi+⟩"]);
+            ["|psi-⟩", "|psi+⟩"], false);
     }
     
 
@@ -129,7 +135,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     
     // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
     // |B⟩ = - i sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
-    operation StatePrep_IsQubitA (alpha : Double, q : Qubit, state : Int) : Unit {
+    operation StatePrep_IsQubitA (alpha : Double, q : Qubit, state : Int) : Unit is Adj {
         if (state == 0) {
             // convert |0⟩ to |B⟩
             X(q);
@@ -142,14 +148,32 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
 
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T5_IsQubitA () : Unit {
+    operation T6_IsQubitA () : Unit {
         
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _), 
-                [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"]);
+                [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"], false);
         }
     }
 
+
+    // ------------------------------------------------------
+    // Exercise 7. Measurement in the |A❭, |B❭ basis
+    // ------------------------------------------------------
+    
+    // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
+    // |B⟩ = - i sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
+
+    // We can use the StatePrep_IsQubitA operation for the testing
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T7_MeasurementAB () : Unit {
+        
+        for (i in 0 .. 10) {
+            let alpha = (PI() * IntAsDouble(i)) / 10.0;
+            DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), MeasurementAB(alpha, _), 
+                [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"], true);
+        }
+    }
     
 }
