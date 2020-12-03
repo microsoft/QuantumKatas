@@ -76,13 +76,13 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 8.
-    operation Arbitrary_Pattern_Oracle(x: Qubit[], y: Qubit, b: Bool[]) : Unit 
+    operation Arbitrary_Pattern_Oracle(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
     is Adj {
         // ...
     }
 
     // Exercise 9.
-    operation Arbitrary_Pattern_Oracle_Challenge(x: Qubit[], b: Bool[]) : Unit 
+    operation Arbitrary_Pattern_Oracle_Challenge(x: Qubit[], pattern: Bool[]) : Unit 
     is Adj {
         // ...
     }

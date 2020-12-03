@@ -11,6 +11,7 @@ namespace Quantum.Kata.Oracles {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Convert;
 
     open Quantum.Kata.Utils;
 
@@ -48,12 +49,20 @@ namespace Quantum.Kata.Oracles {
     
     @Test("QuantumSimulator")
     function E1_Classical_Oracle() : Unit {
-        Check_Classical_Oracle([true, true, true]);
-        Check_Classical_Oracle([false, false, false]);
-        Check_Classical_Oracle([false]);
-        Check_Classical_Oracle([true]);
-        Check_Classical_Oracle([true, false, false, false, true, true, true]);
-        Check_Classical_Oracle([true, true, true, false]);
+        //Check_Classical_Oracle([true, true, true]);
+        //Check_Classical_Oracle([false, false, false]);
+        //Check_Classical_Oracle([false]);
+        //Check_Classical_Oracle([true]);
+        //Check_Classical_Oracle([true, false, false, false, true, true, true]);
+        //Check_Classical_Oracle([true, true, true, false]);
+
+        for (N in 1..4) {
+            for (k in 0..N) {
+                let x = IntAsBoolArray(k, N);
+
+                Check_Classical_Oracle(x);
+            }           
+        }
     }
 
 
@@ -135,14 +144,38 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E9_Arbitrary_Pattern_Oracle_Challenge() : Unit {
-        for (N in 1..4) {            
-            within {
-                AllowAtMostNQubits(N, "You are not allowed to allocate extra qubits");
-            } apply {
+        for (N in 1..4) {
+            for (k in 0..N) {
+                //for (j in 0..N) {
+                    //let x = IntAsBoolArray(j, N);
+                let pattern = IntAsBoolArray(k, N);
+
+                within {
+                    AllowAtMostNQubits(N, "You are not allowed to allocate extra qubits");
+                } apply {
+                    AssertOperationsEqualReferenced(N,
+                                                    Arbitrary_Pattern_Oracle_Challenge(_, pattern),
+                                                    Arbitrary_Pattern_Oracle_Challenge_Reference(_, pattern));
+                }
+                //}
+            }           
+        }
+    }
+
+    //@Test("QuantumSimulator")
+    //@EntryPoint()
+    operation Wills_Test() : Unit {
+        for (N in 1..4) {
+            for (k in 0..N) {
+                //for (j in 0..N) {
+                    //let x = IntAsBoolArray(j, N);
+                let pattern = IntAsBoolArray(k, N);
+
                 AssertOperationsEqualReferenced(N,
-                                                Arbitrary_Pattern_Oracle_Challenge(_, [false]),
-                                                Arbitrary_Pattern_Oracle_Challenge_Reference(_, [false]));
-            }
+                                                Oracle_Converter_Reference(Arbitrary_Pattern_Oracle_Reference(_, _, pattern)),
+                                                Arbitrary_Pattern_Oracle_Challenge_Reference(_, pattern));
+                //}
+            }           
         }
     }
 

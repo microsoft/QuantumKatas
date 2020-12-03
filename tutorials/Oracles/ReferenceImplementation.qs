@@ -137,11 +137,11 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 8.
-    operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, b: Bool[]) : Unit 
+    operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
     is Adj {
         within {
             for (i in IndexRange(x)) {
-                if (not b[i]) {
+                if (not pattern[i]) {
                     X(x[i]);
                 }
             }
@@ -164,9 +164,17 @@ namespace Quantum.Kata.Oracles {
     //
 
     // Exercise 9.
-    operation Arbitrary_Pattern_Oracle_Challenge_Reference(x: Qubit[], b: Bool[]) : Unit 
+    operation Arbitrary_Pattern_Oracle_Challenge_Reference(x: Qubit[], pattern: Bool[]) : Unit 
     is Adj {
-        // ...
+        within {
+            for (i in IndexRange(x)) {
+                if (not pattern[i]) {
+                    X(x[i]);
+                }
+            }
+        } apply {
+            Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
+        }
     }
 
     // Exercise 10.
@@ -184,14 +192,13 @@ namespace Quantum.Kata.Oracles {
                     X(x[i]);
                     X(jasmine[i]);
                 }
+                ApplyToEachA(X, q);
             } apply {
                 X(z);  // flip to allow for a meeting
 
                 // flip z back if both parties, x and jasmine, are busy
                 // every day of the week.
-                ApplyToEachA(X, q);
                 Controlled X(q, z);
-                ApplyToEachA(X, q);
             }
         }
     }
