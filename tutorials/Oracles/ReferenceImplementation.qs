@@ -55,13 +55,10 @@ namespace Quantum.Kata.Oracles {
         Controlled X(x, y);
     }
 
+
     //////////////////////////////////////////////////////////////////
     // Part II. Phase Kickback
     //////////////////////////////////////////////////////////////////
-
-    // _ is partial application
-    // 
-    // https://en.wikipedia.org/wiki/Partial_application
 
     // Exercise 4.
     operation Apply_Phase_Oracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
@@ -88,9 +85,7 @@ namespace Quantum.Kata.Oracles {
     operation Or_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
     is Adj {
         within {
-            for (q in x) {
-                X(q);
-            }
+            ApplyToEachA(X, x);
         } apply {
             X(y);  // flip y
             Controlled X(x, y);  // flip y again if input x was all zeros
@@ -187,10 +182,6 @@ namespace Quantum.Kata.Oracles {
                     X(x[i]);
                     X(jasmine[i]);
                     CCNOT(x[i], jasmine[i], q[i]);
-
-                    // undo
-                    X(x[i]);
-                    X(jasmine[i]);
                 }
                 ApplyToEachA(X, q);
             } apply {

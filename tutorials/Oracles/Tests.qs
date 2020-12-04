@@ -49,15 +49,8 @@ namespace Quantum.Kata.Oracles {
     
     @Test("QuantumSimulator")
     function E1_Classical_Oracle() : Unit {
-        //Check_Classical_Oracle([true, true, true]);
-        //Check_Classical_Oracle([false, false, false]);
-        //Check_Classical_Oracle([false]);
-        //Check_Classical_Oracle([true]);
-        //Check_Classical_Oracle([true, false, false, false, true, true, true]);
-        //Check_Classical_Oracle([true, true, true, false]);
-
         for (N in 1..4) {
-            for (k in 0..N) {
+            for (k in 0..((2^N)-1)) {
                 let x = IntAsBoolArray(k, N);
 
                 Check_Classical_Oracle(x);
@@ -78,9 +71,6 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E3_Marking_Quantum_Oracle() : Unit {
-        //AssertOperationsEqualReferenced(3, 
-        //                                Oracle_Converter_Reference(Marking_7_Oracle),
-        //                                Oracle_Converter_Reference(Marking_7_Oracle_Reference));
         AssertTwoOraclesAreEqual(1..10, Marking_7_Oracle, Marking_7_Oracle_Reference);
     }
 
@@ -104,11 +94,6 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     operation E5_Or_Oracle() : Unit {
         AssertTwoOraclesAreEqual(1..10, Or_Oracle, Or_Oracle_Reference);
-        // for (N in 1..5) {
-        //     AssertOperationsEqualReferenced(N, 
-        //                                     Oracle_Converter_Reference(Or_Oracle),
-        //                                     Oracle_Converter_Reference(Or_Oracle_Reference));
-        // }
     }
 
 
@@ -116,9 +101,11 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     operation E6_kth_Spin_Up() : Unit {
         for (N in 1..5) {
-            AssertOperationsEqualReferenced(N,
-                                            kth_Spin_Up(_, N/2),
-                                            kth_Spin_Up_Reference(_, N/2));
+            for (k in 0..(N-1)) {
+                AssertOperationsEqualReferenced(N,
+                                                kth_Spin_Up(_, k),
+                                                kth_Spin_Up_Reference(_, k));
+            }
         }
     }
 
@@ -127,9 +114,11 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     operation E7_kth_Excluded_Or() : Unit {
         for (N in 1..5) {
-            AssertOperationsEqualReferenced(N,
-                                            kth_Excluded_Or(_, N/2),
-                                            kth_Excluded_Or_Reference(_, N/2));
+            for (k in 0..(N-1)) {
+                AssertOperationsEqualReferenced(N,
+                                                kth_Excluded_Or(_, k),
+                                                kth_Excluded_Or_Reference(_, k));
+            }
         }
     }
 
@@ -137,7 +126,14 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E8_Arbitrary_Pattern_Oracle() : Unit {
-        
+        for (N in 1..4) {
+            for (k in 0..((2^N)-1)) {
+                let pattern = IntAsBoolArray(k, N);
+
+                AssertTwoOraclesAreEqual(N..N, Arbitrary_Pattern_Oracle(_, _, pattern),
+                                        Arbitrary_Pattern_Oracle_Reference(_, _, pattern));
+            }
+        }    
     }
 
     
@@ -145,36 +141,16 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     operation E9_Arbitrary_Pattern_Oracle_Challenge() : Unit {
         for (N in 1..4) {
-            for (k in 0..N) {
-                //for (j in 0..N) {
-                    //let x = IntAsBoolArray(j, N);
+            for (k in 0..((2^N)-1)) {
                 let pattern = IntAsBoolArray(k, N);
 
                 within {
-                    AllowAtMostNQubits(N, "You are not allowed to allocate extra qubits");
+                    AllowAtMostNQubits(2*N, "You are not allowed to allocate extra qubits");
                 } apply {
                     AssertOperationsEqualReferenced(N,
                                                     Arbitrary_Pattern_Oracle_Challenge(_, pattern),
                                                     Arbitrary_Pattern_Oracle_Challenge_Reference(_, pattern));
                 }
-                //}
-            }           
-        }
-    }
-
-    //@Test("QuantumSimulator")
-    //@EntryPoint()
-    operation Wills_Test() : Unit {
-        for (N in 1..4) {
-            for (k in 0..N) {
-                //for (j in 0..N) {
-                    //let x = IntAsBoolArray(j, N);
-                let pattern = IntAsBoolArray(k, N);
-
-                AssertOperationsEqualReferenced(N,
-                                                Oracle_Converter_Reference(Arbitrary_Pattern_Oracle_Reference(_, _, pattern)),
-                                                Arbitrary_Pattern_Oracle_Challenge_Reference(_, pattern));
-                //}
             }           
         }
     }
@@ -183,7 +159,20 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E10_Meeting_Oracle() : Unit {
+        for (N in 1..4) {
+            using (jasmine = Qubit[N]) {
+                for (k in 0..(2^N-1)) {
+                    let binaryJasmine = IntAsBoolArray(k, N);
 
+                    within {
+                        ApplyPauliFromBitString(PauliX, true, binaryJasmine, jasmine);
+                    } apply {
+                        AssertTwoOraclesAreEqual(1..N, Meeting_Oracle(_, jasmine, _),
+                                                Meeting_Oracle_Reference(_, jasmine, _)); 
+                    }                 
+                }
+            }
+        }
     }
 
     //From Mariia Mykhailova to Everyone: 11:17 AM https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.exclude 
