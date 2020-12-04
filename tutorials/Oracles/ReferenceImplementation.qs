@@ -114,7 +114,7 @@ namespace Quantum.Kata.Oracles {
                 H(minus);
             } apply {
                 //Or_Oracle(Exclude([k], x), minus);
-                Or_Oracle(x[0..k-1] + x[k+1..Length(x)-1], minus);
+                Or_Oracle_Reference(x[0..k-1] + x[k+1..Length(x)-1], minus);
             }
         }
     }
