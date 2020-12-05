@@ -45,13 +45,13 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 2.
     operation Phase_7_Oracle_Reference(x : Qubit[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
     }
 
     // Exercise 3.
     operation Marking_7_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
-    is Adj {
+    is Adj + Ctl {
         Controlled X(x, y);
     }
 
@@ -61,8 +61,8 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 4.
-    operation Apply_Phase_Oracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
-    is Adj {
+    operation Apply_Phase_Oracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit
+    is Adj + Ctl {
         using (minus = Qubit()) {
             within {
                 X(minus);
@@ -73,9 +73,10 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
-    function Oracle_Converter_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+    function Oracle_Converter_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
         return Apply_Phase_Oracle_Reference(markingOracle, _);
     }
+
 
     //////////////////////////////////////////////////////////////////
     // Part III. Implementing Quantum Oracles
@@ -83,7 +84,7 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 5.
     operation Or_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
-    is Adj {
+    is Adj + Ctl {
         within {
             ApplyToEachA(X, x);
         } apply {
@@ -94,7 +95,7 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 6.
     operation kth_Spin_Up_Reference(x: Qubit[], k: Int) : Unit 
-    is Adj {
+    is Adj + Ctl {
         using (minus = Qubit()) {
             within {
                 X(minus);
@@ -107,24 +108,16 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 7.
     operation kth_Excluded_Or_Reference(x: Qubit[], k: Int) : Unit
-    is Adj {
+    is Adj + Ctl {
         using (minus = Qubit()) {
             within {
                 X(minus);
                 H(minus);
             } apply {
-                //Or_Oracle(Exclude([k], x), minus);
                 Or_Oracle_Reference(x[0..k-1] + x[k+1..Length(x)-1], minus);
             }
         }
     }
-
-    // TODO: need to slice the kth element out of this array
-    // Array function Most: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.most
-    // 
-    // https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions#array-slices
-    //
-    // https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.exclude
 
 
     //////////////////////////////////////////////////////////////////
@@ -133,7 +126,7 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 8.
     operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         within {
             for (i in IndexRange(x)) {
                 if (not pattern[i]) {
@@ -145,22 +138,9 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
-    // and oracle with no extra qubits:
-    // Controlled Z(q[0..Length(q)-2], q[Length(q) - 1])
-    //
-    // negate everything and apply AND = OR
-    //
-    // take in some q 
-        // 1) negate everything - applying X
-        // 2) apply the AND oracle
-        // 3) flip everything back
-        // 4) 
-    //
-    //
-
     // Exercise 9.
     operation Arbitrary_Pattern_Oracle_Challenge_Reference(x: Qubit[], pattern: Bool[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         within {
             for (i in IndexRange(x)) {
                 if (not pattern[i]) {
@@ -174,7 +154,7 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 10.
     operation Meeting_Oracle_Reference(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
-    is Adj {
+    is Adj + Ctl {
         using (q = Qubit[Length(x)]) {
             within {
                 for (i in IndexRange(q)) {

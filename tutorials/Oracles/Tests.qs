@@ -17,15 +17,15 @@ namespace Quantum.Kata.Oracles {
 
     // ------------------------------------------------------
     // Helper functions
-    operation ApplyOracle (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj)) : Unit
-    is Adj {
+    operation ApplyOracle (qs : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj + Ctl)) : Unit
+    is Adj + Ctl {
         let N = Length(qs);
         oracle(qs[0 .. N - 2], qs[N - 1]);
     }
 
     operation AssertTwoOraclesAreEqual (nQubits : Range, 
-        oracle1 : ((Qubit[], Qubit) => Unit is Adj), 
-        oracle2 : ((Qubit[], Qubit) => Unit is Adj)) : Unit {
+        oracle1 : ((Qubit[], Qubit) => Unit is Adj + Ctl), 
+        oracle2 : ((Qubit[], Qubit) => Unit is Adj + Ctl)) : Unit {
         let sol = ApplyOracle(_, oracle1);
         let refSol = ApplyOracle(_, oracle2);
         
@@ -62,9 +62,7 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation E2_Phase_Quantum_Oracle() : Unit {
-        AssertOperationsEqualReferenced(3,
-                                        Phase_7_Oracle,
-                                        Phase_7_Oracle_Reference);
+        AssertOperationsEqualReferenced(3, Phase_7_Oracle, Phase_7_Oracle_Reference);
     }
 
 
@@ -80,12 +78,12 @@ namespace Quantum.Kata.Oracles {
     operation E4_Apply_Phase_Oracle() : Unit {
         for (N in 1..5) {
             AssertOperationsEqualReferenced(N, 
-                                            Oracle_Converter(Marking_7_Oracle),
-                                            Oracle_Converter_Reference(Marking_7_Oracle));
-                                            
-            AssertOperationsEqualReferenced(N, 
                                             Oracle_Converter(Marking_7_Oracle_Reference),
                                             Oracle_Converter_Reference(Marking_7_Oracle_Reference));
+
+            AssertOperationsEqualReferenced(N, 
+                                            Oracle_Converter(Or_Oracle_Reference),
+                                            Oracle_Converter_Reference(Or_Oracle_Reference));
         }
     }
 

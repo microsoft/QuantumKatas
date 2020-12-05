@@ -25,13 +25,13 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 2.
     operation Phase_7_Oracle (x : Qubit[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
     // Exercise 3.
     operation Marking_7_Oracle(x: Qubit[], y: Qubit) : Unit
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
@@ -40,12 +40,12 @@ namespace Quantum.Kata.Oracles {
     //////////////////////////////////////////////////////////////////
 
     // Exercise 4.
-    operation Apply_Phase_Oracle(markingOracle: ((Qubit[], Qubit) => Unit is Adj), qubits: Qubit[]) : Unit
-    is Adj {
+    operation Apply_Phase_Oracle(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit
+    is Adj + Ctl {
         // ...
     }
 
-    function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj)) : (Qubit[] => Unit is Adj) {
+    function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
         return Apply_Phase_Oracle(markingOracle, _);
     }
 
@@ -55,19 +55,19 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 5.
     operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
     // Exercise 6.
     operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
     // Exercise 7.
     operation kth_Excluded_Or(x: Qubit[], k: Int) : Unit
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
@@ -77,19 +77,19 @@ namespace Quantum.Kata.Oracles {
 
     // Exercise 8.
     operation Arbitrary_Pattern_Oracle(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
     // Exercise 9.
     operation Arbitrary_Pattern_Oracle_Challenge(x: Qubit[], pattern: Bool[]) : Unit 
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 
     // Exercise 10.
     operation Meeting_Oracle(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
-    is Adj {
+    is Adj + Ctl {
         // ...
     }
 }
