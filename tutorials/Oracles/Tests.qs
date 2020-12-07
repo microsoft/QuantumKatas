@@ -34,8 +34,6 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
-    // https://github.com/microsoft/QuantumKatas/blob/main/DeutschJozsaAlgorithm/Tests.qs#L19
-
 
     // ------------------------------------------------------
     function Check_Classical_Oracle(x: Bool[]) : Unit {
@@ -172,12 +170,5 @@ namespace Quantum.Kata.Oracles {
             }
         }
     }
-
-    //From Mariia Mykhailova to Everyone: 11:17 AM https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays.exclude 
-    //From Mariia Mykhailova to Everyone: 11:25 AM https://github.com/microsoft/QuantumKatas/blob/main/DeutschJozsaAlgorithm/Tests.qs#L19 
-    //From Mariia Mykhailova to Everyone: 11:36 AM https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.intrinsic.r 
-    //From Mariia Mykhailova to Everyone: 11:47 AM https://github.com/microsoft/QuantumKatas/pull/560/files 
-    //From Mariia Mykhailova to Everyone: 11:55 AM https://github.com/microsoft/QuantumKatas/blob/main/RippleCarryAdder/Tests.qs#L122 
-    //From Mariia Mykhailova to Everyone: 12:01 PM https://github.com/microsoft/QuantumKatas/blob/main/GraphColoring/Tests.qs#L66
 }
     
