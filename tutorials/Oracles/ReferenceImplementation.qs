@@ -96,14 +96,7 @@ namespace Quantum.Kata.Oracles {
     // Exercise 6.
     operation kth_Spin_Up_Reference(x: Qubit[], k: Int) : Unit 
     is Adj + Ctl {
-        using (minus = Qubit()) {
-            within {
-                X(minus);
-                H(minus);
-            } apply {
-                CNOT(x[k], minus);
-            }
-        }
+        Z(x[k]);
     }
 
     // Exercise 7.
