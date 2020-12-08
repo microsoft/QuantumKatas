@@ -391,18 +391,19 @@ namespace Quantum.Kata.RippleCarryAdder {
     }
 
     // ------------------------------------------------------
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T35_ArbitraryMajUmaAdder () : Unit {
         // This algorithm is much faster, so a 5 qubit test is feasible
         for (i in 1 .. 5) {
             let testOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryMajUmaAdder, _);
             let refOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryMajUmaAdder_Reference, _);
 
-            ResetQubitCount();
-            AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
-            let used = GetMaxQubitCount();
-            Fact(used <= (2 * (i + 1)), "Too many qubits used");
-            
+             within {
+                AllowAtMostNQubits(2 * (i + 1), "Too many qubits used");
+            } apply {
+                AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
+            }
+           
             AssertOperationsEqualReferenced((2 * i) + 1, testOp, refOp);
         }
     }

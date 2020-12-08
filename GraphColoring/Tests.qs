@@ -135,15 +135,14 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // ------------------------------------------------------
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T15_ColorEqualityOracle_Nbit () : Unit {
-        for (N in 1..4) {
-            ResetQubitCount();
-            
-            CheckColorEqualityOracle(N, ColorEqualityOracle_Nbit);
-
-            let nq = GetMaxQubitCount();
-            EqualityFactI(nq, 2*N+1, $"You are not allowed to allocate extra qubits. You allocated {nq - (2*N+1)}");
+        for (N in 1..4) {            
+            within {
+                AllowAtMostNQubits(2*N+1, "You are not allowed to allocate extra qubits");
+            } apply {
+                CheckColorEqualityOracle(N, ColorEqualityOracle_Nbit);
+            }
 
             AssertOperationsEqualReferenced(2*N+1, WrapperOperation(ColorEqualityOracle_Nbit, _),
                                                    WrapperOperation(ColorEqualityOracle_Nbit_Reference, _));

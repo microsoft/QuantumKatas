@@ -62,8 +62,25 @@ namespace Quantum.Kata.TruthTables {
         return (x1, x2, x3);
     }
 
+    // Task 2. "Exactly 1 bit is true" function
+    //
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 1 bit out of x₁, x₂ or x₃ is true.
+    function ExactlyOneBitTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
+        return f;
+    }
 
-    // Task 2. Compute AND of two truth tables
+    // Task 3. "Exactly 2 bits are true" function
+    //
+    // Goal : Describe a 3-input function f(x₃, x₂, x₁) represented by an integer
+    //        which is true if and only if exactly 2 bits out of x₁, x₂ or x₃ is true.
+    function ExactlyTwoBitsTrue () : TruthTable {
+        let f = TruthTable(0, 3);            // Update the value of f ...
+        return f;
+    }
+
+    // Task 4. Compute AND of two truth tables
     //
     // Goal: Compute a truth table that computes the conjunction (AND)
     //       of two truth tables.  Find a way to perform the computation
@@ -81,7 +98,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 3. Compute OR of two truth tables
+    // Task 5. Compute OR of two truth tables
     //
     // Goal: Compute a truth table that computes the disjunction (OR)
     //       of two truth tables.
@@ -90,7 +107,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 4. Compute XOR of two truth tables
+    // Task 6. Compute XOR of two truth tables
     //
     // Goal: Compute a truth table that computes the exclusive-OR (XOR)
     //       of two truth tables.
@@ -99,7 +116,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 5. Compute NOT of a truth table
+    // Task 7. Compute NOT of a truth table
     //
     // Goal: Compute a truth table that computes negation of a truth
     //       table.
@@ -111,7 +128,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 6. Build if-then-else truth table
+    // Task 8. Build if-then-else truth table
     //
     // Goal: Compute the truth table of the if-then-else function ttCond ? ttThen | ttElse
     //       (if ttCond then ttThen else ttElse) by making use of the truth table operations
@@ -121,7 +138,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 7. Find all true input assignments in a truth table
+    // Task 9. Find all true input assignments in a truth table
     //
     // Goal: Return an array that contains all input assignments in a truth table
     //       that have a true truth value.  These input assignments are called minterms.
@@ -139,7 +156,7 @@ namespace Quantum.Kata.TruthTables {
     }
 
 
-    // Task 8. Apply truth table as a quantum operation
+    // Task 10. Apply truth table as a quantum operation
     //
     // Goal: Apply the X operation on the target qubit, if and only if
     //       the classical state of the controls is a minterm of the truth table.

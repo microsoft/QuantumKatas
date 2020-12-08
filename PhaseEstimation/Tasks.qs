@@ -8,6 +8,7 @@ namespace Quantum.Kata.PhaseEstimation {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Measurement;
 
     
     //////////////////////////////////////////////////////////////////
