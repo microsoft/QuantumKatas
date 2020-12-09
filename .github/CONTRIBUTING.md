@@ -7,10 +7,12 @@ We're so glad you asked!
 * [Reporting Bugs](#reporting-bugs)
 * [Improving Documentation](#improving-documentation)
 * [Contributing Code](#contributing-code)
-   * [Improving existing katas](#improving-existing-katas)
+   * [The structure of a kata/tutorial](#the-structure-of-a-katatutorial)
+   * [Adding new tasks to existing katas](#adding-new-tasks-to-existing-katas)
+   * [Contributing workbooks](#contributing-workbooks)
    * [Contributing new katas](#contributing-new-katas)
    * [Style guide](#style-guide)
-   * [Updating the Katas to the new QDK version](#updating-the-Katas-to-the-new-QDK-version)
+   * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
 * [Contributor License Agreement](#contributor-license-agreement)
@@ -39,17 +41,40 @@ Whether you want to contribute a new task to an existing kata, to improve the te
 This way you'll get feedback on your idea faster and easier than if you go all the way to implementing it first.
 This will also ensure that you're not working on the same thing as somebody else.
 
+You are also welcome to browse through the list of issues labeled as ["help wanted"](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and pick up any of them to work on it.
+
 We're always happy to discuss new ideas and to offer advice, be it on the test harness implementation or on the best breakdown of a topic into tasks.
 
-#### Improving Existing Katas
+### The structure of a kata/tutorial
+
+Each kata has a fixed structure that includes tasks, reference solutions and testing harnesses. You can find an overview of this structure in 
+[this blog post](https://devblogs.microsoft.com/qsharp/inside-the-quantum-katas-part-1/).
+
+Tutorials follow a similar structure; the key difference between a kata and a tutorial is that a kata offers only programming exercises, while a tutorial offers the theory on some topic, complimented by some exercises (possibly easier ones than a kata on a similar topic would have). 
+The katas can offer advanced tasks that rely on the theory not presented in the tutorials (in this case they should offer a link to an external resource covering this topic). 
+The theory offered in a tutorial should be presented in a manner consistent with other tutorials, using knowledge and terminology introduced in the previous tutorials - assume that a learner is going through the tutorials without in-depth study of other resources.
+
+### Adding new tasks to existing katas
 
 Each kata is a sequence of tasks on the topic progressing from very simple to quite challenging. If you have an idea for a task which fits nicely in the sequence, filling a gap between other tasks or expanding the sequence with harder tasks, bring it forward!
 
 Note that most of the katas have a Jupyter Notebook front-end, so if you are modifying a task or adding a new one in the Q# project, you have to update the Jupyter Notebook for this kata as well.
+If you're adding a task anywhere but in the end of the section, you'll also need to renumerate the tasks that follow it and the tests that cover it.
 
-You are also welcome to browse through the list of issues labeled as ["help wanted"](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and pick up any of them to work on it.
+[#177](https://github.com/microsoft/QuantumKatas/pull/177) is an example pull request that touches all 4 files that need to be modified and includes task and test renumeration to accommodate the new task in the middle of the sequence.
 
-#### Contributing New Katas
+### Contributing workbooks
+
+A lot of katas and tutorials have *workbooks* - worked out solutions to the exercises presented in Jupyter Notebook format and cross-linked with the Jupyter Notebook "frontend" of the kata. 
+
+The explanations focus on the logical steps required to solve a problem; they illustrate the concepts that need to be applied to come up with a solution to the problem, explaining the mathematical steps required, and occasionally the Q# concepts and features used to implement the mathematical solution in the code. 
+The workbook should not be the primary source of knowledge on the subject matter; it assumes that the learner has already read a tutorial or a textbook and that is now seeking to improve their problem-solving skills. The learner should attempt solving the tasks of the respective kata first, and turn to the workbook only if stuck. While a textbook emphasizes knowledge acquisition, a workbook emphasizes skill acquisition.
+
+The workbook solutions can parallel the ones in `ReferenceImplementation.qs` or follow an original approach. Sometimes a workbook will present several different solutions for one problem if they illustrate different strategies to solving this type of problems.
+
+[#509](https://github.com/microsoft/QuantumKatas/pull/509/) is an example pull request that adds a workbook to a kata.
+
+### Contributing new katas
 
 We aim for the Quantum Katas to be a proper companion for any "Introduction to Quantum Computing" course, and eventually go beyond that.
 Obviously, there is a lot of work to be done to get there! 
@@ -62,7 +87,9 @@ If you want to create a kata for some topic, start by checking the roadmap to se
 If somebody is already working on this topic, you can try to find them (using the repository issues) and coordinate with them.
 If the topic you want is not claimed, or is not on the list, go ahead and let us know you'll be working on it by creating an issue.
 
-### Style Guide
+[#378](https://github.com/microsoft/QuantumKatas/pull/378/) is an example pull request that adds a new kata with Jupyter Notebook "frontend" and a workbook. (Note that it predates our changes to the way the kata tests are defined. The best way to add a new kata is to copy an existing one and follow its structure exactly.)
+
+### Style guide
 
 * We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/quantum/contributing/style-guide) in our Q# code. 
 * We also try to maintain a uniform style across the katas and most importantly within each kata. 
@@ -122,7 +149,7 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
 Currently some tasks are excluded from validation performed as part of continuous integration done by the [`scripts/validate-notebooks.ps1`](../scripts/validate-notebooks.ps1) script.
 This can happen for several reasons: 
  - Some tasks require implementing several code cells at once before running the test, so the first of the cells implemented is guaranteed to fail the associated test (`multicell_solution`).
- - For some tasks the correct solution is randomize and fails (`randomized_solution`) or times out (`timeout`) with relatively high probability.
+ - For some tasks the correct solution is randomized and fails (`randomized_solution`) or times out (`timeout`) with relatively high probability.
  - Some code cells contain deliberately invalid code (`invalid_code`) that the learner is supposed to fix.
 
 > Currently all tags are excluded from validation in the same way: the corresponding cells are not executed when the notebook is validated.
