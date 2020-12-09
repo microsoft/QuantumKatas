@@ -68,7 +68,7 @@ If you're adding a task anywhere but in the end of the section, you'll also need
 A lot of katas and tutorials have *workbooks* - worked out solutions to the exercises presented in Jupyter Notebook format and cross-linked with the Jupyter Notebook "frontend" of the kata. 
 
 The explanations focus on the logical steps required to solve a problem; they illustrate the concepts that need to be applied to come up with a solution to the problem, explaining the mathematical steps required, and occasionally the Q# concepts and features used to implement the mathematical solution in the code. 
-The workbook should not be the primary source of knowledge on the subject matter; it assumes that the learner has already read a tutorial or a textbook and that is now seeking to improve your problem-solving skills. The learner should attempt solving the tasks of the respective kata first, and turn to the workbook only if stuck. While a textbook emphasizes knowledge acquisition, a workbook emphasizes skill acquisition.
+The workbook should not be the primary source of knowledge on the subject matter; it assumes that the learner has already read a tutorial or a textbook and that is now seeking to improve their problem-solving skills. The learner should attempt solving the tasks of the respective kata first, and turn to the workbook only if stuck. While a textbook emphasizes knowledge acquisition, a workbook emphasizes skill acquisition.
 
 The workbook solutions can parallel the ones in `ReferenceImplementation.qs` or follow an original approach. Sometimes a workbook will present several different solutions for one problem if they illustrate different strategies to solving this type of problems.
 
