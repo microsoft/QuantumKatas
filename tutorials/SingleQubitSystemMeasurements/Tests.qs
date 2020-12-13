@@ -76,7 +76,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T2_IsQubitZero () : Unit {
         DistinguishTwoStates(StatePrep_IsQubitZero, IsQubitZero, ["|1⟩", "|0⟩"], false);
     }
@@ -97,7 +97,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T3_IsQubitMinus () : Unit {
         DistinguishTwoStates(StatePrep_IsQubitMinus, IsQubitMinus, ["|+⟩", "|-⟩"], false);
     }
@@ -119,13 +119,12 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T5_IsQubitSpecificState () : Unit {
-        // cross-test
+    @Test("QuantumSimulator")
+    operation T5_IsQubitPsiPlus () : Unit {
         // alpha = 0.0 or PI() => !isQubitOne
         // alpha = PI() / 2.0 => isQubitOne
-        DistinguishTwoStates(StatePrep_IsQubitPsiPlus, IsQubitSpecificState, 
-            ["|psi-⟩", "|psi+⟩"], false);
+        DistinguishTwoStates(StatePrep_IsQubitPsiPlus, IsQubitPsiPlus, 
+            ["|ψ₋⟩", "|ψ+⟩"], false);
     }
     
 
@@ -147,7 +146,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T6_IsQubitA () : Unit {
         
         for (i in 0 .. 10) {
@@ -165,13 +164,22 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
     // |B⟩ = - i sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
 
+    // Wrapper function to convert the Result output of MeasureInABBasis to a bool type
+    operation IsResultZero( MeasurementOperation : (Qubit => Result), givenQubit : Qubit) : Bool {
+        mutable isZero = false;
+        if (MeasurementOperation(givenQubit) == Zero) {
+            set isZero = true;
+        }
+        return isZero;
+    }
+
     // We can use the StatePrep_IsQubitA operation for the testing
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T7_MeasurementAB () : Unit {
+    @Test("QuantumSimulator")
+    operation T7_MeasureInABBasis () : Unit {
         
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
-            DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), MeasurementAB(alpha, _), 
+            DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsResultZero(MeasureInABBasis(alpha, _),_), 
                 [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"], true);
         }
     }

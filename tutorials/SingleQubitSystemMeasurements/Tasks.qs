@@ -27,7 +27,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // Exercise 5. Distinguishing specific orthogonal states in Q#
-    operation IsQubitSpecificState (q : Qubit) : Bool {
+    operation IsQubitPsiPlus (q : Qubit) : Bool {
         // ...
         return false;
     }
@@ -39,9 +39,9 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // Exercise 7. |A❭ and |B❭?
-    operation MeasurementAB (alpha : Double, q : Qubit) : Bool {
+    operation MeasureInABBasis (alpha : Double, q : Qubit) : Result {
         // ...
-        return false;
+        return One;
     }
 }
 

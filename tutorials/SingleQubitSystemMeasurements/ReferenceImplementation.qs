@@ -19,11 +19,11 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
 
     // Exercise 3.
     operation IsQubitMinus_Reference (q : Qubit) : Bool {
-        return Measure([PauliX], [q]) == Zero;
+        return Measure([PauliX], [q]) == One;
     }
 
     // Exercise 5.
-    operation IsQubitSpecificState_Reference (q : Qubit) : Bool { 
+    operation IsQubitPsiPlus_Reference (q : Qubit) : Bool { 
         Ry(-2.0 * ArcTan2(0.8, 0.6), q);
         return M(q) == Zero;
     }
@@ -35,10 +35,10 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // Exercise 7.
-    operation MeasurementAB_Reference (alpha: Double, q : Qubit) : Bool { 
+    operation MeasureInABBasis_Reference (alpha: Double, q : Qubit) : Result { 
         Rx(-2.0 * alpha, q);
-        let is_A = M(q) == Zero;
+        let meas_result = M(q);
         Rx(2.0 * alpha, q);
-        return is_A;
+        return meas_result;
     }
 }
