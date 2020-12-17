@@ -100,7 +100,7 @@ namespace Quantum.Kata.PhaseEstimation {
         EqualityFactI(nu, 1, $"You are allowed to call Controlled U exactly once, and you called it {nu} times");
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T21_SingleBitPE () : Unit {
         Test1BitPEOnOnePair(Z, I, +1);
         Test1BitPEOnOnePair(Z, X, -1);
