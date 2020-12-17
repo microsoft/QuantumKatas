@@ -17,21 +17,19 @@ namespace Quantum.Kata.Oracles {
     // Part I. Introduction to Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 1.
-    function Is_Seven(x: Bool[]) : Bool {
+    // Task 1.1.
+    function IsSeven (x: Bool[]) : Bool {
         // ...
         return false;
     }
 
-    // Exercise 2.
-    operation Phase_7_Oracle (x : Qubit[]) : Unit 
-    is Adj + Ctl {
+    // Task 1.2.
+    operation IsSeven_PhaseOracle (x : Qubit[]) : Unit is Adj + Ctl {
         // ...
     }
 
-    // Exercise 3.
-    operation Marking_7_Oracle(x: Qubit[], y: Qubit) : Unit
-    is Adj + Ctl {
+    // Task 1.3.
+    operation IsSeven_MarkingOracle (x: Qubit[], y: Qubit) : Unit is Adj + Ctl {
         // ...
     }
 
@@ -39,35 +37,31 @@ namespace Quantum.Kata.Oracles {
     // Part II. Phase Kickback
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 4.
-    operation Apply_Phase_Oracle(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit
-    is Adj + Ctl {
+    // Task 2.1.
+    operation ApplyMarkingOracleAsPhaseOracle (markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit is Adj + Ctl {
         // ...
     }
 
-    function Oracle_Converter(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
-        return Apply_Phase_Oracle(markingOracle, _);
+    function Oracle_Converter (markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
+        return ApplyMarkingOracleAsPhaseOracle(markingOracle, _);
     }
 
     //////////////////////////////////////////////////////////////////
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 5.
-    operation Or_Oracle(x: Qubit[], y: Qubit) : Unit
-    is Adj + Ctl {
+    // Task 3.1.
+    operation Or_Oracle (x: Qubit[], y: Qubit) : Unit is Adj + Ctl {
         // ...
     }
 
-    // Exercise 6.
-    operation kth_Spin_Up(x: Qubit[], k: Int) : Unit 
-    is Adj + Ctl {
+    // Task 3.2.
+    operation kthBit_Oracle (x: Qubit[], k: Int) : Unit is Adj + Ctl {
         // ...
     }
 
-    // Exercise 7.
-    operation kth_Excluded_Or(x: Qubit[], k: Int) : Unit
-    is Adj + Ctl {
+    // Task 3.3
+    operation OrOfBitsExceptKth_Oracle (x: Qubit[], k: Int) : Unit is Adj + Ctl {
         // ...
     }
 
@@ -75,21 +69,18 @@ namespace Quantum.Kata.Oracles {
     // Part IV. More Oracles! Implementation and Testing
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 8.
-    operation Arbitrary_Pattern_Oracle(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
-    is Adj + Ctl {
+    // Task 4.1.
+    operation ArbitraryBitPattern_Oracle (x: Qubit[], y: Qubit, pattern: Bool[]) : Unit is Adj + Ctl {
         // ...
     }
 
-    // Exercise 9.
-    operation Arbitrary_Pattern_Oracle_Challenge(x: Qubit[], pattern: Bool[]) : Unit 
-    is Adj + Ctl {
+    // Task 4.2.
+    operation ArbitraryBitPattern_Oracle_Challenge (x: Qubit[], pattern: Bool[]) : Unit is Adj + Ctl {
         // ...
     }
 
-    // Exercise 10.
-    operation Meeting_Oracle(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
-    is Adj + Ctl {
+    // Task 4.3.
+    operation Meeting_Oracle (x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit is Adj + Ctl {
         // ...
     }
 }

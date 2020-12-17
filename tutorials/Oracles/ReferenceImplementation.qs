@@ -11,47 +11,28 @@
 namespace Quantum.Kata.Oracles {
     
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
 
 
     //////////////////////////////////////////////////////////////////
     // Part I. Introduction to Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 1.
-    function Is_Seven_Reference(x: Bool[]) : Bool {
-        let n = Length(x);
-
-        if (n < 3) {
-            return false;
-        }
-
-        for (i in IndexRange(x)) {
-            if (i == n-1 or i == n-2 or i == n-3) {
-                if (not x[i]) {
-                    return false;
-                }
-            } else {
-                if (x[i]) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
+    // Task 1.1.
+    function IsSeven_Reference (x: Bool[]) : Bool {
+        return BoolArrayAsInt(x) == 7;
     }
 
-    // Exercise 2.
-    operation Phase_7_Oracle_Reference(x : Qubit[]) : Unit 
-    is Adj + Ctl {
+    // Task 1.2.
+    operation IsSeven_PhaseOracle_Reference (x : Qubit[]) : Unit is Adj + Ctl {
         Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
     }
 
-    // Exercise 3.
-    operation Marking_7_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
-    is Adj + Ctl {
+    // Task 1.3.
+    operation IsSeven_MarkingOracle_Reference (x: Qubit[], y: Qubit) : Unit is Adj + Ctl {
         Controlled X(x, y);
     }
 
@@ -60,9 +41,8 @@ namespace Quantum.Kata.Oracles {
     // Part II. Phase Kickback
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 4.
-    operation Apply_Phase_Oracle_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit
-    is Adj + Ctl {
+    // Task 2.1.
+    operation ApplyMarkingOracleAsPhaseOracle_Reference (markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits: Qubit[]) : Unit is Adj + Ctl {
         using (minus = Qubit()) {
             within {
                 X(minus);
@@ -73,8 +53,8 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
-    function Oracle_Converter_Reference(markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
-        return Apply_Phase_Oracle_Reference(markingOracle, _);
+    function Oracle_Converter_Reference (markingOracle: ((Qubit[], Qubit) => Unit is Adj + Ctl)) : (Qubit[] => Unit is Adj + Ctl) {
+        return ApplyMarkingOracleAsPhaseOracle_Reference(markingOracle, _);
     }
 
 
@@ -82,26 +62,20 @@ namespace Quantum.Kata.Oracles {
     // Part III. Implementing Quantum Oracles
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 5.
-    operation Or_Oracle_Reference(x: Qubit[], y: Qubit) : Unit
-    is Adj + Ctl {
-        within {
-            ApplyToEachA(X, x);
-        } apply {
-            X(y);  // flip y
-            Controlled X(x, y);  // flip y again if input x was all zeros
-        }
+    // Task 3.1.
+    operation Or_Oracle_Reference (x: Qubit[], y: Qubit) : Unit is Adj + Ctl {
+        X(y);
+        let ZeroFlipOracle = ControlledOnInt(0, X);
+        ZeroFlipOracle(x, y);
     }
 
-    // Exercise 6.
-    operation kth_Spin_Up_Reference(x: Qubit[], k: Int) : Unit 
-    is Adj + Ctl {
+    // Task 3.2.
+    operation kthBit_Oracle_Reference (x: Qubit[], k: Int) : Unit is Adj + Ctl {
         Z(x[k]);
     }
 
-    // Exercise 7.
-    operation kth_Excluded_Or_Reference(x: Qubit[], k: Int) : Unit
-    is Adj + Ctl {
+    // Task 3.3.
+    operation OrOfBitsExceptKth_Oracle_Reference (x: Qubit[], k: Int) : Unit is Adj + Ctl {
         using (minus = Qubit()) {
             within {
                 X(minus);
@@ -117,23 +91,14 @@ namespace Quantum.Kata.Oracles {
     // Part IV. More Oracles! Implementation and Testing
     //////////////////////////////////////////////////////////////////
 
-    // Exercise 8.
-    operation Arbitrary_Pattern_Oracle_Reference(x: Qubit[], y: Qubit, pattern: Bool[]) : Unit 
-    is Adj + Ctl {
-        within {
-            for (i in IndexRange(x)) {
-                if (not pattern[i]) {
-                    X(x[i]);
-                }
-            }
-        } apply {
-            Controlled X(x, y);
-        }
+    // Task 4.1.
+    operation ArbitraryBitPattern_Oracle_Reference (x: Qubit[], y: Qubit, pattern: Bool[]) : Unit  is Adj + Ctl {
+        let PatternOracle = ControlledOnBitString(pattern, X);
+        PatternOracle(x, y);
     }
 
-    // Exercise 9.
-    operation Arbitrary_Pattern_Oracle_Challenge_Reference(x: Qubit[], pattern: Bool[]) : Unit 
-    is Adj + Ctl {
+    // Task 4.2.
+    operation ArbitraryBitPattern_Oracle_Challenge_Reference (x: Qubit[], pattern: Bool[]) : Unit is Adj + Ctl {
         within {
             for (i in IndexRange(x)) {
                 if (not pattern[i]) {
@@ -145,9 +110,8 @@ namespace Quantum.Kata.Oracles {
         }
     }
 
-    // Exercise 10.
-    operation Meeting_Oracle_Reference(x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit 
-    is Adj + Ctl {
+    // Task 4.3.
+    operation Meeting_Oracle_Reference (x: Qubit[], jasmine: Qubit[], z: Qubit) : Unit is Adj + Ctl {
         using (q = Qubit[Length(x)]) {
             within {
                 for (i in IndexRange(q)) {
@@ -156,13 +120,8 @@ namespace Quantum.Kata.Oracles {
                     X(jasmine[i]);
                     CCNOT(x[i], jasmine[i], q[i]);
                 }
-                ApplyToEachA(X, q);
             } apply {
-                X(z);  // flip to allow for a meeting
-
-                // flip z back if both parties, x and jasmine, are busy
-                // every day of the week.
-                Controlled X(q, z);
+                Or_Oracle_Reference(q, z);
             }
         }
     }
