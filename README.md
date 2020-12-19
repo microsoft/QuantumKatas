@@ -52,6 +52,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 #### Quantum Computing Concepts: Measurements
 
+* **[Single-qubit measurements (tutorial)](./tutorials/SingleQubitSystemMeasurements/)**.
+  Learn what quantum measurement is and how to use it for single-qubit systems.
 * **[Measurements](./Measurements/)**.
   Learn to distinguish quantum states using measurements.
 * **[Distinguish unitaries](./DistinguishUnitaries/)**.
