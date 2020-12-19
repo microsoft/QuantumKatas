@@ -16,8 +16,6 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Random;
 
-    open Quantum.Kata.Utils;
-
 
     //////////////////////////////////////////////////////////////////
 
@@ -103,33 +101,31 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // ------------------------------------------------------
-    // Exercise 5. Distinguishing specific orthogonal states in Q#
+    // Exercise 5. Distinguish specific orthogonal states
     // ------------------------------------------------------
 
-    // |\psi + ⟩ =   0.6 * |0⟩ + 0.8 * |1⟩,
-    // |\psi + ⟩ =   -0.8 * |0⟩ + 0.6 * |1⟩.
+    // |ψ₊⟩ =   0.6 * |0⟩ + 0.8 * |1⟩,
+    // |ψ₋⟩ =  -0.8 * |0⟩ + 0.6 * |1⟩.
     operation StatePrep_IsQubitPsiPlus (q : Qubit, state : Int) : Unit is Adj {
         if (state == 0) {
-            // convert |0⟩ to |psi -⟩
+            // convert |0⟩ to |ψ₋⟩
             X(q);
             Ry(2.0 * ArcTan2(0.8, 0.6), q);
         } else {
-            // convert |0⟩ to |psi +⟩
+            // convert |0⟩ to |ψ₊⟩
             Ry(2.0 * ArcTan2(0.8, 0.6), q);
         }
     }
 
     @Test("QuantumSimulator")
     operation T5_IsQubitPsiPlus () : Unit {
-        // alpha = 0.0 or PI() => !isQubitOne
-        // alpha = PI() / 2.0 => isQubitOne
         DistinguishTwoStates(StatePrep_IsQubitPsiPlus, IsQubitPsiPlus, 
-            ["|ψ₋⟩", "|ψ+⟩"], false);
+            ["|ψ₋⟩", "|ψ₊⟩"], false);
     }
     
 
     // ------------------------------------------------------
-    // Exercise 6. |A❭ and |B❭?
+    // Exercise 6. Distinguish states |A❭ and |B❭
     // ------------------------------------------------------
     
     // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
@@ -148,17 +144,16 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     
     @Test("QuantumSimulator")
     operation T6_IsQubitA () : Unit {
-        
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _), 
-                [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"], false);
+                [$"|B⟩ = -i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩", $"|A⟩ = cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩"], false);
         }
     }
 
 
     // ------------------------------------------------------
-    // Exercise 7. Measurement in the |A❭, |B❭ basis
+    // Exercise 7. Measure state in {|A❭, |B❭} basis
     // ------------------------------------------------------
     
     // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
@@ -176,7 +171,6 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // We can use the StatePrep_IsQubitA operation for the testing
     @Test("QuantumSimulator")
     operation T7_MeasureInABBasis () : Unit {
-        
         for (i in 0 .. 10) {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsResultZero(MeasureInABBasis(alpha, _),_), 

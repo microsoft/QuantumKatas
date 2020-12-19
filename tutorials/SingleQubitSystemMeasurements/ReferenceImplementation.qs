@@ -29,16 +29,16 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     // Exercise 6.
-    operation IsQubitA_Reference (alpha: Double, q : Qubit) : Bool { 
+    operation IsQubitA_Reference (alpha : Double, q : Qubit) : Bool { 
         Rx(-2.0 * alpha, q);
         return M(q) == Zero;
     }
 
     // Exercise 7.
-    operation MeasureInABBasis_Reference (alpha: Double, q : Qubit) : Result { 
+    operation MeasureInABBasis_Reference (alpha : Double, q : Qubit) : Result { 
         Rx(-2.0 * alpha, q);
-        let meas_result = M(q);
+        let measurementResult = M(q);
         Rx(2.0 * alpha, q);
-        return meas_result;
+        return measurementResult;
     }
 }

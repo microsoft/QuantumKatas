@@ -9,10 +9,7 @@
 
 namespace Quantum.Kata.SingleQubitSystemMeasurements {
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
-    open Microsoft.Quantum.Arrays;
     
     // Exercise 2. Distinguish |0❭ and |1❭
     operation IsQubitZero (q : Qubit) : Bool {
@@ -26,19 +23,19 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         return false;
     }
 
-    // Exercise 5. Distinguishing specific orthogonal states in Q#
+    // Exercise 5. Distinguish specific orthogonal states
     operation IsQubitPsiPlus (q : Qubit) : Bool {
         // ...
         return false;
     }
 
-    // Exercise 6. |A❭ and |B❭?
+    // Exercise 6. Distinguish states |A❭ and |B❭
     operation IsQubitA (alpha : Double, q : Qubit) : Bool {
         // ...
         return false;
     }
 
-    // Exercise 7. |A❭ and |B❭?
+    // Exercise 7. Measure state in {|A❭, |B❭} basis
     operation MeasureInABBasis (alpha : Double, q : Qubit) : Result {
         // ...
         return One;
