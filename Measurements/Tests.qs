@@ -281,7 +281,7 @@ namespace Quantum.Kata.Measurements {
             [BoolArrayAsKetState(b1), BoolArrayAsKetState(b2)]);
     }
 
-    @Test("QuantumSimulator")
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T107_TwoBitstringsMeasurement () : Unit {
         mutable b1 = [false, true];
         mutable b2 = [true, false];
@@ -406,7 +406,7 @@ namespace Quantum.Kata.Measurements {
                                      [IntArrayAsStateName(nQubits, bits1), IntArrayAsStateName(nQubits, bits2)]);
     }
 
-    @Test("QuantumSimulator")
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T108_SuperpositionOneMeasurement () : Unit {
         // note that bit strings in the comments (big endian) are the reverse of the bit strings passed to the solutions (little endian)
         CheckSuperpositionBitstringsOneMeasurement(2, [2],  // [10]
