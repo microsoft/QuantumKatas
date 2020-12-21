@@ -24,9 +24,10 @@ if ($install) {
         # dotnet-iqsharp writes some output to stderr, which causes Powershell to throw
         # unless $ErrorActionPreference is set to 'Continue'.
         $ErrorActionPreference = 'Continue'
-        $path = (Get-Item "$Env:TOOLS_DIR\dotnet-iqsharp*").FullName
+        dontet iqsharp install
+        # $path = (Get-Item "$Env:TOOLS_DIR\dotnet-iqsharp*").FullName
         # Redirect stderr output to stdout to prevent an exception being incorrectly thrown.
-        & $path install --user --path-to-tool $path 2>&1 | %{ "$_"}
+        # & $path install --user --path-to-tool $path 2>&1 | %{ "$_"}
         Write-Host "iq# kernel installed ($LastExitCode)"
     } catch {
         Write-Host ("iq# installation threw error: " + $_)
