@@ -33,8 +33,13 @@ Param(
     [int]$EndIndex = -1.0
 )
 
+if(Get-Variable -Name IQSharp.Hosting.Env -ErrorAction SilentlyContinue){
+    Get-Variable 'IQSharp.Hosting.Env'
+    & "$PSScriptRoot/install-iqsharp.ps1"
+} else {
+    Write-Host "We are running localy, so not installing IQSharp"
+}
 
-& "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
 function Validate {
