@@ -10,7 +10,7 @@ $install = $False
 
 # Install iqsharp if not installed yet.
 try {
-    $install = [string]::IsNullOrWhitespace((dotnet tool list --tool-path $Env:TOOLS_DIR | Select-String -Pattern "microsoft.quantum.iqsharp"))
+    $install = [string]::IsNullOrWhitespace((dotnet tool list -g | Select-String -Pattern "microsoft.quantum.iqsharp"))
 } catch {
     Write-Host ("`dotnet iqsharp --version` threw error: " + $_)
     $install = $True
@@ -19,7 +19,7 @@ try {
 if ($install) {
     try {
         Write-Host ("Installing Microsoft.Quantum.IQSharp at $Env:TOOLS_DIR")
-        dotnet tool install Microsoft.Quantum.IQSharp --version 0.13.20102604 --tool-path $Env:TOOLS_DIR
+        dotnet tool install Microsoft.Quantum.IQSharp --version 0.13.20102604 -g
 
         # dotnet-iqsharp writes some output to stderr, which causes Powershell to throw
         # unless $ErrorActionPreference is set to 'Continue'.
