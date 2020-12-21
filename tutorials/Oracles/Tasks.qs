@@ -56,7 +56,7 @@ namespace Quantum.Kata.Oracles {
     }
 
     // Task 3.2.
-    operation kthBit_Oracle (x : Qubit[], k : Int) : Unit is Adj + Ctl {
+    operation KthBit_Oracle (x : Qubit[], k : Int) : Unit is Adj + Ctl {
         // ...
     }
 

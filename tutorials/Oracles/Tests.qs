@@ -99,8 +99,8 @@ namespace Quantum.Kata.Oracles {
                     AllowAtMostNQubits(2*N, "You are not allowed to allocate extra qubits");
                 } apply {
                     AssertOperationsEqualReferenced(N,
-                                                kthBit_Oracle(_, k),
-                                                kthBit_Oracle_Reference(_, k));
+                                                KthBit_Oracle(_, k),
+                                                KthBit_Oracle_Reference(_, k));
                 }
             }
         }

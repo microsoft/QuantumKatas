@@ -28,7 +28,7 @@ namespace Quantum.Kata.Oracles {
 
     // Task 1.2.
     operation IsSeven_PhaseOracle_Reference (x : Qubit[]) : Unit is Adj + Ctl {
-        Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
+        Controlled Z(Most(x), Tail(x));
     }
 
     // Task 1.3.
@@ -65,12 +65,11 @@ namespace Quantum.Kata.Oracles {
     // Task 3.1.
     operation Or_Oracle_Reference (x : Qubit[], y : Qubit) : Unit is Adj + Ctl {
         X(y);
-        let ZeroFlipOracle = ControlledOnInt(0, X);
-        ZeroFlipOracle(x, y);
+        (ControlledOnInt(0, X))(x, y);
     }
 
     // Task 3.2.
-    operation kthBit_Oracle_Reference (x : Qubit[], k : Int) : Unit is Adj + Ctl {
+    operation KthBit_Oracle_Reference (x : Qubit[], k : Int) : Unit is Adj + Ctl {
         Z(x[k]);
     }
 
@@ -81,7 +80,7 @@ namespace Quantum.Kata.Oracles {
                 X(minus);
                 H(minus);
             } apply {
-                Or_Oracle_Reference(x[0..k-1] + x[k+1..Length(x)-1], minus);
+                Or_Oracle_Reference(x[...k-1] + x[k+1...], minus);
             }
         }
     }
@@ -106,7 +105,7 @@ namespace Quantum.Kata.Oracles {
                 }
             }
         } apply {
-            Controlled Z(x[0..Length(x)-2], x[Length(x)-1]);
+            Controlled Z(Most(x), Tail(x));
         }
     }
 
