@@ -10,7 +10,7 @@ $install = $False
 
 # Install iqsharp if not installed yet.
 try {
-    $install = [string]::IsNullOrWhitespace((dotnet tool list -g | Select-String -Pattern "microsoft.quantum.iqsharp"))
+    $install = $False #[string]::IsNullOrWhitespace((dotnet tool list -g | Select-String -Pattern "microsoft.quantum.iqsharp"))
 } catch {
     Write-Host ("`dotnet iqsharp --version` threw error: " + $_)
     $install = $True
