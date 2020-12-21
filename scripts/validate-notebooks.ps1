@@ -33,8 +33,7 @@ Param(
     [int]$EndIndex = -1.0
 )
 
-if(Get-Variable -Name IQSharp.Hosting.Env -ErrorAction SilentlyContinue){
-    Get-Variable 'IQSharp.Hosting.Env'
+if(Get-Variable -Name variables.IQSharp.Hosting.Env -ErrorAction SilentlyContinue){
     & "$PSScriptRoot/install-iqsharp.ps1"
 } else {
     Write-Host "We are running localy, so not installing IQSharp"
