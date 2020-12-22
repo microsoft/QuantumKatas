@@ -92,7 +92,7 @@ namespace Quantum.Kata.Oracles {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T32_kthBit_Oracle () : Unit {
+    operation T32_KthBit_Oracle () : Unit {
         for (N in 1..5) {
             for (k in 0..(N-1)) {
                 within {
