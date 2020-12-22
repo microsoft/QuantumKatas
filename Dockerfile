@@ -57,6 +57,7 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/Oracles Oracles.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
