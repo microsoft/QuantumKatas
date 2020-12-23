@@ -34,7 +34,6 @@ Param(
 )
 
 
-& "$PSScriptRoot/install-iqsharp.ps1"
 $all_ok = $True
 
 function Validate {
