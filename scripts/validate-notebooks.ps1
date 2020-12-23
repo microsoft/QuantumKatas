@@ -33,11 +33,11 @@ Param(
     [int]$EndIndex = -1.0
 )
 
-if($(IQSharp.Hosting.Env) -eq "build-agent-katas"){
-    & "$PSScriptRoot/install-iqsharp.ps1"
-} else {
-    Write-Host "We are running localy, so not installing IQSharp"
-}
+# if($(IQSharp.Hosting.Env) -eq "build-agent-katas"){
+#     & "$PSScriptRoot/install-iqsharp.ps1"
+# } else {
+#     Write-Host "We are running localy, so not installing IQSharp"
+# }
 
 $all_ok = $True
 
