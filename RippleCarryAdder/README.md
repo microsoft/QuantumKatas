@@ -1,4 +1,4 @@
-# Welcome!
+﻿# Welcome!
 
 This kata explores ripple-carry addition on a quantum computer.
 
@@ -7,7 +7,8 @@ using the same basic components and the same algorithm.
 * Part II explores building an in-place adder.
 * A more complex version of an in-place adder covered in part III of the kata uses a different algorithm
 to reduce the number of ancillary qubits needed.
-* Finally, part IV covers building an in-place quantum subtractor.
+* Part IV covers building an in-place quantum subtractor.
+* Part V covers addition and subtraction modulo 2ᴺ.
 
 You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
 
