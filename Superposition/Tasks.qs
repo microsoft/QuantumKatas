@@ -39,7 +39,7 @@ namespace Quantum.Kata.Superposition {
     operation PlusState (q : Qubit) : Unit {
         // Hadamard gate H will convert |0⟩ state to |+⟩ state.
         // Type the following: H(q);
-        // Then rebuild the project and rerun the tests - T01_PlusState_Test should now pass!
+        // Then rebuild the project and rerun the tests - T01_PlusState should now pass!
 
         // ...
     }

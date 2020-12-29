@@ -22,29 +22,40 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T11_ValidMove_Test () : Unit {
+    operation T111_ValidAliceMove () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
             let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
             Fact(ValidAliceMove(cells) == ValidAliceMove_Reference(cells),
                  $"Incorrect Alice move validity for {cells}");
-            Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
-                 $"Incorrect Bob move validity for {cells}");
         }
 
         // Moves with numbers other than +1 and -1 should be rejected.
         for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
             Fact(ValidAliceMove(cellsOutOfRange) == false,
                  $"Invalid Alice move judged valid for {cellsOutOfRange}");
+        }
+    }
+
+    @Test("QuantumSimulator")
+    operation T112_ValidBobMove () : Unit {
+        // Try all moves with +1 and -1.
+        for (i in 0..1 <<< 3 - 1) {
+            let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
+            Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
+                 $"Incorrect Bob move validity for {cells}");
+        }
+
+        // Moves with numbers other than +1 and -1 should be rejected.
+        for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
             Fact(ValidBobMove(cellsOutOfRange) == false,
                  $"Invalid Bob move judged valid for {cellsOutOfRange}");
         }
     }
 
-
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T12_WinCondition_Test () : Unit {
+    operation T12_WinCondition () : Unit {
         // Try all moves with +1 and -1.
         for (i in 0..1 <<< 3 - 1) {
             for (j in 0..1 <<< 3 - 1) {
@@ -90,7 +101,7 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T13_ClassicalStrategy_Test() : Unit {
+    operation T13_ClassicalStrategy() : Unit {
         let wins = RunTrials(1000, ClassicalRunner);
         Fact(wins >= 850, $"The classical strategy implemented is not optimal: win rate {IntAsDouble(wins) / 1000.}");
     }
@@ -112,7 +123,7 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T21_CreateEntangledState_Test () : Unit {
+    operation T21_CreateEntangledState () : Unit {
         AssertEqualOnZeroState(4, CreateEntangledState, CreateEntangledState_Reference);
     }
 
@@ -161,7 +172,7 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T22_GetMagicObservables_Test () : Unit {
+    operation T22_GetMagicObservables () : Unit {
         // Since there can be multiple magic squares with different observables, 
         // the test checks the listed properties of the return values rather than the values themselves.
         for (row in 0..2) {
@@ -181,7 +192,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T23_ApplyMagicObservables_Test () : Unit {
+    operation T23_ApplyMagicObservables () : Unit {
         // Try all pairs of observables and all signs, and check the unitary equality
         for (sign in [-1, 1]) {
             for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
@@ -196,7 +207,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T24_MeasureObservables_Test () : Unit {
+    operation T24_MeasureObservables () : Unit {
         using (qs = Qubit[2]) {
             for (sign in [-1, 1]) {
                 for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
@@ -230,7 +241,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T25_MeasureOperator_Test () : Unit {
+    operation T25_MeasureOperator () : Unit {
         using (qs = Qubit[2]) {
             for (sign in [-1, 1]) {
                 for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
@@ -271,7 +282,7 @@ namespace Quantum.Kata.MagicSquareGame {
     }
 
     @Test("QuantumSimulator")
-    operation T26_QuantumStrategy_Test () : Unit {
+    operation T26_QuantumStrategy () : Unit {
         let N = 1000;
         let wins = RunTrials(N, QuantumRunner(PlayQuantumMagicSquare_Reference, _, _));
         Fact(wins == N, $"Alice and Bob's quantum strategy is not optimal: win rate {IntAsDouble(wins) / IntAsDouble(N)}");
@@ -280,7 +291,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T27_PlayQuantumMagicSquare_Test () : Unit {
+    operation T27_PlayQuantumMagicSquare () : Unit {
         let N = 1000;
         let wins = RunTrials(N, QuantumRunner(PlayQuantumMagicSquare, _, _));
         Message($"Win rate {IntAsDouble(wins) / IntAsDouble(N)}");

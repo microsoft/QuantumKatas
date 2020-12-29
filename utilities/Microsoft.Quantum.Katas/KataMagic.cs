@@ -23,7 +23,7 @@ namespace Microsoft.Quantum.Katas
         public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger, IConfigurationSource configurationSource)
         {
             this.Name = $"%kata";
-            this.Documentation = new Documentation
+            this.Documentation = new Microsoft.Jupyter.Core.Documentation
             {
                 Summary = "Executes a single test.",
                 Description = "Executes a single test, and reports whether the test passed successfully.",
@@ -31,7 +31,7 @@ namespace Microsoft.Quantum.Katas
                 {
                     "To run a test called `Test`:\n" +
                     "```\n" +
-                    "In []: %kata T101_StateFlip_Test \n",
+                    "In []: %kata T101_StateFlip \n",
                     "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
                     "           // Type X(q);\n",
@@ -219,7 +219,7 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
         {
-            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer.FullName}");
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.FullName}");
             Logger.LogDebug($"Resolved {userAnswer.FullName} to {skeletonAnswer}");
             if (skeletonAnswer != null)
             {
@@ -230,4 +230,3 @@ namespace Microsoft.Quantum.Katas
         }
     }
 }
-

@@ -6,6 +6,7 @@ namespace Quantum.Kata.MagicSquareGame {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Diagnostics;
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
@@ -36,9 +37,8 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part I. Classical Magic Square Game
     //////////////////////////////////////////////////////////////////
 
-    // Task 1.1. Validate Alice and Bob's moves
-    // In this task you have to implement two functions, one for validating Alice's move and one for validating Bob's move.
-    // Note that they are covered by one test, so you have to implement both before attempting the test.
+    // Task 1.1.1. Validate Alice's move
+    // In this task you have to implement function for validating Alice's move.
 
     // Input: The signs Alice chose for each cell in her row,
     //        represented as an Int array of length 3.
@@ -46,8 +46,11 @@ namespace Quantum.Kata.MagicSquareGame {
     //         the array has an even number of minus signs), and false otherwise.
     function ValidAliceMove (cells : Int[]) : Bool {
         // ...
-        fail "Validating Alice's move in task 1.1 not implemented yet";
+        fail "Validating Alice's move in task 1.1.1 not implemented yet";
     }
+
+    // Task 1.1.2. Validate Bob's move
+    // In this task you have to implement function for validating Bob's move.
 
     // Input: The signs Bob chose for each cell in his column,
     //        represented as an Int array of length 3.
@@ -55,7 +58,7 @@ namespace Quantum.Kata.MagicSquareGame {
     //         the array has an odd number of minus signs), and false otherwise.
     function ValidBobMove (cells : Int[]) : Bool {
         // ...
-        fail "Validating Bob's move in task 1.1 not implemented yet";
+        fail "Validating Bob's move in task 1.1.2 not implemented yet";
     }
 
 
@@ -243,7 +246,8 @@ namespace Quantum.Kata.MagicSquareGame {
     // Goal:
     //    Use your classical and quantum magic square strategies from tasks 1.3 and 2.6 to
     //    verify their probabilities of winning. Can you make the classical strategy lose?
-    operation MagicSquare_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T31_MagicSquare () : Unit {
         // Hint: You will need to use partial application to use your quantum strategies from task
         // 2.6 with PlayQuantumMagicSquare from task 2.7.
 
@@ -252,7 +256,7 @@ namespace Quantum.Kata.MagicSquareGame {
         // Hint: Use the DrawMagicSquare function in Tests.qs to see what the magic square looks
         // like after Alice and Bob make their moves.
 
-        // MagicSquare_Test appears in the list of unit tests for the solution; run it to verify
+        // T31_MagicSquare appears in the list of unit tests for the solution; run it to verify
         // your code.
 
         // ...

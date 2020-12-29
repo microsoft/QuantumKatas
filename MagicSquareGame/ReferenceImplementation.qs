@@ -21,11 +21,12 @@ namespace Quantum.Kata.MagicSquareGame {
     // Part I. Classical Magic Square
     //////////////////////////////////////////////////////////////////
 
-    // Task 1.1. Validate Alice and Bob's moves
+    // Task 1.1.1. Validate Alice's move
     function ValidAliceMove_Reference (cells : Int[]) : Bool {
         return All(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 0;
     }
 
+    // Task 1.1.2. Validate Bob's move
     function ValidBobMove_Reference (cells : Int[]) : Bool {
         return All(IsPlusOrMinusOne, cells) and Fold(CountMinusSignsFolder, 0, cells) % 2 == 1;
     }

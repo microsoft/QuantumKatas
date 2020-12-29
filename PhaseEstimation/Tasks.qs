@@ -8,6 +8,7 @@ namespace Quantum.Kata.PhaseEstimation {
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Measurement;
 
     
     //////////////////////////////////////////////////////////////////
@@ -95,7 +96,8 @@ namespace Quantum.Kata.PhaseEstimation {
     // Goal: Use your QPE implementation from task 1.4 to run quantum phase estimation 
     //       on several simple unitaries and their eigenstates.
     // This task is not covered by a test and allows you to experiment with running the algorithm.
-    operation T15_E2E_QPE_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T15_E2E_QPE () : Unit {
         // ...
     }
 

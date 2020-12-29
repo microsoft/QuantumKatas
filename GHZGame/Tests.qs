@@ -25,7 +25,7 @@ namespace Quantum.Kata.GHZGame {
     }
 
     @Test("QuantumSimulator")
-    operation T11_WinCondition_Test () : Unit {
+    operation T11_WinCondition () : Unit {
         for (rst in RefereeBits()) {
             for (i in 0 .. 1 <<< 3 - 1) {
                 let abc = IntAsBoolArray(i, 3);
@@ -53,14 +53,14 @@ namespace Quantum.Kata.GHZGame {
     }
 
     @Test("QuantumSimulator")
-    operation T12_RandomClassical_Test () : Unit {
+    operation T12_RandomClassical () : Unit {
         EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, RandomClassicalStrategy), 0.5, 0.02);
     }
 
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T13_BestClassical_Test () : Unit {
+    operation T13_BestClassical () : Unit {
         EqualityWithinToleranceFact(GetClassicalStrategySuccessRate(10000, BestClassicalStrategy), 0.75, 0.02);
     }
 
@@ -71,7 +71,7 @@ namespace Quantum.Kata.GHZGame {
     }
 
     @Test("QuantumSimulator")
-    operation T14_PlayClassicalGHZ_Test () : Unit {
+    operation T14_PlayClassicalGHZ () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
         for (rst in inputs) {
@@ -101,14 +101,14 @@ namespace Quantum.Kata.GHZGame {
     }
 
     @Test("QuantumSimulator")
-    operation T21_CreateEntangledTriple_Test () : Unit {
+    operation T21_CreateEntangledTriple () : Unit {
         AssertEqualOnZeroState(3, CreateEntangledTriple, CreateEntangledTriple_Reference);
     }
 
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T22_QuantumStrategy_Test () : Unit {
+    operation T22_QuantumStrategy () : Unit {
         for (_ in 1 .. 4) {
             // repeat 4 times since we are testing a measurement, it's possible to get
             // correct answer with wrong basis, reduces probability of false positives
@@ -135,7 +135,7 @@ namespace Quantum.Kata.GHZGame {
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T23_PlayQuantumGHZ_Test () : Unit {
+    operation T23_PlayQuantumGHZ () : Unit {
         for (_ in 0 .. 1000) {
             let rst = (RefereeBits())[DrawRandomInt(0, Length(RefereeBits()) - 1)];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
