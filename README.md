@@ -72,6 +72,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 #### Quantum Oracles and Simple Oracle Algorithms
 
+* **[Quantum oracles (tutorial)](./tutorials/Oracles/)**.
+  Learn to implement classical functions as equivalent quantum oracles. 
 * **[Exploring Deutsch–Jozsa algorithm (tutorial)](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
   Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
   solution to the Deutsch–Jozsa problem to a classical one.

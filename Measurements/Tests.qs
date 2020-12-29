@@ -70,14 +70,14 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T101_IsQubitOne () : Unit {
         DistinguishTwoStates_OneQubit(StatePrep_IsQubitOne, IsQubitOne, ["|0⟩", "|1⟩"]);
     }
 
 
     // ------------------------------------------------------
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T102_InitializeQubit () : Unit {
         using (q = Qubit()) {
             for (i in 0 .. 36) {
@@ -106,7 +106,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T103_IsQubitPlus () : Unit {
         DistinguishTwoStates_OneQubit(StatePrep_IsQubitPlus, IsQubitPlus, ["|-⟩", "|+⟩"]);
     }
@@ -126,7 +126,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T104_IsQubitA () : Unit {
         // cross-test
         // alpha = 0.0 or PI() => !isQubitOne
@@ -691,7 +691,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T201_IsQubitZeroOrPlus () : Unit {
         DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, StatePrep_IsQubitZeroOrPlus, IsQubitPlusOrZero);
     }
@@ -767,7 +767,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T202_IsQubitZeroOrPlusSimpleUSD () : Unit {
         USD_DistinguishStates_MultiQubit_Threshold(1, 2, 0.8, 0.1, StatePrep_IsQubitZeroOrPlus, IsQubitPlusZeroOrInconclusiveSimpleUSD);
     }
@@ -828,7 +828,7 @@ namespace Quantum.Kata.Measurements {
         }
     }
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T203_IsQubitNotInABC () : Unit {
         ABC_DistinguishStates_MultiQubit_Threshold(1, 3, StatePrep_IsQubitNotInABC, IsQubitNotInABC);
     }
