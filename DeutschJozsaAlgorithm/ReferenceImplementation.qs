@@ -28,7 +28,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation Oracle_Zero_Reference (x : Qubit[], y : Qubit) : Unit is Adj {
         // Since f(x) = 0 for all values of x, |y ⊕ f(x)⟩ = |y⟩.
         // This means that the operation doesn't need to do any transformation to the inputs.
-        // Build the project and run the tests to see that T01_Oracle_Zero_Test test passes.
+        // Build the project and run the tests to see that T01_Oracle_Zero test passes.
     }
     
     

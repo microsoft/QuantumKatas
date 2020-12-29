@@ -21,8 +21,7 @@ namespace Microsoft.Quantum.Katas
         public CheckKataMagic(IOperationResolver resolver, ICompilerService compiler, ILogger<KataMagic> logger)
         {
             this.Name = $"%check_kata";
-            this.Documentation = new Documentation() { Summary = "Checks the reference implementation for a single kata's test." };
-            this.Documentation = new Documentation
+            this.Documentation = new Microsoft.Jupyter.Core.Documentation
             {
                 Summary = "Checks the reference implementation for a single kata's test.",
                 Description =
@@ -33,7 +32,7 @@ namespace Microsoft.Quantum.Katas
                 {
                     "To check a test called `Test`:\n" +
                     "```\n" +
-                    "In []: %check_kata T101_StateFlip_Test \n",
+                    "In []: %check_kata T101_StateFlip \n",
                     "  ...: operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n",
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n",
                     "           // Type X(q);\n",
@@ -213,7 +212,7 @@ namespace Microsoft.Quantum.Katas
         /// test's namespace
         /// </summary>
         public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}");
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}");
 
         /// <summary>
         /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
@@ -221,7 +220,6 @@ namespace Microsoft.Quantum.Katas
         /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
         /// </summary>
         public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
-            Resolver.Resolve($"{test.Header.QualifiedName.Namespace.Value}.{userAnswer}_Reference");
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
     }
 }
-
