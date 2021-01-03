@@ -14,4 +14,4 @@ purely classical strategy.
 #### Theory
 
 * [Lecture 1](https://staff.fnwi.uva.nl/m.walter/physics491/lecture1.pdf) by Michael Walter.
-* [Lecture 20](https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/20.pdf) by John Watrous.
+* [Lecture 20](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.20.pdf) by John Watrous.
