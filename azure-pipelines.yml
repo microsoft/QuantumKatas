@@ -1,12 +1,19 @@
 name: $(Build.Major).$(Build.Minor).$(BuildId)
 
-trigger:
-- main
+trigger: none
 
 pr:
 - main
 - feature/*
 - release/*
+
+schedules:
+- cron: "0 9 * * Sat"
+  displayName: 'Build for Component Governance'
+  branches:
+    include:
+    - main
+  always: true
 
 variables:
   Build.Major: 1
