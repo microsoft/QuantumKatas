@@ -1,6 +1,7 @@
 name: $(Build.Major).$(Build.Minor).$(BuildId)
 
-trigger: none
+trigger:
+- main
 
 pr:
 - main
