@@ -48,10 +48,10 @@ namespace Quantum.Kata.RippleCarryAdder {
         let bitsb = input[N ...];
         let a = BoolArrayAsInt(bitsa);
         let b = BoolArrayAsInt(bitsb);
-        let (diff, borrow) = Subtractor_F(max, a, b);
-        return IntAsBoolArray(diff, N) + [borrow];
+        let (diff, borrowed) = Subtractor_F(max, a, b);
+        return IntAsBoolArray(diff, N) + [borrowed];
     }
-    
+
     function BinaryXor (bits : Bool[]) : Bool {
         mutable ans = false;
         for (bit in bits) {

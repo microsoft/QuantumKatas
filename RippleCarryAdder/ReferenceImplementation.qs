@@ -276,15 +276,15 @@ namespace Quantum.Kata.RippleCarryAdder {
     //////////////////////////////////////////////////////////////////
 
     // Task 4.1. N-bit subtractor
-    operation Subtractor_Reference (a : Qubit[], b : Qubit[], borrow : Qubit) : Unit is Adj {
+    operation Subtractor_Reference (a : Qubit[], b : Qubit[], borrowed : Qubit) : Unit is Adj {
         // transform b into 2ᴺ - 1 - b
         ApplyToEachA(X, b);
 
         // compute (2ᴺ - 1 - b) + a = 2ᴺ - 1 - (b - a) using existing adder
         // if this produced a carry, then (2ᴺ - 1 - (b - a)) > 2ᴺ - 1, so (b - a) < 0, and we need a borrow
         // this means we can use the carry qubit from the addition as the borrow qubit
-        ArbitraryMajUmaAdder_Reference(a, b, borrow);
-        
+        ArbitraryMajUmaAdder_Reference(a, b, borrowed);
+
         // transform 2ᴺ - 1 - (b - a) into b - a
         ApplyToEachA(X, b);
     }
