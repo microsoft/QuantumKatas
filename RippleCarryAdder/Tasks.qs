@@ -331,12 +331,12 @@ namespace Quantum.Kata.RippleCarryAdder {
     // Inputs:
     //      1) N-qubit register "a" in an arbitrary state |φ⟩,
     //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
-    //      3) qubit "borrowed" in state |0⟩.
+    //      3) qubit "borrowBit" in state |0⟩.
     // Goal: construct a binary subtractor:
     //      1) transform register "b" into the state |ψ - φ⟩ ,
-    //      2) set the "borrowed" qubit to |1⟩ if that subtraction required a borrow.
+    //      2) set the "borrowBit" qubit to |1⟩ if that subtraction required a borrow.
     //         Leave register "a" unchanged.
-    operation Subtractor (a : Qubit[], b : Qubit[], borrowed : Qubit) : Unit is Adj {
+    operation Subtractor (a : Qubit[], b : Qubit[], borrowBit : Qubit) : Unit is Adj {
         // Hint: use the adder you already built, 
         // and experiment with inverting the registers before and after the addition.
 
