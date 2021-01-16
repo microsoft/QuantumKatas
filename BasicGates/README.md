@@ -12,4 +12,4 @@ You can [run the Basic Gates kata as a Jupyter Notebook](https://mybinder.org/v2
 #### Q# materials
 
 * Basic gates provided in Q# belong to the [Microsoft.Quantum.Intrinsic namespace](https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.intrinsic).
-* Using and defining controlled and adjoint versions of gates is covered in the [Q# user guide](https://docs.microsoft.com/en-us/quantum/user-guide/using-qsharp/operations-functions).
+* Using and defining controlled and adjoint versions of gates is covered in the [Q# user guide](https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions/functorapplication).
