@@ -6,4 +6,4 @@ Simon's algorithm consists of two parts - a quantum circuit and a classical post
 
 #### Simon’s algorithm
 * A good place to start is [the Wikipedia article](https://en.wikipedia.org/wiki/Simon%27s_problem).
-* [Lecture 6: Simon’s algorithm](https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/06.pdf) has a somewhat clearer description of the measurement part of the quantum circuit.
+* [Lecture 6: Simon’s algorithm](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.06.pdf) has a somewhat clearer description of the measurement part of the quantum circuit.

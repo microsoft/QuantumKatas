@@ -15,7 +15,7 @@ Eigenvalues and eigenvectors:
 Quantum phase estimation:
 
 * Wikipedia article on [quantum phase estimation](https://en.wikipedia.org/wiki/Quantum_phase_estimation_algorithm).
-* Lectures [8](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/08.pdf) and [9](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/09.pdf) by John Watrous.
+* Lectures [8](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.08.pdf) and [9](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.09.pdf) by John Watrous.
 * [Quantum Phase Estimation](https://docs.microsoft.com/quantum/libraries/standard/algorithms) in Q# documentation.
 
 Iterative phase estimation:
