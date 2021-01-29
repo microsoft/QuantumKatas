@@ -23,35 +23,34 @@ namespace Quantum.Kata.Superposition {
                                       refImpl : (Qubit[] => Unit is Adj), 
                                       verbose : Bool,
                                       testStr : String) : Unit {
-        using (qs = Qubit[N]) {
-            if (verbose) {
-                if (testStr != "") {
-                    Message($"The desired state for {testStr}");
-                } else {
-                    Message("The desired state:");
-                }
-                refImpl(qs);
-                DumpMachine(());
-                ResetAll(qs);
+        use qs = Qubit[N];
+        if (verbose) {
+            if (testStr != "") {
+                Message($"The desired state for {testStr}");
+            } else {
+                Message("The desired state:");
             }
+            refImpl(qs);
+            DumpMachine(());
+            ResetAll(qs);
+        }
 
-            // apply operation that needs to be tested
-            testImpl(qs);
+        // apply operation that needs to be tested
+        testImpl(qs);
 
-            if (verbose) {
-                Message("The actual state:");
-                DumpMachine(());
-            }
+        if (verbose) {
+            Message("The actual state:");
+            DumpMachine(());
+        }
 
-            // apply adjoint reference operation and check that the result is |0⟩
-            Adjoint refImpl(qs);
+        // apply adjoint reference operation and check that the result is |0⟩
+        Adjoint refImpl(qs);
 
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
 
-            if (verbose) {
-                Message("Test case passed");
-            }
+        if (verbose) {
+            Message("Test case passed");
         }
     }
 
@@ -111,7 +110,7 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T107_AllBellStates () : Unit {
-        for (i in 0 .. 3) {
+        for i in 0 .. 3 {
             AssertEqualOnZeroState(2, AllBellStates(_, i), AllBellStates_Reference(_, i), true, $"index = {i}");
         }
     }
@@ -127,7 +126,7 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(2, GHZ_State, BellState_Reference, true, "N = 2");
 
         Message("Testing on hidden test cases...");
-        for (n in 3 .. 9) {
+        for n in 3 .. 9 {
             AssertEqualOnZeroState(n, GHZ_State, GHZ_State_Reference, false, "");
         }
     }
@@ -142,7 +141,7 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(2, AllBasisVectorsSuperposition, AllBasisVectorsSuperposition_Reference, true, "N = 2");
 
         Message("Testing on hidden test cases...");
-        for (n in 3 .. 8) {
+        for n in 3 .. 8 {
             AssertEqualOnZeroState(n, AllBasisVectorsSuperposition, AllBasisVectorsSuperposition_Reference, false, "");
         }
     }
@@ -151,15 +150,15 @@ namespace Quantum.Kata.Superposition {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T110_EvenOddNumbersSuperposition () : Unit {
-        for (n in 1 .. 2) {
-            for (isEven in [false, true]) {
+        for n in 1 .. 2 {
+            for isEven in [false, true] {
                 AssertEqualOnZeroState(n, EvenOddNumbersSuperposition(_, isEven), EvenOddNumbersSuperposition_Reference(_, isEven), true, $"N = {n}, isEven = {isEven}");
             }
         }
 
         Message("Testing on hidden test cases...");
-        for (n in 3 .. 8) {
-            for (isEven in [false, true]) {
+        for n in 3 .. 8 {
+            for isEven in [false, true] {
                 AssertEqualOnZeroState(n, EvenOddNumbersSuperposition(_, isEven), EvenOddNumbersSuperposition_Reference(_, isEven), false, "");
             }
         }
@@ -258,15 +257,15 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(4, FourBitstringSuperposition(_, bits), WState_Arbitrary_Reference, false, "");
 
         // random tests
-        for (N in 3 .. 10) {
+        for N in 3 .. 10 {
             // generate 4 distinct numbers corresponding to the bit strings
             mutable numbers = new Int[4];
 
             repeat {
                 mutable ok = true;
-                for (i in 0 .. 3) {
+                for i in 0 .. 3 {
                     set numbers w/= i <- DrawRandomInt(0, 1 <<< N - 1);
-                    for (j in 0 .. i - 1) {
+                    for j in 0 .. i - 1 {
                         if (numbers[i] == numbers[j]) {
                             set ok = false;
                         }
@@ -276,7 +275,7 @@ namespace Quantum.Kata.Superposition {
             until (ok);
 
             // convert numbers to bit strings
-            for (i in 0 .. 3) {
+            for i in 0 .. 3 {
                 set bits w/= i <- IntAsBoolArray(numbers[i], N);
             }
 
@@ -288,13 +287,13 @@ namespace Quantum.Kata.Superposition {
     @Test("QuantumSimulator")
     operation T114_AllStatesWithParitySuperposition () : Unit {
         // remember to repeat the tests (for the small case of N = 2), lest the post-selection solution doesn't detect failure and retry
-        for (i in 1 .. 10) {
-            for (parity in 0 .. 1) {
+        for i in 1 .. 10 {
+            for parity in 0 .. 1 {
                 AssertEqualOnZeroState(2, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
             }
         }
-        for (N in 3 .. 6) {
-            for (parity in 0 .. 1) {
+        for N in 3 .. 6 {
+            for parity in 0 .. 1 {
                 AssertEqualOnZeroState(N, AllStatesWithParitySuperposition(_, parity), AllStatesWithParitySuperposition_Reference(_, parity), false, "");
             }
         }
@@ -315,7 +314,7 @@ namespace Quantum.Kata.Superposition {
         Message("Testing on hidden test cases...");
         AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, 0.0), _), ApplyToEachA(I, _), false, "");
 
-        for (i in 1 .. 36) {
+        for i in 1 .. 36 {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertEqualOnZeroState(1, ArrayWrapperOperation(UnequalSuperposition(_, alpha), _), ArrayWrapperOperationA(UnequalSuperposition_Reference(_, alpha), _), false, "");
         }
@@ -370,11 +369,11 @@ namespace Quantum.Kata.Superposition {
         AssertEqualOnZeroState(2, WState_Arbitrary, WState_PowerOfTwo_Reference, true, "N = 2");
 
         Message("Testing on hidden test cases...");
-        for (n in [4, 8, 16]) {
+        for n in [4, 8, 16] {
             AssertEqualOnZeroState(n, WState_Arbitrary, WState_PowerOfTwo_Reference, false, "");
         }
 
-        for (i in 2 .. 16) {
+        for i in 2 .. 16 {
             AssertEqualOnZeroState(i, WState_Arbitrary, WState_Arbitrary_Reference, false, "");
         }
     }
