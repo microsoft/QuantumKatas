@@ -88,7 +88,7 @@ namespace Quantum.Kata.TruthTables {
     //       i.e., without accessing the bits individually.
     //
     // Hint: You can use bit-wise operations in Q# for this task.  See
-    //       https://docs.microsoft.com/quantum/language/expressions#numeric-expressions
+    //       https://docs.microsoft.com/en-us/quantum/user-guide/language/expressions/bitwiseexpressions
     function TTAnd (tt1 : TruthTable, tt2 : TruthTable) : TruthTable {
         let (bits1, numVars1) = tt1!;
         let (bits2, numVars2) = tt2!;

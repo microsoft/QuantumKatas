@@ -26,34 +26,33 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         let nStates = 2;
         mutable misclassifications = new Int[nStates];
         
-        using (q = Qubit()) {
-            for (i in 1 .. nTotal) {
-                // get a random bit to define whether qubit will be in a state corresponding to true return (1) or to false one (0)
-                // state = 0 false return
-                // state = 1 true return
-                let state = DrawRandomInt(0, 1);
+        use q = Qubit();
+        for i in 1 .. nTotal {
+            // get a random bit to define whether qubit will be in a state corresponding to true return (1) or to false one (0)
+            // state = 0 false return
+            // state = 1 true return
+            let state = DrawRandomInt(0, 1);
 
-                // do state prep: convert |0⟩ to outcome with false return or to outcome with true return depending on state
-                statePrep(q, state);
+            // do state prep: convert |0⟩ to outcome with false return or to outcome with true return depending on state
+            statePrep(q, state);
 
-                // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
-                let ans = testImpl(q);
-                if (ans != (state == 1)) {
-                    set misclassifications w/= state <- misclassifications[state] + 1;
-                }
+            // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
+            let ans = testImpl(q);
+            if (ans != (state == 1)) {
+                set misclassifications w/= state <- misclassifications[state] + 1;
+            }
                 
-                // If the final state is to be verified, check if it matches the measurement outcome
-                if (checkFinalState) {
-                    Adjoint statePrep(q, state);
-                    AssertQubit(Zero, q);
-                } else {
-                    Reset(q);
-                }
+            // If the final state is to be verified, check if it matches the measurement outcome
+            if (checkFinalState) {
+                Adjoint statePrep(q, state);
+                AssertQubit(Zero, q);
+            } else {
+                Reset(q);
             }
         }
         
         mutable totalMisclassifications = 0;
-        for (i in 0 .. nStates - 1) {
+        for i in 0 .. nStates - 1 {
             if (misclassifications[i] != 0) {
                 set totalMisclassifications += misclassifications[i];
                 Message($"Misclassified {stateName[i]} as {stateName[1 - i]} in {misclassifications[i]} test runs.");   
@@ -144,7 +143,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     
     @Test("QuantumSimulator")
     operation T6_IsQubitA () : Unit {
-        for (i in 0 .. 10) {
+        for i in 0 .. 10 {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _), 
                 [$"|B⟩ = -i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩", $"|A⟩ = cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩"], false);
@@ -171,7 +170,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // We can use the StatePrep_IsQubitA operation for the testing
     @Test("QuantumSimulator")
     operation T7_MeasureInABBasis () : Unit {
-        for (i in 0 .. 10) {
+        for i in 0 .. 10 {
             let alpha = (PI() * IntAsDouble(i)) / 10.0;
             DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsResultZero(MeasureInABBasis(alpha, _),_), 
                 [$"|B⟩=(-i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩)", $"|A⟩=(cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩)"], true);
