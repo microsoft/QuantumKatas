@@ -36,7 +36,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let sol = ApplyOracle(_, oracle1);
         let refSol = ApplyOracleA(_, oracle2);
         
-        for (i in nQubits) {
+        for i in nQubits {
             AssertOperationsEqualReferenced(i + 1, sol, refSol);
         }
     }
@@ -62,7 +62,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let maxQ = 6;
         
         // loop over index of the qubit to be used
-        for (k in 0 .. maxQ - 1) {
+        for k in 0 .. maxQ - 1 {
             // number of qubits to try is from k+1 to 6
             AssertTwoOraclesAreEqual(k + 1 .. maxQ, Oracle_Kth_Qubit(_, _, k), Oracle_Kth_Qubit_Reference(_, _, k));
         }
@@ -94,19 +94,19 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
-        for (i in 2 .. L) {
+        for i in 2 .. L {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_OddNumberOfOnes_Reference);
         }
         
         // the mask with all 0's corresponds to Oracle_Zero
         set r = ConstantArray(10, 0);
         
-        for (i in 2 .. L) {
+        for i in 2 .. L {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_Zero_Reference);
         }
         
         // the mask with only the K-th element set to 1 corresponds to Oracle_Kth_Qubit
-        for (i in 0 .. L - 1) {
+        for i in 0 .. L - 1 {
             AssertTwoOraclesAreEqual(L .. L, Oracle_ProductFunction(_, _, r w/ i <- 1), Oracle_Kth_Qubit_Reference(_, _, i));
         }
         
@@ -127,7 +127,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         mutable r = ConstantArray(10, 1);
         let L = Length(r);
         
-        for (i in 2 .. L) {
+        for i in 2 .. L {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductWithNegationFunction(_, _, r[0 .. i - 1]), Oracle_OddNumberOfOnes_Reference);
         }
         
@@ -163,18 +163,17 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     @Test("QuantumSimulator")
     operation T21_DJ_StatePrep () : Unit {
         
-        for (N in 1 .. 10) {
+        for N in 1 .. 10 {
             
-            using (qs = Qubit[N + 1]) {
-                // apply operation that needs to be tested
-                DJ_StatePrep(qs[0 .. N - 1], qs[N]);
+            use qs = Qubit[N + 1];
+            // apply operation that needs to be tested
+            DJ_StatePrep(qs[0 .. N - 1], qs[N]);
                 
-                // apply adjoint reference operation
-                Adjoint DJ_StatePrep_Reference(qs[0 .. N - 1], qs[N]);
+            // apply adjoint reference operation
+            Adjoint DJ_StatePrep_Reference(qs[0 .. N - 1], qs[N]);
                 
-                // assert that all qubits end up in |0⟩ state
-                AssertAllZero(qs);
-            }
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
         }
     }
     
@@ -184,7 +183,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let rbool = IntAsBoolArray(n, bits);
         mutable r = new Int[bits];
         
-        for (i in 0 .. bits - 1) {
+        for i in 0 .. bits - 1 {
             if (rbool[i]) {
                 set r w/= i <- 1;
             }
@@ -265,8 +264,8 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // test BV the way we suggest the learner to test it:
         // apply the algorithm to reference oracles and check that the output is as expected
-        for (bits in 1 .. 4) {
-            for (n in 0 .. 2 ^ bits - 1) {
+        for bits in 1 .. 4 {
+            for n in 0 .. 2 ^ bits - 1 {
                 let r = IntArrFromPositiveInt(n, bits);
                 AssertBVAlgorithmWorks(r);
             }
@@ -284,9 +283,9 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // apply the algorithm to reference oracles and check that the output is as expected
         // test all bit vectors of length 1..4
-        for (bits in 1 .. 4) {
+        for bits in 1 .. 4 {
             
-            for (n in 0 .. 2 ^ bits - 1) {
+            for n in 0 .. 2 ^ bits - 1 {
                 AssertNonameAlgorithmWorksOnInt(n, bits);
             }
         }
