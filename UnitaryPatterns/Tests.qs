@@ -45,7 +45,6 @@ namespace Quantum.Kata.UnitaryPatterns {
                 op(qs);
                 
                 // Make sure the solution didn't use any measurements
-                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                 Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                 // Test that the result matches the k-th column
