@@ -33,7 +33,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         let sol = ApplyOracleA(_, oracle1);
         let refSol = ApplyOracleA(_, oracle2);
         
-        for (i in nQubits) {
+        for i in nQubits {
             AssertOperationsEqualReferenced(i+1, sol, refSol);
         }
     }
@@ -60,7 +60,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation Q12_Oracle_BitwiseRightShift () : Unit {
-        for (n in 2 .. 6) {
+        for n in 2 .. 6 {
             AssertTwoOraclesWithOutputArrAreEqual(n, n, Oracle_BitwiseRightShift, Oracle_BitwiseRightShift_Reference);
         }
     }
@@ -78,7 +78,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         mutable A = ConstantArray(11, 1);
         let L = Length(A);
         
-        for (i in 2 .. L) {
+        for i in 2 .. L {
             AssertTwoOraclesAreEqual(i .. i, Oracle_OperatorOutput(_, _, A[0 .. i - 1]), Oracle_OperatorOutput_Reference(_, _, A[0 .. i - 1]));
         }
         
@@ -143,17 +143,16 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     @Test("QuantumSimulator")
     operation Q21_StatePrep () : Unit {
-        for (N in 1 .. 10) {
-            using (qs = Qubit[N]) {
-                // apply operation that needs to be tested
-                SA_StatePrep(qs);
+        for N in 1 .. 10 {
+            use qs = Qubit[N];
+            // apply operation that needs to be tested
+            SA_StatePrep(qs);
                 
-                // apply adjoint reference operation
-                Adjoint SA_StatePrep_Reference(qs);
+            // apply adjoint reference operation
+            Adjoint SA_StatePrep_Reference(qs);
                 
-                // assert that all qubits end up in |0⟩ state
-                AssertAllZero(qs);
-            }
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
         }
     }
     
