@@ -124,10 +124,9 @@ namespace Quantum.Kata.Superposition {
     // Input: N qubits in |0...0⟩ state.
     // Goal: create a GHZ state (|0...0⟩ + |1...1⟩) / sqrt(2) on these qubits.
     operation GHZ_State_Reference (qs : Qubit[]) : Unit is Adj {
-
         H(Head(qs));
 
-        for (q in Rest(qs)) {
+        for q in Rest(qs) {
             CNOT(Head(qs), q);
         }
     }
@@ -138,8 +137,7 @@ namespace Quantum.Kata.Superposition {
     // Goal: create an equal superposition of all basis vectors from |0...0⟩ to |1...1⟩
     // (i.e. state (|0...0⟩ + ... + |1...1⟩) / sqrt(2^N) ).
     operation AllBasisVectorsSuperposition_Reference (qs : Qubit[]) : Unit is Adj {
-
-        for (q in qs) {
+        for q in qs {
             H(q);
         }
     }
@@ -152,8 +150,7 @@ namespace Quantum.Kata.Superposition {
     // Goal: create a superposition of all even numbers on N qubits if isEven is true,
     //       or a superposition of all odd numbers on N qubits if isEven is false.
     operation EvenOddNumbersSuperposition_Reference (qs : Qubit[], isEven : Bool) : Unit is Adj {
-
-        for (q in Most(qs)) {
+        for q in Most(qs) {
             H(q);
         }
         // for odd numbers, flip the last bit to 1
@@ -181,7 +178,7 @@ namespace Quantum.Kata.Superposition {
         H(Head(qs));
 
         // iterate through the bit string and CNOT to qubits corresponding to true bits
-        for (i in 1 .. Length(qs) - 1) {
+        for i in 1 .. Length(qs) - 1 {
             if (bits[i]) {
                 CNOT(Head(qs), qs[i]);
             }
@@ -201,7 +198,7 @@ namespace Quantum.Kata.Superposition {
 
     // helper function for TwoBitstringSuperposition_Reference
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
-        for (i in 0 .. Length(bits1) - 1) {
+        for i in 0 .. Length(bits1) - 1 {
             if (bits1[i] != bits2[i]) {
                 return i;
             }
@@ -218,7 +215,7 @@ namespace Quantum.Kata.Superposition {
         H(qs[firstDiff]);
 
         // iterate through the bit strings again setting the final state of qubits
-        for (i in 0 .. Length(qs) - 1) {
+        for i in 0 .. Length(qs) - 1 {
             if (bits1[i] == bits2[i]) {
                 // if two bits are the same apply X or nothing
                 if (bits1[i]) {
@@ -247,27 +244,26 @@ namespace Quantum.Kata.Superposition {
     //
     // Goal: create an equal superposition of the four basis states given by the bit strings.
     operation FourBitstringSuperposition_Reference (qs : Qubit[], bits : Bool[][]) : Unit is Adj {
-        using (anc = Qubit[2]) {
-            // Put two ancillas into equal superposition of 2-qubit basis states
-            ApplyToEachA(H, anc);
+        use anc = Qubit[2];
+        // Put two ancillas into equal superposition of 2-qubit basis states
+        ApplyToEachA(H, anc);
 
-            // Set up the right pattern on the main qubits with control on ancillas
-            for (i in 0 .. 3) {
-                for (j in 0 .. Length(qs) - 1) {
-                    if (bits[i][j]) {
-                        (ControlledOnInt(i, X))(anc, qs[j]);
-                    }
+        // Set up the right pattern on the main qubits with control on ancillas
+        for i in 0 .. 3 {
+            for j in 0 .. Length(qs) - 1 {
+                if (bits[i][j]) {
+                    (ControlledOnInt(i, X))(anc, qs[j]);
                 }
             }
+        }
 
-            // Uncompute the ancillas, using patterns on main qubits as control
-            for (i in 0 .. 3) {
-                if (i % 2 == 1) {
-                    (ControlledOnBitString(bits[i], X))(qs, anc[0]);
-                }
-                if (i / 2 == 1) {
-                    (ControlledOnBitString(bits[i], X))(qs, anc[1]);
-                }
+        // Uncompute the ancillas, using patterns on main qubits as control
+        for i in 0 .. 3 {
+            if (i % 2 == 1) {
+                (ControlledOnBitString(bits[i], X))(qs, anc[0]);
+            }
+            if (i / 2 == 1) {
+                (ControlledOnBitString(bits[i], X))(qs, anc[1]);
             }
         }
     }
@@ -298,17 +294,16 @@ namespace Quantum.Kata.Superposition {
 
     // Alternative solution, based on post-selection
     operation AllStatesWithParitySuperposition_Postselection (qs : Qubit[], parity : Int) : Unit {
-        using (anc = Qubit()) {
-            // Create equal superposition of all basis states
-            ApplyToEach(H, qs);
-            // Calculate the parity of states using CNOTs
-            ApplyToEach(CNOT(_, anc), qs);
-            let res = MResetZ(anc);
-            // Now, if we got measurement result that matches parity, we're good; 
-            // otherwise we can apply X to any one qubit to get our result!
-            if ((res == Zero ? 0 | 1) != parity) {
-                X(qs[0]);
-            }
+        use anc = Qubit();
+        // Create equal superposition of all basis states
+        ApplyToEach(H, qs);
+        // Calculate the parity of states using CNOTs
+        ApplyToEach(CNOT(_, anc), qs);
+        let res = MResetZ(anc);
+        // Now, if we got measurement result that matches parity, we're good; 
+        // otherwise we can apply X to any one qubit to get our result!
+        if ((res == Zero ? 0 | 1) != parity) {
+            X(qs[0]);
         }
     }
 
@@ -355,18 +350,17 @@ namespace Quantum.Kata.Superposition {
 
     // Alternative solution, based on post-selection
     operation ThreeStates_TwoQubits_Postselection (qs : Qubit[]) : Unit {
-        using (ancilla = Qubit()) {
-            repeat {
-                // Create |00⟩ + |01⟩ + |10⟩ + |11⟩ state
-                ApplyToEach(H, qs);
-                // Create (|00⟩ + |01⟩ + |10⟩) ⊗ |0⟩ + |11⟩ ⊗ |1⟩
-                Controlled X(qs, ancilla);
-                let res = MResetZ(ancilla);
-            }
-            until (res == Zero)
-            fixup {
-                ResetAll(qs);
-            }
+        use ancilla = Qubit();
+        repeat {
+            // Create |00⟩ + |01⟩ + |10⟩ + |11⟩ state
+            ApplyToEach(H, qs);
+            // Create (|00⟩ + |01⟩ + |10⟩) ⊗ |0⟩ + |11⟩ ⊗ |1⟩
+            Controlled X(qs, ancilla);
+            let res = MResetZ(ancilla);
+        }
+        until (res == Zero)
+        fixup {
+            ResetAll(qs);
         }
     }
 
@@ -419,15 +413,14 @@ namespace Quantum.Kata.Superposition {
 
             // the next K qubits are in |0...0⟩ state
             // allocate ancilla in |+⟩ state
-            using (anc = Qubit()) {
-                H(anc);
+            use anc = Qubit();
+            H(anc);
 
-                for (i in 0 .. K - 1) {
-                    Controlled SWAP([anc], (qs[i], qs[i + K]));
-                }
-                for (i in K .. N - 1) {
-                    CNOT(qs[i], anc);
-                }
+            for i in 0 .. K - 1 {
+                Controlled SWAP([anc], (qs[i], qs[i + K]));
+            }
+            for i in K .. N - 1 {
+                CNOT(qs[i], anc);
             }
         }
     }
@@ -466,7 +459,7 @@ namespace Quantum.Kata.Superposition {
     operation WState_Arbitrary_Iterative (qs : Qubit[]) : Unit is Adj {
         let N = Length(qs);
         FractionSuperposition(N, qs[0]);
-        for (i in 1 .. N - 1) {
+        for i in 1 .. N - 1 {
             (ControlledOnInt(0, FractionSuperposition))(qs[0..i-1], (N-i, qs[i]));
         }
     }
@@ -497,28 +490,27 @@ namespace Quantum.Kata.Superposition {
             // find the smallest power of 2 which is greater than or equal to N
             // as a hack, we know we're not doing it on more than 64 qubits
             mutable P = 1;
-            for (i in 1 .. 6) {
+            for i in 1 .. 6 {
                 if (P < N) {
                     set P *= 2;
                 }
             }
 
             // allocate extra qubits (might be 0 qubits if N is a power of 2)
-            using (anc = Qubit[P - N]) {
-                repeat {
-                    // prepare state W_P on original + ancilla qubits
-                    WState_PowerOfTwo(qs + anc);
+            use anc = Qubit[P - N];
+            repeat {
+                // prepare state W_P on original + ancilla qubits
+                WState_PowerOfTwo(qs + anc);
 
-                    // measure extra qubits; if all of the results are Zero, we got the right state on main qubits
-                    mutable allZeros = true;
-                    for (i in 0 .. (P - N) - 1) {
-                        if (MResetZ(anc[i]) == One) {
-                            set allZeros = false;
-                        }
+                // measure extra qubits; if all of the results are Zero, we got the right state on main qubits
+                mutable allZeros = true;
+                for i in 0 .. (P - N) - 1 {
+                    if (MResetZ(anc[i]) == One) {
+                        set allZeros = false;
                     }
                 }
-                until (allZeros);
             }
+            until (allZeros);
         }
     }
 }
