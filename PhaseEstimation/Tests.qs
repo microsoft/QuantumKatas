@@ -20,20 +20,19 @@ namespace Quantum.Kata.PhaseEstimation {
     //////////////////////////////////////////////////////////////////
     
     operation AssertEqualOnZeroState1 (testImpl : (Qubit => Unit), refImpl : (Qubit => Unit is Adj)) : Unit {
-        using (q = Qubit()) {
-            // apply operation that needs to be tested
-            testImpl(q);
+        use q = Qubit();
+        // apply operation that needs to be tested
+        testImpl(q);
 
-            // apply adjoint reference operation and check that the result is |0⟩
-            Adjoint refImpl(q);
+        // apply adjoint reference operation and check that the result is |0⟩
+        Adjoint refImpl(q);
             
-            AssertQubit(Zero, q);
-        }
+        AssertQubit(Zero, q);
     }
 
     @Test("QuantumSimulator")
     operation T11_Eigenstates_ZST () : Unit {
-        for (state in 0 .. 1) {
+        for state in 0 .. 1 {
             AssertEqualOnZeroState1(Eigenstates_ZST(_, state), Eigenstates_ZST_Reference(_, state));
         }
     }
@@ -47,8 +46,8 @@ namespace Quantum.Kata.PhaseEstimation {
 
     @Test("QuantumSimulator")
     operation T12_UnitaryPower () : Unit {
-        for (U in [Z, S, T]) { 
-            for (power in 1 .. 5) {
+        for U in [Z, S, T] { 
+            for power in 1 .. 5 {
                 AssertOperationsEqualReferenced(1, ArrayWrapperOperation1(UnitaryPower(U, power), _), 
                                                 ArrayWrapperOperation1(UnitaryPower_Reference(U, power), _));
             }
@@ -59,10 +58,10 @@ namespace Quantum.Kata.PhaseEstimation {
     // ------------------------------------------------------
     operation TestAssertIsEigenstate_True () : Unit {
         // Test state/unitary pairs which are eigenstates (so no exception should be thrown)
-        for ((unitary, statePrep) in [(Z, I), (Z, X),
+        for (unitary, statePrep) in [(Z, I), (Z, X),
                                       (S, I), (S, X),
                                       (X, H), (X, BoundCA([X, H])),
-                                      (Y, BoundCA([H, S])), (Y, BoundCA([X, H, S]))]) {
+                                      (Y, BoundCA([H, S])), (Y, BoundCA([X, H, S]))] {
             AssertIsEigenstate(unitary, statePrep);
         }
     }
