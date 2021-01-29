@@ -25,15 +25,14 @@ namespace Quantum.Kata.GraphColoring {
 
     @Test("QuantumSimulator")
     operation T11_InitializeColor () : Unit {
-        for (N in 1 .. 4) {
-            using (register = Qubit[N]) {
-                for (C in 0 .. (1 <<< N) - 1) {
-                    InitializeColor(C, register);
-                    let measurementResults = MultiM(register);
-                    Fact(ResultArrayAsInt(measurementResults) == C, 
-                        $"Unexpected initialization result for N = {N}, C = {C} : {measurementResults}");
-                    ResetAll(register);
-                }
+        for N in 1 .. 4 {
+            use register = Qubit[N];
+            for C in 0 .. (1 <<< N) - 1 {
+                InitializeColor(C, register);
+                let measurementResults = MultiM(register);
+                Fact(ResultArrayAsInt(measurementResults) == C, 
+                    $"Unexpected initialization result for N = {N}, C = {C} : {measurementResults}");
+                ResetAll(register);
             }
         }
     }
@@ -42,20 +41,19 @@ namespace Quantum.Kata.GraphColoring {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T12_MeasureColor () : Unit {
-        for (N in 1 .. 4) {
-            using (register = Qubit[N]) {
-                for (C in 0 .. (1 <<< N) - 1) {
-                    // prepare the register in the input state
-                    InitializeColor_Reference(C, register);
+        for N in 1 .. 4 {
+            use register = Qubit[N];
+            for C in 0 .. (1 <<< N) - 1 {
+                // prepare the register in the input state
+                InitializeColor_Reference(C, register);
 
-                    // call the solution and verify its return value
-                    let result = MeasureColor(register);
-                    Fact(result == C, $"Unexpected measurement result for N = {N}, C = {C} : {result}");
+                // call the solution and verify its return value
+                let result = MeasureColor(register);
+                Fact(result == C, $"Unexpected measurement result for N = {N}, C = {C} : {result}");
 
-                    // verify that the register remained in the same state
-                    Adjoint InitializeColor_Reference(C, register);
-                    AssertAllZero(register);
-                }
+                // verify that the register remained in the same state
+                Adjoint InitializeColor_Reference(C, register);
+                AssertAllZero(register);
             }
         }
     }
@@ -64,31 +62,30 @@ namespace Quantum.Kata.GraphColoring {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T13_MeasureColoring () : Unit {
-        for (K in 1 .. 3) {
-        for (N in 1 .. 3) {
-            using (register = Qubit[N * K]) {
-                for (state in 0 .. (1 <<< (N * K)) - 1) {
-                    // prepare the register in the input state
-                    let binaryState = IntAsBoolArray(state, N * K);
-                    ApplyPauliFromBitString(PauliX, true, binaryState, register);
+        for K in 1 .. 3 {
+        for N in 1 .. 3 {
+            use register = Qubit[N * K];
+            for state in 0 .. (1 <<< (N * K)) - 1 {
+                // prepare the register in the input state
+                let binaryState = IntAsBoolArray(state, N * K);
+                ApplyPauliFromBitString(PauliX, true, binaryState, register);
 
-                    // call the solution
-                    let result = MeasureColoring(K, register);
+                // call the solution
+                let result = MeasureColoring(K, register);
 
-                    // get the expected coloring by splitting binaryState into parts and converting them into integers
-                    let partitions = Chunks(N, binaryState);
-                    let expectedColors = ForEach(FunctionAsOperation(BoolArrayAsInt), partitions);
+                // get the expected coloring by splitting binaryState into parts and converting them into integers
+                let partitions = Chunks(N, binaryState);
+                let expectedColors = ForEach(FunctionAsOperation(BoolArrayAsInt), partitions);
 
-                    // verify the return value
-                    Fact(Length(result) == K, $"Unexpected number of colors for N = {N}, K = {K} : {Length(result)}");
-                    for ((expected, actual) in Zipped(expectedColors, result)) {
-                        Fact(expected == actual, $"Unexpected color for N = {N}, K = {K} : expected {expectedColors}, got {result}");
-                    }
-
-                    // verify that the register remained in the same state
-                    ApplyPauliFromBitString(PauliX, true, binaryState, register);
-                    AssertAllZero(register);
+                // verify the return value
+                Fact(Length(result) == K, $"Unexpected number of colors for N = {N}, K = {K} : {Length(result)}");
+                for (expected, actual) in Zipped(expectedColors, result) {
+                    Fact(expected == actual, $"Unexpected color for N = {N}, K = {K} : expected {expectedColors}, got {result}");
                 }
+
+                // verify that the register remained in the same state
+                ApplyPauliFromBitString(PauliX, true, binaryState, register);
+                AssertAllZero(register);
             }
         }
         }
@@ -97,24 +94,23 @@ namespace Quantum.Kata.GraphColoring {
 
     // ------------------------------------------------------
     operation CheckColorEqualityOracle (N : Int, oracle : ((Qubit[], Qubit[], Qubit) => Unit)) : Unit {
-        using ((register0, register1, target) = (Qubit[N], Qubit[N], Qubit())) {
-            for (state in 0 .. (1 <<< (2 * N)) - 1) {
-                // prepare the register in the input state
-                InitializeColor_Reference(state, register0 + register1);
+        use (register0, register1, target) = (Qubit[N], Qubit[N], Qubit());
+        for state in 0 .. (1 <<< (2 * N)) - 1 {
+            // prepare the register in the input state
+            InitializeColor_Reference(state, register0 + register1);
 
-                // apply the oracle
-                oracle(register0, register1, target);
+            // apply the oracle
+            oracle(register0, register1, target);
 
-                // check that the result is what we'd expect
-                let expectedEquality = (state >>> N) == (state % (1 <<< N));
-                AssertQubit(expectedEquality ? One | Zero, target);
-                Reset(target);
+            // check that the result is what we'd expect
+            let expectedEquality = (state >>> N) == (state % (1 <<< N));
+            AssertQubit(expectedEquality ? One | Zero, target);
+            Reset(target);
 
-                // verify that the input registers remained in the same state
-                Adjoint InitializeColor_Reference(state, register0 + register1);
-                AssertAllZero(register0);
-                AssertAllZero(register1);
-            }
+            // verify that the input registers remained in the same state
+            Adjoint InitializeColor_Reference(state, register0 + register1);
+            AssertAllZero(register0);
+            AssertAllZero(register1);
         }
     }
 
@@ -137,7 +133,7 @@ namespace Quantum.Kata.GraphColoring {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T15_ColorEqualityOracle_Nbit () : Unit {
-        for (N in 1..4) {            
+        for N in 1..4 {            
             within {
                 AllowAtMostNQubits(2*N+1, "You are not allowed to allocate extra qubits");
             } apply {
@@ -227,44 +223,43 @@ namespace Quantum.Kata.GraphColoring {
     operation AssertOracleRecognizesColoring (V : Int, edges : (Int, Int)[], oracle : ((Int, (Int, Int)[], Qubit[], Qubit) => Unit)) : Unit {
         // Message($"Testing V = {V}, edges = {edges}");
         let N = 2 * V;
-        using ((coloringRegister, target) = (Qubit[N], Qubit())) {
+        use (coloringRegister, target) = (Qubit[N], Qubit());
             // Try all possible colorings of 4 colors on V vertices and check if they are calculated correctly.
             // Hack: fix the color of the first vertex, since all colorings are agnostic to the specific colors used.
-            for (k in 0 .. (1 <<< (N - 2)) - 1) {
-                // Prepare k-th coloring
-                let binary = [false, false] + IntAsBoolArray(k, N);
-                ApplyPauliFromBitString(PauliX, true, binary, coloringRegister);
+        for k in 0 .. (1 <<< (N - 2)) - 1 {
+            // Prepare k-th coloring
+            let binary = [false, false] + IntAsBoolArray(k, N);
+            ApplyPauliFromBitString(PauliX, true, binary, coloringRegister);
 
-                // Read out the coloring (convert one bitmask into V integers) - does not change the state
-                let coloring = MeasureColoring_Reference(V, coloringRegister);
+            // Read out the coloring (convert one bitmask into V integers) - does not change the state
+            let coloring = MeasureColoring_Reference(V, coloringRegister);
 
-                // Apply the oracle
-                oracle(V, edges, coloringRegister, target);
+            // Apply the oracle
+            oracle(V, edges, coloringRegister, target);
 
-                // Check that the oracle result matches the classical result
-                let val = IsVertexColoringValid_Reference(V, edges, coloring);
-                // Message($"bitmask = {binary}, coloring = {coloring} - expected answer = {val}");
-                AssertQubit(val ? One | Zero, target);
-                Reset(target);
+            // Check that the oracle result matches the classical result
+            let val = IsVertexColoringValid_Reference(V, edges, coloring);
+            // Message($"bitmask = {binary}, coloring = {coloring} - expected answer = {val}");
+            AssertQubit(val ? One | Zero, target);
+            Reset(target);
 
-                // Check that the coloring qubits are still in the same state
-                ApplyPauliFromBitString(PauliX, true, binary, coloringRegister);
-                AssertAllZero(coloringRegister);
-            }
+            // Check that the coloring qubits are still in the same state
+            ApplyPauliFromBitString(PauliX, true, binary, coloringRegister);
+            AssertAllZero(coloringRegister);
         }
     }
 
     @Test("QuantumSimulator")
     operation T22_VertexColoringOracle () : Unit {
         // Run test on all test cases except the last one
-        for ((V, edges) in Most(ExampleGraphs())) {
+        for (V, edges) in Most(ExampleGraphs()) {
             AssertOracleRecognizesColoring(V, edges, VertexColoringOracle);
         }
     }
 
     @Test("QuantumSimulator")
     operation T23_GroversAlgorithm () : Unit {
-        for ((V, edges) in ExampleGraphs()) {
+        for (V, edges) in ExampleGraphs() {
             Message($"Running on graph V = {V}, edges = {edges}");
             let coloring = GroversAlgorithm(V, VertexColoringOracle_Reference(V, edges, _, _));
             Fact(IsVertexColoringValid_Reference(V, edges, coloring), 
