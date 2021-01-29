@@ -185,7 +185,7 @@ namespace Quantum.Kata.Measurements {
             }
             // if we have a max number of measurements per solution run specified, check that it is not exceeded
             if (measurementsPerRun > 0) {
-                let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+                let nm = GetOracleCallsCount(Measure);
                 EqualityFactB(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
             }
 

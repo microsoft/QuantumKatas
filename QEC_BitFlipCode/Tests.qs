@@ -103,7 +103,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             Adjoint statePrep(register);
             AssertAllZero(register);
 
-            let nm = GetOracleCallsCount(M) + GetOracleCallsCount(Measure);
+            let nm = GetOracleCallsCount(Measure);
             Fact(nm <= 1, $"You are allowed to do at most one measurement, and you did {nm}");
         }
     }
