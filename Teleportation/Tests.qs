@@ -17,16 +17,15 @@ namespace Quantum.Kata.Teleportation {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T11_Entangle () : Unit {
-        using ((q0, q1) = (Qubit(), Qubit())) {
-            // Apply operation that needs to be tested
-            Entangle(q0, q1);
+        use (q0, q1) = (Qubit(), Qubit());
+        // Apply operation that needs to be tested
+        Entangle(q0, q1);
             
-            // Apply adjoint reference operation and check that the result is |00⟩
-            Adjoint Entangle_Reference(q0, q1);
+        // Apply adjoint reference operation and check that the result is |00⟩
+        Adjoint Entangle_Reference(q0, q1);
             
-            // Assert that all qubits end up in |0⟩ state
-            AssertAllZero([q0, q1]);
-        }
+        // Assert that all qubits end up in |0⟩ state
+        AssertAllZero([q0, q1]);
     }
     
     
@@ -82,19 +81,18 @@ namespace Quantum.Kata.Teleportation {
         teleportOp : ((Qubit, Qubit, Qubit) => Unit), 
         setupPsiOp : (Qubit => Unit is Adj)) : Unit {
         
-        using ((qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit())) {
-            setupPsiOp(qMessage);
+        use (qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit());
+        setupPsiOp(qMessage);
             
-            // This should modify qBob to be identical to the state
-            // of qMessage before the function call.
-            teleportOp(qAlice, qBob, qMessage);
+        // This should modify qBob to be identical to the state
+        // of qMessage before the function call.
+        teleportOp(qAlice, qBob, qMessage);
             
-            // Applying the inverse of the setup operation to qBob
-            // should make it Zero.
-            Adjoint setupPsiOp(qBob);
-            AssertQubit(Zero, qBob);
-            ResetAll([qMessage, qAlice, qBob]);
-        }
+        // Applying the inverse of the setup operation to qBob
+        // should make it Zero.
+        Adjoint setupPsiOp(qBob);
+        AssertQubit(Zero, qBob);
+        ResetAll([qMessage, qAlice, qBob]);
     }
     
     
@@ -114,8 +112,8 @@ namespace Quantum.Kata.Teleportation {
         // Depending on the outcomes different paths are taken on Bob's side.
         // We repeat each test run several times to ensure that all paths are checked.
         let numRepetitions = 100;
-        for (psiOp in setupPsiOps) {
-            for (j in 1 .. numRepetitions) {
+        for psiOp in setupPsiOps {
+            for j in 1 .. numRepetitions {
                 TeleportTestHelper(teleportOp, psiOp);
             }
         }
@@ -163,15 +161,14 @@ namespace Quantum.Kata.Teleportation {
                         (PauliZ, true)];
         let numRepetitions = 100;
         
-        using ((qAlice, qBob) = (Qubit(), Qubit())) {
-            for ( (basis, sentState) in messages) {
-                for (j in 1 .. numRepetitions) {
-                    StatePrep_BellState(qAlice, qBob, 0);
-                    let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
-                    let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
-                    EqualityFactB(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
-                    ResetAll([qAlice, qBob]);
-                }
+        use (qAlice, qBob) = (Qubit(), Qubit());
+        for (basis, sentState) in messages {
+            for j in 1 .. numRepetitions {
+                StatePrep_BellState(qAlice, qBob, 0);
+                let classicalBits = prepareAndSendMessageOp(qAlice, basis, sentState);
+                let receivedState = reconstructAndMeasureMessageOp(qBob, classicalBits, basis);
+                EqualityFactB(receivedState, sentState, $"Sent and received states were not equal for {sentState} eigenstate in {basis} basis.");
+                ResetAll([qAlice, qBob]);
             }
         }
     }
@@ -220,16 +217,15 @@ namespace Quantum.Kata.Teleportation {
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;
         
-        using ((qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit())) {
-            for (psiOp in setupPsiOps) {
-                for (j in 1 .. numRepetitions) {
-                    psiOp(qMessage);
-                    StatePrep_BellState(qAlice, qBob, 0);
-                    MeasurementFreeTeleport(qAlice, qBob, qMessage);
-                    Adjoint psiOp(qBob);
-                    AssertQubit(Zero, qBob);
-                    ResetAll([qMessage, qAlice, qBob]);
-                }
+        use (qMessage, qAlice, qBob) = (Qubit(), Qubit(), Qubit());
+        for psiOp in setupPsiOps {
+            for j in 1 .. numRepetitions {
+                psiOp(qMessage);
+                StatePrep_BellState(qAlice, qBob, 0);
+                MeasurementFreeTeleport(qAlice, qBob, qMessage);
+                Adjoint psiOp(qBob);
+                AssertQubit(Zero, qBob);
+                ResetAll([qMessage, qAlice, qBob]);
             }
         }
     }
@@ -239,16 +235,15 @@ namespace Quantum.Kata.Teleportation {
     @Test("QuantumSimulator")
     operation T41_EntangleThreeQubits () : Unit {
         
-        using ((qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit())) {
-            // Apply operation that needs to be tested
-            EntangleThreeQubits(qAlice, qBob, qCharlie);
+        use (qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit());
+        // Apply operation that needs to be tested
+        EntangleThreeQubits(qAlice, qBob, qCharlie);
             
-            // Apply adjoint reference operation and check that the result is |000⟩
-            Adjoint EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
+        // Apply adjoint reference operation and check that the result is |000⟩
+        Adjoint EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
             
-            // Assert that all qubits end up in |0⟩ state
-            AssertAllZero([qAlice, qBob, qCharlie]);
-        }
+        // Assert that all qubits end up in |0⟩ state
+        AssertAllZero([qAlice, qBob, qCharlie]);
     }
     
     @Test("QuantumSimulator")
@@ -257,18 +252,17 @@ namespace Quantum.Kata.Teleportation {
         let setupPsiOps = [I, X, H, Ry(42.0, _)];
         let numRepetitions = 100;
         
-        using ((qMessage, qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit(), Qubit())) {
-            for (psiOp in setupPsiOps) {
-                for (j in 1 .. numRepetitions) {
-                    psiOp(qMessage);
-                    EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
-                    let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
-                    let b3 = ResultAsBool(M(qBob));
-                    ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
-                    Adjoint psiOp(qCharlie);
-                    AssertQubit(Zero, qCharlie);
-                    ResetAll([qMessage, qAlice, qBob, qCharlie]);
-                }
+        use (qMessage, qAlice, qBob, qCharlie) = (Qubit(), Qubit(), Qubit(), Qubit());
+        for psiOp in setupPsiOps {
+            for j in 1 .. numRepetitions {
+                psiOp(qMessage);
+                EntangleThreeQubits_Reference(qAlice, qBob, qCharlie);
+                let (b1, b2) = SendMessage_Reference(qAlice, qMessage);
+                let b3 = ResultAsBool(M(qBob));
+                ReconstructMessageWhenThreeEntangledQubits(qCharlie, (b1, b2), b3);
+                Adjoint psiOp(qCharlie);
+                AssertQubit(Zero, qCharlie);
+                ResetAll([qMessage, qAlice, qBob, qCharlie]);
             }
         }
     }
