@@ -23,10 +23,9 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the X gate.
     operation DistinguishIfromX_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation to the |0⟩ state and measure: |0⟩ means I, |1⟩ means X
-        using (q = Qubit()) {
-            unitary(q);
-            return M(q) == Zero ? 0 | 1;
-        }
+        use q = Qubit();
+        unitary(q);
+        return M(q) == Zero ? 0 | 1;
     }
 
 
@@ -35,12 +34,11 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the Z gate.
     operation DistinguishIfromZ_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation to the |+⟩ state and measure: |+⟩ means I, |-⟩ means Z
-        using (q = Qubit()) {
-            H(q);
-            unitary(q);
-            H(q);
-            return M(q) == Zero ? 0 | 1;
-        }
+        use q = Qubit();
+        H(q);
+        unitary(q);
+        H(q);
+        return M(q) == Zero ? 0 | 1;
     }
 
 
@@ -50,13 +48,12 @@ namespace Quantum.Kata.DistinguishUnitaries {
     operation DistinguishZfromS_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation twice to |+⟩ state and measure: |+⟩ means Z, |-⟩ means S
         // X will end up as XXX = X, H will end up as HXH = Z (does not change |0⟩ state)
-        using (q = Qubit()) {
-            H(q);
-            unitary(q);
-            unitary(q);
-            H(q);
-            return M(q) == Zero ? 0 | 1;
-        }
+        use q = Qubit();
+        H(q);
+        unitary(q);
+        unitary(q);
+        H(q);
+        return M(q) == Zero ? 0 | 1;
     }
 
 
@@ -66,14 +63,13 @@ namespace Quantum.Kata.DistinguishUnitaries {
     operation DistinguishHfromX_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation unitary - X - unitary to |0⟩ state and measure: |0⟩ means H, |1⟩ means X
         // X will end up as XXX = X, H will end up as HXH = Z (does not change |0⟩ state)
-        using (q = Qubit()) {
-            within {
-                unitary(q);
-            } apply {
-                X(q);
-            }
-            return M(q) == Zero ? 0 | 1;
+        use q = Qubit();
+        within {
+            unitary(q);
+        } apply {
+            X(q);
         }
+        return M(q) == Zero ? 0 | 1;
     }
     
 
@@ -82,17 +78,16 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the -Z gate.
     operation DistinguishZfromMinusZ_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply Controlled unitary to (|0⟩ + |1⟩) ⊗ |0⟩ state: Z will leave it unchanged while -Z will make it into (|0⟩ + |1⟩) ⊗ |0⟩
-        using (qs = Qubit[2]) {
-            // prep (|0⟩ + |1⟩) ⊗ |0⟩
-            H(qs[0]);
+        use qs = Qubit[2];
+        // prep (|0⟩ + |1⟩) ⊗ |0⟩
+        H(qs[0]);
 
-            Controlled unitary(qs[0..0], qs[1]);
+        Controlled unitary(qs[0..0], qs[1]);
 
-            H(qs[0]);
-            // |0⟩ means it was Z, |1⟩ means -Z
+        H(qs[0]);
+        // |0⟩ means it was Z, |1⟩ means -Z
 
-            return M(qs[0]) == Zero ? 0 | 1;
-        }
+        return M(qs[0]) == Zero ? 0 | 1;
     }
 
 
@@ -100,14 +95,13 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // Output: 0 if the given operation is the Rz gate,
     //         1 if the given operation is the R1 gate.
     operation DistinguishRzFromR1_Reference (unitary : ((Double, Qubit) => Unit is Adj+Ctl)) : Int {
-        using (qs = Qubit[2]) {
-            within {
-                H(qs[0]);
-            } apply {
-                Controlled unitary(qs[0..0], (2.0 * PI(), qs[1]));
-            }
-            return M(qs[0]) == Zero ? 1 | 0;
+        use qs = Qubit[2];
+        within {
+            H(qs[0]);
+        } apply {
+            Controlled unitary(qs[0..0], (2.0 * PI(), qs[1]));
         }
+        return M(qs[0]) == Zero ? 1 | 0;
     }
 
 
@@ -119,22 +113,21 @@ namespace Quantum.Kata.DistinguishUnitaries {
         // Controlled Y introduces an extra phase of i (if applied to any state) compared to XZ
         // applying it twice introduces an extra phase of -1
         // It actually doesn't matter to which state to apply it!
-        using (qs = Qubit[2]) {
-            // prep (|0⟩ + |1⟩) ⊗ |0⟩
-            within { H(qs[0]); }
-            apply {  
-                Controlled unitary(qs[0..0], qs[1]);
-                Controlled unitary(qs[0..0], qs[1]);
-            }
-
-            // 0 means it was Y
-            return M(qs[0]) == Zero ? 0 | 1;
+        use qs = Qubit[2];
+        // prep (|0⟩ + |1⟩) ⊗ |0⟩
+        within { H(qs[0]); }
+        apply {  
+            Controlled unitary(qs[0..0], qs[1]);
+            Controlled unitary(qs[0..0], qs[1]);
         }
+
+        // 0 means it was Y
+        return M(qs[0]) == Zero ? 0 | 1;
     }
     
 
     operation Oracle_Reference (U : (Qubit => Unit is Adj + Ctl), power : Int, target : Qubit[]) : Unit is Adj + Ctl {
-        for (i in 1 .. power) {
+        for i in 1 .. power {
             U(target[0]);
         }
     }
@@ -153,19 +146,18 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
         // Allocate qubits to hold the eigenstate of U and the phase in a big endian register 
         mutable phaseInt = 0;
-        using ((eigenstate, phaseRegister) = (Qubit[1], Qubit[2])) {
-            let phaseRegisterBE = BigEndian(phaseRegister);
-            // Prepare the eigenstate of U
-            H(eigenstate[0]); 
-            S(eigenstate[0]);
-            // Call library
-            QuantumPhaseEstimation(oracle, eigenstate, phaseRegisterBE);
-            // Read out the phase
-            set phaseInt = MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE));
+        use (eigenstate, phaseRegister) = (Qubit[1], Qubit[2]);
+        let phaseRegisterBE = BigEndian(phaseRegister);
+        // Prepare the eigenstate of U
+        H(eigenstate[0]); 
+        S(eigenstate[0]);
+        // Call library
+        QuantumPhaseEstimation(oracle, eigenstate, phaseRegisterBE);
+        // Read out the phase
+        set phaseInt = MeasureInteger(BigEndianAsLittleEndian(phaseRegisterBE));
 
-            ResetAll(eigenstate);
-            ResetAll(phaseRegister);
-        }
+        ResetAll(eigenstate);
+        ResetAll(phaseRegister);
 
         // Convert the measured phase into return value
         return phaseInt;
@@ -190,25 +182,24 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // Output: 0 if the given operation is the Rz(θ) gate,
     //         1 if the given operation is the Ry(θ) gate.
     operation DistinguishRzFromRy_Reference (theta : Double, unitary : (Qubit => Unit is Adj+Ctl)) : Int {
-        using (q = Qubit()) {
-            let times = ComputeRepetitions(theta, 1, 0.1);
-            mutable attempt = 1;
-            mutable measuredOne = false;
-            repeat {
-                for (_ in 1..times) {
-                    unitary(q);
-                }
-                // for Rz, we'll never venture away from |0⟩ state, so as soon as we got |1⟩ we know it's not Rz
-                if (MResetZ(q) == One) {
-                    set measuredOne = true;
-                }
-                // if we try several times and still only get |0⟩s, chances are that it is Rz
-            } until (attempt == 5 or measuredOne) 
-            fixup {
-                set attempt += 1;
+        use q = Qubit();
+        let times = ComputeRepetitions(theta, 1, 0.1);
+        mutable attempt = 1;
+        mutable measuredOne = false;
+        repeat {
+            for _ in 1..times {
+                unitary(q);
             }
-            return measuredOne ? 1 | 0;
+            // for Rz, we'll never venture away from |0⟩ state, so as soon as we got |1⟩ we know it's not Rz
+            if (MResetZ(q) == One) {
+                set measuredOne = true;
+            }
+            // if we try several times and still only get |0⟩s, chances are that it is Rz
+        } until (attempt == 5 or measuredOne) 
+        fixup {
+            set attempt += 1;
         }
+        return measuredOne ? 1 | 0;
     }
 
 
@@ -228,19 +219,18 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         3 if the given operation is the Z gate,
     operation DistinguishPaulis_Reference (unitary : (Qubit => Unit is Adj+Ctl)) : Int {
         // apply operation to the 1st qubit of a Bell state and measure in Bell basis
-        using (qs = Qubit[2]) {
-            within {
-                H(qs[0]);
-                CNOT(qs[0], qs[1]);
-            } apply {
-                unitary(qs[0]);
-            }
-
-            // after this I -> 00, X -> 01, Y -> 11, Z -> 10
-            let ind = MeasureInteger(LittleEndian(qs));
-            let returnValues = [0, 3, 1, 2];
-            return returnValues[ind];
+        use qs = Qubit[2];
+        within {
+            H(qs[0]);
+            CNOT(qs[0], qs[1]);
+        } apply {
+            unitary(qs[0]);
         }
+
+        // after this I -> 00, X -> 01, Y -> 11, Z -> 10
+        let ind = MeasureInteger(LittleEndian(qs));
+        let returnValues = [0, 3, 1, 2];
+        return returnValues[ind];
     }
 
 
@@ -253,10 +243,9 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the CNOT gate.
     operation DistinguishIXfromCNOT_Reference (unitary : (Qubit[] => Unit is Adj+Ctl)) : Int {
         // apply to |00⟩ and measure 2nd qubit: CNOT will do nothing, I ⊗ X will change to |01⟩
-        using (qs = Qubit[2]) {
-            unitary(qs);
-            return M(qs[1]) == One ? 0 | 1;
-        }
+        use qs = Qubit[2];
+        unitary(qs);
+        return M(qs[1]) == One ? 0 | 1;
     }
 
 
@@ -265,11 +254,10 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is CNOT₂₁.
     operation CNOTDirection_Reference (unitary : (Qubit[] => Unit is Adj+Ctl)) : Int {
         // apply to |01⟩ and measure 1st qubit: CNOT₁₂ will do nothing, CNOT₂₁ will change to |11⟩
-        using (qs = Qubit[2]) {
-            within { X(qs[1]); }
-            apply { unitary(qs); }
-            return M(qs[0]) == Zero ? 0 | 1;
-        }
+        use qs = Qubit[2];
+        within { X(qs[1]); }
+        apply { unitary(qs); }
+        return M(qs[0]) == Zero ? 0 | 1;
     }
 
 
@@ -278,12 +266,11 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         1 if the given operation is the SWAP gate.
     operation DistinguishCNOTfromSWAP_Reference (unitary : (Qubit[] => Unit is Adj+Ctl)) : Int {
         // apply to |01⟩ and measure 1st qubit: CNOT will do nothing, SWAP will change to |10⟩
-        using (qs = Qubit[2]) {
-            X(qs[1]);
-            unitary(qs);
-            Reset(qs[1]);
-            return M(qs[0]) == Zero ? 0 | 1;
-        }
+        use qs = Qubit[2];
+        X(qs[1]);
+        unitary(qs);
+        Reset(qs[1]);
+        return M(qs[0]) == Zero ? 0 | 1;
     }
 
 
@@ -294,21 +281,21 @@ namespace Quantum.Kata.DistinguishUnitaries {
     //         3 if the given operation is the SWAP gate.
     operation DistinguishTwoQubitUnitaries_Reference (unitary : (Qubit[] => Unit is Adj+Ctl)) : Int {
         // first run: apply to |11⟩; CNOT₁₂ will give |10⟩, CNOT₂₁ will give |01⟩, II and SWAP will remain |11⟩
-        using (qs = Qubit[2]) {
-            ApplyToEach(X, qs);
-            unitary(qs);
-            let ind = MeasureInteger(LittleEndian(qs));
-            if (ind == 1 or ind == 2) {
-                // respective CNOT
-                return ind;
-            }
-        }
+        use qs = Qubit[2];
+        ApplyToEach(X, qs);
+        unitary(qs);
+        let ind1 = MeasureInteger(LittleEndian(qs));
+        
         // second run: distinguish II from SWAP, apply to |01⟩: II will remain |01⟩, SWAP will become |10⟩
-        using (qs = Qubit[2]) {
-            X(qs[1]);
-            unitary(qs);
-            let ind = MeasureInteger(LittleEndian(qs));
-            return ind == 1 ? 3 | 0;
+        X(qs[1]);
+        unitary(qs);
+        let ind2 = MeasureInteger(LittleEndian(qs));
+
+        if ind1 == 1 or ind1 == 2 {
+            // respective CNOT
+            return ind1;
+        } else {
+            return ind2 == 1 ? 3 | 0;
         }
     }
 }

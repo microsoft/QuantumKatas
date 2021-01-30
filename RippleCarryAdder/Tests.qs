@@ -54,7 +54,7 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     function BinaryXor (bits : Bool[]) : Bool {
         mutable ans = false;
-        for (bit in bits) {
+        for bit in bits {
             if (bit) {
                 set ans = not ans;
             }
@@ -163,40 +163,38 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation AssertOperationImplementsBinaryFunction (op : ((Qubit[]) => Unit is Adj), fun : ((Bool[]) -> Bool[]), Nbits : Int, Nverify : Int) : Unit {
         let max = 1 <<< Nbits;
 
-        using ((qinput, qoutput) = (Qubit[Nbits], Qubit[Nverify])) {
-            let qs = qinput + qoutput;
-            for (i in 0 .. max-1) {
-                let inbits = PrepareRegister(qinput, i);
-                let outbits = fun(inbits);
+        use (qinput, qoutput) = (Qubit[Nbits], Qubit[Nverify]);
+        let qs = qinput + qoutput;
+        for i in 0 .. max-1 {
+            let inbits = PrepareRegister(qinput, i);
+            let outbits = fun(inbits);
                 
-                op(qs);
+            op(qs);
                 
-                VerifyRegister(qinput, inbits, "Inputs should not be modified: ");
-                VerifyRegister(qoutput, outbits, GenerateErrorPrefix(inbits));
-                ResetAll(qs);
-            }
+            VerifyRegister(qinput, inbits, "Inputs should not be modified: ");
+            VerifyRegister(qoutput, outbits, GenerateErrorPrefix(inbits));
+            ResetAll(qs);
         }
     }
 
     // Assertion to compare a binary function with its in-place quantum counterpart
     operation AssertInPlaceOperationImplementsBinaryFunction (op : ((Qubit[]) => Unit is Adj), fun : ((Bool[]) -> Bool[]), N : Int, targetStart : Int, targetEnd : Int, extra : Int) : Unit {
         let max = 1 <<< N;
-        using ((qinput, qextra) = (Qubit[N], Qubit[extra])) {
-            let qs = qinput + qextra;
-            let target = qinput[targetStart .. targetEnd] + qextra;
-            let beforeTarget = qinput[0 .. targetStart-1];
-            let afterTarget = qinput[targetEnd+1 ...];
-            for (i in 0 .. max-1) {
-                let inbits = PrepareRegister(qinput, i);
-                let outbits = fun(inbits);
+        use (qinput, qextra) = (Qubit[N], Qubit[extra]);
+        let qs = qinput + qextra;
+        let target = qinput[targetStart .. targetEnd] + qextra;
+        let beforeTarget = qinput[0 .. targetStart-1];
+        let afterTarget = qinput[targetEnd+1 ...];
+        for i in 0 .. max-1 {
+            let inbits = PrepareRegister(qinput, i);
+            let outbits = fun(inbits);
 
-                op(qs);
+            op(qs);
                 
-                VerifyRegister(beforeTarget, inbits[0 .. targetStart-1], "Input a should not be modified: ");
-                VerifyRegister(afterTarget, inbits[targetEnd+1 ...], "The carry input should not be modified: ");
-                VerifyRegister(target, outbits, GenerateErrorPrefix(inbits));
-                ResetAll(qs);
-            }
+            VerifyRegister(beforeTarget, inbits[0 .. targetStart-1], "Input a should not be modified: ");
+            VerifyRegister(afterTarget, inbits[targetEnd+1 ...], "The carry input should not be modified: ");
+            VerifyRegister(target, outbits, GenerateErrorPrefix(inbits));
+            ResetAll(qs);
         }
     }
 
@@ -284,7 +282,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     @Test("QuantumSimulator")
     operation T17_ArbitraryAdder () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
-        for (nQubitsInRegister in 1 .. 4) {
+        for nQubitsInRegister in 1 .. 4 {
             let testOp1 = QubitArrayAdderWrapper(nQubitsInRegister, ArbitraryAdder, _);
 
             AssertOperationImplementsBinaryFunction(testOp1, BinaryAdder(_, nQubitsInRegister), 2 * nQubitsInRegister, nQubitsInRegister + 1);
@@ -292,17 +290,16 @@ namespace Quantum.Kata.RippleCarryAdder {
             // Since we promise that "sum" register will be in the 0 state, we can't use library op AssertOperationsEqualReferenced.
             // Instead, we're using the Choi–Jamiołkowski isomorphism (same as in that library op) to compare unitaries 
             // by comparing their effect on entangled pair of input registers and an all-0 output register.
-            using ((reference, target, sum) = (Qubit[2 * nQubitsInRegister + 1], Qubit[2 * nQubitsInRegister + 1], Qubit[nQubitsInRegister])) {
-                let a = target[0 .. nQubitsInRegister - 1];
-                let b = target[nQubitsInRegister .. 2 * nQubitsInRegister - 1];
-                let carry = Tail(target);
+            use (reference, target, sum) = (Qubit[2 * nQubitsInRegister + 1], Qubit[2 * nQubitsInRegister + 1], Qubit[nQubitsInRegister]);
+            let a = target[0 .. nQubitsInRegister - 1];
+            let b = target[nQubitsInRegister .. 2 * nQubitsInRegister - 1];
+            let carry = Tail(target);
 
-                PrepareEntangledState(reference, target);
-                ArbitraryAdder(a, b, sum, carry);
-                Adjoint ArbitraryAdder_Reference(a, b, sum, carry);
-                Adjoint PrepareEntangledState(reference, target);
-                AssertAllZero(reference + target);
-            }
+            PrepareEntangledState(reference, target);
+            ArbitraryAdder(a, b, sum, carry);
+            Adjoint ArbitraryAdder_Reference(a, b, sum, carry);
+            Adjoint PrepareEntangledState(reference, target);
+            AssertAllZero(reference + target);
         }
     }
 
@@ -353,7 +350,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T25_ArbitraryAdderInPlace () : Unit {
-        for (i in 1 .. 4) {
+        for i in 1 .. 4 {
             let testOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryAdderInPlace, _);
             let refOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryAdderInPlace_Reference, _);
             AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryAdder(_, i), 2 * i, i, (2 * i) - 1, 1);
@@ -438,7 +435,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     @Test("QuantumSimulator")
     operation T35_ArbitraryMajUmaAdder () : Unit {
         // This algorithm is much faster, so a 5 qubit test is feasible
-        for (i in 1 .. 5) {
+        for i in 1 .. 5 {
             let testOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryMajUmaAdder, _);
             let refOp = QubitArrayInPlaceAdderWrapper(i, ArbitraryMajUmaAdder_Reference, _);
 
@@ -459,7 +456,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T41_Subtractor () : Unit {
-        for (i in 1 .. 5) {
+        for i in 1 .. 5 {
             let testOp = QubitArrayInPlaceAdderWrapper(i, Subtractor, _);
             let refOp = QubitArrayInPlaceAdderWrapper(i, Subtractor_Reference, _);
             AssertInPlaceOperationImplementsBinaryFunction(testOp, BinarySubtractor(_, i), 2 * i, i, (2 * i) - 1, 1);
@@ -479,16 +476,15 @@ namespace Quantum.Kata.RippleCarryAdder {
         actualOp : ((Qubit[], Qubit[], Qubit[]) => Unit), 
         expectedOp : ((Qubit[], Qubit[], Qubit[]) => Unit is Adj)
     ) : Unit {
-        using ((reference, target, zeroReg) = (Qubit[2 * nQubits], Qubit[2 * nQubits], Qubit[nQubits])) {
-            let a = target[... nQubits - 1];
-            let b = target[nQubits ...];
+        use (reference, target, zeroReg) = (Qubit[2 * nQubits], Qubit[2 * nQubits], Qubit[nQubits]);
+        let a = target[... nQubits - 1];
+        let b = target[nQubits ...];
 
-            PrepareEntangledState(reference, target);
-            actualOp(a, b, zeroReg);
-            Adjoint expectedOp(a, b, zeroReg);
-            Adjoint PrepareEntangledState(reference, target);
-            AssertAllZero(reference + target);
-        }
+        PrepareEntangledState(reference, target);
+        actualOp(a, b, zeroReg);
+        Adjoint expectedOp(a, b, zeroReg);
+        Adjoint PrepareEntangledState(reference, target);
+        AssertAllZero(reference + target);
     }
 
 
@@ -496,7 +492,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     @Test("QuantumSimulator")
     operation T51_AdderModuloN () : Unit {
         // 4 bits seems reasonable - any more than that will take forever
-        for (nQubits in 1 .. 4) {
+        for nQubits in 1 .. 4 {
             let testOp = QubitArrayModuloAdderWrapper(nQubits, AdderModuloN, _);
 
             AssertOperationImplementsBinaryFunction(testOp, BinaryModuloAdder(_, nQubits), 2 * nQubits, nQubits);
@@ -509,7 +505,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T52_TwosComplement () : Unit {
-        for (nQubits in 1 .. 4) {
+        for nQubits in 1 .. 4 {
             AssertOperationsEqualReferenced(nQubits, TwosComplement, TwosComplement_Reference);
         }
     }
@@ -518,7 +514,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T53_SubtractorModuloN () : Unit {
-        for (nQubits in 1 .. 4) {
+        for nQubits in 1 .. 4 {
             let testOp = QubitArrayModuloAdderWrapper(nQubits, SubtractorModuloN, _);
             AssertOperationImplementsBinaryFunction(testOp, BinaryModuloSubtractor(_, nQubits), 2 * nQubits, nQubits);
             AssertOperationsEqualReferencedWithZeroRegister(nQubits, SubtractorModuloN, SubtractorModuloN_Reference);
@@ -528,7 +524,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T54_InPlaceAdderModuloN () : Unit {
-        for (nQubits in 1 .. 4) {
+        for nQubits in 1 .. 4 {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceAdderModuloN, _);
             let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceAdderModuloN_Reference, _);
             AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryModuloAdder(_, nQubits), 2 * nQubits, nQubits, 2 * nQubits - 1, 0);
@@ -539,7 +535,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T55_InPlaceSubtractorModuloN () : Unit {
-        for (nQubits in 1 .. 4) {
+        for nQubits in 1 .. 4 {
             let testOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceSubtractorModuloN, _);
             let refOp = QubitArrayInPlaceModuloAdderWrapper(nQubits, InPlaceSubtractorModuloN_Reference, _);
             AssertInPlaceOperationImplementsBinaryFunction(testOp, BinaryModuloSubtractor(_, nQubits), 2 * nQubits, nQubits, 2 * nQubits - 1, 0);

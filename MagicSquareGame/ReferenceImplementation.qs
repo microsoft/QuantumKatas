@@ -79,7 +79,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // Task 2.1. Entangled state
     operation CreateEntangledState_Reference (qs : Qubit[]) : Unit is Adj {
         // The desired state is equivalent to two Bell pairs split between Alice and Bob.
-        for (i in 0..1) {
+        for i in 0..1 {
             H(qs[i]);
             CNOT(qs[i], qs[i + 2]);
         }
@@ -119,12 +119,11 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // Task 2.5. Measure an operator
     operation MeasureOperator_Reference (op : (Qubit[] => Unit is Ctl), target : Qubit[]) : Result {
-        using (q = Qubit()) {
-            H(q);
-            Controlled op([q], target);
-            H(q);
-            return MResetZ(q);
-        }
+        use q = Qubit();
+        H(q);
+        Controlled op([q], target);
+        H(q);
+        return MResetZ(q);
     }
 
 
@@ -135,7 +134,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // strategy.
     operation AliceQuantum_Reference(rowIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
-        for (column in 0..2) {
+        for column in 0..2 {
             // Alice uses joint measurement to measure the qubits in the observable's Pauli bases.
             let obs = GetMagicObservables_Reference(rowIndex, column);
             let result = MeasureObservable_Reference(obs, qs);
@@ -146,7 +145,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     operation BobQuantum_Reference(columnIndex : Int, qs : Qubit[]) : Int[] {
         mutable cells = new Int[3];
-        for (row in 0..2) {
+        for row in 0..2 {
             // Bob converts the observable into an operator before measuring it.
             let obs = GetMagicObservables_Reference(row, columnIndex);
             let op = ApplyMagicObservables_Reference(obs, _);
@@ -161,12 +160,11 @@ namespace Quantum.Kata.MagicSquareGame {
     operation PlayQuantumMagicSquare_Reference (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
         mutable alice = new Int[3];
         mutable bob = new Int[3];
-        using (qs = Qubit[4]) {
-            CreateEntangledState_Reference(qs);
-            set alice = askAlice(qs[0..1]);
-            set bob = askBob(qs[2..3]);
-            ResetAll(qs);
-        }
+        use qs = Qubit[4];
+        CreateEntangledState_Reference(qs);
+        set alice = askAlice(qs[0..1]);
+        set bob = askBob(qs[2..3]);
+        ResetAll(qs);
         return (alice, bob);
     }
 

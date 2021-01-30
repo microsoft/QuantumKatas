@@ -63,7 +63,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Goal: transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2).
     operation Oracle_OddNumberOfOnes_Reference (x : Qubit[], y : Qubit) : Unit is Adj {       
         // Hint: f(x) can be represented as x_0 ⊕ x_1 ⊕ ... ⊕ x_(N-1)
-        for (q in x) {
+        for q in x {
             CNOT(q, y);
         }
         // alternative solution: ApplyToEachA(CNOT(_, y), x);
@@ -84,7 +84,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
-        for (i in IndexRange(x)) {
+        for i in IndexRange(x) {
             if (r[i] == 1) {
                 CNOT(x[i], y);
             }
@@ -104,7 +104,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // You don't need to modify it. Feel free to remove it, this won't cause your code to fail.
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
-        for (i in IndexRange(x)) {
+        for i in IndexRange(x) {
             if (r[i] == 1) {
                 CNOT(x[i], y);
             } else {
@@ -131,14 +131,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         EqualityFactB(1 <= P and P <= Length(x), true, "P should be between 1 and N, inclusive");
             
         // Hint: the first part of the function is the same as in task 1.4
-        for (q in x) {
+        for q in x {
             CNOT(q, y);
         }
             
         // add check for prefix as a multi-controlled NOT
         // true bits of r correspond to 1-controls, false bits - to 0-controls
         within {
-            for (i in 0 .. P - 1) {
+            for i in 0 .. P - 1 {
                     
                 if (prefix[i] == 0) {
                     X(x[i]);
@@ -208,29 +208,28 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         mutable isConstantFunction = true;
     
         // allocate N qubits for input register and 1 qubit for output
-        using ((x, y) = (Qubit[N], Qubit())) {
-            
-            // prepare qubits in the right state
-            DJ_StatePrep_Reference(x, y);
-            
-            // apply oracle
-            Uf(x, y);
-            
-            // apply Hadamard to each qubit of the input register
-            ApplyToEach(H, x);
-            
-            // measure all qubits of the input register;
-            // the result of each measurement is converted to an Int
-            for (i in 0 .. N - 1) {
-                if (M(x[i]) != Zero) {
-                    set isConstantFunction = false;
-                }
-            }
-            
-            // before releasing the qubits make sure they are all in |0⟩ state
-            Reset(y);
-        }
+        use (x, y) = (Qubit[N], Qubit());
 
+        // prepare qubits in the right state
+        DJ_StatePrep_Reference(x, y);
+
+        // apply oracle
+        Uf(x, y);
+            
+        // apply Hadamard to each qubit of the input register
+        ApplyToEach(H, x);
+            
+        // measure all qubits of the input register;
+        // the result of each measurement is converted to an Int
+        for i in 0 .. N - 1 {
+            if (M(x[i]) != Zero) {
+                set isConstantFunction = false;
+            }
+        }
+            
+        // before releasing the qubits make sure they are all in |0⟩ state
+        Reset(y);
+        
         return isConstantFunction;
     }
 
@@ -256,30 +255,29 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation BV_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
                 
         // allocate N qubits for input register and 1 qubit for output
-        using ((x, y) = (Qubit[N], Qubit())) {
+        use (x, y) = (Qubit[N], Qubit());
             
-            // prepare qubits in the right state
-            DJ_StatePrep_Reference(x, y);
+        // prepare qubits in the right state
+        DJ_StatePrep_Reference(x, y);
             
-            // apply oracle
-            Uf(x, y);
+        // apply oracle
+        Uf(x, y);
             
-            // apply Hadamard to each qubit of the input register
-            ApplyToEach(H, x);
+        // apply Hadamard to each qubit of the input register
+        ApplyToEach(H, x);
             
-            // measure all qubits of the input register;
-            // the result of each measurement is converted to an Int
-            mutable r = new Int[N];
-            for (i in 0 .. N - 1) {
-                if (M(x[i]) != Zero) {
-                    set r w/= i <- 1;
-                }
+        // measure all qubits of the input register;
+        // the result of each measurement is converted to an Int
+        mutable r = new Int[N];
+        for i in 0 .. N - 1 {
+            if (M(x[i]) != Zero) {
+                set r w/= i <- 1;
             }
-            
-            // before releasing the qubits make sure they are all in |0⟩ state
-            Reset(y);
-            return r;
         }
+            
+        // before releasing the qubits make sure they are all in |0⟩ state
+        Reset(y);
+        return r;
     }
     
     
@@ -299,31 +297,30 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     //      A bit vector r which generates the same oracle as the one you are given
     operation Noname_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
                 
-        using ((x, y) = (Qubit[N], Qubit())) {
-            // apply oracle to qubits in all 0 state
-            Uf(x, y);
+        use (x, y) = (Qubit[N], Qubit());
+        // apply oracle to qubits in all 0 state
+        Uf(x, y);
             
-            // f(x) = Σᵢ (𝑟ᵢ 𝑥ᵢ + (1 - 𝑟ᵢ)(1 - 𝑥ᵢ)) = 2 Σᵢ 𝑟ᵢ 𝑥ᵢ + Σᵢ 𝑟ᵢ + Σᵢ 𝑥ᵢ + N = Σᵢ 𝑟ᵢ + N
-            // remove the N from the expression
-            if (N % 2 == 1) {
-                X(y);
-            }
-            
-            // now y = Σᵢ 𝑟ᵢ
-            
-            // Declare an Int array in which the result will be stored;
-            // the variable has to be mutable to allow updating it.
-            mutable r = new Int[N];
-
-            // measure the output register
-            let m = M(y);
-            if (m == One) {
-                // adjust parity of bit vector r
-                set r w/= 0 <- 1;
-            }
-            
-            return r;
+        // f(x) = Σᵢ (𝑟ᵢ 𝑥ᵢ + (1 - 𝑟ᵢ)(1 - 𝑥ᵢ)) = 2 Σᵢ 𝑟ᵢ 𝑥ᵢ + Σᵢ 𝑟ᵢ + Σᵢ 𝑥ᵢ + N = Σᵢ 𝑟ᵢ + N
+        // remove the N from the expression
+        if (N % 2 == 1) {
+            X(y);
         }
+            
+        // now y = Σᵢ 𝑟ᵢ
+            
+        // Declare an Int array in which the result will be stored;
+        // the variable has to be mutable to allow updating it.
+        mutable r = new Int[N];
+
+        // measure the output register
+        let m = M(y);
+        if (m == One) {
+            // adjust parity of bit vector r
+            set r w/= 0 <- 1;
+        }
+            
+        return r;
     }
     
 }

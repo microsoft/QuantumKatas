@@ -27,7 +27,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     // helper wrapper to test for operation equality on various register sizes
     operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit is Adj)) : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
@@ -54,7 +54,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T13_Oracle_ArbitraryPattern () : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
             let testOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern(_, _, pattern), _);
             let refOp = QubitArrayWrapperOperation(Oracle_ArbitraryPattern_Reference(_, _, pattern), _);
@@ -66,7 +66,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T14_OracleConverter () : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let phaseOracleRef = OracleConverter_Reference(markingOracle);
@@ -93,7 +93,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T23_GroverIteration () : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let flipOracle = OracleConverter_Reference(markingOracle);
@@ -107,7 +107,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T31_GroversSearch () : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             let pattern = IntAsBoolArray(DrawRandomInt(0, 2^n - 1), n);
             let markingOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
             let testOp = GroversSearch(_, markingOracle, 4);
