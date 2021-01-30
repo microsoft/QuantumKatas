@@ -20,10 +20,9 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
     // Exercise 1.
     operation RandomBit_Reference () : Int {
-        using (q = Qubit()) {
-            H(q);
-            return M(q) == Zero ? 0 | 1;
-        }
+        use q = Qubit();
+        H(q);
+        return M(q) == Zero ? 0 | 1;
     }
 
     // Exercise 2. 
@@ -34,7 +33,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 3.
     operation RandomNBits_Reference (N: Int) : Int {
         mutable result = 0;
-        for (i in 0..(N - 1)) {
+        for i in 0..(N - 1) {
             set result = result * 2 + RandomBit_Reference();
         }
         return result;
@@ -43,10 +42,9 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 4. 
     operation WeightedRandomBit_Reference (x : Double) : Int {
         let theta = ArcCos(Sqrt(x));
-        using (q = Qubit()) {
-            Ry(2.0 * theta, q);
-            return M(q) == Zero ? 0 | 1;
-        }
+        use q = Qubit();
+        Ry(2.0 * theta, q);
+        return M(q) == Zero ? 0 | 1;
     }
 
     // Exercise 5.

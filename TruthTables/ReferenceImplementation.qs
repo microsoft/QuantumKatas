@@ -97,7 +97,7 @@ namespace Quantum.Kata.TruthTables {
 
     // Task 10. Apply truth table as a quantum operation
     operation ApplyXControlledOnFunction_Reference (tt : TruthTable, controls : Qubit[], target : Qubit) : Unit is Adj {
-        for (i in AllMinterms_Reference(tt)) {
+        for i in AllMinterms_Reference(tt) {
             (ControlledOnInt(i, X))(controls, target);
         }
     }
