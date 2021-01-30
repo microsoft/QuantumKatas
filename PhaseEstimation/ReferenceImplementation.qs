@@ -153,50 +153,49 @@ namespace Quantum.Kata.PhaseEstimation {
         // Start by using the same circuit as in task 2.1.
         // For eigenvalues +1 and -1, it produces measurement results Zero and One, respectively, 100% of the time;
         // for eigenvalues +i and -i, it produces both results with 50% probability, so a different circuit is required.
-        use (control, eigenstate) = (Qubit(), Qubit());
-        // prepare the eigenstate |ψ⟩
-        P(eigenstate);
+        use (control, eigenstate) = (Qubit(), Qubit()) {
+            // prepare the eigenstate |ψ⟩
+            P(eigenstate);
 
-        mutable (measuredZero, measuredOne) = (false, false); 
-        mutable iter = 0;
-        repeat {
-            set iter += 1;
+            mutable (measuredZero, measuredOne) = (false, false); 
+            mutable iter = 0;
+            repeat {
+                set iter += 1;
 
-            within {
-                H(control);     
-            } apply {
-                Controlled U([control], eigenstate);
+                within {
+                    H(control);     
+                } apply {
+                    Controlled U([control], eigenstate);
+                }
+
+                let meas = MResetZ(control);
+                set (measuredZero, measuredOne) = (measuredZero or meas == Zero, measuredOne or meas == One);
+            } 
+            // repeat the loop until we get both Zero and One measurement outcomes
+            // or until we're reasonably certain that we won't get a different outcome
+            until (iter == 10 or measuredZero and measuredOne);
+            Reset(eigenstate);
+
+            if (not measuredZero or not measuredOne) {
+                // all measurements yielded Zero => eigenvalue +1
+                // all measurements yielded One => eigenvalue -1
+                return measuredOne ? 0.5 | 0.0;
             }
-
-            let meas = MResetZ(control);
-            set (measuredZero, measuredOne) = (measuredZero or meas == Zero, measuredOne or meas == One);
-        } 
-        // repeat the loop until we get both Zero and One measurement outcomes
-        // or until we're reasonably certain that we won't get a different outcome
-        until (iter == 10 or measuredZero and measuredOne);
-        Reset(eigenstate);
-
-        // all measurements yielded Zero => eigenvalue +1
-        // all measurements yielded One => eigenvalue -1
-        
-        Reset(control);
-        Reset(eigenstate);
+        }
 
         // To distinguish between eigenvalues i and -i, we need a circuit with an extra S gate on control qubit
-        // prepare the eigenstate |ψ⟩
-        P(eigenstate);
+        use (control, eigenstate) = (Qubit(), Qubit()) {
+            // prepare the eigenstate |ψ⟩
+            P(eigenstate);
 
-        H(control);
-        Controlled U([control], eigenstate);
-        S(control);
-        H(control);
+            H(control);
+            Controlled U([control], eigenstate);
+            S(control);
+            H(control);
 
-        let eigenvalue = M(control) == Zero ? 0.75 | 0.25;
-        Reset(eigenstate);
+            let eigenvalue = M(control) == Zero ? 0.75 | 0.25;
+            Reset(eigenstate);
 
-        if (not measuredZero or not measuredOne) {
-            return measuredOne ? 0.5 | 0.0;
-        } else {
             return eigenvalue;
         }
         
