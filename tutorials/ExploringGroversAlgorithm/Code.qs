@@ -97,13 +97,13 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     operation ApplyMarkingOracleAsPhaseOracle (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
         use target = Qubit();
         // Put the target into the |-⟩ state and later back to |0⟩ so we can return it
-        within{
+        within {
             X(target);
             H(target);
         }
         // Apply the marking oracle; since the target is in the |-⟩ state,
         // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-        apply{
+        apply {
             markingOracle(register, target);
         }    
     }
@@ -114,15 +114,15 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         ApplyToEach(H, register);
             
-        for i in 1 .. iterations {
+        for _ in 1 .. iterations {
             // apply oracle
             ApplyMarkingOracleAsPhaseOracle(oracle, register);
             // apply inversion about the mean
-            within{
+            within {
                 ApplyToEachA(H, register);
                 ApplyToEachA(X, register);
             }
-            apply{
+            apply {
                 Controlled Z(Most(register), Tail(register));
             }
         }
@@ -174,7 +174,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
         mutable correct = 0;
         use (register, answer) = (Qubit[N], Qubit());
-        for run in 1..100 {
+        for run in 1 .. 100 {
             GroversAlgorithm_Loop(register, oracle, iter);
             let res = MultiM(register);
             oracle(register, answer);
@@ -202,7 +202,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
         mutable correct = 0;
         use (register, answer) = (Qubit[nQubit], Qubit());
-        for run in 1..100 {
+        for run in 1 .. 100 {
             GroversAlgorithm_Loop(register, oracle, iter);
             let res = MultiM(register);
             oracle(register, answer);

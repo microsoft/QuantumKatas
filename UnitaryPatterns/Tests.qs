@@ -30,7 +30,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         let ε = 0.000001;
         
         use qs = Qubit[N];
-            for k in 0 .. size - 1 {                
+        for k in 0 .. size - 1 {                
             // Prepare k-th basis vector
             let binary = IntAsBoolArray(k, N);
                 
