@@ -78,7 +78,7 @@ namespace Quantum.Kata.RippleCarryAdder {
             LowestBitCarry_Reference(a[0], b[0], carry);
         }
         else {
-        use internalCarries = Qubit[N-1];
+            use internalCarries = Qubit[N-1];
             LowestBitSum_Reference(a[0], b[0], sum[0]);
             LowestBitCarry_Reference(a[0], b[0], internalCarries[0]);
                 

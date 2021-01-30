@@ -60,7 +60,6 @@ namespace Quantum.Kata.CHSHGame {
             
         // assert that all qubits end up in |0⟩ state
         AssertAllZero(qs);
-        
     }
 
     @Test("QuantumSimulator")

@@ -33,7 +33,7 @@ namespace Quantum.Kata.JointMeasurements {
         mutable unknownClassifications = new Int[nStates];
                 
         use qs = Qubit[nQubits];
-            for i in 1 .. nTotal {
+        for i in 1 .. nTotal {
             // get a random integer to define the state of the qubits
             let state = DrawRandomInt(0, nStates - 1);
             // get a random rotation angle to define the exact state of the qubits
@@ -245,7 +245,7 @@ namespace Quantum.Kata.JointMeasurements {
 
         // Check that the implementation of ControlledX_General doesn't call multi-qubit gates (other than itself)
         use qs = Qubit[2];
-            // prepare a non-trivial input state
+        // prepare a non-trivial input state
         ApplyToEachA(H, qs);
 
         ResetOracleCallsCount();
@@ -254,7 +254,7 @@ namespace Quantum.Kata.JointMeasurements {
 
         // the 1 in the following condition is the task operation itself being called
         Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
-                "You are not allowed to use multi-qubit gates in this task.");
+            "You are not allowed to use multi-qubit gates in this task.");
  
         // apply adjoint reference operation and adjoint of state prep
         CNOT(qs[0], qs[1]);

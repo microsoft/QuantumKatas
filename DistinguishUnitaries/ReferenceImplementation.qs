@@ -287,7 +287,6 @@ namespace Quantum.Kata.DistinguishUnitaries {
         let ind1 = MeasureInteger(LittleEndian(qs));
         
         // second run: distinguish II from SWAP, apply to |01⟩: II will remain |01⟩, SWAP will become |10⟩
-        ResetAll(qs);
         X(qs[1]);
         unitary(qs);
         let ind2 = MeasureInteger(LittleEndian(qs));
@@ -297,6 +296,6 @@ namespace Quantum.Kata.DistinguishUnitaries {
             return ind1;
         } else {
             return ind2 == 1 ? 3 | 0;
-	    }
+        }
     }
 }
