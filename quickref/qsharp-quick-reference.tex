@@ -496,7 +496,7 @@
 
 \raggedright\
 
-\Large{\qs~0.10 Language Quick Reference}
+\Large{\qs~0.15 Language Quick Reference}
 
 \footnotesize
 \begin{multicols}{3}
@@ -586,7 +586,7 @@
 
   \begin{keysref}{Control Flow}
     Iterate over \newline a range of numbers
-                       & \texttt{for (\emph{index} in \emph{range}) \{ }\newline 
+                       & \texttt{for \emph{index} in \emph{range} \{ }\newline 
                          \texttt{\hphantom{....}// Use integer \emph{index}} \newline
                          \texttt{\hphantom{....}...} \newline
                          \texttt{\}} \newline
@@ -595,7 +595,7 @@
                        & \texttt{while (\emph{condition}) \{} \newline
                          \texttt{\hphantom{....}...} \newline
                          \texttt{\}} \\
-    Iterate over \newline an array & \texttt{for (\emph{val} in \emph{array}) \{ }\newline 
+    Iterate over \newline an array & \texttt{for \emph{val} in \emph{array} \{ }\newline 
                                      \texttt{\hphantom{....}// Use value \emph{val}} \newline
                                      \texttt{\hphantom{....}...} \newline
                                      \texttt{\}} \newline
@@ -663,17 +663,15 @@
 
   \begin{keysref}{Qubit Allocation}
     Allocate a register \newline of $N$ qubits 
-                         & \texttt{using (\emph{reg} = Qubit[\emph{N}]) \{} \newline
-                           \texttt{\hphantom{....}//} Qubits in \texttt{\emph{reg}} start in $\ket{0}$. \newline
-                           \texttt{\hphantom{....}...} \newline
-                           \texttt{\hphantom{....}//} Qubits must be returned to $\ket{0}$. \newline
-                           \texttt{\}} \\
-    Allocate one qubit   & \texttt{using (\emph{one} = Qubit()) \{ ... \} } \\
+                         & \texttt{use \emph{reg} = Qubit[\emph{N}]; } \newline
+                           \texttt{//} Qubits in \texttt{\emph{reg}} start in $\ket{0}$. \newline
+                           \texttt{...} \newline
+                           \texttt{//} Qubits must be returned to $\ket{0}$. \\
+    Allocate one qubit   & \texttt{use \emph{one} = Qubit();  ...  } \\
     Allocate a mix of \newline qubit registers and \newline individual qubits
-                         & \texttt{using ((\emph{x}, \emph{y}, ... ) = } \newline 
-                           \texttt{\hphantom{....}(Qubit[N], Qubit(), ... )) \{} \newline
-                           \texttt{\hphantom{....}...} \newline
-                           \texttt{\}} \\
+                         & \texttt{use (\emph{x}, \emph{y}, ... ) = } \newline 
+                           \texttt{\hphantom{...}(Qubit[N], Qubit(), ... ); } \newline
+                           \texttt{...} \\
   \end{keysref}
 
   \begin{keysref}{Debugging (quantum)}
