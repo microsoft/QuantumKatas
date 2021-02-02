@@ -85,7 +85,7 @@ namespace Quantum.Kata.TruthTables {
         Message($"Testing on truth table {testTT}");
         let minterms = AllMinterms(testTT);
         EqualityFactI(Length(minterms), 4, "Number of minterms is not correct");
-        for (minterm in [3, 4, 6, 7]) {
+        for minterm in [3, 4, 6, 7] {
             Fact(IndexOf(EqualI(minterm, _), minterms) != -1, $"Minterm {minterm} should be part of the result");
         }
     }

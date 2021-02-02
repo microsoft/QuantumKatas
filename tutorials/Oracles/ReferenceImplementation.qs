@@ -43,13 +43,12 @@ namespace Quantum.Kata.Oracles {
 
     // Task 2.1.
     operation ApplyMarkingOracleAsPhaseOracle_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj + Ctl), qubits : Qubit[]) : Unit is Adj + Ctl {
-        using (minus = Qubit()) {
-            within {
-                X(minus);
-                H(minus);
-            } apply {
-                markingOracle(qubits, minus);
-            }
+        use minus = Qubit();
+        within {
+            X(minus);
+            H(minus);
+        } apply {
+            markingOracle(qubits, minus);
         }
     }
 
@@ -75,13 +74,12 @@ namespace Quantum.Kata.Oracles {
 
     // Task 3.3.
     operation OrOfBitsExceptKth_Oracle_Reference (x : Qubit[], k : Int) : Unit is Adj + Ctl {
-        using (minus = Qubit()) {
-            within {
-                X(minus);
-                H(minus);
-            } apply {
-                Or_Oracle_Reference(x[...k-1] + x[k+1...], minus);
-            }
+        use minus = Qubit();
+        within {
+            X(minus);
+            H(minus);
+        } apply {
+            Or_Oracle_Reference(x[...k-1] + x[k+1...], minus);
         }
     }
 
@@ -99,7 +97,7 @@ namespace Quantum.Kata.Oracles {
     // Task 4.2.
     operation ArbitraryBitPattern_Oracle_Challenge_Reference (x : Qubit[], pattern : Bool[]) : Unit is Adj + Ctl {
         within {
-            for (i in IndexRange(x)) {
+            for i in IndexRange(x) {
                 if (not pattern[i]) {
                     X(x[i]);
                 }
@@ -111,17 +109,16 @@ namespace Quantum.Kata.Oracles {
 
     // Task 4.3.
     operation Meeting_Oracle_Reference (x : Qubit[], jasmine : Qubit[], z : Qubit) : Unit is Adj + Ctl {
-        using (q = Qubit[Length(x)]) {
-            within {
-                for (i in IndexRange(q)) {
-                    // flip q[i] if both x and jasmine are free on the given day
-                    X(x[i]);
-                    X(jasmine[i]);
-                    CCNOT(x[i], jasmine[i], q[i]);
-                }
-            } apply {
-                Or_Oracle_Reference(q, z);
+        use q = Qubit[Length(x)];
+        within {
+            for i in IndexRange(q) {
+                // flip q[i] if both x and jasmine are free on the given day
+                X(x[i]);
+                X(jasmine[i]);
+                CCNOT(x[i], jasmine[i], q[i]);
             }
+        } apply {
+            Or_Oracle_Reference(q, z);
         }
     }
 }
