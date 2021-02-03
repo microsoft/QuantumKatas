@@ -34,4 +34,8 @@ namespace Quantum.Kata.Utils {
     /// # Summary
     /// Returns the number of multi-qubit operations used by the simulator.
     operation GetMultiQubitOpCount () : Int { body intrinsic; }
+
+    /// # Summary
+    /// Disables printout on exception. Adjoint operation enabled printout. Do not nest!
+    operation DisableExceptionPrinting () : Unit { body intrinsic; adjoint intrinsic; }
 }

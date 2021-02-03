@@ -79,6 +79,14 @@ namespace Quantum.Kata.DistinguishUnitaries {
         }
         // This check will tell the total number of failed classifications
         Fact(totalMisclassifications == 0, $"{totalMisclassifications} test runs out of {nTotal} returned incorrect state.");
+
+        // Use the following within-apply pattern to display clean message without
+        // additional information from exception (such as stack trace).
+        //
+        // within { DisableExceptionPrinting(); } apply {
+        //    Message($"{totalMisclassifications} test runs out of {nTotal} returned incorrect state.");
+        //    Fact(totalMisclassifications == 0, $"Failure.");
+        // }
     }
     
     

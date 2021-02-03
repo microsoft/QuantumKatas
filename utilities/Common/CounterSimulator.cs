@@ -141,6 +141,30 @@ namespace Microsoft.Quantum.Katas
                 return _sim._multiQubitOperations;
             };
         }
+
+        /// <summary>
+        /// Custom operation to disable exception diagnostics printout.
+        /// Adjoint operation enables printout. WILL NOT WORK IF NESTED!
+        /// </summary>
+        public class DisableExceptionPrintingImpl : DisableExceptionPrinting
+        {
+            CounterSimulator _sim;
+
+            public DisableExceptionPrintingImpl(CounterSimulator m) : base(m) {
+                _sim = m;
+            }
+
+            public override Func<QVoid, QVoid> __Body__ => (__in) => {
+                _sim.DisableExceptionPrinting();
+                return QVoid.Instance;
+            };
+
+            public override Func<QVoid, QVoid> __AdjointBody__ => (__in) => {
+                _sim.EnableExceptionPrinting();
+                return QVoid.Instance;
+            };
+        }
+
         #endregion
 
         #region Counting allocated qubits
