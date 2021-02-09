@@ -130,7 +130,7 @@ $not_ready =
 
 
 if ($Notebook -ne "") {
-    # Validate only the notebook provided as the parameter (do not exclude blacklisted notebooks)
+    # Validate only the notebook provided as the parameter (do not exclude blocklisted notebooks)
     Get-ChildItem $Notebook `
         | ForEach-Object { Validate $_ }
 } else {
