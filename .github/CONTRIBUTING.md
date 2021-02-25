@@ -109,7 +109,7 @@ The Quantum Development Kit is updated monthly (you can find the latest releases
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/Update-QDKVersion.ps1 0.15.2101125897
+   PS> ./scripts/Update-QDKVersion.ps1 0.15.2102129448
 ```
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.

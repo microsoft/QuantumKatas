@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.15.2101125897" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.15.2102129448" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
