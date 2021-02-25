@@ -322,7 +322,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        6) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
     // Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the bounds, has total weight at most W,
     //         and has total profit more than P, return a tuple containing that combination and its total profit.
-    //         Otherwise, return a tuple containing an array of zeroes with length n and the input P value.
+    //         Otherwise, return a tuple containing an array of zeros with length n and the input P value.
     operation GroversAlgorithm (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : (Int[], Int) {
         // ...
         return (new Int[0], 0);

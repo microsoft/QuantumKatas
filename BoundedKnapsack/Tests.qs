@@ -15,6 +15,7 @@ namespace Quantum.Kata.BoundedKnapsack
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
+
     open Quantum.Kata.Utils;
 
 
@@ -30,7 +31,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T11_MeasureCombination_01_Test() : Unit {
+    @Test("QuantumSimulator")
+    operation T11_MeasureCombination_01() : Unit {
         for (n in 1..4){
             // Iterate through all possible combinations.
             for (combo in 0 .. (1 <<< n) - 1){
@@ -46,7 +48,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T12_NumQubitsTotalValue_01_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T12_NumQubitsTotalValue_01 () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             let numQubitsTotalWeight = NumQubitsTotalValue_01(itemWeights);
             Fact(numQubitsTotalWeight == NumQubitsTotalValue_01_Reference(itemWeights), $"Unexpected result for itemWeights = {itemWeights} : {numQubitsTotalWeight}");
@@ -57,7 +60,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T13_CalculateTotalValueOfSelectedItems_01_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T13_CalculateTotalValueOfSelectedItems_01 () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             let numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights);
             using ((selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight])){
@@ -97,7 +101,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T14_CompareQubitArrayGreaterThanInt_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T14_CompareQubitArrayGreaterThanInt () : Unit {
         for (D in 1..4){
             // Iterate through all possible left operands a.
             for (a in 0 .. (1 <<< D) - 1){
@@ -132,7 +137,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T15_CompareQubitArrayLeqThanInt_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T15_CompareQubitArrayLeqThanInt () : Unit {
         for (D in 1..4){
             // Iterate through all possible left operands a.
             for (a in 0 .. (1 <<< D) - 1){
@@ -163,7 +169,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T16_VerifyWeight_01_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T16_VerifyWeight_01 () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
@@ -202,7 +209,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T17_VerifyProfit_01_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T17_VerifyProfit_01 () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
@@ -241,7 +249,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T18_KnapsackValidationOracle_01_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T18_KnapsackValidationOracle_01 () : Unit {
         for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
             using ((selectedItems, target) = (Qubit[n], Qubit())){
                 // Iterate through all possible combinations of items.
@@ -302,7 +311,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T21_MeasureCombination_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T21_MeasureCombination () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -347,7 +357,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T22_RegisterAsJaggedArray_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T22_RegisterAsJaggedArray () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -394,7 +405,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
     
 
-    operation T23_VerifyBounds_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T23_VerifyBounds () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -446,7 +458,9 @@ namespace Quantum.Kata.BoundedKnapsack
         }
     }
 
-    operation T24_IncrementByProduct_Test () : Unit {
+
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T24_IncrementByProduct () : Unit {
         for (D in 1..3){
             using ((qy, qz) = (Qubit[D], Qubit[D])){
 
@@ -486,7 +500,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T25_NumQubitsTotalValue_Reference_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T25_NumQubitsTotalValue_Reference () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
             let numQubitsTotalWeight = NumQubitsTotalValue(itemWeights, itemInstanceBounds);
             Fact(numQubitsTotalWeight == NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds), $"Unexpected result for itemWeights = {itemWeights}, itemInstanceBounds = {itemInstanceBounds} : {numQubitsTotalWeight}");
@@ -497,7 +512,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T26_CalculateTotalValueOfSelectedItems_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T26_CalculateTotalValueOfSelectedItems () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -556,7 +572,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T27_VerifyWeight_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T27_VerifyWeight () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -607,7 +624,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T28_VerifyProfit_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T28_VerifyProfit () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -658,7 +676,8 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    operation T29_KnapsackValidationOracle_Test () : Unit {
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T29_KnapsackValidationOracle () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
@@ -720,8 +739,8 @@ namespace Quantum.Kata.BoundedKnapsack
     // Part III. Grover Search and Knapsack Optimization Problem
     //////////////////////////////////////////////////////////////////
 
-
-    operation T31_GroversAlgorithm_Test () : Unit {
+    @Test("QuantumSimulator")
+    operation T31_GroversAlgorithm () : Unit {
         let testSets = ExampleSets();
         let (n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
 
@@ -754,7 +773,9 @@ namespace Quantum.Kata.BoundedKnapsack
         }
     }
 
-    operation T32_KnapsackOptimizationProblem_Test() : Unit {
+
+    @Test("QuantumSimulator")
+    operation T32_KnapsackOptimizationProblem() : Unit {
         let testSets = ExampleSets();
         let (n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
 
