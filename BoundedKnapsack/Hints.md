@@ -1,3 +1,4 @@
+```
 //////////////////////////////////////////////////////////////////////
 // This file contains hints to all tasks.
 // The tasks themselves can be found in Tasks.qs file.
@@ -7,11 +8,9 @@
 //////////////////////////////////////////////////////////////////////
 
 // Hints have been provided to clarify and guide your work through some of
-// the harder or more complicated katas. The hints within each task gradually reveal
+// the more complicated tasks. The hints within each task gradually reveal
 // more and more of the solution. You might consider reading hints for a task
 // up to a point of understanding, and then try finishing the task yourself.
-
-
 
 
 // Task 1.3. Calculate total value of selected items
@@ -81,7 +80,7 @@
 //  1) How many total qubits are necessary for the register? You may want to revisit Hint #1 for Task 2.2.
 //
 //  2) If you know how to implement the quantum counting algorithm in Q#, feel free to do so. Otherwise, you might consider
-//     using the iteration method in the GraphColoring kata, or classicaly calculating the ideal number of iterations.
+//     using the iteration method in the GraphColoring kata, or classically calculating the ideal number of iterations.
 
 
 
@@ -94,3 +93,4 @@
 //
 //  2) There are numerous methods of performing the task as previously described. One such method is exponential search. See
 //     https://en.wikipedia.org/wiki/Exponential_search for more information.
+```

@@ -12,27 +12,28 @@ namespace Quantum.Kata.BoundedKnapsack
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Measurement;
 
+
     //////////////////////////////////////////////////////////////////
     // Welcome!
     //////////////////////////////////////////////////////////////////
     
-    // The "BoundedKnapsack" quantum kata is a series of exercises designed
+    // The Bounded Knapsack quantum kata is a series of exercises designed
     // to teach you to use Grover search to solve the knapsack problem.
-    // The knapsack problem is a prominent computational problem, whose
-    // description can be found at https://en.wikipedia.org/wiki/Knapsack_problem
+    // The knapsack problem is a prominent computational problem;
+    // you can find its description at https://en.wikipedia.org/wiki/Knapsack_problem.
 
-    // The overall goal in this kata is to solve the knapsack optimization problem,
-    // by running Grover's algorithm multiple times.
+    // The overall goal in this kata is to solve the knapsack optimization problem
+    // by running Grover's algorithm.
 
     // The kata covers the following topics:
-    //  - writing operations to perform arithmetic tasks
+    //  - writing operations to perform arithmetic tasks.
     //  - writing oracles to implement constraints based on:
-    //        - The 0-1 knapsack problem, a simple version of the knapsack problem.
-    //        - The bounded knapsack problem
+    //        - the 0-1 knapsack problem, a simple version of the knapsack problem;
+    //        - the bounded knapsack problem.
     //  - using the oracle with Grover's algorithm to solve the knapsack decision problem.
-    //  - using Grover's algorithm repeatedly, to solve the knapsack optimization problem.
+    //  - using Grover's algorithm repeatedly to solve the knapsack optimization problem.
 
-    // You may find this kata to be more challenging than other Grover search
+    // You may find this kata to be more challenging than other Grover's search
     // katas, so you might want to try SolveSATWithGrover or GraphColoring first.
     // Hints for the more complicated tasks can be found in the Hints.qs file.
 
@@ -48,40 +49,41 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // Introduction:
     // There exist n items, indexed 0 to n-1.
-    // The item with index i has a weight of wᵢ and a profit of pᵢ.
-    // In the original 0-1 knapsack decision problem, we wish to 
-    // determine if we can put items in a knapsack to have a total profit
-    // of at least than P, while not exceeding a maximum weight W.
+    // The item with index i has a weight of wᵢ and yields a profit of pᵢ.
+    // In the original 0-1 knapsack decision problem, we wish to determine
+    // whether we can put items in a knapsack to get a total profit
+    // of at least P, while not exceeding a maximum weight W.
 
-    // However, we will slightly modify the problem for the following tasks:
+    // However, we will slightly modify the problem for this part of the kata:
     // the total profit must be strictly greater than P, rather than at least P.
 
-    // The following tasks will write an oracle that evaluates whether a
-    // particular register of n qubits, representing an item combination,
+    // In the following tasks you will implement an oracle that evaluates whether
+    // a particular register of n qubits, representing an item combination,
     // satisfies the described conditions.
     
 
     // Task 1.1. Read combination from a register
     // Input: An array of n qubits, which are guaranteed to be in one of the 2ⁿ basis states.
-    // Output: The item combination that this state represents, expressed as a boolean array with length n.
-    //           The operation should not change the state of the qubits.
-    // Example: For n = 3 and qubit state |101⟩, return [true, false, true].
-    operation MeasureCombination_01 (selectedItems : Qubit[]) : Bool[] {
+    // Output: The item combination that this state represents, expressed as a boolean array of length n.
+    //         The i-th element of the array should be true (indicating that i-th item is selected) 
+    //         if and only if the i-th qubit of the register is in the |1⟩ state.
+    //         The operation should not change the state of the qubits.
+    // Example: For n = 3 and the qubits state |101⟩, return [true, false, true].
+    operation MeasureCombination01 (selectedItems : Qubit[]) : Bool[] {
         // ...
         return new Bool[0];
     }
 
     
-    // Task 1.2. Calculate the number of qubits necessary to hold the maximum total value
-    // Input: An array of n integers, describing either the weight of each item or the profit of each item.
-    // Output: The number of qubits needed to store the value of the maximum total weight/profit of the items.
-    // Example: For n = 4 and itemValues = [1,2,3,4], the maximum possible total weight is 10, which requires 4 qubits,
-    //          so 4 is returned.
-    function NumQubitsTotalValue_01 (itemValues : Int[]) : Int {
+    // Task 1.2. Calculate the number of (qu)bits necessary to hold the maximum total value
+    // Input: An array of n positive integers, describing either the weight of each item or the profit of each item.
+    // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
+    // Example: For n = 4 and itemValues = [1, 2, 3, 4], the maximum possible total value is 10, 
+    //          which requires at least 4 qubits to store it, so 4 is returned.
+    function NumBitsTotalValue01 (itemValues : Int[]) : Int {
         // ...
         return 0;
     }
-
 
 
     // Task 1.3. Calculate total value of selected items

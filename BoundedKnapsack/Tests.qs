@@ -32,70 +32,74 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     @Test("QuantumSimulator")
-    operation T11_MeasureCombination_01() : Unit {
-        for (n in 1..4){
+    operation T11_MeasureCombination01 () : Unit {
+        for n in 1 .. 4 {
+            use selectedItems = Qubit[n];
             // Iterate through all possible combinations.
-            for (combo in 0 .. (1 <<< n) - 1){
-                using (selectedItems = Qubit[n]){
-                    // Prepare the register so that it contains the integer a in little-endian format.
-                    let binaryCombo = IntAsBoolArray(combo, n);
+            for combo in 0 .. (1 <<< n) - 1 {
+                // Prepare the register so that it contains the integer a in little-endian format.
+                let binaryCombo = IntAsBoolArray(combo, n);
+                within {
                     ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
-                    let measuredCombo = MeasureCombination_01(selectedItems);
+                } apply {
+                    let measuredCombo = MeasureCombination01(selectedItems);
+                    Fact(Length(measuredCombo) == n, $"Unexpected length of the result: expected {n}, got {Length(measuredCombo)}");
                     Fact(BoolArrayAsInt(measuredCombo) == combo, $"Unexpected result for combination {binaryCombo} : {measuredCombo}");
                 }
+                // Check that the measurement didn't impact the state of the qubits
+                AssertAllZero(selectedItems);
             }
         }
     }
 
 
     @Test("QuantumSimulator")
-    operation T12_NumQubitsTotalValue_01 () : Unit {
-        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
-            let numQubitsTotalWeight = NumQubitsTotalValue_01(itemWeights);
-            Fact(numQubitsTotalWeight == NumQubitsTotalValue_01_Reference(itemWeights), $"Unexpected result for itemWeights = {itemWeights} : {numQubitsTotalWeight}");
-            
-            let numQubitsTotalProfit = NumQubitsTotalValue_01(itemProfits);
-            Fact(numQubitsTotalProfit == NumQubitsTotalValue_01_Reference(itemProfits), $"Unexpected result for itemProfits = {itemProfits} : {numQubitsTotalProfit}");
+    operation T12_NumBitsTotalValue01 () : Unit {
+        for (_, _, _, itemWeights, itemProfits) in ExampleSets_01() {
+            for values in [itemWeights, itemProfits] {
+                let res = NumBitsTotalValue01(values);
+                let exp = NumBitsTotalValue01_Reference(values);
+                Fact(res == exp, $"Unexpected result for itemWeights = {itemWeights} : {res} (expected {exp})");
+            }
         }
     }
 
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_CalculateTotalValueOfSelectedItems_01 () : Unit {
-        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
-            let numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights);
-            using ((selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight])){
-                // Iterate through all possible combinations of items.
-                for (combo in 0..(1 <<< n) - 1){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+        for (n, W, P, itemWeights, itemProfits) in ExampleSets_01() {
+            let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
+            use (selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight]);
+            // Iterate through all possible combinations of items.
+            for combo in 0 .. (1 <<< n) - 1 {
+                // Prepare the register so that it represents the combination.
+                let binaryCombo = IntAsBoolArray(combo, n);
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
 
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
+                // Reset the counter of measurements done
+                ResetOracleCallsCount();
 
-                    // Calculate and measure the weight with qubits
-                    CalculateTotalValueOfSelectedItems_01(itemWeights, selectedItems, totalWeight);
+                // Calculate and measure the weight with qubits
+                CalculateTotalValueOfSelectedItems_01(itemWeights, selectedItems, totalWeight);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
+                mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
 
-                    // Calculate the weight classically
-                    mutable actualWeight = 0;
-                    for (i in 0..n-1){
-                        if (binaryCombo[i]){
-                            set actualWeight += itemWeights[i];
-                        }
+                // Calculate the weight classically
+                mutable actualWeight = 0;
+                for i in 0 .. n - 1 {
+                    if (binaryCombo[i]){
+                        set actualWeight += itemWeights[i];
                     }
-
-                    // Assert that both methods yield the same result
-                    Fact(actualWeight == MeasuredWeight, $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights} : {MeasuredWeight}");
-                    ResetAll(selectedItems);
-                    ResetAll(totalWeight);
                 }
+
+                // Assert that both methods yield the same result
+                Fact(actualWeight == MeasuredWeight, $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights} : {MeasuredWeight}");
+                ResetAll(selectedItems);
+                ResetAll(totalWeight);
             }
         }
     }
@@ -103,35 +107,34 @@ namespace Quantum.Kata.BoundedKnapsack
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T14_CompareQubitArrayGreaterThanInt () : Unit {
-        for (D in 1..4){
+        for D in 1 .. 4 {
             // Iterate through all possible left operands a.
-            for (a in 0 .. (1 <<< D) - 1){
-                using ((selectedItems, target) = (Qubit[D], Qubit())){
-                    // Prepare the register so that it contains the integer a in little-endian format.
-                    let binaryA = IntAsBoolArray(a, D);
-                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
+            for a in 0 .. (1 <<< D) - 1 {
+                use (selectedItems, target) = (Qubit[D], Qubit());
+                // Prepare the register so that it contains the integer a in little-endian format.
+                let binaryA = IntAsBoolArray(a, D);
+                ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
                                     
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+
+                // Iterate through all possible right operands b.
+                for b in 0 .. (1 <<< D) - 1 {
+                    // Reset the counter of measurements done
+                    ResetOracleCallsCount();
+
+                    CompareQubitArrayGreaterThanInt(selectedItems, b, target);
+                    
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    // Iterate through all possible right operands b.
-                    for (b in 0 .. (1 <<< D) - 1){
-                        // Reset the counter of measurements done
-                        ResetOracleCallsCount();
-
-                        CompareQubitArrayGreaterThanInt(selectedItems, b, target);
-                    
-                        // Make sure the solution didn't use any measurements
-                        Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                        Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
-
-                        let output = (M(target)==One);
-                        Fact(not XOR(a > b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
-                        Reset(target);
-                    }
-                    ResetAll(selectedItems);
+                    let output = (M(target)==One);
+                    Fact(not XOR(a > b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
+                    Reset(target);
                 }
+                ResetAll(selectedItems);
             }
         }
     }

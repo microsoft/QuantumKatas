@@ -26,13 +26,13 @@ namespace Quantum.Kata.BoundedKnapsack {
     
 
     // Task 1.1. Read combination from a register
-    operation MeasureCombination_01_Reference (register : Qubit[]) : Bool[] {
+    operation MeasureCombination01_Reference (register : Qubit[]) : Bool[] {
         return ResultArrayAsBoolArray(MultiM(register));
     }
 
     
     // Task 1.2. Calculate the number of qubits necessary to hold the maximum total value
-    function NumQubitsTotalValue_01_Reference (itemValues : Int[]) : Int {
+    function NumBitsTotalValue01_Reference (itemValues : Int[]) : Int {
         mutable maxValue = 0;
         for itemValue in itemValues {
             set maxValue += itemValue;
@@ -92,7 +92,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 1.6. Verify that total weight doesn't exceed limit W
     operation VerifyWeight_01_Reference (W : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalWeight = NumQubitsTotalValue_01_Reference(itemWeights);
+        let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
             CalculateTotalValueOfSelectedItems_01_Reference(itemWeights, register, totalWeight);
@@ -104,7 +104,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 1.7. Verify that the total profit exceeds threshold P
     operation VerifyProfit_01_Reference (P : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits);
+        let numQubitsTotalProfit = NumBitsTotalValue01_Reference(itemProfits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
             CalculateTotalValueOfSelectedItems_01_Reference(itemProfits, register, totalProfit);
@@ -293,7 +293,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
             // When the valid combination is found, calculate its profit
             if (correct) {
-                let numQubitsTotalProfit = NumQubitsTotalValue_01_Reference(itemProfits);
+                let numQubitsTotalProfit = NumBitsTotalValue01_Reference(itemProfits);
                 use profit = Qubit[numQubitsTotalProfit];
                 CalculateTotalValueOfSelectedItems_Reference(itemProfits, xs, profit);
                 set P_found = ResultArrayAsInt(MultiM(profit));

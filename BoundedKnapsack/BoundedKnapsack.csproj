@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <QsharpCompile Include="Hints.md" />
+    <None Include="Hints.md" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>
