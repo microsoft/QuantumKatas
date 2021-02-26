@@ -42,11 +42,11 @@ namespace Quantum.Kata.BoundedKnapsack {
     
 
     // Task 1.3. Calculate total value of selected items
-    operation CalculateTotalValueOfSelectedItems_01_Reference (itemValues : Int[], register : Qubit[], total : Qubit[]) : Unit is Adj+Ctl {
-        // Each qubit in xs determines whether the corresponding value is added.
-        // This process is implemented with a control from the register.
+    operation CalculateTotalValueOfSelectedItems01_Reference (itemValues : Int[], selectedItems : Qubit[], total : Qubit[]) : Unit is Adj+Ctl {
+        // Each qubit in selectedItems determines whether the corresponding value is added.
+        // Adding the selected items is implemented using a library operation with a control from each qubit of the selectedItems.
         let totalLE = LittleEndian(total);
-        for (control, value) in Zipped(register, itemValues) {
+        for (control, value) in Zipped(selectedItems, itemValues) {
             Controlled IncrementByInteger([control], (value, totalLE));
         }
     }
@@ -95,7 +95,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
-            CalculateTotalValueOfSelectedItems_01_Reference(itemWeights, register, totalWeight);
+            CalculateTotalValueOfSelectedItems01_Reference(itemWeights, register, totalWeight);
         } apply {
             CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
         }
@@ -107,7 +107,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         let numQubitsTotalProfit = NumBitsTotalValue01_Reference(itemProfits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
-            CalculateTotalValueOfSelectedItems_01_Reference(itemProfits, register, totalProfit);
+            CalculateTotalValueOfSelectedItems01_Reference(itemProfits, register, totalProfit);
         } apply {
             CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
         }

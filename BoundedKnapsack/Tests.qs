@@ -66,8 +66,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T13_CalculateTotalValueOfSelectedItems_01 () : Unit {
-        for (n, W, P, itemWeights, itemProfits) in ExampleSets_01() {
+    operation T13_CalculateTotalValueOfSelectedItems01 () : Unit {
+        for (n, _, _, itemWeights, _) in ExampleSets_01() {
             let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
             use (selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight]);
             // Iterate through all possible combinations of items.
@@ -80,7 +80,7 @@ namespace Quantum.Kata.BoundedKnapsack
                 ResetOracleCallsCount();
 
                 // Calculate and measure the weight with qubits
-                CalculateTotalValueOfSelectedItems_01(itemWeights, selectedItems, totalWeight);
+                CalculateTotalValueOfSelectedItems01(itemWeights, selectedItems, totalWeight);
                     
                 // Make sure the solution didn't use any measurements
                 Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
@@ -91,14 +91,18 @@ namespace Quantum.Kata.BoundedKnapsack
                 // Calculate the weight classically
                 mutable actualWeight = 0;
                 for i in 0 .. n - 1 {
-                    if (binaryCombo[i]){
+                    if (binaryCombo[i]) {
                         set actualWeight += itemWeights[i];
                     }
                 }
 
                 // Assert that both methods yield the same result
                 Fact(actualWeight == MeasuredWeight, $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights} : {MeasuredWeight}");
-                ResetAll(selectedItems);
+
+                // Check that the operation didn't modify the input state
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+                AssertAllZero(selectedItems);
+
                 ResetAll(totalWeight);
             }
         }

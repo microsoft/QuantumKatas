@@ -76,7 +76,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
     
     // Task 1.2. Calculate the number of (qu)bits necessary to hold the maximum total value
-    // Input: An array of n positive integers, describing either the weight of each item or the profit of each item.
+    // Input: An array of n positive integers, describing the value (the weight or the profit) of each item.
     // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
     // Example: For n = 4 and itemValues = [1, 2, 3, 4], the maximum possible total value is 10, 
     //          which requires at least 4 qubits to store it, so 4 is returned.
@@ -88,14 +88,15 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // Task 1.3. Calculate total value of selected items
     // Inputs:
-    //      1) An array of n integers, describing either the weight of each item or the profit of each item.
-    //        2) An array of n qubits, which describe whether each item is put into the knapsack
-    //        3) An array of qubits in the |0...0⟩ state. It is guaranteed there are enough qubits to hold the total.
-    // Goal: Transform the total array to represent, in little-endian format, the sum of the values of the items that are put in the knapsack.
-    //       The input qubits can be in superposition. Leave the qubits in selectedItems in the same state they started in.
-    // Example: For n = 4 and itemValues = [1,2,3,4], input state |1001⟩|0000⟩ transforms to |1001⟩|1010⟩, since items 0 and 3 are put
-    //          in the knapsack, and itemValues[0] + itemValues[3] = 1 + 4 = 5.
-    operation CalculateTotalValueOfSelectedItems_01 (itemValues : Int[], selectedItems : Qubit[], total : Qubit[]) : Unit is Adj+Ctl{
+    //      1) An array of n integers, describing the values (the weights or the profits) of the items.
+    //      2) An array of n qubits, describing whether each item is put into the knapsack.
+    //      3) An array of qubits "total" in the |0...0⟩ state to store the total value of the selected items. 
+    //         It is guaranteed that there are enough qubits to store the total value.
+    // Goal: Transform the "total" array to represent, in little-endian format, the sum of the values of the items that are put in the knapsack.
+    //       The input qubits can be in a superposition state. Leave the qubits in selectedItems in the same state they started in.
+    // Example: For n = 4 and itemValues = [1, 2, 3, 4], the input state |1001⟩|0000⟩ should be transformed to |1001⟩|1010⟩, 
+    //          since items 0 and 3 are put in the knapsack, and itemValues[0] + itemValues[3] = 1 + 4 = 5 = 1010₂.
+    operation CalculateTotalValueOfSelectedItems01 (itemValues : Int[], selectedItems : Qubit[], total : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
     
