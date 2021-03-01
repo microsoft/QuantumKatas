@@ -12,29 +12,29 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
     open Microsoft.Quantum.Math;
     
     // Exercise 3. Identify computational basis states
-    operation BasisStateMeasurement (qs : Qubit[]) : Int {
+    operation BasisStateMeasurement(qs : Qubit[]) : Int {
         // ...
         return 0;
     }
 
     // Exercise 5. Distinguish orthogonal states
-    operation IsPlusPlusMinus (qs : Qubit[]) : Int {
+    operation IsPlusPlusMinus(qs : Qubit[]) : Int {
         // ...
         return 0;
     }
 
     // Exercise 7. State selection using partial measurements
-    operation StateSelctionViaPartialMeasurement (qs : Qubit[], i : Int) : Unit  {
+    operation StateSelction(qs : Qubit[], i : Int) : Unit  {
         // ...
     }
 
     // Exercise 8. State preparation using partial measurements
-    operation PreparationUsingPostSelection ( qs : Qubit[] ): Unit {
+    operation PostSelection( qs : Qubit[] ): Unit {
         // ...
     }
 
     // Exercise 9. Two qubit parity Measurement
-    operation ParityMeasurement (qs : Qubit[]) : Int{
+    operation ParityMeasurement(qs : Qubit[]) : Int{
         // ...
         return 1;
     }

@@ -11,6 +11,8 @@
 namespace Quantum.Kata.MultiQubitSystemMeasurements {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Math;
+    open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Measurement;
     
     // Exercise 3. Identify computational basis states
     operation BasisStateMeasurement_Reference(qs : Qubit[]) : Int {
@@ -25,18 +27,38 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
     }
 
     // Exercise 7. State selection using partial measurements
-    operation StateSelctionViaPartialMeasurement_Reference (qs : Qubit[], i : Int) : Unit  {
-        // ...
+    operation StateSelction_Reference(qs : Qubit[], i : Int) : Unit  {
+        if (i == 0) {
+            if (M(qs[0]) == One){
+                // apply the X gate to the second qubit
+                X(qs[1]);
+            }
+        } else {
+            if (M(qs[0]) == Zero){
+                // apply the X gate to the second qubit only
+                X(qs[1]);
+            }
+        }
     }
 
     // Exercise 8. State preparation using partial measurements
-    operation PreparationUsingPostSelection_Reference ( qs : Qubit[] ): Unit {
-        // ...
+    operation PostSelection_Reference ( qs : Qubit[] ): Unit {
+        // Initialize the extra qubit
+        use anc = Qubit();
+        // Using the repeat-until-success pattern to prepare the right state
+        repeat {
+            ApplyToEach(H, qs);
+            Controlled X(qs, anc);
+            let res = MResetZ(anc);
+        } 
+        until (res == Zero)
+        fixup {
+            ResetAll(qs);
+        }
     }
 
     // Exercise 9. Two qubit parity Measurement
-    operation ParityMeasurement_Reference (qs : Qubit[]) : Int{
-        // ...
-        return 1;
+    operation ParityMeasurement_Reference(qs : Qubit[]) : Int {
+        return Measure([PauliZ, PauliZ], qs) == Zero ? 0 | 1;
     }
 }
