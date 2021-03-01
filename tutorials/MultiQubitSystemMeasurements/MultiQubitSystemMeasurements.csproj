@@ -13,7 +13,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <RootNamespace>Quantum.Kata.SingleQubitSystemMeasurements</RootNamespace>
+    <RootNamespace>Quantum.Kata.MultiQubitSystemMeasurements</RootNamespace>
     <IQSharpLoadAutomatically>true</IQSharpLoadAutomatically>
   </PropertyGroup>
 
@@ -33,7 +33,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <RootNamespace>Quantum.Kata.SingleQubitSystemMeasurements</RootNamespace>
+    <RootNamespace>Quantum.Kata.MultiQubitSystemMeasurements</RootNamespace>
     <IQSharpLoadAutomatically>true</IQSharpLoadAutomatically>
   </PropertyGroup>
 

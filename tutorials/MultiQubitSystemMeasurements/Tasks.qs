@@ -18,9 +18,9 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
     }
 
     // Exercise 5. Distinguish orthogonal states
-    operation IsPlusPlusMinus (qs : Qubit[]) : Bool {
+    operation IsPlusPlusMinus (qs : Qubit[]) : Int {
         // ...
-        return true;
+        return 0;
     }
 
     // Exercise 7. State selection using partial measurements

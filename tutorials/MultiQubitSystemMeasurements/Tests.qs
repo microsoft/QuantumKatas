@@ -6,7 +6,7 @@
 // You should not modify anything in this file.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.SingleQubitSystemMeasurements {
+namespace Quantum.Kata.MultiQubitSystemMeasurements {
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
@@ -98,11 +98,121 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    @Test("QuantumSimulator")
     operation T1_BasisStateMeasurement () : Unit {
         DistinguishStates_MultiQubit(2, 4, StatePrep_BasisStateMeasurement, BasisStateMeasurement, ["|00⟩", "|01⟩", "|10⟩", "|11⟩"]);
     }
 
+
     // ------------------------------------------------------
+    // Exercise 5: Distinguish orthogonal states using partial measurements
+    // ------------------------------------------------------
+    operation StatePrep_IsPlusPlusMinus (qs : Qubit[], state : Int) : Unit {
+        if (state == 0){
+            // prepare the state |++-⟩
+            H(qs[0]);
+            H(qs[1]);
+            X(qs[2]);
+            H(qs[2]);
+        } else {
+            // prepare the state |---⟩
+            X(qs[0]);
+            H(qs[0]);
+            X(qs[1]);
+            H(qs[1]);
+            X(qs[2]);
+            H(qs[2]);
+        }
+    }
+
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T2_IsPlusPlusMinus () : Unit {
+        DistinguishStates_MultiQubit(3, 2, StatePrep_IsPlusPlusMinus, IsPlusPlusMinus, ["|++-⟩", "|---⟩"]);
+    }
+
+    
+    // ------------------------------------------------------
+    operation AssertEqualOnZeroState (N : Int, 
+                                      testImpl : (Qubit[] => Unit), 
+                                      refImpl : (Qubit[] => Unit is Adj), 
+                                      verbose : Bool,
+                                      testStr : String) : Unit {
+        use qs = Qubit[N];
+        if (verbose) {
+            if (testStr != "") {
+                Message($"The desired state for {testStr}");
+            } else {
+                Message("The desired state:");
+            }
+            refImpl(qs);
+            DumpMachine(());
+            ResetAll(qs);
+        }
+
+        // apply operation that needs to be tested
+        testImpl(qs);
+
+        if (verbose) {
+            Message("The actual state:");
+            DumpMachine(());
+        }
+
+        // apply adjoint reference operation and check that the result is |0⟩
+        Adjoint refImpl(qs);
+
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
+
+        if (verbose) {
+            Message("Test case passed");
+        }
+    }
+
+    // ------------------------------------------------------
+    // Exercise 7: State selection using partial measurements
+    // ------------------------------------------------------
+    operation StatePrep_StateSelctionViaPartialMeasurement1 (alpha: Double, qs : Qubit[]) : Unit {
+        // Prepare the state to be input to the testImplementation
+        H(qs[0]);
+        // set the second qubit in a superposition a |0⟩ + b|1⟩
+        // with a = cos alpha, b = sin alpha
+        Ry(2.0 * alpha, qs[1]); 
+
+        // Apply CX gate
+        CX(qs[0], qs[1]);
+    }
+
+
+    operation StatePrep_StateSelctionViaPartialMeasurement2 (alpha: Double, qs : Qubit[], choice : Int) : Unit {
+        // If Choice is 0, set qubits to the state |0⟩ (a |0⟩ + b|1⟩)
+        // If Choice is 1, set qubits to the state |0⟩ (b |0⟩ + a|1⟩)
+        
+        // set the second qubit in a superposition a |0⟩ + b|1⟩
+        // with a = cos alpha, b = sin alpha
+        Ry(2.0 * alpha, qs[1]); 
+
+        // If Choice is 1, apply X gate to the second qubit
+        if (choice == 1) {
+            X(qs[1]);
+        }
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T3_StateSelctionViaPartialMeasurement() : Unit {
+
+        use qs = Qubit[2];
+        for i in 0 .. 10 {
+            let alpha = (PI() * IntAsDouble(i)) / 10.0;
+            // set qubits to the state |0⟩ (a |0⟩ + b|1⟩) + |1⟩ (b |0⟩ + a|1⟩)
+            // with a = cos alpha
+            StatePrep_StateSelctionViaPartialMeasurement1 (alpha, qs);
+            
+
+
+            DistinguishTwoStates(StatePrep_IsQubitA(alpha, _, _), IsQubitA(alpha, _), 
+                [$"|B⟩ = -i sin({i}π/10)|0⟩ + cos({i}π/10)|1⟩", $"|A⟩ = cos({i}π/10)|0⟩ + i sin({i}π/10)|1⟩"], false);
+        }
+    }
+
 
 }
