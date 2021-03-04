@@ -124,8 +124,7 @@ $not_ready =
 @(
     'Check.ipynb',
     'ComplexArithmetic.ipynb',
-    'LinearAlgebra.ipynb',
-    'RandomNumberGenerationTutorial.ipynb'
+    'LinearAlgebra.ipynb'
 )
 
 
