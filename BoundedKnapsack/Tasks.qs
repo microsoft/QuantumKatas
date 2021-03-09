@@ -101,28 +101,28 @@ namespace Quantum.Kata.BoundedKnapsack
     }
     
 
-    // Task 1.4. Compare qubit array with integer (>)
+    // Task 1.4. Compare an integer stored in a qubit array with an integer (>)
     // Inputs:
-    //        1) An array of D qubits representing an integer in little-endian format
-    //        2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
-    //      3) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the integer represented by qs is greater than b.
-    //       The input qubits can be in superposition. Leave the qubits in qs in the same state they started in.
-    // Example: For b = 11, the input state |1011⟩|0⟩ should return as |1011⟩|1⟩, since 1101₂ (13) > 11.
-    operation CompareQubitArrayGreaterThanInt(qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+    //      1) An array of D qubits representing an integer in little-endian format.
+    //      2) An integer b (0 ≤ b ≤ 2ᴰ - 1).
+    //      3) A qubit in an arbitrary state (target qubit).
+    // Goal: Flip the state of the target qubit if the integer represented by the qubit array is greater than b.
+    //       The input qubits can be in superposition. Leave the qubits in the qubit array in the same state they started in.
+    // Example: For b = 11, the input state |1011⟩|0⟩ should be transformed to |1011⟩|1⟩, since 1101₂ = 13₁₀ > 11₁₀.
+    operation CompareQubitArrayGreaterThanInt (qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
     
-    // Task 1.5. Compare qubit array with integer (≤)
+    // Task 1.5. Compare an integer stored in a qubit array with an integer (≤)
     // Inputs:
-    //        1) An array of D qubits that represent an integer in little-endian format
-    //        2) An integer b (0 ≤ b ≤ 2ᴰ - 1)
-    //      3) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the integer represented by qs is less than or equal to b.
-    //       The input qubits can be in superposition. Leave the qubits in qs in the same state they started in.
-    // Example: For b = 7, the input state |1010⟩|0⟩ should return as |1010⟩|1⟩, since 0101₂ (5) ≤ 7.
-    operation CompareQubitArrayLeqThanInt (qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl{
+    //      1) An array of D qubits representing an integer in little-endian format.
+    //      2) An integer b (0 ≤ b ≤ 2ᴰ - 1).
+    //      3) A qubit in an arbitrary state (target qubit).
+    // Goal: Flip the state of the target qubit if the integer represented by the qubit array is less than or equal to b.
+    //       The input qubits can be in superposition. Leave the qubits in the qubit array in the same state they started in.
+    // Example: For b = 7, the input state |1010⟩|0⟩ should be transformed to |1010⟩|1⟩, since 0101₂ = 5₁₀ ≤ 7₁₀.
+    operation CompareQubitArrayLeqThanInt (qs : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 

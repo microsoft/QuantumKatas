@@ -31,7 +31,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
     
-    // Task 1.2. Calculate the number of qubits necessary to hold the maximum total value
+    // Task 1.2. Calculate the number of (qu)bits necessary to hold the maximum total value
     function NumBitsTotalValue01_Reference (itemValues : Int[]) : Int {
         mutable maxValue = 0;
         for itemValue in itemValues {
@@ -52,14 +52,14 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 1.4. Compare qubit array with integer (>)
+    // Task 1.4. Compare an integer stored in a qubit array with an integer (>)
     operation CompareQubitArrayGreaterThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
         let D = Length(a);
 
         // Convert b into array of bits in little endian format
         let binaryB = IntAsBoolArray(b, D);
 
-        // Iterates descending from the most significant digit, flipping the target qubit
+        // Iterate descending from the most significant digit (stored last), flipping the target qubit
         // upon finding i such that a[i] > binaryB[i], AND a[j] = binaryB[j] for all j > i.
         // The X gate flips a[i] to represent whether a[i] and binaryB[i] are equal, to
         // be used as controls for the Toffoli.
@@ -69,7 +69,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         for i in D - 1 .. -1 .. 0 {
             if (not binaryB[i]) {
                 // Checks if a has a greater bit than b at index i AND all bits above index i have equal values in a and b.
-                Controlled X(a[i..D-1], target);
+                Controlled X(a[i ...], target);
                 // Flips the qubit if b's corresponding bit is 0.
                 // This temporarily sets the qubit to 1 if the corresponding bits are equal.
                 X(a[i]);
@@ -81,10 +81,10 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 1.5. Compare qubit array with integer (≤)
+    // Task 1.5. Compare an integer stored in a qubit array with an integer (≤)
     operation CompareQubitArrayLeqThanInt_Reference (a : Qubit[], b : Int, target : Qubit) : Unit is Adj+Ctl {
-        // This operation essentially calculates the opposite of the greater-than
-        // comparator, so we can just call CompareQubitArrayGreaterThanInt, and then an X gate.
+        // This operation calculates the opposite of the greater-than comparator from the previous task, 
+        // so we can just call CompareQubitArrayGreaterThanInt, and then an X gate.
         CompareQubitArrayGreaterThanInt_Reference(a, b, target);
         X(target);
     }

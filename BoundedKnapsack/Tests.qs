@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.BoundedKnapsack
 {
+    open Microsoft.Quantum.Logical;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Convert;
@@ -53,6 +54,7 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T12_NumBitsTotalValue01 () : Unit {
         for (_, _, _, itemWeights, itemProfits) in ExampleSets_01() {
@@ -65,6 +67,7 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_CalculateTotalValueOfSelectedItems01 () : Unit {
         for (n, _, _, itemWeights, _) in ExampleSets_01() {
@@ -83,7 +86,6 @@ namespace Quantum.Kata.BoundedKnapsack
                 CalculateTotalValueOfSelectedItems01(itemWeights, selectedItems, totalWeight);
                     
                 // Make sure the solution didn't use any measurements
-                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                 Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                 mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
@@ -109,70 +111,49 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T14_CompareQubitArrayGreaterThanInt () : Unit {
+    // ------------------------------------------------------
+    // "Framework" operation to test a comparator of qubit array and an integer
+    operation ValidateComparator (testOp : (Qubit[], Int, Qubit) => Unit is Adj+Ctl, comparator : (Int, Int) -> Bool) : Unit {
         for D in 1 .. 4 {
             // Iterate through all possible left operands a.
             for a in 0 .. (1 <<< D) - 1 {
                 use (selectedItems, target) = (Qubit[D], Qubit());
-                // Prepare the register so that it contains the integer a in little-endian format.
                 let binaryA = IntAsBoolArray(a, D);
-                ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
                                     
-                // Make sure the solution didn't use any measurements
-                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
-
                 // Iterate through all possible right operands b.
                 for b in 0 .. (1 <<< D) - 1 {
+                    // Prepare the register so that it contains the integer a in little-endian format.
+                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
+
                     // Reset the counter of measurements done
                     ResetOracleCallsCount();
 
-                    CompareQubitArrayGreaterThanInt(selectedItems, b, target);
+                    testOp(selectedItems, b, target);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    let output = (M(target)==One);
-                    Fact(not XOR(a > b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
-                    Reset(target);
+                    let output = MResetZ(target) == One;
+                    Fact(comparator(a, b) == output, $"Unexpected result for a = {a}, b = {b} : {output}");
+
+                    // Check that the operation didn't modify the input state
+                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
+                    AssertAllZero(selectedItems);
                 }
-                ResetAll(selectedItems);
             }
         }
     }
 
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T14_CompareQubitArrayGreaterThanInt () : Unit {
+        ValidateComparator(CompareQubitArrayGreaterThanInt, GreaterThanI);
+    }
+
+
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T15_CompareQubitArrayLeqThanInt () : Unit {
-        for (D in 1..4){
-            // Iterate through all possible left operands a.
-            for (a in 0 .. (1 <<< D) - 1){
-                using ((selectedItems, target) = (Qubit[D], Qubit())){
-                    // Prepare the register so that it contains the integer a in little-endian format.
-                    let binaryA = IntAsBoolArray(a, D);
-                    ApplyPauliFromBitString(PauliX, true, binaryA, selectedItems);
-
-                    // Iterate through all possible right operands b.
-                    for (b in 0 .. (1 <<< D) - 1){
-                        // Reset the counter of measurements done
-                        ResetOracleCallsCount();
-
-                        CompareQubitArrayLeqThanInt(selectedItems, b, target);
-                    
-                        // Make sure the solution didn't use any measurements
-                        Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                        Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
-
-                        let output = (M(target)==One);
-                        Fact(not XOR(a <= b, output), $"Unexpected result for a = {a}, b = {b} : {output}");
-                        Reset(target);
-                    }
-                    ResetAll(selectedItems);
-                }
-            }
-        }
+        ValidateComparator(CompareQubitArrayLeqThanInt, LessThanOrEqualI);
     }
 
 

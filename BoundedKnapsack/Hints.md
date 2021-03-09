@@ -6,44 +6,44 @@
 // but feel free to look up these hints, and ultimately
 // the solutions if you get stuck.
 //////////////////////////////////////////////////////////////////////
+```
 
-// Hints have been provided to clarify and guide your work through some of
-// the more complicated tasks. The hints within each task gradually reveal
-// more and more of the solution. You might consider reading hints for a task
-// up to a point of understanding, and then try finishing the task yourself.
+Hints have been provided to clarify and guide your work through some of
+the more complicated tasks. The hints within each task gradually reveal
+more and more of the solution. You might consider reading hints for a task
+up to a point of understanding, and then try finishing the task yourself.
 
-
+```
 // Task 1.3. Calculate total value of selected items
-//
-//  1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger
-//
-//  2) How does the state of a qubit in the register affect whether its corresponding value is added into the total?
+```
+1) The IncrementByInteger operation may be of use: https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arithmetic.incrementbyinteger.
+
+2) How does the state of a qubit in the `selectedItems` register affect whether its corresponding value should be added into the total? How can you express this in quantum computing?
+
+
+```
+// Task 1.4. Compare an integer stored in a qubit array with an integer (>)
+```
+1) Given two classical bit strings, what would be the most straightforward way to compare them?
+
+2) Are the more significant bits or the less significant bits more important in the comparison of two integers?
+
+3) If we begin at the most significant bit and iterate towards the least significant bit, at what point can we conclude whether a or b is larger?
+
+4) We can conclude which number is larger upon arriving at the highest (first encountered) bit that has different value
+   in a and b. Example: If a = 10101101₂ (173) and b = 10100011₂ (163), the highest 4 bits are the same in a and b. The 5th bit from the left (4th least significant bit) is the highest bit that has different values in a and b. Since it is 1 in a and 0 in b,
+   we can conclude that a > b.
+
+5) After passing through one of a's qubits in iteration, how can we temporarily change its state to mark whether a and b had different bits in this position or the same ones? Then it can be used to determine whether
+   a later, less significant bit is the first bit with different values in a and b? (Remember that you have to uncompute any changes you've done to the input register!)
 
 
 
+```
+// Task 1.5. Compare an integer stored in a qubit array with an integer (≤)
+```
 
-// Task 1.4. Compare qubit array with integer (>)
-//
-//  1) Given two classical bitstrings, what would be the most straightforward way to compare them?
-//
-//  2) Are the more significant bits or the less significants bits more important in the comparison of two integers?
-//
-//  3) If we begin at the most significant bits and iterate downwards, at what point can we conclude whether a or b is larger?
-//
-//  4) Answer to previous question: We can conclude which one is larger upon arriving at the highest bit that has different value
-//       in a and b. Example: If a = 10101101₂ (173) and b = 10100011₂ (163), the highest 4 digits are the same in a and b. The digit with
-//     little-endian index 3 (5th from the left) is the highest bit that has different values in a and b. Since it is 1 in a and 0 in b,
-//     we conclude a > b.
-//
-//  5) After passing through one of a's qubits in iteration, how can we temporarily change its state so that it can be used to determine whether
-//     a later, less significant bit is the first bit with different values in a and b?
-
-
-
-
-// Task 1.5. Compare qubit array with integer (≤)
-//
-//  1) Is it necessary to go through all of the logic like we did in Task 1.3, or is there an easier way to conserve code?
+1) You can use bitwise logic similar to the previous task. Is it necessary to go through all these steps, though, or is there an easier way to solve this task? Remember that you can reuse the code of previous tasks.
 
 
 
