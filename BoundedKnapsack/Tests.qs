@@ -23,12 +23,12 @@ namespace Quantum.Kata.BoundedKnapsack
     // Hardcoded sets of 0-1 knapsack problem parameters, for testing the operations
     // The function returns an array of tuples, each representing a set of parameters.
     // The contents of each tuple include: n, W, P, itemWeights, itemProfits (in that order).
-    function ExampleSets_01 () : (Int, Int, Int, Int[], Int[])[] {
-        return [(2, 6, 3, [2,5], [1,3]),
-                (3, 12, 15, [2,3,10], [2,3,15]),
-                (3, 9, 5, [6,3,1], [5,2,1]),
-                (4, 4, 9, [1,2,3,1], [2,4,9,2]),
-                (5, 16, 16, [7,7,2,3,3], [3,2,9,6,5])];
+    function ExampleSets01 () : (Int, Int, Int, Int[], Int[])[] {
+        return [(2, 6, 3, [2, 5], [1, 3]),
+                (3, 12, 15, [2, 3, 10], [2, 3, 15]),
+                (3, 9, 5, [6, 3, 1], [5, 2, 1]),
+                (4, 4, 9, [1, 2, 3, 1], [2, 4, 9, 2]),
+                (5, 16, 16, [7, 7, 2, 3, 3], [3, 2, 9, 6, 5])];
     }
 
 
@@ -57,7 +57,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T12_NumBitsTotalValue01 () : Unit {
-        for (_, _, _, itemWeights, itemProfits) in ExampleSets_01() {
+        for (_, _, _, itemWeights, itemProfits) in ExampleSets01() {
             for values in [itemWeights, itemProfits] {
                 let res = NumBitsTotalValue01(values);
                 let exp = NumBitsTotalValue01_Reference(values);
@@ -70,7 +70,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_CalculateTotalValueOfSelectedItems01 () : Unit {
-        for (n, _, _, itemWeights, _) in ExampleSets_01() {
+        for (n, _, _, itemWeights, _) in ExampleSets01() {
             let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
             use (selectedItems, totalWeight) = (Qubit[n], Qubit[numQubitsTotalWeight]);
             // Iterate through all possible combinations of items.
@@ -93,7 +93,7 @@ namespace Quantum.Kata.BoundedKnapsack
                 // Calculate the weight classically
                 mutable actualWeight = 0;
                 for i in 0 .. n - 1 {
-                    if (binaryCombo[i]) {
+                    if binaryCombo[i] {
                         set actualWeight += itemWeights[i];
                     }
                 }
@@ -157,123 +157,101 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T16_VerifyWeight_01 () : Unit {
-        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((selectedItems, target) = (Qubit[n], Qubit())){
-                // Iterate through all possible combinations of items.
-                for (combo in 0..(1 <<< n) - 1){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+    // ------------------------------------------------------
+    // "Framework" operation to test a comparator of qubit array and an integer
+    operation ValidateTotalValueVerification (
+        testOp : (Int, Int[], Qubit[], Qubit) => Unit is Adj+Ctl, 
+        comparator : (Int, Int) -> Bool
+    ) : Unit {
+        for (n, W, P, itemWeights, itemProfits) in ExampleSets01() {
+            use (selectedItems, target) = (Qubit[n], Qubit());
+            // Iterate through all possible combinations of items.
+            for combo in 0 .. (1 <<< n) - 1 {
+                // Prepare the register so that it represents the combination.
+                let binaryCombo = IntAsBoolArray(combo, n);
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
                     
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
+                // Reset the counter of measurements done
+                ResetOracleCallsCount();
 
-                    // Verify the weight with qubits
-                    VerifyWeight_01(W, itemWeights, selectedItems, target);
+                // Verify the weight with qubits
+                testOp(W, itemWeights, selectedItems, target);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    let output = (M(target) == One);
+                let output = MResetZ(target) == One;
 
-                    // Verify the weight classically
-                    mutable actualWeight = 0;
-                    for (i in 0..n-1){
-                        if (binaryCombo[i]){
-                            set actualWeight += itemWeights[i];
-                        }
+                // Calculate the weight classically
+                mutable actualWeight = 0;
+                for i in 0 .. n-1 {
+                    if binaryCombo[i] {
+                        set actualWeight += itemWeights[i];
                     }
-
-                    // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
-                    ResetAll(selectedItems);
-                    Reset(target);
                 }
+
+                // Assert that both methods yield the same result
+                Fact(comparator(actualWeight, W) == output, 
+                    $"Unexpected result for selectedItems = {binaryCombo}, itemValues = {itemWeights}, W = {W} : {output}");
+
+                // Check that the operation didn't modify the input state
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+                AssertAllZero(selectedItems);
             }
         }
     }
 
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T17_VerifyProfit_01 () : Unit {
-        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((selectedItems, target) = (Qubit[n], Qubit())){
-                // Iterate through all possible combinations of items.
-                for (combo in 0..(1 <<< n) - 1){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
-                    
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
+    operation T16_VerifyTotalWeight01 () : Unit {
+        ValidateTotalValueVerification(VerifyTotalWeight01, LessThanOrEqualI);
+    }
 
-                    // Verify the profit with qubits
-                    VerifyProfit_01(P, itemProfits, selectedItems, target);
-                    
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
-
-                    let output = (M(target) == One);
-
-                    // Verify the profit classically
-                    mutable actualProfit = 0;
-                    for (i in 0..n-1){
-                        if (binaryCombo[i]){
-                            set actualProfit += itemProfits[i];
-                        }
-                    }
-
-                    // Assert that both methods yield the same result
-                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for selectedItems = {binaryCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
-                    ResetAll(selectedItems);
-                    Reset(target);
-                }
-            }
-        }
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T17_VerifyTotalProfit01 () : Unit {
+        ValidateTotalValueVerification(VerifyTotalProfit01, GreaterThanI);
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T18_KnapsackValidationOracle_01 () : Unit {
-        for ((n, W, P, itemWeights, itemProfits) in ExampleSets_01()){
-            using ((selectedItems, target) = (Qubit[n], Qubit())){
-                // Iterate through all possible combinations of items.
-                for (combo in 0..(1 <<< n) - 1){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, n);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+        for (n, W, P, itemWeights, itemProfits) in ExampleSets01() {
+            use (selectedItems, target) = (Qubit[n], Qubit());
+            // Iterate through all possible combinations of items.
+            for combo in 0..(1 <<< n) - 1 {
+                // Prepare the register so that it represents the combination.
+                let binaryCombo = IntAsBoolArray(combo, n);
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
                     
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
+                // Reset the counter of measurements done
+                ResetOracleCallsCount();
 
-                    // Verify the combination with qubits
-                    KnapsackValidationOracle_01(W, P, itemWeights, itemProfits, selectedItems, target);
+                // Verify the combination with qubits
+                VerifyKnapsackProblemSolution01(W, P, itemWeights, itemProfits, selectedItems, target);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    let output = (M(target) == One);
+                let output = MResetZ(target) == One;
 
-                    // Verify the combination classically
-                    mutable actualWeight = 0;
-                    mutable actualProfit = 0;
-                    for (i in 0..n-1){
-                        if (binaryCombo[i]){
-                            set actualWeight += itemWeights[i];
-                            set actualProfit += itemProfits[i];
-                        }
+                // Verify the combination classically
+                mutable actualWeight = 0;
+                mutable actualProfit = 0;
+                for i in 0 .. n - 1 {
+                    if binaryCombo[i] {
+                        set actualWeight += itemWeights[i];
+                        set actualProfit += itemProfits[i];
                     }
-
-                    // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W and actualProfit > P, output), $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
-                    ResetAll(selectedItems);
-                    Reset(target);
                 }
+
+                // Assert that both methods yield the same result
+                Fact((actualWeight <= W and actualProfit > P) == output, 
+                    $"Unexpected result for selectedItems = {binaryCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, P = {P} : {output}");
+
+                // Check that the operation didn't modify the input state
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, selectedItems);
+                AssertAllZero(selectedItems);
             }
         }
     }

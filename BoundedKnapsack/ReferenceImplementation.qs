@@ -90,12 +90,12 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 1.6. Verify that total weight doesn't exceed limit W
-    operation VerifyWeight_01_Reference (W : Int, itemWeights : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+    // Task 1.6. Verify that the total weight doesn't exceed the limit W
+    operation VerifyTotalWeight01_Reference (W : Int, itemWeights : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         let numQubitsTotalWeight = NumBitsTotalValue01_Reference(itemWeights);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
-            CalculateTotalValueOfSelectedItems01_Reference(itemWeights, register, totalWeight);
+            CalculateTotalValueOfSelectedItems01_Reference(itemWeights, selectedItems, totalWeight);
         } apply {
             CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
         }
@@ -103,23 +103,25 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 1.7. Verify that the total profit exceeds threshold P
-    operation VerifyProfit_01_Reference (P : Int, itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+    operation VerifyTotalProfit01_Reference (P : Int, itemProfits : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         let numQubitsTotalProfit = NumBitsTotalValue01_Reference(itemProfits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
-            CalculateTotalValueOfSelectedItems01_Reference(itemProfits, register, totalProfit);
+            CalculateTotalValueOfSelectedItems01_Reference(itemProfits, selectedItems, totalProfit);
         } apply {
             CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
         }
     }
 
 
-    // Task 1.8. 0-1 knapsack problem validation oracle
-    operation KnapsackValidationOracle_01_Reference (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+    // Task 1.8. Verify the solution to the 0-1 knapsack problem
+    operation VerifyKnapsackProblemSolution01_Reference (
+        W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], selectedItems : Qubit[], target : Qubit
+    ) : Unit is Adj+Ctl {
         use (outputW, outputP) = (Qubit(), Qubit());
         within {
-            VerifyWeight_01_Reference(W, itemWeights, register, outputW);
-            VerifyProfit_01_Reference(P, itemProfits, register, outputP);
+            VerifyTotalWeight01_Reference(W, itemWeights, selectedItems, outputW);
+            VerifyTotalProfit01_Reference(P, itemProfits, selectedItems, outputP);
         } apply {
             CCNOT(outputW, outputP, target);
         }

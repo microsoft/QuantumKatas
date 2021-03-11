@@ -127,44 +127,50 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    // Task 1.6. Verify that total weight doesn't exceed limit W
+    // Task 1.6. Verify that the total weight doesn't exceed the limit W
     // Inputs:
-    //        1) An integer W, the maximum weight the knapsack can hold
-    //        2) An array of n integers, such that itemWeights[i] = wᵢ
-    //        3) An array of n qubits, which describe whether each item is put into the knapsack
-    //        4) A qubit in an arbitrary state (target qubit)
+    //      1) An integer W, the maximum weight the knapsack can hold.
+    //      2) An array of n integers, describing the weights of the items: itemWeights[i] = wᵢ.
+    //      3) An array of n qubits, describing whether each item is put into the knapsack.
+    //      4) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total weight is less than or equal to W.
-    //       The input qubits can be in superposition. Leave the qubits in selectedItems in the same state they started in.
-    operation VerifyWeight_01 (W : Int, itemWeights : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    //       The input qubits can be in superposition. Leave the qubits in the qubit array in the same state they started in.
+    operation VerifyTotalWeight01 (W : Int, itemWeights : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
 
-    // Task 1.7. Verify that the total profit exceeds threshold P
+    // Task 1.7. Verify that the total profit exceeds the threshold P
     // Inputs:
-    //        1) An integer P, which the total profit must exceed
-    //        2) An array of n integers, such that itemProfits[i] = pᵢ
-    //        3) An array of n qubits, which describe whether each item is put into the knapsack
-    //        4) A qubit in an arbitrary state (target qubit)
+    //      1) An integer P, the threshold which the total profit must exceed.
+    //      2) An array of n integers, describing the profits of the items: itemProfits[i] = pᵢ.
+    //      3) An array of n qubits, describing whether each item is put into the knapsack.
+    //      4) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total profit is greater than P.
-    //       The input qubits can be in superposition. Leave the qubits in selectedItems in the same state they started in.
-    operation VerifyProfit_01 (P : Int, itemProfits : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    //       The input qubits can be in superposition. Leave the qubits in the qubit array in the same state they started in.
+    operation VerifyTotalProfit01 (P : Int, itemProfits : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
-    // Task 1.8. 0-1 knapsack problem validation oracle
+
+    // Task 1.8. Verify the solution to the 0-1 knapsack problem
     // Inputs:
-    //        1) An integer W, the maximum weight the knapsack can hold
-    //        2) An integer P, which the total profit must exceed
-    //        3) An array of n integers, such that itemWeights[i] = wᵢ
-    //        4) An array of n integers, such that itemProfits[i] = pᵢ
-    //        5) An array of n qubits, which describe whether each item is put into the knapsack
-    //        6) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the weight and profit both satisfy their respective constraints.
-    //       The input qubits can be in superposition. Leave the qubits in selectedItems in the same state they started in.
-    operation KnapsackValidationOracle_01 (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], selectedItems : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    //      1) An integer W, the maximum weight the knapsack can hold.
+    //      2) An integer P, the threshold which the total profit must exceed.
+    //      3) An array of n integers, describing the weights of the items: itemWeights[i] = wᵢ.
+    //      4) An array of n integers, describing the profits of the items: itemProfits[i] = pᵢ.
+    //      5) An array of n qubits, describing whether each item is put into the knapsack.
+    //      6) A qubit in an arbitrary state (target qubit).
+    // Goal: Flip the state of the target qubit if the selection of the items in selectedItems satisfies both constraints:
+    //        * the total weight of all items is less than or equal to W, and
+    //        * the total profit of all items is greater than P.
+    //       The input qubits can be in superposition. Leave the qubits in the qubit array in the same state they started in.
+    operation VerifyKnapsackProblemSolution01 (
+        W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], selectedItems : Qubit[], target : Qubit
+    ) : Unit is Adj+Ctl {
         // ...
     }
+
 
 
     //////////////////////////////////////////////////////////////////
