@@ -21,7 +21,7 @@ We're so glad you asked!
 ## Reporting Bugs
 
 The Quantum Development Kit is distributed across multiple repositories. If you have found a bug in one of the parts of the Quantum Development Kit, try to file the issue against the correct repository.
-Check the list [in the contribution guide](https://docs.microsoft.com/quantum/contributing/#where-do-contributions-go) if you aren't sure which repo is correct.
+Check the list [in the contribution guide](https://docs.microsoft.com/azure/quantum/contributing-overview#where-do-contributions-go) if you aren't sure which repo is correct.
 
 If you think you've found a bug in one of the tasks, start by looking through [the existing issues](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue) in case it has already been reported (or it's not a bug at all). 
 
@@ -91,7 +91,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Style guide
 
-* We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/quantum/contributing/style-guide) in our Q# code. 
+* We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/azure/quantum/contributing-style-guide) in our Q# code. 
 * We also try to maintain a uniform style across the katas and most importantly within each kata. 
   If you're adding a new task to an existing kata, it should be styled the same way as the rest of its tasks. 
   If you're creating a new kata, model it after the style of the existing katas. 
@@ -104,7 +104,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Updating the Katas to the new QDK version
 
-The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/quantum/resources/relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
+The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/azure/quantum/qdk-relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
 
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
@@ -131,7 +131,7 @@ When you contribute any code to the Katas, you need to validate that everything 
          PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
       ```
 
-      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/qjupyter) 
+      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/azure/quantum/install-jupyter-qkd) 
 and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
 
    4. If you do a bulk update of the katas, testing each of them individually will take too much time; you can streamline the testing using the scripts used by our continuous integration. 
