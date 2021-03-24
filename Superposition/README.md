@@ -12,4 +12,4 @@ The list of basic gates available in Q# can be found at [Microsoft.Quantum.Intri
 
 You can find detailed coverage of Bell states and their creation [here](https://blogs.msdn.microsoft.com/uk_faculty_connection/2018/02/06/a-beginners-guide-to-quantum-computing-and-q/).
 
-For the syntax of flow control statements in Q#, see [Q# user guide](https://docs.microsoft.com/quantum/user-guide/using-qsharp/control-flow#control-flow).
+For the syntax of flow control statements in Q#, see [Q# iterations](https://docs.microsoft.com/azure/quantum/user-guide/language/statements/iterations) and [Q# conditional branching](https://docs.microsoft.com/azure/quantum/user-guide/language/statements/conditionalbranching) documentation.
