@@ -119,7 +119,6 @@ function Validate {
 # List of Notebooks that can't be validated for various reasons:
 #  * Check.ipynb is a validation artifact and not an actual kata notebook.
 #  * ComplexArithmetic and LinearAlgebra have tasks with deliberately invalid Python code.
-#  * RandomNumberGenerationTutorial have tasks to generate random numbers but sometimes these numbers will look insufficiently random and fail validation.
 $not_ready = 
 @(
     'Check.ipynb',
