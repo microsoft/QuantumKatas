@@ -16,12 +16,12 @@ Quantum phase estimation:
 
 * Wikipedia article on [quantum phase estimation](https://en.wikipedia.org/wiki/Quantum_phase_estimation_algorithm).
 * Lectures [8](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.08.pdf) and [9](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.09.pdf) by John Watrous.
-* [Quantum Phase Estimation](https://docs.microsoft.com/quantum/libraries/standard/algorithms) in Q# documentation.
+* [Quantum Phase Estimation](https://docs.microsoft.com/azure/quantum/user-guide/libraries/standard/algorithms#quantum-phase-estimation) in Q# documentation.
 
 Iterative phase estimation:
 
 * [Faster Phase Estimation](https://arxiv.org/pdf/1304.0741.pdf) paper gives an overview of several different approaches.
-* [Iterative Phase Estimation](https://docs.microsoft.com/quantum/libraries/standard/characterization) in Q# documentation.
+* [Iterative Phase Estimation](https://docs.microsoft.com/azure/quantum/user-guide/libraries/standard/characterization#iterative-phase-estimation) in Q# documentation.
 
 #### Q# materials
 
