@@ -34,6 +34,14 @@ Param(
 )
 
 
+# Detect if we're running on Azure Pipelines.
+$IsAzurePipelines = "$Env:TF_BUILD" -ne "";
+
+# If we're running non-locally, we need to install IQ#.
+if ($IsAzurePipelines) {
+    & "$PSScriptRoot/install-iqsharp.ps1"
+}
+
 $all_ok = $True
 
 function Validate {
