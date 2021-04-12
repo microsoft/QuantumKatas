@@ -19,7 +19,7 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T11_WinCondition () : Unit {
-        for (i in 0..1 <<< 4 - 1) {
+        for i in 0..1 <<< 4 - 1 {
             let bits = IntAsBoolArray(i, 4);
             EqualityFactB(
                 WinCondition(bits[0], bits[1], bits[2], bits[3]),
@@ -34,7 +34,7 @@ namespace Quantum.Kata.CHSHGame {
     @Test("QuantumSimulator")
     operation T12_ClassicalStrategy () : Unit {
         mutable wins = 0;
-        for (i in 1..1000) {
+        for i in 1..1000 {
             let x = DrawRandomInt(0, 1) == 1 ? true | false;
             let y = DrawRandomInt(0, 1) == 1 ? true | false;
             let (a, b) = (AliceClassical(x), BobClassical(y));
@@ -51,16 +51,15 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
                                       refImpl : (Qubit[] => Unit is Adj)) : Unit {
-        using (qs = Qubit[N]) {
-            // apply operation that needs to be tested
-            taskImpl(qs);
+        use qs = Qubit[N];
+        // apply operation that needs to be tested
+        taskImpl(qs);
             
-            // apply adjoint reference operation and check that the result is |0^N⟩
-            Adjoint refImpl(qs);
+        // apply adjoint reference operation and check that the result is |0^N⟩
+        Adjoint refImpl(qs);
             
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
     @Test("QuantumSimulator")
@@ -73,29 +72,28 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T22_AliceQuantum () : Unit {
-        for (_ in 1 .. 4) {
+        for _ in 1 .. 4 {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
             // the correct answer, reduces probability of false positives
-            using (q = Qubit()) {
-                EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
-                Reset(q);
+            use q = Qubit();
+            EqualityFactB(AliceQuantum(false, q), false, "|0⟩ not measured as false");
+            Reset(q);
 
-                // apply the Pauli X gate
-                X(q);
-                EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
-                Reset(q);
+            // apply the Pauli X gate
+            X(q);
+            EqualityFactB(AliceQuantum(false, q), true, "|1⟩ not measured as true");
+            Reset(q);
 
-                // apply the Hadamard gate
-                H(q);
-                EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
-                Reset(q);
+            // apply the Hadamard gate
+            H(q);
+            EqualityFactB(AliceQuantum(true, q), false, "|+⟩ is not measured as false");
+            Reset(q);
 
-                // apply the Pauli X and then the Hadamard gate
-                X(q);
-                H(q);
-                EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
-                Reset(q);
-            }
+            // apply the Pauli X and then the Hadamard gate
+            X(q);
+            H(q);
+            EqualityFactB(AliceQuantum(true, q), true, "|-⟩ is not measured as true");
+            Reset(q);
         }
     }
 
@@ -121,28 +119,27 @@ namespace Quantum.Kata.CHSHGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T24_BobQuantum () : Unit {
-        for (_ in 1 .. 4) {
+        for _ in 1 .. 4 {
             // repeat 4 times since we are testing a measurement and wrong basis still might get
             // the correct answer, reduces probability of false positives
-            using (q = Qubit()) {
-                RotateBobQubit_Reference(false, q);
-                EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
-                Reset(q);
+            use q = Qubit();
+            RotateBobQubit_Reference(false, q);
+            EqualityFactB(BobQuantum(false, q), false, "π/8 from |0⟩ not measured as false");
+            Reset(q);
 
-                X(q);
-                RotateBobQubit_Reference(false, q);
-                EqualityFactB(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
-                Reset(q);
+            X(q);
+            RotateBobQubit_Reference(false, q);
+            EqualityFactB(BobQuantum(false, q), true, "π/8 from |1⟩ not measured as true");
+            Reset(q);
 
-                RotateBobQubit_Reference(true, q);
-                EqualityFactB(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
-                Reset(q);
+            RotateBobQubit_Reference(true, q);
+            EqualityFactB(BobQuantum(true, q), false, "-π/8 from |0⟩ not measured as false");
+            Reset(q);
 
-                X(q);
-                RotateBobQubit_Reference(true, q);
-                EqualityFactB(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
-                Reset(q);
-            }
+            X(q);
+            RotateBobQubit_Reference(true, q);
+            EqualityFactB(BobQuantum(true, q), true, "-π/8 from |1⟩ not measured as true");
+            Reset(q);
         }
     }
 
@@ -151,7 +148,7 @@ namespace Quantum.Kata.CHSHGame {
     @Test("QuantumSimulator")
     operation T25_PlayQuantumCHSH () : Unit {
         mutable wins = 0;
-        for (i in 1..10000) {
+        for i in 1..10000 {
             let x = DrawRandomInt(0, 1) == 1 ? true | false;
             let y = DrawRandomInt(0, 1) == 1 ? true | false;
             let (a, b) = PlayQuantumCHSH(AliceQuantum(x, _), BobQuantum(y, _));

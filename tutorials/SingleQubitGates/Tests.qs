@@ -29,21 +29,20 @@ namespace Quantum.Kata.SingleQubitGates {
 
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (testImpl : (Qubit => Unit is Ctl), refImpl : (Qubit => Unit is Adj+Ctl)) : Unit {
-        using (qs = Qubit[2]) {
-            within {
-                H(qs[0]);
-            }
-            apply {
-                // apply operation that needs to be tested
-                Controlled testImpl([qs[0]], qs[1]);
-
-                // apply adjoint reference operation
-                Adjoint Controlled refImpl([qs[0]], qs[1]);
-            }
-
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
+        use qs = Qubit[2];
+        within {
+            H(qs[0]);
         }
+        apply {
+            // apply operation that needs to be tested
+            Controlled testImpl([qs[0]], qs[1]);
+
+            // apply adjoint reference operation
+            Adjoint Controlled refImpl([qs[0]], qs[1]);
+        }
+
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
     // Exercise 1.
@@ -79,7 +78,7 @@ namespace Quantum.Kata.SingleQubitGates {
     // Exercise 6.
     @Test("QuantumSimulator")
     operation T6_PrepareRotatedState () : Unit {
-        for (i in 0 .. 10) {
+        for i in 0 .. 10 {
             AssertEqualOnZeroState(PrepareRotatedState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _),  
                                    PrepareRotatedState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), _));
         }
@@ -88,8 +87,8 @@ namespace Quantum.Kata.SingleQubitGates {
     // Exercise 7.
     @Test("QuantumSimulator")
     operation T7_PrepareArbitraryState () : Unit {
-        for (i in 0 .. 10) {
-            for (j in 0 .. 10) {
+        for i in 0 .. 10 {
+            for j in 0 .. 10 {
                 AssertEqualOnZeroState(PrepareArbitraryState(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _), 
                                        PrepareArbitraryState_Reference(Cos(IntAsDouble(i)), Sin(IntAsDouble(i)), IntAsDouble(j), _));
             }

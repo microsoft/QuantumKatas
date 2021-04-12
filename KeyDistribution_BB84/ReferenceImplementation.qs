@@ -45,7 +45,7 @@ namespace Quantum.Kata.KeyDistribution {
     operation RandomArray_Reference (N : Int) : Bool[] {
         mutable array = new Bool[N];
 
-        for (i in 0 .. N - 1) {
+        for i in 0 .. N - 1 {
             set array w/= i <- DrawRandomBool(0.5);
         }
 
@@ -55,7 +55,7 @@ namespace Quantum.Kata.KeyDistribution {
 
     // Task 2.2. Prepare Alice's qubits
     operation PrepareAlicesQubits_Reference (qs : Qubit[], bases : Bool[], bits : Bool[]) : Unit is Adj {
-        for (i in 0 .. Length(qs) - 1) {
+        for i in 0 .. Length(qs) - 1 {
             if (bits[i]) {
                 X(qs[i]);
             }
@@ -68,7 +68,7 @@ namespace Quantum.Kata.KeyDistribution {
 
     // Task 2.3. Measure Bob's qubits
     operation MeasureBobsQubits_Reference (qs : Qubit[], bases : Bool[]) : Bool[] {
-        for (i in 0 .. Length(qs) - 1) {
+        for i in 0 .. Length(qs) - 1 {
             if (bases[i]) {
                 H(qs[i]);
             }
@@ -82,7 +82,7 @@ namespace Quantum.Kata.KeyDistribution {
         // If Alice and Bob used the same basis, they will have the same value of the bit.
         // The shared key consists of those bits.
         mutable key = new Bool[0];
-        for ((a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob)) {
+        for (a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob) {
             if (a == b) {
                 set key += [bit];
             }
@@ -95,7 +95,7 @@ namespace Quantum.Kata.KeyDistribution {
     function CheckKeysMatch_Reference (keyAlice : Bool[], keyBob : Bool[], errorRate : Int) : Bool {
         let N = Length(keyAlice);
         mutable mismatchCount = 0;
-        for (i in 0 .. N - 1) {
+        for i in 0 .. N - 1 {
             if (keyAlice[i] != keyBob[i]) {
                 set mismatchCount += 1;
             }
@@ -109,28 +109,27 @@ namespace Quantum.Kata.KeyDistribution {
     operation T26_BB84Protocol_Reference () : Unit {
         let threshold = 99;
 
-        using (qs = Qubit[20]) {
-            // 1. Choose random basis and bits to encode
-            let basesAlice = RandomArray_Reference(Length(qs));
-            let bitsAlice = RandomArray_Reference(Length(qs));
+        use qs = Qubit[20];
+        // 1. Choose random basis and bits to encode
+        let basesAlice = RandomArray_Reference(Length(qs));
+        let bitsAlice = RandomArray_Reference(Length(qs));
         
-            // 2. Alice prepares her qubits
-            PrepareAlicesQubits_Reference(qs, basesAlice, bitsAlice);
+        // 2. Alice prepares her qubits
+        PrepareAlicesQubits_Reference(qs, basesAlice, bitsAlice);
         
-            // 3. Bob chooses random basis to measure in
-            let basesBob = RandomArray_Reference(Length(qs));
+        // 3. Bob chooses random basis to measure in
+        let basesBob = RandomArray_Reference(Length(qs));
 
-            // 4. Bob measures Alice's qubits
-            let bitsBob = MeasureBobsQubits_Reference(qs, basesBob);
+        // 4. Bob measures Alice's qubits
+        let bitsBob = MeasureBobsQubits_Reference(qs, basesBob);
 
-            // 5. Generate shared key
-            let keyAlice = GenerateSharedKey_Reference(basesAlice, basesBob, bitsAlice);
-            let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
+        // 5. Generate shared key
+        let keyAlice = GenerateSharedKey_Reference(basesAlice, basesBob, bitsAlice);
+        let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
 
-            // 6. Ensure at least the minimum percentage of bits match
-            if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
-                Message($"Successfully generated keys {keyAlice}/{keyBob}");
-            }
+        // 6. Ensure at least the minimum percentage of bits match
+        if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
+            Message($"Successfully generated keys {keyAlice}/{keyBob}");
         }
     }
 
@@ -149,35 +148,34 @@ namespace Quantum.Kata.KeyDistribution {
     operation T32_BB84ProtocolWithEavesdropper_Reference () : Unit {
         let threshold = 90;
 
-        using (qs = Qubit[20]) {
-            // 1. Choose random basis and bits to encode
-            let basesAlice = RandomArray_Reference(Length(qs));
-            let bitsAlice = RandomArray_Reference(Length(qs));
+        use qs = Qubit[20];
+        // 1. Choose random basis and bits to encode
+        let basesAlice = RandomArray_Reference(Length(qs));
+        let bitsAlice = RandomArray_Reference(Length(qs));
         
-            // 2. Alice prepares her qubits
-            PrepareAlicesQubits_Reference(qs, basesAlice, bitsAlice);
+        // 2. Alice prepares her qubits
+        PrepareAlicesQubits_Reference(qs, basesAlice, bitsAlice);
         
-            // Eve eavesdrops on all qubits, guessing the basis at random
-            for (q in qs) {
-                let n = Eavesdrop_Reference(q, DrawRandomBool(0.5));
-            }
+        // Eve eavesdrops on all qubits, guessing the basis at random
+        for q in qs {
+            let n = Eavesdrop_Reference(q, DrawRandomBool(0.5));
+        }
 
-            // 3. Bob chooses random basis to measure in
-            let basesBob = RandomArray_Reference(Length(qs));
+        // 3. Bob chooses random basis to measure in
+        let basesBob = RandomArray_Reference(Length(qs));
 
-            // 4. Bob measures Alice's qubits'
-            let bitsBob = MeasureBobsQubits_Reference(qs, basesBob);
+        // 4. Bob measures Alice's qubits'
+        let bitsBob = MeasureBobsQubits_Reference(qs, basesBob);
 
-            // 5. Generate shared key
-            let keyAlice = GenerateSharedKey_Reference(basesAlice, basesBob, bitsAlice);
-            let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
+        // 5. Generate shared key
+        let keyAlice = GenerateSharedKey_Reference(basesAlice, basesBob, bitsAlice);
+        let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
 
-            // 6. Ensure at least the minimum percentage of bits match
-            if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
-                Message($"Successfully generated keys {keyAlice}/{keyBob}");
-            } else {
-                Message($"Caught an eavesdropper, discarding the keys {keyAlice}/{keyBob}");
-            }
+        // 6. Ensure at least the minimum percentage of bits match
+        if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
+            Message($"Successfully generated keys {keyAlice}/{keyBob}");
+        } else {
+            Message($"Caught an eavesdropper, discarding the keys {keyAlice}/{keyBob}");
         }
     }
 }

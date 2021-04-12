@@ -32,43 +32,42 @@ namespace Quantum.Kata.JointMeasurements {
         // unknownClassifications will store the number of times state i has been classified as some invalid state (index < 0 or >= nStates)
         mutable unknownClassifications = new Int[nStates];
                 
-        using (qs = Qubit[nQubits]) {
-            for (i in 1 .. nTotal) {
-                // get a random integer to define the state of the qubits
-                let state = DrawRandomInt(0, nStates - 1);
-                // get a random rotation angle to define the exact state of the qubits
-                let alpha = DrawRandomDouble(0.0, 1.0) * PI();
+        use qs = Qubit[nQubits];
+        for i in 1 .. nTotal {
+            // get a random integer to define the state of the qubits
+            let state = DrawRandomInt(0, nStates - 1);
+            // get a random rotation angle to define the exact state of the qubits
+            let alpha = DrawRandomDouble(0.0, 1.0) * PI();
                 
-                // do state prep: convert |0...0⟩ to outcome with return equal to state
-                statePrep(qs, state, alpha);
+            // do state prep: convert |0...0⟩ to outcome with return equal to state
+            statePrep(qs, state, alpha);
 
-                // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
-                let ans = testImpl(qs);
-                if ((ans >= 0) and (ans < nStates)) {
-                    // classification result is a valid state index - check if is it correct
-                    if (ans != state) {
-                        set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
-                    }
+            // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
+            let ans = testImpl(qs);
+            if ((ans >= 0) and (ans < nStates)) {
+                // classification result is a valid state index - check if is it correct
+                if (ans != state) {
+                    set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
                 }
-                else {
-                    // classification result is an invalid state index - file it separately
-                    set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
-                }
+            }
+            else {
+                // classification result is an invalid state index - file it separately
+                set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
+            }
 
-                if (preserveState) {
-                    // check that the state of the qubit after the operation is unchanged
-                    Adjoint statePrep(qs, state, alpha);
-                    AssertAllZero(qs);
-                } else {
-                    // we're not checking the state of the qubit after the operation
-                    ResetAll(qs);
-                }
+            if (preserveState) {
+                // check that the state of the qubit after the operation is unchanged
+                Adjoint statePrep(qs, state, alpha);
+                AssertAllZero(qs);
+            } else {
+                // we're not checking the state of the qubit after the operation
+                ResetAll(qs);
             }
         }
         
         mutable totalMisclassifications = 0;
-        for (i in 0 .. nStates - 1) {
-            for (j in 0 .. nStates - 1) {
+        for i in 0 .. nStates - 1 {
+            for j in 0 .. nStates - 1 {
                 if (misclassifications[(i * nStates) + j] != 0) {
                     set totalMisclassifications += misclassifications[i * nStates + j];
                     Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
@@ -89,13 +88,13 @@ namespace Quantum.Kata.JointMeasurements {
         
         // prep cos(alpha) * |0..0⟩ + sin(alpha) * |1..1⟩
         Ry(2.0 * alpha, qs[0]);
-        for (i in 1 .. Length(qs) - 1) {
+        for i in 1 .. Length(qs) - 1 {
             CNOT(qs[0], qs[i]);
         }
             
         if (state == 1) {
             // flip the state of the first half of the qubits
-            for (i in 0 .. Length(qs) / 2 - 1) {
+            for i in 0 .. Length(qs) / 2 - 1 {
                 X(qs[i]);
             }
         }
@@ -157,7 +156,7 @@ namespace Quantum.Kata.JointMeasurements {
 
     @Test("QuantumSimulator")
     operation T04_GHZOrWState () : Unit {
-        for (i in 1 .. 5) {
+        for i in 1 .. 5 {
             DistinguishStates_MultiQubit(2 * i, 2, StatePrep_GHZOrWState, GHZOrWState, true, ["GHZ State", "W State"]);
         }
     }
@@ -206,30 +205,29 @@ namespace Quantum.Kata.JointMeasurements {
     operation T06_ControlledX () : Unit {
         // Note that the way the problem is formulated, we can't just compare two unitaries,
         // we need to create an input state |A⟩ and check that the output state is correct
-        using (qs = Qubit[2]) {
+        use qs = Qubit[2];
             
-            for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
+        for i in 0 .. 36 {
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
-                // prepare A state
-                StatePrep_A(alpha, qs[0]);
+            // prepare A state
+            StatePrep_A(alpha, qs[0]);
                 
-                ResetOracleCallsCount();
+            ResetOracleCallsCount();
 
-                // apply operation that needs to be tested
-                ControlledX(qs);
+            // apply operation that needs to be tested
+            ControlledX(qs);
                 
-                // the 1 in the following condition is the task operation itself being called
-                Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
-                     "You are not allowed to use multi-qubit gates in this task.");
+            // the 1 in the following condition is the task operation itself being called
+            Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
+                    "You are not allowed to use multi-qubit gates in this task.");
 
-                // apply adjoint reference operation and adjoint of state prep
-                CNOT(qs[0], qs[1]);
-                Adjoint StatePrep_A(alpha, qs[0]);
+            // apply adjoint reference operation and adjoint of state prep
+            CNOT(qs[0], qs[1]);
+            Adjoint StatePrep_A(alpha, qs[0]);
                 
-                // assert that all qubits end up in |0⟩ state
-                AssertAllZero(qs);
-            }
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
         }
     }
     
@@ -246,25 +244,24 @@ namespace Quantum.Kata.JointMeasurements {
         AssertOperationsEqualReferenced(2, ControlledX_General, ControlledX_General_Reference);
 
         // Check that the implementation of ControlledX_General doesn't call multi-qubit gates (other than itself)
-        using (qs = Qubit[2]) {
-            // prepare a non-trivial input state
-            ApplyToEachA(H, qs);
+        use qs = Qubit[2];
+        // prepare a non-trivial input state
+        ApplyToEachA(H, qs);
 
-            ResetOracleCallsCount();
+        ResetOracleCallsCount();
             
-            ControlledX_General(qs);
+        ControlledX_General(qs);
 
-            // the 1 in the following condition is the task operation itself being called
-            Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
-                 "You are not allowed to use multi-qubit gates in this task.");
+        // the 1 in the following condition is the task operation itself being called
+        Fact(GetMultiQubitNonMeasurementOpCount() <= 1, 
+            "You are not allowed to use multi-qubit gates in this task.");
  
-            // apply adjoint reference operation and adjoint of state prep
-            CNOT(qs[0], qs[1]);
-            ApplyToEachA(H, qs);
+        // apply adjoint reference operation and adjoint of state prep
+        CNOT(qs[0], qs[1]);
+        ApplyToEachA(H, qs);
 
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
     
 }

@@ -43,7 +43,7 @@ namespace Quantum.Kata.QFT {
     // where 0.j₁j₂...jₙ is a binary fraction, similar to decimal fractions:
     //       0.j₁j₂...jₙ = j₁ / 2¹ + j₂ / 2² + ... + jₙ / 2ⁿ.
     operation BinaryFractionClassical_Reference (q : Qubit, j : Int[]) : Unit is Adj+Ctl {
-        for (ind in 0 .. Length(j) - 1) {
+        for ind in 0 .. Length(j) - 1 {
             if (j[ind] == 1) {
                 Rotation_Reference(q, ind + 1);
             }
@@ -53,7 +53,7 @@ namespace Quantum.Kata.QFT {
 
     function IntArrayAsInt (j : Int[]) : Int {
         mutable n = 0;
-        for (ind in 0 .. Length(j) - 1) {
+        for ind in 0 .. Length(j) - 1 {
             set n = n * 2 + j[ind];
         }
         return n;
@@ -75,7 +75,7 @@ namespace Quantum.Kata.QFT {
     //         to (α |0⟩ + β · exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₁j₂...jₙ⟩,
     //       where 0.j₁j₂...jₙ is a binary fraction corresponding to the basis state j₁j₂...jₙ of the register.
     operation BinaryFractionQuantum_Reference (q : Qubit, jRegister : Qubit[]) : Unit is Adj+Ctl {
-        for (ind in 0 .. Length(jRegister) - 1) {
+        for ind in 0 .. Length(jRegister) - 1 {
             Controlled Rotation_Reference([jRegister[ind]], (q, ind + 1));
         }
     }
@@ -88,7 +88,7 @@ namespace Quantum.Kata.QFT {
     //         to 1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ) |1⟩) ⊗ |j₂...jₙ⟩.
     operation BinaryFractionQuantumInPlace_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         OneQubitQFT_Reference(register[0]);
-        for (ind in 1 .. Length(register) - 1) {
+        for ind in 1 .. Length(register) - 1 {
             Controlled Rotation_Reference([register[ind]], (register[0], ind + 1));
         }
     }
@@ -99,7 +99,7 @@ namespace Quantum.Kata.QFT {
     // Goal: Reverse the order of qubits, i.e., convert the state of the register to |xₙ...x₂x₁⟩.
     operation ReverseRegister_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         let N = Length(register);
-        for (ind in 0 .. N / 2 - 1) {
+        for ind in 0 .. N / 2 - 1 {
             SWAP(register[ind], register[N - 1 - ind]);
         }
     }
@@ -114,7 +114,7 @@ namespace Quantum.Kata.QFT {
     //       1/sqrt(2) (|0⟩ + exp(2πi · 0.j₁j₂...jₙ₋₁jₙ) |1⟩) ⊗
     operation QuantumFourierTransform_Reference (register : Qubit[]) : Unit is Adj+Ctl {
         let n = Length(register);
-        for (i in 0 .. n - 1) {
+        for i in 0 .. n - 1 {
             BinaryFractionQuantumInPlace_Reference(register[i ...]);
         }
         ReverseRegister_Reference(register);
@@ -207,7 +207,7 @@ namespace Quantum.Kata.QFT {
     // Task 3.1. Implement powers of the QFT
     operation QFTPower_Reference (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
         // Use the fact that QFT⁴ = I
-        for (_ in 1 .. (P % 4)) {
+        for _ in 1 .. (P % 4) {
             QuantumFourierTransform_Reference(inputRegister);
         }
     }
@@ -228,16 +228,15 @@ namespace Quantum.Kata.QFT {
 
 
     operation QFTRoot_Reference (P : Int, inputRegister : Qubit[]) : Unit is Adj+Ctl {
-        using (aux = Qubit[2]) {
-            let Q = QuantumFourierTransform_Reference;
-            let Q2 = OperationPowCA(Q, 2);
-            within {
-                ApplyToEachCA(H, aux);
-                Controlled Adjoint Q([aux[0]], inputRegister);
-                Controlled Adjoint Q2([aux[1]], inputRegister);
-            } apply {
-                Circ(LittleEndian(aux), PI() / (2.0 * IntAsDouble(P))); 
-            }
+        use aux = Qubit[2];
+        let Q = QuantumFourierTransform_Reference;
+        let Q2 = OperationPowCA(Q, 2);
+        within {
+            ApplyToEachCA(H, aux);
+            Controlled Adjoint Q([aux[0]], inputRegister);
+            Controlled Adjoint Q2([aux[1]], inputRegister);
+        } apply {
+            Circ(LittleEndian(aux), PI() / (2.0 * IntAsDouble(P))); 
         }
     }
 

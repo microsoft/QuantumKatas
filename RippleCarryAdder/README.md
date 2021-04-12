@@ -1,4 +1,4 @@
-# Welcome!
+﻿# Welcome!
 
 This kata explores ripple-carry addition on a quantum computer.
 
@@ -7,7 +7,8 @@ using the same basic components and the same algorithm.
 * Part II explores building an in-place adder.
 * A more complex version of an in-place adder covered in part III of the kata uses a different algorithm
 to reduce the number of ancillary qubits needed.
-* Finally, part IV covers building an in-place quantum subtractor.
+* Part IV covers building an in-place quantum subtractor.
+* Part V covers addition and subtraction modulo 2ᴺ.
 
 You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
 
@@ -23,4 +24,4 @@ You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.o
 It is recommended to complete the [BasicGates kata](./../BasicGates/) before this one to get familiar with the basic gates used in quantum computing.
 The list of basic gates available in Q# can be found at [Microsoft.Quantum.Intrinsic](https://docs.microsoft.com/qsharp/api/qsharp/microsoft.quantum.intrinsic).
 
-For the syntax of flow control statements in Q#, see the [Q# user guide](https://docs.microsoft.com/en-us/quantum/user-guide/using-qsharp/control-flow#control-flow).
+For the syntax of flow control statements in Q#, see [Q# iterations](https://docs.microsoft.com/azure/quantum/user-guide/language/statements/iterations) and [Q# conditional branching](https://docs.microsoft.com/azure/quantum/user-guide/language/statements/conditionalbranching) documentation.

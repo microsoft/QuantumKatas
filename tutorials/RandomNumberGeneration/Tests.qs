@@ -72,7 +72,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         mutable average = 0.0;
 
         ResetOracleCallsCount();
-        for (i in 1..nRuns) {
+        for i in 1..nRuns {
             let val = f(numBits);
             if (val < 0 or val >= max) {
                 fail $"Unexpected number generated. Expected values from 0 to {max - 1}, generated {val}";
@@ -93,7 +93,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
         }
 
-        for (i in 0..max - 1) {
+        for i in 0..max - 1 {
             if (counts[i] < minimumCopiesGenerated) {
                 fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}";
             }
@@ -102,7 +102,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
     operation FindMedian (counts : Int [], arrSize : Int, sampleSize : Int) : Int {
         mutable totalCount = 0;
-        for (i in 0..arrSize - 1) {
+        for i in 0..arrSize - 1 {
             set totalCount = totalCount + counts[i];
             if (totalCount >= sampleSize / 2) {
                 return i;
@@ -129,7 +129,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         mutable oneCount = 0;
         let nRuns = 1000;
         ResetOracleCallsCount();
-        for (N in 1..nRuns) {
+        for N in 1..nRuns {
             let val = WeightedRandomBit(x);
             if (val < 0 or val > 1) {
                 fail $"Unexpected number generated. Expected 0 or 1, instead generated {val}";
@@ -170,7 +170,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         mutable average = 0.0;
 
         ResetOracleCallsCount();
-        for (i in 1..nRuns) {
+        for i in 1..nRuns {
             let val = f(min, max);
             if (val < min or val > max) {
                 fail $"Unexpected number generated. Expected values from {min} to {max}, generated {val}";
@@ -191,7 +191,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
 
         }
 
-        for (i in min..max) {
+        for i in min..max {
             if (counts[i] < minimumCopiesGenerated) {
                 fail $"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}";
             }

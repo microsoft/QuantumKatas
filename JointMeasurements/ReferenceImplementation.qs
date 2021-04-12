@@ -69,25 +69,24 @@ namespace Quantum.Kata.JointMeasurements {
             // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
             // Note the parity notation used in the table of fixups in the paper
             // differs from the notation used in Q#.
-            using (a = Qubit()) {
-                let c = qs[0];
-                let t = qs[1];
-                H(a);
-                let p1 = MeasureAllZ([c, a]);
-                H(a);
-                H(t);
-                let p2 = MeasureAllZ([a, t]);
-                H(a);
-                H(t);
-                let m = M(a);
+            use a = Qubit();
+            let c = qs[0];
+            let t = qs[1];
+            H(a);
+            let p1 = MeasureAllZ([c, a]);
+            H(a);
+            H(t);
+            let p2 = MeasureAllZ([a, t]);
+            H(a);
+            H(t);
+            let m = M(a);
                 
-                // apply fixups
-                if (p2 == One) {
-                    Z(c);
-                }
-                if (p1 != m) {
-                    X(t);
-                }
+            // apply fixups
+            if (p2 == One) {
+                Z(c);
+            }
+            if (p1 != m) {
+                X(t);
             }
         }
         adjoint self;

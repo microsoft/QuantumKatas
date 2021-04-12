@@ -7,6 +7,14 @@ pr:
 - feature/*
 - release/*
 
+schedules:
+- cron: "0 9 * * Sat"
+  displayName: 'Build for Component Governance'
+  branches:
+    include:
+    - main
+  always: true
+
 variables:
   Build.Major: 1
   Build.Minor: 0
@@ -60,7 +68,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 19'
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 24'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
@@ -79,7 +87,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 20'
+    - powershell: './validate-notebooks.ps1 -startindex 25'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 

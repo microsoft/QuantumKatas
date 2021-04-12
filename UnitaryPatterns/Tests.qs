@@ -29,36 +29,34 @@ namespace Quantum.Kata.UnitaryPatterns {
         // ε is the threshold for probability, which is absolute value squared; the absolute value is bounded by √ε.
         let ε = 0.000001;
         
-        using (qs = Qubit[N]) {
-            for (k in 0 .. size - 1) {                
-                // Prepare k-th basis vector
-                let binary = IntAsBoolArray(k, N);
+        use qs = Qubit[N];
+        for k in 0 .. size - 1 {                
+            // Prepare k-th basis vector
+            let binary = IntAsBoolArray(k, N);
                 
-                //Message($"{k}/{N} = {binary}");
-                // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0
-                ApplyPauliFromBitString(PauliX, true, binary, qs);
+            //Message($"{k}/{N} = {binary}");
+            // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0
+            ApplyPauliFromBitString(PauliX, true, binary, qs);
                 
-                // Reset the counter of measurements done outside of the solution call
-                ResetOracleCallsCount();
+            // Reset the counter of measurements done outside of the solution call
+            ResetOracleCallsCount();
                 
-                // Apply the operation
-                op(qs);
+            // Apply the operation
+            op(qs);
                 
-                // Make sure the solution didn't use any measurements
-                Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+            // Make sure the solution didn't use any measurements
+            Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                // Test that the result matches the k-th column
-                // DumpMachine($"C:/Tmp/dump{N}_{k}.txt");
-                for (j in 0 .. size - 1) {                    
-                    let nonZero = pattern(size, j, k);
+            // Test that the result matches the k-th column
+            // DumpMachine($"C:/Tmp/dump{N}_{k}.txt");
+            for j in 0 .. size - 1 {                    
+                let nonZero = pattern(size, j, k);
                     
-                    let (expected, tol) = nonZero ? (0.5 + ε, 0.5) | (0.0, ε);
-                    AssertProbInt(j, expected, LittleEndian(qs), tol);
-                }
-                
-                ResetAll(qs);
+                let (expected, tol) = nonZero ? (0.5 + ε, 0.5) | (0.0, ε);
+                AssertProbInt(j, expected, LittleEndian(qs), tol);
             }
+                
+            ResetAll(qs);
         }
     }
     
@@ -70,7 +68,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T01_MainDiagonal () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, MainDiagonal, MainDiagonal_Pattern);
         }
     }
@@ -83,7 +81,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T02_AllNonZero () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, AllNonZero, AllNonZero_Pattern);
         }
     }
@@ -96,7 +94,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T03_BlockDiagonal () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, BlockDiagonal, BlockDiagonal_Pattern);
         }
     }
@@ -112,7 +110,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T04_Quarters () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, Quarters, Quarters_Pattern);
         }
     }
@@ -128,7 +126,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T05_EvenChessPattern () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, EvenChessPattern, EvenChessPattern_Pattern);
         }
     }
@@ -144,7 +142,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T06_OddChessPattern () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, OddChessPattern, OddChessPattern_Pattern);
         }
     }
@@ -157,7 +155,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T07_Antidiagonal () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, Antidiagonal, Antidiagonal_Pattern);
         }
     }
@@ -170,7 +168,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T08_ChessPattern2x2 () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, ChessPattern2x2, ChessPattern2x2_Pattern);
         }
     }
@@ -193,7 +191,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T09_TwoPatterns () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, TwoPatterns, TwoPatterns_Pattern);
         }
     }
@@ -219,7 +217,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T10_IncreasingBlocks () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, IncreasingBlocks, IncreasingBlocks_Pattern);
         }
     }
@@ -232,7 +230,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T11_XWing_Fighter () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, XWing_Fighter, XWing_Fighter_Pattern);
         }
     }
@@ -247,7 +245,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T12_Rhombus () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, Rhombus, Rhombus_Pattern);
         }
     }
@@ -265,7 +263,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T13_TIE_Fighter () : Unit {
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOperationMatrixMatchesPattern(n, TIE_Fighter, TIE_Fighter_Pattern);
         }
     }
@@ -296,7 +294,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T15_Hessenberg_Matrix () : Unit {
-        for (n in 2 .. 4) {
+        for n in 2 .. 4 {
             AssertOperationMatrixMatchesPattern(n, Hessenberg_Matrix, Hessenberg_Matrix_Pattern);
         }
     }

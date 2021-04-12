@@ -24,14 +24,14 @@ namespace Quantum.Kata.MagicSquareGame {
     @Test("QuantumSimulator")
     operation T111_ValidAliceMove () : Unit {
         // Try all moves with +1 and -1.
-        for (i in 0..1 <<< 3 - 1) {
+        for i in 0..1 <<< 3 - 1 {
             let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
             Fact(ValidAliceMove(cells) == ValidAliceMove_Reference(cells),
                  $"Incorrect Alice move validity for {cells}");
         }
 
         // Moves with numbers other than +1 and -1 should be rejected.
-        for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
+        for cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]] {
             Fact(ValidAliceMove(cellsOutOfRange) == false,
                  $"Invalid Alice move judged valid for {cellsOutOfRange}");
         }
@@ -40,14 +40,14 @@ namespace Quantum.Kata.MagicSquareGame {
     @Test("QuantumSimulator")
     operation T112_ValidBobMove () : Unit {
         // Try all moves with +1 and -1.
-        for (i in 0..1 <<< 3 - 1) {
+        for i in 0..1 <<< 3 - 1 {
             let cells = Mapped(SignFromBool, IntAsBoolArray(i, 3));
             Fact(ValidBobMove(cells) == ValidBobMove_Reference(cells),
                  $"Incorrect Bob move validity for {cells}");
         }
 
         // Moves with numbers other than +1 and -1 should be rejected.
-        for (cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]]) {
+        for cellsOutOfRange in [[1, -2, 10], [-3, 0, -2], [-1, 2, 1], [2, 3, 4]] {
             Fact(ValidBobMove(cellsOutOfRange) == false,
                  $"Invalid Bob move judged valid for {cellsOutOfRange}");
         }
@@ -57,10 +57,10 @@ namespace Quantum.Kata.MagicSquareGame {
     @Test("QuantumSimulator")
     operation T12_WinCondition () : Unit {
         // Try all moves with +1 and -1.
-        for (i in 0..1 <<< 3 - 1) {
-            for (j in 0..1 <<< 3 - 1) {
-                for (rowIndex in 0..2) {
-                    for (columnIndex in 0..2) {
+        for i in 0..1 <<< 3 - 1 {
+            for j in 0..1 <<< 3 - 1 {
+                for rowIndex in 0..2 {
+                    for columnIndex in 0..2 {
                         let row = Mapped(SignFromBool, IntAsBoolArray(i, 3));
                         let column = Mapped(SignFromBool, IntAsBoolArray(j, 3));
 
@@ -85,7 +85,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     operation RunTrials (n : Int, moves : ((Int, Int) => (Int[], Int[]))) : Int {
         mutable wins = 0;
-        for (i in 1..n) {
+        for i in 1..n {
             let rowIndex = DrawRandomInt(0, 2);
             let columnIndex = DrawRandomInt(0, 2);
             let (alice, bob) = moves(rowIndex, columnIndex);
@@ -110,16 +110,15 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit),
                                       refImpl : (Qubit[] => Unit is Adj)) : Unit {
-        using (qs = Qubit[N]) {
-            // apply operation that needs to be tested
-            taskImpl(qs);
+        use qs = Qubit[N];
+        // apply operation that needs to be tested
+        taskImpl(qs);
             
-            // apply adjoint reference operation and check that the result is |0^N⟩
-            Adjoint refImpl(qs);
+        // apply adjoint reference operation and check that the result is |0^N⟩
+        Adjoint refImpl(qs);
             
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
     @Test("QuantumSimulator")
@@ -134,8 +133,8 @@ namespace Quantum.Kata.MagicSquareGame {
         let length = N * (N - 1) / 2;
         mutable pairs = new ('T, 'T)[length];
         mutable i = 0;
-        for (j in 0..N - 1) {
-            for (k in j + 1..N - 1) {
+        for j in 0..N - 1 {
+            for k in j + 1..N - 1 {
                 set pairs w/= i <- (array[j], array[k]);
                 set i += 1;
             }
@@ -154,7 +153,7 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // Helper function to checks that each pair of operations in the array commutes (i.e., AB = BA)
     operation AssertOperationsMutuallyCommute (operations : (Qubit[] => Unit is Adj+Ctl)[]) : Unit {
-        for ((a, b) in Pairs(operations)) {
+        for (a, b) in Pairs(operations) {
             AssertOperationsEqualWithPhase(2, BoundCA([a, b]), BoundCA([b, a]));
         }
     }
@@ -175,13 +174,13 @@ namespace Quantum.Kata.MagicSquareGame {
     operation T22_GetMagicObservables () : Unit {
         // Since there can be multiple magic squares with different observables, 
         // the test checks the listed properties of the return values rather than the values themselves.
-        for (row in 0..2) {
+        for row in 0..2 {
             let observables = Mapped(ApplyObservablesImpl(row, _), RangeAsIntArray(0..2));
             // The product of observables in each row should be I.
             AssertOperationsEqualWithPhase(2, BoundCA(observables), ApplyToEachCA(I, _));
             AssertOperationsMutuallyCommute(observables);
         }
-        for (column in 0..2) {
+        for column in 0..2 {
             let observables = Mapped(ApplyObservablesImpl(_, column), RangeAsIntArray(0..2));
             // The product of observables in each column should be -I.
             AssertOperationsEqualWithPhase(2, BoundCA(observables), MinusI);
@@ -194,9 +193,9 @@ namespace Quantum.Kata.MagicSquareGame {
     @Test("QuantumSimulator")
     operation T23_ApplyMagicObservables () : Unit {
         // Try all pairs of observables and all signs, and check the unitary equality
-        for (sign in [-1, 1]) {
-            for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
-                for (obs2 in [PauliI, PauliX, PauliY, PauliZ]) {
+        for sign in [-1, 1] {
+            for obs1 in [PauliI, PauliX, PauliY, PauliZ] {
+                for obs2 in [PauliI, PauliX, PauliY, PauliZ] {
                     let obs = (sign, [obs1, obs2]);
                     AssertOperationsEqualWithPhase(2, ApplyMagicObservables(obs, _), ApplyMagicObservables_Reference(obs, _));
                 }
@@ -208,32 +207,31 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T24_MeasureObservables () : Unit {
-        using (qs = Qubit[2]) {
-            for (sign in [-1, 1]) {
-                for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
-                for (obs2 in [PauliI, PauliX, PauliY, PauliZ]) {
-                    for (i in 1..100) {
-                        // Start by preparing the qubits in a uniform superposition with some signs
-                        if ((i % 4) / 2 == 1) {
-                            X(qs[0]);
-                        }
-                        if ((i % 4) % 2 == 1) {
-                            X(qs[1]);
-                        }
-                        ApplyToEach(H, qs);
-                        // Use the reference implementation of observable measurement to project the register into an eigenstate of the operator
-                        let observable = (sign, [obs1, obs2]);
-                        let result = MeasureObservable_Reference(observable, qs);
-
-                        // Make sure the task implementation gets the same result. 
-                        // If the implementation is wrong, it could pass accidentally,
-                        // but with multiple operators and multiple attempts on each this should fail at some point.
-                        Fact(MeasureObservable(observable, qs) == result,
-                             $"Observable measurement result differs from the reference result for observable {observable}");
-                        ResetAll(qs);
+        use qs = Qubit[2];
+        for sign in [-1, 1] {
+            for obs1 in [PauliI, PauliX, PauliY, PauliZ] {
+            for obs2 in [PauliI, PauliX, PauliY, PauliZ] {
+                for i in 1..100 {
+                    // Start by preparing the qubits in a uniform superposition with some signs
+                    if ((i % 4) / 2 == 1) {
+                        X(qs[0]);
                     }
+                    if ((i % 4) % 2 == 1) {
+                        X(qs[1]);
+                    }
+                    ApplyToEach(H, qs);
+                    // Use the reference implementation of observable measurement to project the register into an eigenstate of the operator
+                    let observable = (sign, [obs1, obs2]);
+                    let result = MeasureObservable_Reference(observable, qs);
+
+                    // Make sure the task implementation gets the same result. 
+                    // If the implementation is wrong, it could pass accidentally,
+                    // but with multiple operators and multiple attempts on each this should fail at some point.
+                    Fact(MeasureObservable(observable, qs) == result,
+                            $"Observable measurement result differs from the reference result for observable {observable}");
+                    ResetAll(qs);
                 }
-                }
+            }
             }
         }
     }
@@ -242,33 +240,32 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T25_MeasureOperator () : Unit {
-        using (qs = Qubit[2]) {
-            for (sign in [-1, 1]) {
-                for (obs1 in [PauliI, PauliX, PauliY, PauliZ]) {
-                for (obs2 in [PauliI, PauliX, PauliY, PauliZ]) {
-                    for (i in 1..100) {
-                        // Start by preparing the qubits in a uniform superposition with some signs
-                        if ((i % 4) / 2 == 1) {
-                            X(qs[0]);
-                        }
-                        if ((i % 4) % 2 == 1) {
-                            X(qs[1]);
-                        }
-                        ApplyToEach(H, qs);
-                        // Use the reference implementation of operator measurement to project the register into an eigenstate of the operator
-                        let observable = (sign, [obs1, obs2]);
-                        let op = ApplyMagicObservables_Reference(observable, _);
-                        let result = MeasureOperator_Reference(op, qs);
-
-                        // Make sure the task implementation gets the same result. 
-                        // If the implementation is wrong, it could pass accidentally,
-                        // but with multiple operators and multiple attempts on each this should fail at some point.
-                        Fact(MeasureOperator(op, qs) == result,
-                             $"Operator measurement result differs from the reference result for observable {observable}");
-                        ResetAll(qs);
+        use qs = Qubit[2];
+        for sign in [-1, 1] {
+            for obs1 in [PauliI, PauliX, PauliY, PauliZ] {
+            for obs2 in [PauliI, PauliX, PauliY, PauliZ] {
+                for i in 1..100 {
+                    // Start by preparing the qubits in a uniform superposition with some signs
+                    if ((i % 4) / 2 == 1) {
+                        X(qs[0]);
                     }
+                    if ((i % 4) % 2 == 1) {
+                        X(qs[1]);
+                    }
+                    ApplyToEach(H, qs);
+                    // Use the reference implementation of operator measurement to project the register into an eigenstate of the operator
+                    let observable = (sign, [obs1, obs2]);
+                    let op = ApplyMagicObservables_Reference(observable, _);
+                    let result = MeasureOperator_Reference(op, qs);
+
+                    // Make sure the task implementation gets the same result. 
+                    // If the implementation is wrong, it could pass accidentally,
+                    // but with multiple operators and multiple attempts on each this should fail at some point.
+                    Fact(MeasureOperator(op, qs) == result,
+                            $"Operator measurement result differs from the reference result for observable {observable}");
+                    ResetAll(qs);
                 }
-                }
+            }
             }
         }
     }
@@ -301,9 +298,9 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // ------------------------------------------------------
     function DrawMagicSquare (alice : Int[], row : Int, bob : Int[], column : Int) : Unit {
-        for (i in 0..2) {
+        for i in 0..2 {
             mutable line = new String[3];
-            for (j in 0..2) {
+            for j in 0..2 {
                 if (i == row and j == column and alice[j] != bob[i]) {
                     set line w/= j <- "±";
                 } elif (i == row) {

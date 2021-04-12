@@ -28,7 +28,7 @@ namespace Quantum.Kata.Oracles {
         let sol = ApplyOracle(_, oracle1);
         let refSol = ApplyOracle(_, oracle2);
 
-        for (i in nQubits) {
+        for i in nQubits {
             AssertOperationsEqualReferenced(i + 1, sol, refSol);
         }
     }
@@ -38,7 +38,7 @@ namespace Quantum.Kata.Oracles {
     @Test("QuantumSimulator")
     function T11_IsSeven_ClassicalOracle () : Unit {
         let N = 3;
-        for (k in 0..((2^N)-1)) {
+        for k in 0..((2^N)-1) {
             let x = IntAsBoolArray(k, N);
 
             let actual = IsSeven(x);
@@ -71,8 +71,8 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T21_ApplyMarkingOracleAsPhaseOracle () : Unit {
-        for (N in 1..5) {
-            for (k in 0..(2^N-1)) {
+        for N in 1..5 {
+            for k in 0..(2^N-1) {
                 let pattern = IntAsBoolArray(k, N);
 
                 AssertOperationsEqualReferenced(N,
@@ -93,8 +93,8 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T32_KthBit_Oracle () : Unit {
-        for (N in 1..5) {
-            for (k in 0..(N-1)) {
+        for N in 1..5 {
+            for k in 0..(N-1) {
                 within {
                     AllowAtMostNQubits(2*N, "You are not allowed to allocate extra qubits");
                 } apply {
@@ -110,8 +110,8 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T33_OrOfBitsExceptKth_Oracle () : Unit {
-        for (N in 1..5) {
-            for (k in 0..(N-1)) {
+        for N in 1..5 {
+            for k in 0..(N-1) {
                 AssertOperationsEqualReferenced(N,
                                                 OrOfBitsExceptKth_Oracle(_, k),
                                                 OrOfBitsExceptKth_Oracle_Reference(_, k));
@@ -123,8 +123,8 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T41_ArbitraryBitPattern_Oracle () : Unit {
-        for (N in 1..4) {
-            for (k in 0..((2^N)-1)) {
+        for N in 1..4 {
+            for k in 0..((2^N)-1) {
                 let pattern = IntAsBoolArray(k, N);
 
                 AssertTwoOraclesAreEqual(N..N, ArbitraryBitPattern_Oracle(_, _, pattern),
@@ -137,8 +137,8 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T42_ArbitraryBitPattern_Oracle_Challenge () : Unit {
-        for (N in 1..4) {
-            for (k in 0..((2^N)-1)) {
+        for N in 1..4 {
+            for k in 0..((2^N)-1) {
                 let pattern = IntAsBoolArray(k, N);
 
                 within {
@@ -156,17 +156,16 @@ namespace Quantum.Kata.Oracles {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T43_Meeting_Oracle () : Unit {
-        for (N in 1..4) {
-            using (jasmine = Qubit[N]) {
-                for (k in 0..(2^N-1)) {
-                    let binaryJasmine = IntAsBoolArray(k, N);
+        for N in 1..4 {
+            use jasmine = Qubit[N];
+            for k in 0..(2^N-1) {
+                let binaryJasmine = IntAsBoolArray(k, N);
 
-                    within {
-                        ApplyPauliFromBitString(PauliX, true, binaryJasmine, jasmine);
-                    } apply {
-                        AssertTwoOraclesAreEqual(1..N, Meeting_Oracle(_, jasmine, _),
-                                                Meeting_Oracle_Reference(_, jasmine, _));
-                    }
+                within {
+                    ApplyPauliFromBitString(PauliX, true, binaryJasmine, jasmine);
+                } apply {
+                    AssertTwoOraclesAreEqual(1..N, Meeting_Oracle(_, jasmine, _),
+                                            Meeting_Oracle_Reference(_, jasmine, _));
                 }
             }
         }

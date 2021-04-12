@@ -83,24 +83,23 @@ namespace Quantum.Kata.SuperdenseCoding {
     operation SuperdenseCodingProtocol_Reference (message : ProtocolMessage) : ProtocolMessage {
         
         // Get a temporary qubit register for the protocol run.
-        using ((q1, q2) = (Qubit(), Qubit())) {
-            // STEP 1:
-            // Start by creating an entangled pair of qubits.
-            CreateEntangledPair_Reference(q1, q2);
+        use (q1, q2) = (Qubit(), Qubit());
+        // STEP 1:
+        // Start by creating an entangled pair of qubits.
+        CreateEntangledPair_Reference(q1, q2);
             
-            // Alice and Bob receive one half of the pair each.
+        // Alice and Bob receive one half of the pair each.
             
-            // STEP 2:
-            // Alice encodes the pair of bits in the qubit she received.
-            EncodeMessageInQubit_Reference(q1, message);
+        // STEP 2:
+        // Alice encodes the pair of bits in the qubit she received.
+        EncodeMessageInQubit_Reference(q1, message);
             
-            // Alice sends her qubit to Bob.
+        // Alice sends her qubit to Bob.
             
-            // STEP 3:
-            // Bob receives the qubit from Alice and can now
-            // manipulate and measure both qubits to get the encoded data.
-            return DecodeMessageFromQubits_Reference(q1, q2);            
-        }
+        // STEP 3:
+        // Bob receives the qubit from Alice and can now
+        // manipulate and measure both qubits to get the encoded data.
+        return DecodeMessageFromQubits_Reference(q1, q2);            
     }
     
 }
