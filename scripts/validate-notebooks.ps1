@@ -35,7 +35,7 @@ Param(
 
 
 # Detect if we're running on Azure Pipelines.
-$IsAzurePipelines = "$Env:TF_BUILD" -ne "";
+$IsAzurePipelines = "$Env:AGENT_ID" -ne "";
 
 # If we're running non-locally, we need to install IQ#.
 if ($IsAzurePipelines) {
