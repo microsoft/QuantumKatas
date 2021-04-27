@@ -15,6 +15,7 @@ We're so glad you asked!
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
+      * [Validate changes to `%kata` magic and `%check-kata` magic on local machine](#validate-changes-to-kata-magic-and-check-kata-magic-on-local-machine)
 * [Contributor License Agreement](#contributor-license-agreement)
 * [Code of Conduct](#code-of-conduct)
 
@@ -159,6 +160,40 @@ This can happen for several reasons:
 To exclude a task from validation, open the corresponding Jupyter notebook and choose ```View -> Cell Toolbar -> Tags``` to see and edit the tags for each cell. Add the tag that is the most fitting description of the failure cause to the cell. 
 After you are done with editing the notebook, choose ```View -> Cell Toolbar -> None``` to turn off tags editing view for the subsequent users of this notebook. Finally, save the notebook.
 
+#### Validate changes to `%kata` magic and `%check-kata` magic on local machine
+1. Add logging statements to the [`KataMagic`](./utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic`](./utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs).
+   ```
+   Logger.LogDebug($"Message : {val}");
+   ```
+2. Generate a custom nuget package
+   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](./utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
+   ```
+   <RootNameSpace>Microsoft.Quantum.Katas</RootNameSpace>
+   <Version>version-number</Version> ).
+   <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+   ```
+   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata).
+   3. Set up NuGet.config file so that it allows the project to discover a NuGet package  in the current folder in addition to   the standard sources. Here's an example file    (should be placed in project folder as well):
+   ```
+   <?xml version="1.0" encoding="utf-8"?>
+   <configuration>
+     <packageSources>
+       <add key="Local Folder" value="." />
+     </packageSources>
+   </configuration>
+   ```
+3. To observe your changes in console window where Jupyter Notebook was launched.
+   1. Set the environment variables `IQSHARP_LOG_LEVEL='Debug'` and `IQSHARP_SKIP_AUTO_LOAD_PROJECT='True'`
+   2. Navigate to the folder in which your project resides and do the following :
+   ```
+   $ start jupyter notebook
+   ```
+   > This would launch Jupyter Notebooks server in a new window which would be
+   > helpful in debugging the magics since logging is a bit noisy.
+
+4. Changes to be done in jupyter notebook 
+   1. Use `%package` magic to load the newly built nuget package `Microsoft.Quantum.Katas` and also load `Microsoft.Quantum.Xunit`
+   2. Reload the workspace by using `%workspace reload`
 
 ## Contributor License Agreement
 
