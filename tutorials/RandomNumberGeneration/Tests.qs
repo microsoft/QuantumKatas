@@ -16,80 +16,70 @@ namespace Quantum.Kata.RandomNumberGeneration {
     open Quantum.Kata.Utils;
     open Microsoft.Quantum.Random;
 
+    // ------------------------------------------------------
     // Exercise 1.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T1_RandomBit () : Unit {
         Message("Testing one random bit generation...");
         RetryCheckUniformDistribution(RandomBit_Wrapper, 0, 1, 1000);
-        Message("One random bit generated...");
+        Message("Test passed");
     }
 
-    operation RandomBit_Wrapper (throwawayMin: Int, throwawayMax: Int) : Int {
+    operation RandomBit_Wrapper (throwawayMin : Int, throwawayMax : Int) : Int {
         return RandomBit();
     }
 
 
+    // ------------------------------------------------------
     // Exercise 2.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T2_RandomTwoBits () : Unit {
         Message("Testing two random bits generation...");
         RetryCheckUniformDistribution(RandomTwoBits_Wrapper, 0, 3, 1000);
-        Message("Two random bits generated...");
+        Message("Test passed");
     }
 
-    operation RandomTwoBits_Wrapper (throwawayMin: Int, throwawayMax: Int) : Int {
+    operation RandomTwoBits_Wrapper (throwawayMin : Int, throwawayMax : Int) : Int {
         return RandomTwoBits();
     }
     
 
+    // ------------------------------------------------------
     // Exercise 3.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T3_RandomNBits () : Unit {
-
-        for (min, max) in [(0, 1), (0, 3), (0, 7), (0, 1023)]
-        {
-            let N = Ceiling( Lg(IntAsDouble(max+1)) );
+        // Test random number generation for 1, 2, 3, 10 bits
+        for (min, max) in [(0, 1), (0, 3), (0, 7), (0, 1023)] {
+            let N = Ceiling( Lg(IntAsDouble(max + 1)) );
             Message($"Testing N = {N}...");
             RetryCheckUniformDistribution(RandomNBits_Wrapper, min, max, 1000);
-            Message($"Test passed for N = {N}...\n");
+            Message($"Test passed for N = {N}");
 	    }
-
     }
 
-    operation RandomNBits_Wrapper (min: Int, max: Int) : Int {
+    operation RandomNBits_Wrapper (min : Int, max : Int) : Int {
         // For N bit random number : min = 0, max = 2^N - 1
         let N = Ceiling( Lg(IntAsDouble(max+1)) );
         return RandomNBits(N);
     }
 
-    operation RetryCheckUniformDistribution( fTest: ((Int,Int)=>Int), min: Int, max: Int, nRuns: Int) : Unit {
-        let numRetries = 3;
-        mutable sufficientlyRandom = false;
-        mutable attemptNum = 1;
-        repeat
-        {
-            Message($"attemptNum = {attemptNum}");
-            set sufficientlyRandom = CheckUniformDistribution(fTest, min, max, nRuns);
-            set attemptNum += 1;
-        } until( sufficientlyRandom == true or attemptNum >= numRetries );
 
-        if(sufficientlyRandom == false)
-        {
-            fail $"Failed to generate a random integer as required";
-        }
-    }
-
+    // ------------------------------------------------------
+    /// # Summary
+    /// Helper operation that checks that the given RNG operation generates a uniform distribution.
     /// # Input
     /// ## f
-    /// Random number generation operation to be tested
+    /// Random number generation operation to be tested.
+    /// ## min, max
+    /// Minimal and maximal numbers in the range to be generated, inclusive.
     /// ## nRuns
-    /// The number of random numbers to generate for test
+    /// The number of random numbers to generate for test.
     operation CheckUniformDistribution (f : ((Int, Int) => Int), min : Int, max : Int, nRuns : Int) : Bool {
         let idealMean = 0.5 * IntAsDouble(max + min) ;
         let rangeDividedByTwo = 0.5 * IntAsDouble(max - min);
-        // variance = a*(a+1)/3, where a= (max=min)/2
+        // Variance = a*(a+1)/3, where a = (max-min)/2
         // For sample population : divide it by nRuns
-        let varianceInSamplePopulation = (rangeDividedByTwo*(rangeDividedByTwo+1.0)) / IntAsDouble(3*nRuns);
+        let varianceInSamplePopulation = (rangeDividedByTwo * (rangeDividedByTwo + 1.0)) / IntAsDouble(3 * nRuns);
         let standardDeviation = Sqrt(varianceInSamplePopulation);
 
         // lowRange : The lower bound of the median and average for generated dataset
@@ -99,9 +89,9 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let highRange = idealMean + 3.0 * standardDeviation;
 
         let idealCopiesGenerated = IntAsDouble(nRuns) / IntAsDouble(max-min+1);
-        let minimumCopiesGenerated = ( 0.8*idealCopiesGenerated > 40.0 ) ? 0.8*idealCopiesGenerated | 0.0;
+        let minimumCopiesGenerated = ( 0.8 * idealCopiesGenerated > 40.0 ) ? 0.8 * idealCopiesGenerated | 0.0;
 
-        mutable counts = ConstantArray(max+1, 0);
+        mutable counts = ConstantArray(max + 1, 0);
         mutable average = 0.0;
 
         ResetOracleCallsCount();
@@ -137,9 +127,28 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return true;
     }
 
-    operation FindMedian (counts : Int [], arrSize : Int, sampleSize : Int) : Int {
+
+    /// # Summary
+    /// Helper operation to rerun check for uniform distribution several times
+    /// (a single run can fail with non-negligible probability even for a correct solution).
+    operation RetryCheckUniformDistribution (f : ((Int, Int) => Int), min : Int, max : Int, nRuns : Int) : Unit {
+        let numRetries = 3;
+        mutable sufficientlyRandom = false;
+        mutable attemptNum = 1;
+        repeat {
+            set sufficientlyRandom = CheckUniformDistribution(f, min, max, nRuns);
+            set attemptNum += 1;
+        } until (sufficientlyRandom or attemptNum >= numRetries);
+
+        if not sufficientlyRandom {
+            fail $"Failed to generate sufficiently random integers";
+        }
+    }
+
+
+    operation FindMedian (counts : Int[], arrSize : Int, sampleSize : Int) : Int {
         mutable totalCount = 0;
-        for i in 0..arrSize - 1 {
+        for i in 0 .. arrSize - 1 {
             set totalCount = totalCount + counts[i];
             if (totalCount >= sampleSize / 2) {
                 return i;
@@ -148,6 +157,8 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return -1;
     }
 
+
+    // ------------------------------------------------------
     // Exercise 4.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T4_WeightedRandomBit () : Unit {
@@ -159,6 +170,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         RetryCheckXPercentZero(1.0);
         CheckRandomCalls();
     }
+
 
     operation CheckXPercentZero (x : Double) : Bool {
         mutable oneCount = 0;
@@ -194,39 +206,34 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return true;
     }
 
-    operation RetryCheckXPercentZero( x: Double) : Unit {
+
+    operation RetryCheckXPercentZero (x : Double) : Unit {
         let numRetries = 3;
-        Message($"Testing x = {x}...");
+        Message($"Testing probability of zero = {x}...");
         mutable sufficientlyRandom = false;
         mutable attemptNum = 1;
-        repeat
-        {
-            Message($"attemptNum = {attemptNum}");
+        repeat {
             set sufficientlyRandom = CheckXPercentZero(x);
             set attemptNum += 1;
-        } until( sufficientlyRandom == true or attemptNum >= numRetries );
+        } until sufficientlyRandom or attemptNum >= numRetries;
 
-        if(sufficientlyRandom == false)
-        {
-            fail $"Failed to generate zero with {100.0*x}% probability";
-        }
-        else
-        {
-            Message($"Generated zero with {100.0*x}% probability\n");
+        if not sufficientlyRandom {
+            fail $"Failed to generate 0 with {100.0*x}% probability";
+        } else {
+            Message($"Test passed for probability of zero {x}");
         }
     }
 
+
+    // ------------------------------------------------------
     // Exercise 5.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T5_RandomNumberInRange () : Unit {
-
-        for (min, max) in [(1, 3), (27, 312), (0, 3), (0, 1023)]
-        {
-            Message($"Testing for min={min} and max={max}...");
+        for (min, max) in [(1, 3), (27, 312), (0, 3), (0, 1023)] {
+            Message($"Testing for min = {min} and max = {max}...");
             RetryCheckUniformDistribution(RandomNumberInRange, min, max, 1000);
-            Message($"Random number between {min} and {max} generated...\n");
+            Message($"Test passed for min = {min} and max = {max}");
 	    }
-
     }
 
     operation CheckRandomCalls () : Unit {
