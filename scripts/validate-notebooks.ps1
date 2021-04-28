@@ -34,7 +34,14 @@ Param(
 )
 
 
-& "$PSScriptRoot/install-iqsharp.ps1"
+# Detect if we're running on Azure Pipelines.
+$IsAzurePipelines = "$Env:AGENT_ID" -ne "";
+
+# If we're running non-locally, we need to install IQ#.
+if ($IsAzurePipelines) {
+    & "$PSScriptRoot/install-iqsharp.ps1"
+}
+
 $all_ok = $True
 
 function Validate {
