@@ -163,7 +163,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
 #### Validate changes to `%kata` magic and `%check-kata` magic on local machine
 1. Add logging statements to the [`KataMagic`](./utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic`](./utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs).
    ```
-   Logger.LogDebug($"Message : {val}");
+   Logger.LogDebug($"Value : {val}");
    ```
 2. Generate a custom nuget package
    1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](./utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
@@ -172,7 +172,10 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    <Version>version-number</Version> ).
    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
    ```
-   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata).
+   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata) and remove the following line from your project's project file.
+   ```
+   <PackageReference Include="Microsoft.Quantum.Katas" Version="0.16.2104138035" />
+   ```
    3. Set up NuGet.config file so that it allows the project to discover a NuGet package  in the current folder in addition to   the standard sources. Here's an example file    (should be placed in project folder as well):
    ```
    <?xml version="1.0" encoding="utf-8"?>
@@ -183,7 +186,8 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    </configuration>
    ```
 3. To observe your changes in console window where Jupyter Notebook was launched.
-   1. Set the environment variables `IQSHARP_LOG_LEVEL='Debug'` and `IQSHARP_SKIP_AUTO_LOAD_PROJECT='True'`
+   1. Set the environment variable `IQSHARP_LOG_LEVEL='Debug'`.
+   > Note : The environment variable is case-sensitive.
    2. Navigate to the folder in which your project resides and do the following :
    ```
    $ start jupyter notebook
@@ -192,7 +196,10 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    > helpful in debugging the magics since logging is a bit noisy.
 
 4. Changes to be done in jupyter notebook 
-   1. Use `%package` magic to load the newly built nuget package `Microsoft.Quantum.Katas` and also load `Microsoft.Quantum.Xunit`
+   1. Use `%package` magic to load the newly built nuget package `Microsoft.Quantum.Katas` by adding the following code
+   ```
+   %package Microsoft.Quantum.Katas::<package-version>
+   ```
    2. Reload the workspace by using `%workspace reload`
 
 ## Contributor License Agreement
