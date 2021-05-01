@@ -22,6 +22,8 @@ $artifacts = @{
         "Microsoft.Quantum.Katas"
     ) | ForEach-Object { Join-Path $Env:NUGET_OUTDIR "$_.$Env:NUGET_VERSION.nupkg" };
 
+    NugetVersion = $Env:NUGET_VERSION ;
+
     Assemblies = @(
         ".\utilities\Common\bin\$Env:BUILD_CONFIGURATION\netstandard2.1\Microsoft.Quantum.Katas.Common.dll",
         ".\utilities\Microsoft.Quantum.Katas\bin\$Env:BUILD_CONFIGURATION\netstandard2.1\Microsoft.Quantum.Katas.dll"
