@@ -3,13 +3,17 @@
 
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
+using Microsoft.Quantum.Simulation.Simulators;
+using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
@@ -101,6 +105,12 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
+        /// Returns the OperationInfo for the test to run.
+        /// </summary>
+        public virtual OperationInfo FindTest(string testName) =>
+             Resolver.Resolve(testName);
+
+        /// <summary>
         /// Compiles the given code. Checks there is only one operation defined in the code,
         /// and returns its corresponding OperationInfo
         /// </summary>
@@ -162,21 +172,29 @@ namespace Microsoft.Quantum.Katas
 
             try
             {
-                var qsim = CreateSimulator();
+                List<SimulatorBase> simulators = CreateSimulators(channel, test);
                 var hasWarnings = false;
 
-                qsim.DisableLogToConsole();
-                qsim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
-                qsim.OnLog += (msg) =>
+                foreach(SimulatorBase qsim in simulators)
                 {
-                    hasWarnings = msg?.StartsWith("[WARNING]") ?? hasWarnings;
-                    channel.Stdout(msg);
-                };
+                    Logger.LogDebug($"Simulating test {test.FullName} on {qsim.GetType().Name}");
+                    var simHasWarnings = false;
 
-                var value = test.RunAsync(qsim, null).Result;
+                    qsim.DisableLogToConsole();
+                    qsim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
 
-                if (qsim is IDisposable dis) { dis.Dispose(); }
+                    qsim.OnLog += (msg) =>
+                    {
+                        simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
+                        if(simHasWarnings == true)
+                            hasWarnings = true;
+                        channel.Stdout(msg);
+                    };
 
+                    var value = test.RunAsync(qsim, null).Result;
+
+                    if (qsim is IDisposable dis) { dis.Dispose(); }
+                }
                 return !hasWarnings;
             }
             catch (AggregateException agg)
@@ -194,19 +212,6 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Creates the instance of the simulator to use to run the test 
-        /// (for now always CounterSimulator from the same package).
-        /// </summary>
-        public virtual SimulatorBase CreateSimulator() =>
-            new CounterSimulator();
-
-        /// <summary>
-        /// Returns the OperationInfo for the test to run.
-        /// </summary>
-        public virtual OperationInfo FindTest(string testName) =>
-             Resolver.Resolve(testName);
-
-        /// <summary>
         /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
         /// test's namespace
@@ -221,5 +226,125 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
             Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
+
+        /// <summary>
+        /// Creates the instance of the simulator(s) on which
+        /// the test operation is to be run
+        /// These simulators are read from the configuration in @Test attribute
+        ///
+        /// [TODO] Support custom simulator(s) in Q# project
+        /// </summary>
+        public virtual List<SimulatorBase> CreateSimulators(IChannel channel, OperationInfo test)
+        {
+            List<SimulatorBase> testSimulators = new List<SimulatorBase> ();
+
+            var testSimNames = GetSimNamesFromTestAttribute(test);
+            Logger.LogDebug($"Sim count for {test.FullName} = {testSimNames.Count()}");
+
+            List<Assembly> simulatorAssemblies = GetSimulatorAssemblies();
+
+            foreach(var simName in testSimNames)
+            {
+                Logger.LogDebug($"Trying to create simulator of the type : {simName}");
+
+                object? simulator = null;
+                bool isSimQualified = simName.Contains('.');
+
+                // If simulator is not qualified, then it must be one of the following :
+                // QuantumSimulator, ToffoliSimulator, ResourcesEstimator
+                string simTypeName = isSimQualified ? simName : "Microsoft.Quantum.Simulation.Simulators." + simName ;
+
+                try
+                {
+                    foreach(Assembly asm in simulatorAssemblies)
+                    {
+                        // Gets the Type object with the specified name in the assembly instance
+                        // https://docs.microsoft.com/en-us/dotnet/api/system.reflection.assembly.gettype?view=net-5.0#System_Reflection_Assembly_GetType_System_String_
+                        Type? simType = asm.GetType(simTypeName);
+
+                        // Using binding flags to invoke parameterised constructor with default values
+                        // For more details, please refer https://stackoverflow.com/questions/2501143/activator-createinstancetype-for-a-type-without-parameterless-constructor
+                        simulator = (simType != null)
+                            ?   Activator.CreateInstance
+                                (
+                                    simType,
+                                    BindingFlags.CreateInstance |
+                                    BindingFlags.Public |
+                                    BindingFlags.Instance |
+                                    BindingFlags.OptionalParamBinding,
+                                    null,
+                                    null,
+                                    null
+                                )
+                            :   null;
+
+                        if(simulator != null)
+                            break;
+                    }
+
+                    string errorMessage = $"Error while creating an instance of {simName}. " +
+                        $"{simName} not a valid execution target. " +
+                        "Either consider using a fully qualified name for the simulator. " +
+                        "or see that you aren't using Custom simulators as part of Q# projects." ;
+
+                    if(simulator == null)
+                        throw new Exception(errorMessage);
+                }
+                catch (Exception ex)
+                {
+                    channel.Stderr(ex.Message);
+                    throw new Exception("Error while creating desired simulator(s) for test.");
+                }
+            }
+            return testSimulators;
+        }
+
+        /// <summary>
+        /// Returns the list of simulator names specified via @Test attribute
+        /// </summary>
+        public List<string> GetSimNamesFromTestAttribute(OperationInfo test)
+        {
+            List<string> testSimNames = test.Header.Attributes.Where(
+                attribute =>
+                // Since QsNullable<UserDefinedType>.Item can be null,
+                // we use a pattern match here to make sure that we have
+                // an actual UDT to compare against.
+                attribute.TypeId.Item is UserDefinedType udt &&
+                udt.Name == "Test"
+	        )
+            .Select(
+                attribute =>
+                    attribute.Argument.TryAsStringLiteral(out var value)
+                    ? value : null
+            )
+            .Where(value => value != null)
+            // The Where above ensures that all elements are non-nullable,
+            // but the C# compiler doesn't quite figure that out, so we
+            // need to help it with a no-op that uses the null-forgiving
+            // operator.
+            .Select(value => value!)
+            .ToList() ;
+
+            return testSimNames;
+        }
+
+        /// <summary>
+        /// Returns the list of relevant assemblies to search for simulators.
+        /// </summary>
+        public List<Assembly> GetSimulatorAssemblies()
+        {
+            List<Assembly> simulatorAssemblies = new List<Assembly>()
+            {
+                typeof(QuantumSimulator).Assembly,
+                typeof(CounterSimulator).Assembly
+            };
+
+            foreach(Assembly asm in simulatorAssemblies)
+            {
+                Logger.LogDebug($"Assembly : {asm.FullName}");
+            }
+
+            return simulatorAssemblies;
+        }
     }
 }
