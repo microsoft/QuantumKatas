@@ -172,11 +172,9 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
       <Version>version-number</Version>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
-   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata) and remove the following line from your project's project file.
-      ```
-      <PackageReference Include="Microsoft.Quantum.Katas" Version="0.16.2104138035" />
-      ```
-   3. Set up NuGet.config file so that it allows the project to discover a NuGet package  in the current folder in addition to   the standard sources. Here's an example file    (should be placed in project folder as well):
+   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata) and remove the package reference to Microsoft.Quantum.Katas from your .csproj file.
+
+   3. Set up NuGet.config file so that it allows the project to discover a NuGet package in the current folder in addition to the standard sources. Here's an example file (should be placed in project folder as well):
       ```
       <?xml version="1.0" encoding="utf-8"?>
       <configuration>
