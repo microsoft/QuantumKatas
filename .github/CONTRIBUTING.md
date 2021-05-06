@@ -161,12 +161,12 @@ To exclude a task from validation, open the corresponding Jupyter notebook and c
 After you are done with editing the notebook, choose ```View -> Cell Toolbar -> None``` to turn off tags editing view for the subsequent users of this notebook. Finally, save the notebook.
 
 #### Validate changes to `%kata` magic and `%check-kata` magic on local machine
-1. Add logging statements to the [`KataMagic`](./utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic`](./utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs).
+1. Add logging statements to the [`KataMagic`](../utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic`](../utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs).
    ```
    Logger.LogDebug($"Value : {val}");
    ```
 2. Generate a custom nuget package
-   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](./utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
+   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
       ```
       <RootNameSpace>Microsoft.Quantum.Katas</RootNameSpace>
       <Version>version-number</Version>
