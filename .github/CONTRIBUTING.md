@@ -168,7 +168,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
 2. Generate a custom nuget package
    1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
       ```
-      <RootNameSpace>Microsoft.Quantum.Katas</RootNameSpace>
+      <RootNamespace>Microsoft.Quantum.Katas</RootNamespace>
       <Version>version-number</Version>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
