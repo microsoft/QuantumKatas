@@ -169,7 +169,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](./utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
    ```
    <RootNameSpace>Microsoft.Quantum.Katas</RootNameSpace>
-   <Version>version-number</Version> ).
+   <Version>version-number</Version>
    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
    ```
    2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata) and remove the following line from your project's project file.
