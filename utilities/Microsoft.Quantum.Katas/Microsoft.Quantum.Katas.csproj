@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>Microsoft.Quantum.Katas</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -14,6 +15,7 @@
     <PackageProjectUrl>https://github.com/Microsoft/QuantumKatas/tree/main/Microsoft.Quantum.Katas</PackageProjectUrl>
     <PackageIcon>qdk-nuget-icon.png</PackageIcon>
     <PackageTags>Quantum Q# Qsharp</PackageTags>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
