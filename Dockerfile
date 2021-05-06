@@ -21,8 +21,18 @@ RUN pip install -I --no-cache-dir \
     chown -R ${USER} ${HOME} && \
     chmod +x ${HOME}/scripts/*.sh
 
+# try nuget install
+RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN apt-get -y update
+RUN apt-get -y install nuget
+
 # From now on, just run things as the jovyan user
 USER ${USER}
+
+# install katas nuget
+RUN nuget help
+RUN nuget install Microsoft.Quantum.Katas -Version 10.0.0 -o ${HOME}/.nuget/packages/
 
 RUN cd ${HOME} && \
 # `dotnet restore` for each solution to ensure NuGet cache is fully populated
