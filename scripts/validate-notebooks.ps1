@@ -85,7 +85,7 @@ function Validate {
         "<?xml version=""1.0"" encoding=""utf-8""?>
             <configuration>
                 <packageSources>
-                    <add key=""Local Folder"" value=""."" />
+                    <clear />
                 </packageSources>
             </configuration>
         " | Out-File ./NuGet.Config -Encoding utf8
