@@ -200,6 +200,8 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
       ```
    2. Reload the workspace by using `%workspace reload`
 
+> ** Note : ** For validating changes to the `CheckKataMagic` by using the `validate-notebooks.ps1` script, update the new NuGet.config being written [here](../scripts/validate-notebooks.ps1#L88) to include the local folder instead of `<clear />` by replacing it with `<add key=""Local Folder"" value=""."" />`
+
 ## Contributor License Agreement
 
 Most code contributions require you to agree to a
