@@ -4,7 +4,7 @@ This folder contains a Notebook tutorial that introduces circuit-centric quantum
 
 The paper ['Circuit-centric quantum classifiers', by Maria Schuld, Alex Bocharov, Krysta Svore and Nathan Wiebe](https://arxiv.org/abs/1804.00633) describes the original proposal behind this type of classifiers.
 
-To run this tutorial, you can [install Jupyter and Q#](https://docs.microsoft.com/azure/quantum/install-jupyter-qkd) and 
+To run this tutorial, you can [install Jupyter and Q#](https://docs.microsoft.com/azure/quantum/install-jupyter-qdk) and 
 [qsharp package for Python](https://docs.microsoft.com/azure/quantum/install-python-qdk). 
 Note that this tutorial requires `matplotlib` and `numpy` Python packages to be installed. 
 After this you can run the tutorial locally by navigating to this folder and starting the notebook from command line using the following command: 
