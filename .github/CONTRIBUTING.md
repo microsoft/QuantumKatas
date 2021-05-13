@@ -132,7 +132,7 @@ When you contribute any code to the Katas, you need to validate that everything 
          PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
       ```
 
-      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/azure/quantum/install-jupyter-qkd) 
+      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/azure/quantum/install-jupyter-qdk) 
 and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
 
    4. If you do a bulk update of the katas, testing each of them individually will take too much time; you can streamline the testing using the scripts used by our continuous integration. 
