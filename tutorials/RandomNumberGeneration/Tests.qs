@@ -44,7 +44,8 @@ namespace Quantum.Kata.RandomNumberGeneration {
     operation T1_RandomBit () : Unit {
         Message("Testing one random bit generation...");
         let solution = RandomBit;
-        let testingHarness = Delay(CheckUniformDistribution,(solution, 0, 1, 1000), _); // // Delay() converts CheckUniformDistribution to parameterless operation
+        // Delay() converts CheckUniformDistribution to a parameterless operation
+        let testingHarness = Delay(CheckUniformDistribution, (solution, 0, 1, 1000), _);
         RetryTestOperation(testingHarness);
         Message("Test passed");
     }
@@ -55,7 +56,8 @@ namespace Quantum.Kata.RandomNumberGeneration {
     operation T2_RandomTwoBits () : Unit {
         Message("Testing two random bits generation...");
         let solution = RandomTwoBits;
-        let testingHarness = Delay(CheckUniformDistribution, (solution, 0, 3, 1000), _); // Delay() converts CheckUniformDistribution to parameterless operation
+        // Delay() converts CheckUniformDistribution to a parameterless operation
+        let testingHarness = Delay(CheckUniformDistribution, (solution, 0, 3, 1000), _);
         RetryTestOperation(testingHarness);
         Message("Test passed");
     }
@@ -68,9 +70,9 @@ namespace Quantum.Kata.RandomNumberGeneration {
         // Test random number generation for 1, 2, 3, 10 bits
         for N in [1, 2, 3, 10] {
             Message($"Testing N = {N}...");
-            let max = (1<<<N) - 1;
-            let solution = Delay(RandomNBits, N, _); // Delay() converts RandomNBits to a parameterless operation
-            let testingHarness = Delay(CheckUniformDistribution, (solution, 0, max, 1000), _); // Delay() converts CheckUniformDistribution to parameterless operation
+            let max = (1 <<< N) - 1;
+            let solution = Delay(RandomNBits, N, _);
+            let testingHarness = Delay(CheckUniformDistribution, (solution, 0, max, 1000), _);
             RetryTestOperation(testingHarness);
             Message($"Test passed for N = {N}");
 	    }
@@ -83,7 +85,8 @@ namespace Quantum.Kata.RandomNumberGeneration {
     /// # Input
     /// ## op
     /// Random number generation operation to be tested.
-    /// ## range
+    /// The parameters to this operation are provided by the caller using Delay().
+    /// ## min, max
     /// Minimal and maximal numbers in the range to be generated, inclusive.
     /// ## nRuns
     /// The number of random numbers to generate for test.
@@ -102,7 +105,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let highRange = idealMean + 3.0 * standardDeviation;
 
         let idealCopiesGenerated = IntAsDouble(nRuns) / IntAsDouble(max-min+1);
-        let minimumCopiesGenerated = ( 0.8 * idealCopiesGenerated > 40.0 ) ? 0.8 * idealCopiesGenerated | 0.0;
+        let minimumCopiesGenerated = (0.8 * idealCopiesGenerated > 40.0) ? 0.8 * idealCopiesGenerated | 0.0;
 
         mutable counts = ConstantArray(max + 1, 0);
         mutable average = 0.0;
@@ -157,11 +160,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T4_WeightedRandomBit () : Unit {
         ResetOracleCallsCount();
-        for x in [0.0, 0.25, 0.5, 0.75, 1.0]
-        {
+        for x in [0.0, 0.25, 0.5, 0.75, 1.0] {
             Message($"Testing generating zero with {x*100.0}% probability...");
-            let solution = Delay(WeightedRandomBit, x, _); // Delay() converts WeightedRandomBit to parameterless operation
-            let testingHarness = Delay(CheckXPercentZero, (solution, x), _); // Delay() converts CheckXPercentZero to parameterless operation
+            let solution = Delay(WeightedRandomBit, x, _);
+            let testingHarness = Delay(CheckXPercentZero, (solution, x), _);
             RetryTestOperation(testingHarness);
             Message($"Test passed for generating zero with {x*100.0}% probability");
         }
@@ -214,10 +216,10 @@ namespace Quantum.Kata.RandomNumberGeneration {
     // Exercise 5.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T5_RandomNumberInRange () : Unit {
-        for (min,max) in [(1, 3), (27, 312), (0, 3), (0, 1023)] {
+        for (min, max) in [(1, 3), (27, 312), (0, 3), (0, 1023)] {
             Message($"Testing for min = {min} and max = {max}...");
-            let solution = Delay(RandomNumberInRange, (min,max), _); // Delay() converts RandomNumberInRange to parameterless operation
-            let testingHarness = Delay(CheckUniformDistribution, (solution, min, max, 1000), _); // Delay() converts CheckUniformDistribution to parameterless operation
+            let solution = Delay(RandomNumberInRange, (min,max), _);
+            let testingHarness = Delay(CheckUniformDistribution, (solution, min, max, 1000), _);
             RetryTestOperation(testingHarness);
             Message($"Test passed for min = {min} and max = {max}");
 	    }
