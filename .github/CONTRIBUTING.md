@@ -15,7 +15,7 @@ We're so glad you asked!
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
-      * [Validate changes to `%kata` magic and `%check-kata` magic on local machine](#validate-changes-to-kata-magic-and-check-kata-magic-on-local-machine)
+      * [Validating changes to `%kata` and `%check_kata` magics on local machine](#validating-changes-to-kata-and-check_kata-magics-on-local-machine)
 * [Contributor License Agreement](#contributor-license-agreement)
 * [Code of Conduct](#code-of-conduct)
 
@@ -160,21 +160,21 @@ This can happen for several reasons:
 To exclude a task from validation, open the corresponding Jupyter notebook and choose ```View -> Cell Toolbar -> Tags``` to see and edit the tags for each cell. Add the tag that is the most fitting description of the failure cause to the cell. 
 After you are done with editing the notebook, choose ```View -> Cell Toolbar -> None``` to turn off tags editing view for the subsequent users of this notebook. Finally, save the notebook.
 
-#### Validate changes to `%kata` magic and `%check-kata` magic on local machine
-1. Add logging statements to the [`KataMagic`](../utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic`](../utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs).
+#### Validating changes to `%kata` and `%check_kata` magics on local machine
+1. Do your changes in the [`KataMagic.cs`](../utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic.cs`](../utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs), for example, add logging statements:
    ```
    Logger.LogDebug($"Value : {val}");
    ```
-2. Generate a custom nuget package
-   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package to get a version other than 1.0.0 by adding the following code in [this file](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) by adding the following code
+2. Generate a custom NuGet package `Microsoft.Quantum.Katas`.
+   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package. To do this, you can add the following field to the [Microsoft.Quantum.Katas.csproj](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) under the `<PropertyGroup>` tag:
       ```
-      <RootNamespace>Microsoft.Quantum.Katas</RootNamespace>
-      <Version>version-number</Version>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
-   2. Copy the generated .nupkg file to the folder in which your project resides (like PhaseEstimation kata) and remove the package reference to Microsoft.Quantum.Katas from your .csproj file.
-
-   3. Set up NuGet.config file so that it allows the project to discover a NuGet package in the current folder in addition to the standard sources. Here's an example file (should be placed in project folder as well):
+      If you need to get a version other than 1.0.0, add a field `<Version>version-number</Version>` under the same tag.
+   2. Copy the generated .nupkg file from the `Microsoft.Quantum.Katas\bin\Debug` folder to the folder in which the test kata project resides (such as PhaseEstimation kata).
+   3. Remove the package reference to `Microsoft.Quantum.Katas` package from the .csproj file of your project.
+      > This might cause your project to fail build, for example, if it uses CounterSimulator functionality. It will build successfully from the Q# Notebook once you add this package dynamically.
+   4. Set up NuGet.config file in the project folder to allow the project to discover a NuGet package in the current folder in addition to the standard sources. Here's an example file:
       ```
       <?xml version="1.0" encoding="utf-8"?>
       <configuration>
@@ -183,24 +183,25 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
         </packageSources>
       </configuration>
       ```
-3. To observe your changes in console window where Jupyter Notebook was launched.
-   1. Set the environment variable `IQSHARP_LOG_LEVEL='Debug'`.
-      > Note : The environment variable is case-sensitive.
-   2. Navigate to the folder in which your project resides and do the following :
+3. To observe your changes when running Q# Jupyter Notebook:
+   1. Set the environment variable `IQSHARP_LOG_LEVEL=Debug`.
+      > The environment variable is case-sensitive.
+   2. Navigate to your project folder and run the following command:
       ```
-      $ start jupyter notebook
+      $ start jupyter notebook <your notebook name>
       ```
-      > This would launch Jupyter Notebooks server in a new window which would be
-      > helpful in debugging the magics since logging is a bit noisy.
-
-4. Changes to be done in jupyter notebook 
-   1. Use `%package` magic to load the newly built nuget package `Microsoft.Quantum.Katas` by adding the following code
+      > This will launch Q# Jupyter Notebooks server in a new window, which is
+      > helpful in debugging the magics since logging is quite noisy.
+   3. In the Q# Jupyter Notebook you opened, use `%package` magic to load the new NuGet package `Microsoft.Quantum.Katas` by adding and executing the following cell:
       ```
       %package Microsoft.Quantum.Katas::<package-version>
       ```
-   2. Reload the workspace by using `%workspace reload`
+   2. Reload the workspace by adding and executing the following cell:
+      ```
+      %workspace reload
+      ```
 
-> **Note :** For validating changes to the `CheckKataMagic` by using the `validate-notebooks.ps1` script, update the new NuGet.config being written [here](../scripts/validate-notebooks.ps1#L88) to include the local folder instead of `<clear />` by replacing it with `<add key=""Local Folder"" value=""."" />`
+> To validate changes to the `CheckKataMagic` using the `validate-notebooks.ps1` script, update the NuGet.config file being written [by the script](../scripts/validate-notebooks.ps1#L88) to include the local folder instead of `<clear />` by replacing it with `<add key=""Local Folder"" value=""."" />`
 
 ## Contributor License Agreement
 
