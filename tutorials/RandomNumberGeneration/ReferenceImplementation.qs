@@ -44,8 +44,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 5.
-    operation RandomNumberInRange_Reference (range : (Int,Int)) : Int {
-        let (min,max) = range;
+    operation RandomNumberInRange_Reference (min : Int, max : Int) : Int {
         let nBits = BitSizeI(max);
         mutable output = 0; 
         repeat {
