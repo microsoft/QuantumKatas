@@ -10,11 +10,7 @@
 
 namespace Quantum.Kata.RandomNumberGeneration {
     
-    open Microsoft.Quantum.Arrays;
-    open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
-    open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Math;
     
 
