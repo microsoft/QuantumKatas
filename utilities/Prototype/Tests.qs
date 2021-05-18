@@ -10,7 +10,6 @@
 namespace Quantum.Kata.Prototype {
     
     open Microsoft.Quantum.Intrinsic;
-    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
 
     @Test("QuantumSimulator")
