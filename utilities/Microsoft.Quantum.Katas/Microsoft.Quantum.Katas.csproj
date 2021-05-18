@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <RootNamespace>Microsoft.Quantum.Katas</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
