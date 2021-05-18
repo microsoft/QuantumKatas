@@ -23,7 +23,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     /// (a single run can fail with non-negligible probability even for a correct solution).
     /// # Input
     /// ## testingHarness
-    /// Helper test operation which verifies the user answer and reference implementation
+    /// Test operation which verifies the user's solution.
     operation RetryTestOperation (testingHarness : (Unit => Bool)) : Unit {
         let numRetries = 3;
         mutable sufficientlyRandom = false;
