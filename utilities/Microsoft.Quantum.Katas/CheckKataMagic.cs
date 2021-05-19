@@ -239,7 +239,7 @@ namespace Microsoft.Quantum.Katas
             List<SimulatorBase> testSimulators = new List<SimulatorBase> ();
 
             var testSimNames = GetSimNamesFromTestAttribute(test);
-            Logger.LogDebug($"Sim count for {test.FullName} = {testSimNames.Count()}");
+            Logger.LogDebug($"Simulator count for {test.FullName} = {testSimNames.Count()}");
 
             List<Assembly> simulatorAssemblies = GetSimulatorAssemblies();
 
