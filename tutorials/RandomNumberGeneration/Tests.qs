@@ -9,6 +9,7 @@
 namespace Quantum.Kata.RandomNumberGeneration {
     
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
@@ -17,30 +18,48 @@ namespace Quantum.Kata.RandomNumberGeneration {
     open Microsoft.Quantum.Random;
 
     // ------------------------------------------------------
+    /// # Summary
+    /// Helper operation to rerun test operation several times
+    /// (a single run can fail with non-negligible probability even for a correct solution).
+    /// # Input
+    /// ## testingHarness
+    /// Test operation which verifies the user's solution.
+    operation RetryTestOperation (testingHarness : (Unit => Bool)) : Unit {
+        let numRetries = 3;
+        mutable sufficientlyRandom = false;
+        mutable attemptNum = 1;
+        repeat {
+            set sufficientlyRandom = testingHarness();
+            set attemptNum += 1;
+        } until (sufficientlyRandom or attemptNum > numRetries);
+
+        if not sufficientlyRandom {
+            fail $"Failed to generate sufficiently random integer";
+        }
+    }
+
+    // ------------------------------------------------------
     // Exercise 1.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T1_RandomBit () : Unit {
         Message("Testing one random bit generation...");
-        RetryCheckUniformDistribution(RandomBit_Wrapper, 0, 1, 1000);
+        let solution = RandomBit;
+        // Delay() converts CheckUniformDistribution to a parameterless operation
+        let testingHarness = Delay(CheckUniformDistribution, (solution, 0, 1, 1000), _);
+        RetryTestOperation(testingHarness);
         Message("Test passed");
     }
-
-    operation RandomBit_Wrapper (throwawayMin : Int, throwawayMax : Int) : Int {
-        return RandomBit();
-    }
-
 
     // ------------------------------------------------------
     // Exercise 2.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T2_RandomTwoBits () : Unit {
         Message("Testing two random bits generation...");
-        RetryCheckUniformDistribution(RandomTwoBits_Wrapper, 0, 3, 1000);
+        let solution = RandomTwoBits;
+        // Delay() converts CheckUniformDistribution to a parameterless operation
+        let testingHarness = Delay(CheckUniformDistribution, (solution, 0, 3, 1000), _);
+        RetryTestOperation(testingHarness);
         Message("Test passed");
-    }
-
-    operation RandomTwoBits_Wrapper (throwawayMin : Int, throwawayMax : Int) : Int {
-        return RandomTwoBits();
     }
     
 
@@ -49,18 +68,14 @@ namespace Quantum.Kata.RandomNumberGeneration {
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T3_RandomNBits () : Unit {
         // Test random number generation for 1, 2, 3, 10 bits
-        for (min, max) in [(0, 1), (0, 3), (0, 7), (0, 1023)] {
-            let N = Ceiling( Lg(IntAsDouble(max + 1)) );
+        for N in [1, 2, 3, 10] {
             Message($"Testing N = {N}...");
-            RetryCheckUniformDistribution(RandomNBits_Wrapper, min, max, 1000);
+            let max = (1 <<< N) - 1;
+            let solution = Delay(RandomNBits, N, _);
+            let testingHarness = Delay(CheckUniformDistribution, (solution, 0, max, 1000), _);
+            RetryTestOperation(testingHarness);
             Message($"Test passed for N = {N}");
 	    }
-    }
-
-    operation RandomNBits_Wrapper (min : Int, max : Int) : Int {
-        // For N bit random number : min = 0, max = 2^N - 1
-        let N = Ceiling( Lg(IntAsDouble(max+1)) );
-        return RandomNBits(N);
     }
 
 
@@ -68,13 +83,14 @@ namespace Quantum.Kata.RandomNumberGeneration {
     /// # Summary
     /// Helper operation that checks that the given RNG operation generates a uniform distribution.
     /// # Input
-    /// ## f
+    /// ## op
     /// Random number generation operation to be tested.
+    /// The parameters to this operation are provided by the caller using Delay().
     /// ## min, max
     /// Minimal and maximal numbers in the range to be generated, inclusive.
     /// ## nRuns
     /// The number of random numbers to generate for test.
-    operation CheckUniformDistribution (f : ((Int, Int) => Int), min : Int, max : Int, nRuns : Int) : Bool {
+    operation CheckUniformDistribution (op : (Unit => Int), min : Int, max : Int, nRuns : Int) : Bool {
         let idealMean = 0.5 * IntAsDouble(max + min) ;
         let rangeDividedByTwo = 0.5 * IntAsDouble(max - min);
         // Variance = a*(a+1)/3, where a = (max-min)/2
@@ -89,14 +105,14 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let highRange = idealMean + 3.0 * standardDeviation;
 
         let idealCopiesGenerated = IntAsDouble(nRuns) / IntAsDouble(max-min+1);
-        let minimumCopiesGenerated = ( 0.8 * idealCopiesGenerated > 40.0 ) ? 0.8 * idealCopiesGenerated | 0.0;
+        let minimumCopiesGenerated = (0.8 * idealCopiesGenerated > 40.0) ? 0.8 * idealCopiesGenerated | 0.0;
 
         mutable counts = ConstantArray(max + 1, 0);
         mutable average = 0.0;
 
         ResetOracleCallsCount();
         for i in 1..nRuns {
-            let val = f(min, max);
+            let val = op();
             if (val < min or val > max) {
                 Message($"Unexpected number generated. Expected values from {min} to {max}, generated {val}");
                 return false;
@@ -127,25 +143,6 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return true;
     }
 
-
-    /// # Summary
-    /// Helper operation to rerun check for uniform distribution several times
-    /// (a single run can fail with non-negligible probability even for a correct solution).
-    operation RetryCheckUniformDistribution (f : ((Int, Int) => Int), min : Int, max : Int, nRuns : Int) : Unit {
-        let numRetries = 3;
-        mutable sufficientlyRandom = false;
-        mutable attemptNum = 1;
-        repeat {
-            set sufficientlyRandom = CheckUniformDistribution(f, min, max, nRuns);
-            set attemptNum += 1;
-        } until (sufficientlyRandom or attemptNum >= numRetries);
-
-        if not sufficientlyRandom {
-            fail $"Failed to generate sufficiently random integers";
-        }
-    }
-
-
     operation FindMedian (counts : Int[], arrSize : Int, sampleSize : Int) : Int {
         mutable totalCount = 0;
         for i in 0 .. arrSize - 1 {
@@ -163,21 +160,30 @@ namespace Quantum.Kata.RandomNumberGeneration {
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T4_WeightedRandomBit () : Unit {
         ResetOracleCallsCount();
-        RetryCheckXPercentZero(0.0);
-        RetryCheckXPercentZero(0.25);
-        RetryCheckXPercentZero(0.5);
-        RetryCheckXPercentZero(0.75);
-        RetryCheckXPercentZero(1.0);
+        for x in [0.0, 0.25, 0.5, 0.75, 1.0] {
+            Message($"Testing generating zero with {x*100.0}% probability...");
+            let solution = Delay(WeightedRandomBit, x, _);
+            let testingHarness = Delay(CheckXPercentZero, (solution, x), _);
+            RetryTestOperation(testingHarness);
+            Message($"Test passed for generating zero with {x*100.0}% probability");
+        }
         CheckRandomCalls();
     }
 
-
-    operation CheckXPercentZero (x : Double) : Bool {
+    // ------------------------------------------------------
+    /// # Summary
+    /// Helper operation that checks that the given RNG operation generates zero with x percent probability
+    /// # Input
+    /// ## op
+    /// Random number generation operation to be tested.
+    /// ## x
+    /// Probability of generating zero
+    operation CheckXPercentZero (op : (Unit => Int), x : Double) : Bool {
         mutable oneCount = 0;
         let nRuns = 1000;
         ResetOracleCallsCount();
         for N in 1..nRuns {
-            let val = WeightedRandomBit(x);
+            let val = op();
             if (val < 0 or val > 1) {
                 Message($"Unexpected number generated. Expected 0 or 1, instead generated {val}");
                 return false;
@@ -206,32 +212,15 @@ namespace Quantum.Kata.RandomNumberGeneration {
         return true;
     }
 
-
-    operation RetryCheckXPercentZero (x : Double) : Unit {
-        let numRetries = 3;
-        Message($"Testing probability of zero = {x}...");
-        mutable sufficientlyRandom = false;
-        mutable attemptNum = 1;
-        repeat {
-            set sufficientlyRandom = CheckXPercentZero(x);
-            set attemptNum += 1;
-        } until sufficientlyRandom or attemptNum >= numRetries;
-
-        if not sufficientlyRandom {
-            fail $"Failed to generate 0 with {100.0*x}% probability";
-        } else {
-            Message($"Test passed for probability of zero {x}");
-        }
-    }
-
-
     // ------------------------------------------------------
     // Exercise 5.
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T5_RandomNumberInRange () : Unit {
         for (min, max) in [(1, 3), (27, 312), (0, 3), (0, 1023)] {
             Message($"Testing for min = {min} and max = {max}...");
-            RetryCheckUniformDistribution(RandomNumberInRange, min, max, 1000);
+            let solution = Delay(RandomNumberInRange, (min,max), _);
+            let testingHarness = Delay(CheckUniformDistribution, (solution, min, max, 1000), _);
+            RetryTestOperation(testingHarness);
             Message($"Test passed for min = {min} and max = {max}");
 	    }
     }
