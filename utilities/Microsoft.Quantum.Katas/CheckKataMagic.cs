@@ -318,8 +318,7 @@ namespace Microsoft.Quantum.Katas
 	        )
             .Select(
                 attribute =>
-                    attribute.Argument.TryAsStringLiteral(out var value)
-                    ? value : null
+                    attribute.Argument.TryAsStringLiteral()
             )
             .Where(value => value != null)
             // The Where above ensures that all elements are non-nullable,

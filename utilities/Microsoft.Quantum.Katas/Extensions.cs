@@ -6,17 +6,15 @@ namespace Microsoft.Quantum.Katas
 {
     internal static class Extensions
     {
-        internal static bool TryAsStringLiteral(this TypedExpression expression, out string? value)
+        internal static string? TryAsStringLiteral(this TypedExpression expression)
         {
             if (expression.Expression is QsExpressionKind<TypedExpression, Identifier, ResolvedType>.StringLiteral literal)
             {
-                value = literal.Item1;
-                return true;
+                return literal.Item1;
             }
             else
             {
-                value = null;
-                return false;
+                return null;
             }
         }
     }
