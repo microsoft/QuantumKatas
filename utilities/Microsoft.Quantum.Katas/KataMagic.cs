@@ -245,6 +245,11 @@ namespace Microsoft.Quantum.Katas
         {
             List<SimulatorBase> testSimulators = new List<SimulatorBase> ();
 
+            if(simulators.Count() == 0)
+            {
+                throw new Exception($"Got no simulator(s) for the test {test.FullName}");
+            }
+
             var testSimNames = GetSimNamesFromTestAttribute(test);
             Logger.LogDebug($"Simulator count for {test.FullName} = {testSimNames.Count()}");
 

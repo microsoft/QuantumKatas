@@ -175,6 +175,11 @@ namespace Microsoft.Quantum.Katas
                 List<SimulatorBase> simulators = CreateSimulators(channel, test);
                 var hasWarnings = false;
 
+                if(simulators.Count() == 0)
+                {
+                    throw new Exception($"Got no simulator(s) for the test {test.FullName}");
+                }
+
                 foreach(SimulatorBase qsim in simulators)
                 {
                     Logger.LogDebug($"Simulating test {test.FullName} on {qsim.GetType().Name}");
@@ -186,8 +191,15 @@ namespace Microsoft.Quantum.Katas
                     qsim.OnLog += (msg) =>
                     {
                         simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
-                        if(simHasWarnings == true) { hasWarnings = true; }
-                        channel.Stdout(msg);
+                        if(simHasWarnings == true)
+                        {
+                            hasWarnings = true;
+                            channel.Stderr($"Errors on {qsim.GetType().Name} : " + msg);
+                        }
+                        else
+                        {
+                            channel.Stdout($"Msg from {qsim.GetType().Name} : " + msg);
+                        }
                     };
 
                     var value = test.RunAsync(qsim, null).Result;
