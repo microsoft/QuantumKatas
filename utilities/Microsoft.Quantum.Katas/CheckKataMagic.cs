@@ -186,8 +186,7 @@ namespace Microsoft.Quantum.Katas
                     qsim.OnLog += (msg) =>
                     {
                         simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
-                        if(simHasWarnings == true)
-                            hasWarnings = true;
+                        if(simHasWarnings == true) { hasWarnings = true; }
                         channel.Stdout(msg);
                     };
 
@@ -295,6 +294,8 @@ namespace Microsoft.Quantum.Katas
                     channel.Stderr(ex.Message);
                     throw new Exception("Error while creating desired simulator(s) for test.");
                 }
+
+                testSimulators.Add(simulator);
             }
             return testSimulators;
         }
