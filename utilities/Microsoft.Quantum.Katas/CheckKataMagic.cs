@@ -172,15 +172,15 @@ namespace Microsoft.Quantum.Katas
 
             try
             {
-                List<SimulatorBase> simulators = CreateSimulators(channel, test);
+                List<SimulatorBase> testSimulators = CreateSimulators(channel, test);
                 var hasWarnings = false;
 
-                if(simulators.Count() == 0)
+                if(testSimulators.Count() == 0)
                 {
                     throw new Exception($"Got no simulator(s) for the test {test.FullName}");
                 }
 
-                foreach(SimulatorBase qsim in simulators)
+                foreach(SimulatorBase qsim in testSimulators)
                 {
                     Logger.LogDebug($"Simulating test {test.FullName} on {qsim.GetType().Name}");
                     var simHasWarnings = false;
