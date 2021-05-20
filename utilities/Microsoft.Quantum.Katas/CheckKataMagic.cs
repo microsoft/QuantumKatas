@@ -295,7 +295,10 @@ namespace Microsoft.Quantum.Katas
                     throw new Exception("Error while creating desired simulator(s) for test.");
                 }
 
-                testSimulators.Add(simulator);
+                if(simulator is SimulatorBase sim)
+                {
+                    testSimulators.Add(sim);
+                }
             }
             return testSimulators;
         }
