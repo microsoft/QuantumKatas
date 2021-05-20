@@ -181,9 +181,14 @@ namespace Microsoft.Quantum.Katas
 
             try
             {
-                List<SimulatorBase> simulators = CreateSimulators(channel,test);
+                List<SimulatorBase> testSimulators = CreateSimulators(channel,test);
 
-                foreach(SimulatorBase qsim in simulators)
+                if(testSimulators.Count() == 0)
+                {
+                    throw new Exception($"Got no simulator(s) for the test {test.FullName}");
+                }
+
+                foreach(SimulatorBase qsim in testSimulators)
                 {
                     Logger.LogDebug($"Simulating test {test.FullName} on {qsim.GetType().Name}");
 
@@ -244,11 +249,6 @@ namespace Microsoft.Quantum.Katas
         public virtual List<SimulatorBase> CreateSimulators(IChannel channel, OperationInfo test)
         {
             List<SimulatorBase> testSimulators = new List<SimulatorBase> ();
-
-            if(testSimulators.Count() == 0)
-            {
-                throw new Exception($"Got no simulator(s) for the test {test.FullName}");
-            }
 
             var testSimNames = GetSimNamesFromTestAttribute(test);
             Logger.LogDebug($"Simulator count for {test.FullName} = {testSimNames.Count()}");
