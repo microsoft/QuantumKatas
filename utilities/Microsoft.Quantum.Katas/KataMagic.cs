@@ -2,22 +2,25 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
+using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Simulators;
+using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    public class KataMagic : AbstractKataMagic
+    public class KataMagic : AbstractKataMagic<OperationInfo>
     {
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
         /// </summary>
-        public KataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<KataMagic> logger, IConfigurationSource configurationSource)
-            : base(resolver, snippets, logger)
+        public KataMagic(IOperationResolver resolver, ILogger<KataMagic> logger, ISnippets snippets, IConfigurationSource configurationSource)
+            : base(resolver, logger)
         {
             this.Name = $"%kata";
             this.Documentation = new Microsoft.Jupyter.Core.Documentation
@@ -43,14 +46,41 @@ namespace Microsoft.Quantum.Katas
                     "```\n"
                 }
             };
+            this.Snippets = snippets;
             this.ConfigurationSource = configurationSource;
         }
+
+        /// <summary>
+        /// The list of user-defined Q# code snippets from the notebook.
+        /// </summary>
+        protected ISnippets Snippets { get; }
 
         /// <summary>
         ///     The configuration source used by this magic command to control
         ///     simulation options (e.g.: dump formatting options).
         /// </summary>
         protected IConfigurationSource ConfigurationSource { get; }
+
+        ///<inheritdoc/>
+        protected override QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel)
+        {
+            var result = Snippets.Compile(code);
+
+            foreach (var m in result.warnings) { channel.Stdout(m); }
+
+            return result.Elements;
+        }
+
+        /// <summary>
+        /// Returns the userAnswer as an operation so that we could verify
+        /// if userAnswer is correct by running appropriate test. 
+        /// </summary>
+        protected override OperationInfo GetUserAnswer(string userAnswerName) =>
+            Resolver.Resolve(userAnswerName);
+
+        /// <inheritdoc/>
+        protected override void SetAllAnswers(OperationInfo skeletonAnswer, OperationInfo userAnswer) =>
+            AllAnswers[skeletonAnswer] = userAnswer;
 
         /// <summary>
         /// Logs the messages with rich Jupyter formatting for simulators of the type QuantumSimulator

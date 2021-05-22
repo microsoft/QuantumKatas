@@ -2,20 +2,22 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.Simulation.Common;
+using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    public class CheckKataMagic : AbstractKataMagic
+    public class CheckKataMagic : AbstractKataMagic<string>
     {
         /// <summary>
         /// IQ# Magic that checks that the reference implementation of a Kata's test runs successfully.
         /// </summary>
-        public CheckKataMagic(IOperationResolver resolver, ISnippets snippets, ILogger<CheckKataMagic> logger)
-            : base(resolver, snippets, logger)
+        public CheckKataMagic(IOperationResolver resolver, ILogger<CheckKataMagic> logger, ICompilerService compiler)
+            : base(resolver, logger)
         {
             this.Name = $"%check_kata";
             this.Documentation = new Microsoft.Jupyter.Core.Documentation
@@ -41,16 +43,39 @@ namespace Microsoft.Quantum.Katas
                     "```\n"
                 }
             };
+            this.Compiler = compiler;
         }
 
         /// <summary>
-        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
-        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
-        /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
+        /// The list of user-defined Q# code snippets from the notebook.
         /// </summary>
-        protected virtual OperationInfo FindReferenceImplementation(OperationInfo test, OperationInfo userAnswer)
+        protected ICompilerService Compiler { get; }
+
+        /// <summary>
+        /// Semi-compiles the given code. Checks there is only one operation defined in the code,
+        /// and returns its corresponding OperationInfo
+        /// The compiler does this on a best effort basis, and in particular without relying on any context and/or type information,
+        /// so it will return the operation even if the compilation fails.
+        /// </summary>
+        protected override QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel) =>
+               Compiler
+               .IdentifyElements(code)
+               .ToArray();
+
+        /// <summary>
+        /// Returns the useranswer in an appropriate format given the name of userAnswer
+        /// </summary>
+        protected override string GetUserAnswer(string userAnswerName) =>
+            userAnswerName;
+
+        /// <summary>
+        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
+        /// skeletonAnswer's namespace and with <c>_Reference</c> added to the userAnswer's name.
+        /// </summary>
+        protected virtual OperationInfo FindReferenceImplementation(OperationInfo skeletonAnswer, string userAnswer)
         {
-            var referenceAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.FullName}_Reference");
+            var referenceAnswer = Resolver.Resolve($"{skeletonAnswer.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
             Logger.LogDebug($"Found Reference answer {referenceAnswer} for {userAnswer}");
 
             if (referenceAnswer == null)
@@ -60,23 +85,14 @@ namespace Microsoft.Quantum.Katas
             return referenceAnswer;
         }
 
-        /// <summary>
-        /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
-        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
-        /// test's namespace
-        /// </summary>
-        protected override OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
+        /// <inheritdoc/>
+        protected override void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer)
         {
-            var skeletonAnswer = base.FindSkeletonAnswer(test, userAnswer);
-            var referenceAnswer = FindReferenceImplementation(test, userAnswer);
-            if (skeletonAnswer != null)
-            {
-                // Remember the reference answer for this task
-                AllAnswers[skeletonAnswer] = referenceAnswer;
-            }
-            return skeletonAnswer;
+            var referenceAnswer = FindReferenceImplementation(skeletonAnswer, userAnswer);
+            AllAnswers[skeletonAnswer] = referenceAnswer;
         }
 
+        /// <inheritdoc/>
         protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
             if(simulator is SimulatorBase sim)

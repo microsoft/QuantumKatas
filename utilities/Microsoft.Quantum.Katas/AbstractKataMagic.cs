@@ -9,7 +9,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
-using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
@@ -18,18 +17,17 @@ using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    public abstract class AbstractKataMagic : MagicSymbol
+    public abstract class AbstractKataMagic<T> : MagicSymbol
     {
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
         /// </summary>
-        public AbstractKataMagic(IOperationResolver resolver, ISnippets snippets, ILogger? logger = null)
+        public AbstractKataMagic(IOperationResolver resolver, ILogger? logger = null)
         {
             this.Kind = SymbolKind.Magic;
             this.Execute = this.Run;
 
             this.Resolver = resolver;
-            this.Snippets = snippets;
             this.Logger = logger;
 
             this.AllAnswers = new Dictionary<OperationInfo, OperationInfo>();
@@ -39,11 +37,6 @@ namespace Microsoft.Quantum.Katas
         /// The Resolver lets us find compiled Q# operations from the workspace
         /// </summary>
         protected IOperationResolver Resolver { get; }
-
-        /// <summary>
-        /// The list of user-defined Q# code snippets from the notebook.
-        /// </summary>
-        protected ISnippets Snippets { get; }
         
         /// <summary>
         /// Logger to log messages to the jupyter console.
@@ -52,15 +45,15 @@ namespace Microsoft.Quantum.Katas
 
         /// <summary>
         /// A Dictionary which stores the relevant answer to verify the appropriate answer
-        /// For KataMagic, it verfies the `userAnswer`
-        /// For CheckKataMagic, it verfies the `referenceImplementation` 
+        /// For KataMagic, it verfies the <c>userAnswer</c>
+        /// For CheckKataMagic, it verfies the <c>referenceImplementation</c>
         /// </summary>
         protected Dictionary<OperationInfo, OperationInfo> AllAnswers { get; }
 
         /// <summary>
         /// What this Magic does when triggered. It will:
         /// - find the Test to execute based on the given name,
-        /// - compile the code after found after the name as the user's answer.
+        /// - compile/semi-compile the code after it found the full/partial user's answer.
         /// - run (simulate) the test and report its result.
         /// </summary>
         protected virtual async Task<ExecutionResult> Run(string input, IChannel channel)
@@ -103,20 +96,19 @@ namespace Microsoft.Quantum.Katas
              Resolver.Resolve(testName);
 
         /// <summary>
-        /// Compiles the given code. Checks there is only one operation defined in the code,
-        /// and returns its corresponding OperationInfo
+        /// Compiles or semi-compiles the given code depending upon the situation
+        /// Checks there is only one operation defined in the code,
+        /// and returns its corresponding userAnswer
         /// </summary>
-        protected virtual OperationInfo Compile(string code, IChannel channel)
+        protected virtual T Compile(string code, IChannel channel)
         {
             try
             {
-                var result = Snippets.Compile(code);
-
-                foreach (var m in result.warnings) { channel.Stdout(m); }
+                var result = GetDeclaredCallables(code, channel);
 
                 // Gets the names of all the operations found for this snippet
                 var opsNames =
-                    result.Elements?
+                        result?
                         .Where(e => e.IsQsCallable)
                         .Select(e => e.ToFullName().WithoutNamespace(Microsoft.Quantum.IQSharp.Snippets.SNIPPETS_NAMESPACE))
                         .OrderBy(o => o)
@@ -127,35 +119,47 @@ namespace Microsoft.Quantum.Katas
                     channel.Stdout("Expecting only one Q# operation in code. Using the first one");
                 }
 
-                return Resolver.Resolve(opsNames.First());
+                return GetUserAnswer(opsNames.First());
             }
             catch (CompilationErrorsException c)
             {
                 foreach (var m in c.Errors) channel.Stderr(m);
-                return null;
+                return default(T);
             }
             catch (Exception e)
             {
                 Logger?.LogWarning(e, "Unexpected error.");
                 channel.Stderr(e.Message);
-                return null;
+                return default(T);
             }
         }
 
         /// <summary>
-        /// Executes the given kata using the provided <c>userAnswer</c> as the actual answer.
+        /// Compiles or semi-compiles the given code depending upon the situation
+        /// and returns the corresponding QsNamespaceElement Array
+        /// </summary>
+        protected abstract QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel);
+
+        /// <summary>
+        /// Returns the userAnswer in an appropriate format given the name of userAnswer
+        /// </summary>
+        protected abstract T GetUserAnswer(string userAnswerName);
+
+        /// <summary>
+        /// Executes the given kata using the <c>relevantAnswer</c> as the actual answer.
         /// To do this, it finds another operation with the same name but in the Kata's namespace
-        /// (by calling `FindSkeltonAnswer`) and replace its implementation with the userAnswer
+        /// (by calling <c>FindSkeltonAnswer</c>) and replace its implementation with the <c>relevantAnswer</c>
         /// in the simulator.
         /// </summary>
-        protected virtual bool Simulate(OperationInfo test, OperationInfo userAnswer, IChannel channel)
+        protected virtual bool Simulate(OperationInfo test, T userAnswer, IChannel channel)
         {
             var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
             if (skeletonAnswer == null)
             {
-                channel.Stderr($"Invalid task: {userAnswer.FullName}");
+                channel.Stderr($"Invalid task: {userAnswer.ToString()}");
                 return false;
             }
+            SetAllAnswers(skeletonAnswer, userAnswer);
 
             try
             {
@@ -184,6 +188,8 @@ namespace Microsoft.Quantum.Katas
 
                     var value = test.RunAsync(sim, null).Result;
 
+                    channel.Stdout($"Success on {testSim.GetType().Name}!");
+
                     if (sim is IDisposable dis) { dis.Dispose(); }
                 }
 
@@ -205,21 +211,23 @@ namespace Microsoft.Quantum.Katas
 
         /// <summary>
         /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
-        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
+        /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
         /// test's namespace
         /// </summary>
-        protected virtual OperationInfo FindSkeletonAnswer(OperationInfo test, OperationInfo userAnswer)
+        protected virtual OperationInfo FindSkeletonAnswer(OperationInfo test, T userAnswer)
         {
-            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.FullName}");
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.ToString()}");
             Logger.LogDebug($"Resolved {userAnswer} to {skeletonAnswer.FullName}");
-
-            if (skeletonAnswer != null)
-            {
-                // Remember the last user answer for this task
-                AllAnswers[skeletonAnswer] = userAnswer;
-            }
             return skeletonAnswer;
         }
+
+        /// <summary>
+        /// Sets the <c>relevantAnswer</c> using <c>userAnswer</c> corresponding to the
+        /// <c>skeletonAnswer</c> to be verified by magic.
+        /// For KataMagic, it verfies the <c>userAnswer</c>
+        /// For CheckKataMagic, it verfies the <c>referenceImplementation</c>
+        /// </summary>
+        protected abstract void SetAllAnswers(OperationInfo skeletonAnswer, T userAnswer);
 
         /// <summary>
         /// Creates the instance of the simulator(s) on which
