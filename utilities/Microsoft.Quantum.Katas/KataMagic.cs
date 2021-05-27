@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
-using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
-using Microsoft.Quantum.IQSharp.Common;
 using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Simulators;
@@ -91,16 +88,18 @@ namespace Microsoft.Quantum.Katas
             if(simulator is QuantumSimulator qsim)
             {
                 // To display diagnostic output with rich Jupyter formatting
-                return qsim.WithJupyterDisplay(channel, ConfigurationSource);
+                return qsim
+                    .WithJupyterDisplay(channel, ConfigurationSource)
+                    .WithStackTraceDisplay(channel);
             }
-            else if(simulator is SimulatorBase sim)
+            else
             {
+                var sim = simulator.WithStackTraceDisplay(channel);
                 // Add logging ability for simulators other than quantum simulator
                 sim.OnLog += channel.Stdout;
                 // To display diagnostic output and stack traces for exceptions
-                return sim.WithStackTraceDisplay(channel);
+                return sim;
             }
-            throw new Exception($"Can't set display for the simulator of type {simulator.GetType().FullName}");
         }
     }
 }

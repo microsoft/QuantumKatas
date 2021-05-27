@@ -161,6 +161,7 @@ namespace Microsoft.Quantum.Katas
             }
             SetAllAnswers(skeletonAnswer, userAnswer);
 
+            SimulatorBase currSim = null;
             try
             {
                 List<SimulatorBase> testSimulators = CreateSimulators(channel, test);
@@ -170,7 +171,6 @@ namespace Microsoft.Quantum.Katas
                     throw new Exception($"Got no simulator(s) for the test {test.FullName}");
                 }
 
-                
                 foreach(SimulatorBase testSim in testSimulators)
                 {
                     Logger.LogDebug($"Simulating test {test.FullName} on {testSim.GetType().Name}");
@@ -178,19 +178,19 @@ namespace Microsoft.Quantum.Katas
                     testSim.DisableExceptionPrinting();
                     testSim.DisableLogToConsole();
 
-                    var sim = SetDisplay(testSim, channel);
+                    currSim = SetDisplay(testSim, channel);
 
                     // Register all solutions to previously executed tasks (including the current one)
                     foreach (KeyValuePair<OperationInfo, OperationInfo> answer in AllAnswers) {
                         Logger.LogDebug($"Registering {answer.Key.FullName}");
-                        sim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
+                        currSim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
                     }
 
-                    var value = test.RunAsync(sim, null).Result;
+                    var value = test.RunAsync(currSim, null).Result;
 
-                    channel.Stdout($"Success on {testSim.GetType().Name}!");
+                    channel.Stdout($"Success on {currSim.GetType().Name}!");
 
-                    if (sim is IDisposable dis) { dis.Dispose(); }
+                    if (currSim is IDisposable dis) { dis.Dispose(); }
                 }
 
                 return true;
@@ -198,12 +198,14 @@ namespace Microsoft.Quantum.Katas
             catch (AggregateException agg)
             {
                 foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
+                channel.Stderr($"Test failed on {currSim.GetType().Name}!");
                 channel.Stderr($"Try again!");
                 return false;
             }
             catch (Exception e)
             {
                 channel.Stderr(e.Message);
+                channel.Stderr($"Test failed on {currSim.GetType().Name}!");
                 channel.Stderr($"Try again!");
                 return false;
             }
@@ -355,12 +357,8 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         protected virtual SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
-            if(simulator is SimulatorBase sim)
-            {
-                sim.OnLog += channel.Stdout;
-                return sim;
-            }
-            throw new Exception($"Can't set display for the simulator of type {simulator.GetType().FullName}");
+            simulator.OnLog += channel.Stdout;
+            return simulator;
         }
     }
 }

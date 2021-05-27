@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
+using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
@@ -95,25 +96,21 @@ namespace Microsoft.Quantum.Katas
         /// <inheritdoc/>
         protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
-            if(simulator is SimulatorBase sim)
+            var simHasWarnings = false;
+            var sim = simulator.WithStackTraceDisplay(channel);
+            sim.OnLog += (msg) =>
             {
-                var simHasWarnings = false;
-                sim.OnLog += (msg) =>
+                simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
+                if(simHasWarnings == true)
                 {
-                    simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
-                    if(simHasWarnings == true)
-                    {
-                        throw new Exception($"Errors on {sim.GetType().Name} : " + msg);
-                    }
-                    else
-                    {
-                        channel.Stdout($"Msg from {sim.GetType().Name} : " + msg);
-                    }
-                };
-                return sim;
-            }
-            throw new Exception($"Can't set display for the simulator of type {simulator.GetType().FullName}");
+                    throw new Exception($"Errors on {sim.GetType().Name} : " + msg);
+                }
+                else
+                {
+                    channel.Stdout($"Msg from {sim.GetType().Name} : " + msg);
+                }
+            };
+            return sim;
         }
-
     }
 }
