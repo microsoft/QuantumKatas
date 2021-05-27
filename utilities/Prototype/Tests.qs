@@ -10,44 +10,75 @@
 namespace Quantum.Kata.Prototype {
     
     open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
+    open Quantum.Kata.Utils;
 
     @Test("QuantumSimulator")
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation QuantumSimulatorCheck() : Unit {
+        use q = Qubit();
+
+        H(q);
+
+        FlipZeroToPlusNoRestriction(q);
+
+        AssertQubit(Zero, q);
+        
         Message("Test passed...");
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation CounterSimulatorCheck() : Unit {
-        Message("Test passed...");
-    }
+        use q = Qubit();
+        H(q);
 
-    @Test("ResourcesEstimator")
-    operation ResourcesEstimatorCheck() : Unit {
+        ResetOracleCallsCount();
+
+        FlipZeroToPlusRestriction(q);
+        let nu = GetOracleCallsCount(H);
+
+        AssertQubit(Zero, q);
+        
+        EqualityFactI(nu, 1, $"You are allowed to call H gate exactly once, and you called it {nu} times");
+    
         Message("Test passed...");
     }
 
     // Toffoli Simulator check
     @Test("ToffoliSimulator")
     operation ToffoliSimulatorCheck() : Unit {
+        use qs = Qubit[50];
+
+        FlipZerosToOnes(qs);
+
+        for q in qs
+        {
+            AssertQubit(One, q);
+        }
+
+        ResetAll(qs);
+
         Message("Test passed...");
 	}
 
-    // MultiSimulator on all three ExecutionTargets
-    @Test("QuantumSimulator")
-    @Test("ToffoliSimulator")
-    @Test("ResourcesEstimator")
-    operation ExecutionTargetCheck() : Unit {
-        Message("Test passed...");
-	}
 
-    // MultiSimulator on multiple simulators
+    // Check on multiple simulators
     @Test("QuantumSimulator")
     @Test("ToffoliSimulator")
-    @Test("ResourcesEstimator")
-    @Test("Microsoft.Quantum.Simulation.Simulators.QCTraceSimulators.QCTraceSimulator")
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation MultipleSimulatorCheck() : Unit {
+        use qs = Qubit[2];
+
+        FlipZerosToOnes(qs);
+
+        for q in qs
+        {
+            AssertQubit(One, q);
+        }
+
+        ResetAll(qs);
+
         Message("Test passed...");
 	}
 

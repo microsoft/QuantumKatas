@@ -6,4 +6,18 @@ namespace Quantum.Kata.Prototype {
     operation QsharpUnit_Reference() : Unit{
 
     }
+
+    operation FlipZeroToPlusNoRestriction_Reference(q : Qubit) : Unit{
+        H(q);
+        H(q);
+        H(q);
+    }
+
+    operation FlipZeroToPlusRestriction_Reference(q : Qubit) : Unit{
+        H(q);
+    }
+
+    operation FlipZerosToOnes_Reference(qs : Qubit[]) : Unit{
+        ApplyToEach(X, qs);
+    }
 }
