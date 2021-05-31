@@ -1,3 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+//////////////////////////////////////////////////////////////////////
+// This file contains reference solutions to all tasks.
+// You should not modify anything in this file.
+//////////////////////////////////////////////////////////////////////
+
 namespace Quantum.Kata.Prototype {
 
     open Microsoft.Quantum.Intrinsic;
