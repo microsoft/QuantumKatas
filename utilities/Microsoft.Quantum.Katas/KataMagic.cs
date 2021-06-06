@@ -29,7 +29,7 @@ namespace Microsoft.Quantum.Katas
                     "To run a test called `Test`:\n" +
                     "```\n" +
                     "In []: %kata T101_StateFlip \n" +
-                    "       operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n" +
+                    "     : operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n" +
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n" +
                     "           // Type X(q);\n" +
                     "           // Then run the cell using Ctrl/⌘+Enter.\n" +
@@ -39,7 +39,7 @@ namespace Microsoft.Quantum.Katas
                     "Out[]: Qubit in invalid state. Expecting: Zero\n" +
 	                "       \tExpected:\t0\n"+
 	                "       \tActual:\t0.5000000000000002\n" +
-                    "       Try again!\n" +
+                    "       Try again!" +
                     "```\n"
                 }
             };
@@ -88,17 +88,11 @@ namespace Microsoft.Quantum.Katas
             if(simulator is QuantumSimulator qsim)
             {
                 // To display diagnostic output with rich Jupyter formatting
-                return qsim
-                    .WithJupyterDisplay(channel, ConfigurationSource)
-                    .WithStackTraceDisplay(channel);
+                return qsim.WithJupyterDisplay(channel, ConfigurationSource);
             }
             else
             {
-                var sim = simulator.WithStackTraceDisplay(channel);
-                // Add logging ability for simulators other than quantum simulator
-                sim.OnLog += channel.Stdout;
-                // To display diagnostic output and stack traces for exceptions
-                return sim;
+                return base.SetDisplay(simulator, channel);
             }
         }
     }

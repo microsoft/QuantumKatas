@@ -33,14 +33,14 @@ namespace Microsoft.Quantum.Katas
                     "To check a test called `Test`:\n" +
                     "```\n" +
                     "In []: %check_kata T101_StateFlip \n" +
-                    "       operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n" +
+                    "     : operation StateFlip (q : Qubit) : Unit is Adj + Ctl {\n" +
                     "           // The Pauli X gate will change the |0⟩ state to the |1⟩ state and vice versa.\n" +
                     "           // Type X(q);\n" +
                     "           // Then run the cell using Ctrl/⌘+Enter.\n" +
                     "\n" +
                     "           // ...\n" +
                     "       }\n" +
-                    "Out[]: Success!\n" +
+                    "Out[]: Success!" +
                     "```\n"
                 }
             };
@@ -97,20 +97,19 @@ namespace Microsoft.Quantum.Katas
         protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
             var simHasWarnings = false;
-            var sim = simulator.WithStackTraceDisplay(channel);
-            sim.OnLog += (msg) =>
+            simulator.OnLog += (msg) =>
             {
                 simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
                 if(simHasWarnings == true)
                 {
-                    throw new Exception($"Errors on {sim.GetType().Name} : " + msg);
+                    throw new Exception($"Errors on {simulator.GetType().Name} : " + msg);
                 }
                 else
                 {
-                    channel.Stdout($"Msg from {sim.GetType().Name} : " + msg);
+                    channel.Stdout($"Msg from {simulator.GetType().Name} : " + msg);
                 }
             };
-            return sim;
+            return simulator;
         }
     }
 }
