@@ -62,7 +62,7 @@ namespace Quantum.Kata.Prototype {
     // full state simulator runs out of memory during the qubit allocation
     @Test("ToffoliSimulator")
     operation ToffoliSimulatorCheck() : Unit {
-        use qs = Qubit[50];
+        use qs = Qubit[150];
 
         FlipZerosToOnes(qs);
 

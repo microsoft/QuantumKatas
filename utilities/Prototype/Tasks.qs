@@ -18,16 +18,14 @@ namespace Quantum.Kata.Prototype {
     }
 
     operation FlipZeroToPlusNoRestriction(q : Qubit) : Unit{
-        H(q);
-        H(q);
-        H(q);
+
     }
 
     operation FlipZeroToPlusRestriction(q : Qubit) : Unit{
-        H(q);
+
     }
 
     operation FlipZerosToOnes(qs : Qubit[]) : Unit{
-        ApplyToEach(X, qs);
+
     }
 }
