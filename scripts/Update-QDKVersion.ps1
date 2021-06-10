@@ -41,22 +41,6 @@ $csFiles | ForEach-Object {
     } | Set-Content -Encoding UTF8 $_.Path
 }
 
-$ipynbString = "%package Microsoft.Quantum.Katas::$versionRegex"
-$ipynbFiles =  (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
-$ipynbFiles | ForEach-Object {
-    if ($_)
-    {
-        (Get-Content $_.Path) | ForEach-Object {
-            $isQuantumPackage = $_ -match $ipynbString
-            if ($isQuantumPackage) {
-                $_ -replace $Matches.oldVersion, $Version
-            } else {
-                $_
-            }
-        } | Set-Content $_.Path
-    }
-}
-
 $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
 (Get-Content -Path $dockerPath) | ForEach-Object {
