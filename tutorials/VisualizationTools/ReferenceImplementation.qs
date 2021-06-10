@@ -17,7 +17,7 @@ namespace Quantum.Kata.VisualizationTools {
 
 
     operation LearnBasisStateAmplitudes_Reference (qs : Qubit[]) : (Double, Double) {
-        return (0.0, 0.0);
+        return (0.3821, 0.339);
     }
 
 
