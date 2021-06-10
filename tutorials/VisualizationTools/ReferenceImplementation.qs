@@ -26,7 +26,7 @@ namespace Quantum.Kata.VisualizationTools {
     }
 
 
-    operation ReadMysteryOperationMatrix_Reference (U : Qubit[] => Unit is Adj) : Double {
+    operation ReadMysteryOperationMatrix_Reference () : Double {
         return 0.5184;
     }
 
