@@ -90,7 +90,7 @@ namespace Quantum.Kata.VisualizationTools {
         let amplitudesNorm = PNormalized(2.0, amplitudes);
         // Filter out the amplitudes bigger than the threshold.
         mutable expected = new Int[0];
-        for i in 0 .. Length(amplitudes) - 1 {
+        for i in IndexRange(amplitudes) {
             if amplitudesNorm[i] > 0.01 {
                 set expected += [i];
             }
@@ -171,7 +171,7 @@ namespace Quantum.Kata.VisualizationTools {
 
 
     // Phase kickback trick.
-    operation ApplyMarkingOracleAsPhaseOracle (markingOracle : ((Qubit[], Qubit) => Unit), inputRegister : Qubit[]) : Unit {
+    operation ApplyMarkingOracleAsPhaseOracle (markingOracle : (Qubit[], Qubit) => Unit, inputRegister : Qubit[]) : Unit {
         use target = Qubit();
         // Put the target into the |-⟩ state
         within {
