@@ -96,20 +96,24 @@ namespace Microsoft.Quantum.Katas
         /// <inheritdoc/>
         protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
+            SimulatorBase sim = base.SetDisplay(simulator, channel);
+
             var simHasWarnings = false;
-            simulator.OnLog += (msg) =>
+
+            sim.OnLog -= channel.Stdout; // Unsubscribe from base Logging
+            sim.OnLog += (msg) =>
             {
                 simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
                 if(simHasWarnings == true)
                 {
-                    throw new Exception($"Errors on {simulator.GetType().Name} : " + msg);
+                    throw new Exception($"Errors on {sim.GetType().Name} : " + msg);
                 }
                 else
                 {
-                    channel.Stdout($"Msg from {simulator.GetType().Name} : " + msg);
+                    channel.Stdout($"Msg from {sim.GetType().Name} : " + msg);
                 }
             };
-            return simulator;
+            return sim;
         }
     }
 }

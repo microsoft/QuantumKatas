@@ -85,14 +85,18 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
-            if(simulator is QuantumSimulator qsim)
+            SimulatorBase sim = base.SetDisplay(simulator, channel);
+
+            if(sim is QuantumSimulator qsim)
             {
+                // To avoid double printing
+                qsim.OnLog -= channel.Stdout;
                 // To display diagnostic output with rich Jupyter formatting
                 return qsim.WithJupyterDisplay(channel, ConfigurationSource);
             }
             else
             {
-                return base.SetDisplay(simulator, channel);
+                return sim;
             }
         }
     }

@@ -17,6 +17,9 @@ using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
+    /// <summary>
+    /// Abstract base class for Kata magic symbols.
+    /// </summary>
     public abstract class AbstractKataMagic<T> : MagicSymbol
     {
         /// <summary>
@@ -174,9 +177,6 @@ namespace Microsoft.Quantum.Katas
                 foreach(SimulatorBase testSim in testSimulators)
                 {
                     Logger.LogDebug($"Simulating test {test.FullName} on {testSim.GetType().Name}");
-
-                    testSim.DisableExceptionPrinting();
-                    testSim.DisableLogToConsole();
 
                     currSim = SetDisplay(testSim, channel);
 
@@ -357,7 +357,12 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         protected virtual SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
         {
+            simulator.DisableExceptionPrinting();
+            simulator.DisableLogToConsole();
+
             simulator.OnLog += channel.Stdout;
+            simulator.OnDisplayableDiagnostic += channel.Display;
+
             return simulator;
         }
     }
