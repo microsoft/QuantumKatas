@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.VisualizationTools {
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
 
