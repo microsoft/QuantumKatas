@@ -61,6 +61,11 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 * **[Joint measurements](./JointMeasurements/)**.
   Learn about using joint (parity) measurements to distinguish quantum states and to perform state transformations.
 
+#### Q\# and Microsoft Quantum Development Kit Tools
+
+* **[Visualization tools (tutorial)](./tutorials/VisualizationTools/)**.
+  Learn to use the various tools for visualizing elements of Q# programs.
+
 #### Simple Algorithms
 
 * **[Random number generation (tutorial)](./tutorials/RandomNumberGeneration/)**.

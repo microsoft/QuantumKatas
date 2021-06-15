@@ -62,6 +62,8 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitSystemMeasurements SingleQubitSystemMeasurements.ipynb && \
+    # Exclude VisualizationTools, as %debug cell times out in Binder prebuild
+    #./scripts/prebuild-kata.sh tutorials/VisualizationTools VisualizationTools.ipynb && \
 # To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve package dependencies again (as it was already done
