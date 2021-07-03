@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
@@ -11,7 +12,7 @@ using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    public class KataMagic : AbstractKataMagic<OperationInfo>
+    public class KataMagic : AbstractKataMagic
     {
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
@@ -72,12 +73,25 @@ namespace Microsoft.Quantum.Katas
         /// Returns the userAnswer as an operation so that we could verify
         /// if userAnswer is correct by running appropriate test. 
         /// </summary>
-        protected override OperationInfo GetUserAnswer(string userAnswerName) =>
-            Resolver.Resolve(userAnswerName);
+        protected virtual OperationInfo FindSolution(string userAnswer)
+        {
+            var solution = Resolver.Resolve(userAnswer);
+
+            Logger.LogDebug($"Found solution operation {solution}");
+
+            if (solution == null)
+            {
+                throw new Exception($"Solution not found for : {solution}");
+            }
+            return solution;
+        }
 
         /// <inheritdoc/>
-        protected override void SetAllAnswers(OperationInfo skeletonAnswer, OperationInfo userAnswer) =>
-            AllAnswers[skeletonAnswer] = userAnswer;
+        protected override void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer)
+        {
+            var solution = FindSolution(userAnswer);
+            AllAnswers[skeletonAnswer] = FindSolution(userAnswer);
+        }
 
         /// <summary>
         /// Logs the messages with rich Jupyter formatting for simulators of the type QuantumSimulator

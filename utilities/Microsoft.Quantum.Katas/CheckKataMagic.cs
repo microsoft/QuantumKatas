@@ -12,7 +12,7 @@ using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    public class CheckKataMagic : AbstractKataMagic<string>
+    public class CheckKataMagic : AbstractKataMagic
     {
         /// <summary>
         /// IQ# Magic that checks that the reference implementation of a Kata's test runs successfully.
@@ -62,12 +62,6 @@ namespace Microsoft.Quantum.Katas
                Compiler
                .IdentifyElements(code)
                .ToArray();
-
-        /// <summary>
-        /// Returns the useranswer in an appropriate format given the name of userAnswer
-        /// </summary>
-        protected override string GetUserAnswer(string userAnswerName) =>
-            userAnswerName;
 
         /// <summary>
         /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.

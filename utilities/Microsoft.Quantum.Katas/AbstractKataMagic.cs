@@ -17,10 +17,7 @@ using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
 {
-    /// <summary>
-    /// Abstract base class for Kata magic symbols.
-    /// </summary>
-    public abstract class AbstractKataMagic<T> : MagicSymbol
+    public abstract class AbstractKataMagic : MagicSymbol
     {
         /// <summary>
         /// IQ# Magic that enables executing the Katas on Jupyter.
@@ -103,7 +100,7 @@ namespace Microsoft.Quantum.Katas
         /// Checks there is only one operation defined in the code,
         /// and returns its corresponding userAnswer
         /// </summary>
-        protected virtual T Compile(string code, IChannel channel)
+        protected virtual string Compile(string code, IChannel channel)
         {
             try
             {
@@ -122,18 +119,18 @@ namespace Microsoft.Quantum.Katas
                     channel.Stdout("Expecting only one Q# operation in code. Using the first one");
                 }
 
-                return GetUserAnswer(opsNames.First());
+                return opsNames.First();
             }
             catch (CompilationErrorsException c)
             {
                 foreach (var m in c.Errors) channel.Stderr(m);
-                return default(T);
+                return null;
             }
             catch (Exception e)
             {
                 Logger?.LogWarning(e, "Unexpected error.");
                 channel.Stderr(e.Message);
-                return default(T);
+                return null;
             }
         }
 
@@ -144,22 +141,17 @@ namespace Microsoft.Quantum.Katas
         protected abstract QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel);
 
         /// <summary>
-        /// Returns the userAnswer in an appropriate format given the name of userAnswer
-        /// </summary>
-        protected abstract T GetUserAnswer(string userAnswerName);
-
-        /// <summary>
         /// Executes the given kata using the <c>relevantAnswer</c> as the actual answer.
         /// To do this, it finds another operation with the same name but in the Kata's namespace
         /// (by calling <c>FindSkeltonAnswer</c>) and replace its implementation with the <c>relevantAnswer</c>
         /// in the simulator.
         /// </summary>
-        protected virtual bool Simulate(OperationInfo test, T userAnswer, IChannel channel)
+        protected virtual bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
         {
             var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
             if (skeletonAnswer == null)
             {
-                channel.Stderr($"Invalid task: {userAnswer.ToString()}");
+                channel.Stderr($"Invalid task: {userAnswer}");
                 return false;
             }
             SetAllAnswers(skeletonAnswer, userAnswer);
@@ -216,9 +208,9 @@ namespace Microsoft.Quantum.Katas
         /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
         /// test's namespace
         /// </summary>
-        protected virtual OperationInfo FindSkeletonAnswer(OperationInfo test, T userAnswer)
+        protected virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer)
         {
-            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer.ToString()}");
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}");
             Logger.LogDebug($"Resolved {userAnswer} to {skeletonAnswer.FullName}");
             return skeletonAnswer;
         }
@@ -229,7 +221,7 @@ namespace Microsoft.Quantum.Katas
         /// For KataMagic, it verfies the <c>userAnswer</c>
         /// For CheckKataMagic, it verfies the <c>referenceImplementation</c>
         /// </summary>
-        protected abstract void SetAllAnswers(OperationInfo skeletonAnswer, T userAnswer);
+        protected abstract void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer);
 
         /// <summary>
         /// Creates the instance of the simulator(s) on which
