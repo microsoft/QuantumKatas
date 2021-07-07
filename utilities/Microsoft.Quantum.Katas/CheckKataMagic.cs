@@ -2,11 +2,10 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
-using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
@@ -58,10 +57,9 @@ namespace Microsoft.Quantum.Katas
         /// The compiler does this on a best effort basis, and in particular without relying on any context and/or type information,
         /// so it will return the operation even if the compilation fails.
         /// </summary>
-        protected override QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel) =>
+        protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel) =>
                Compiler
-               .IdentifyElements(code)
-               .ToArray();
+               .IdentifyElements(code);
 
         /// <summary>
         /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.

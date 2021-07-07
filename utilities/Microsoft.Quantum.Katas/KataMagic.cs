@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
@@ -60,13 +62,13 @@ namespace Microsoft.Quantum.Katas
         protected IConfigurationSource ConfigurationSource { get; }
 
         ///<inheritdoc/>
-        protected override QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel)
+        protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel)
         {
             var result = Snippets.Compile(code);
 
             foreach (var m in result.warnings) { channel.Stdout(m); }
 
-            return result.Elements;
+            return result.Elements.AsEnumerable();
         }
 
         /// <summary>

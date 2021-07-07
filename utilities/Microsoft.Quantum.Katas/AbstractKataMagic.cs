@@ -138,7 +138,7 @@ namespace Microsoft.Quantum.Katas
         /// Compiles or semi-compiles the given code depending upon the situation
         /// and returns the corresponding QsNamespaceElement Array
         /// </summary>
-        protected abstract QsNamespaceElement[] GetDeclaredCallables(string code, IChannel channel);
+        protected abstract IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel);
 
         /// <summary>
         /// Executes the given kata using the <c>relevantAnswer</c> as the actual answer.
