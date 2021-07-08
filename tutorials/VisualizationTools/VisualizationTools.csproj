@@ -2,8 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <IsPackable>false</IsPackable>
-    <RootNamespace>Quantum.Kata.Superposition</RootNamespace>
+    <RootNamespace>Quantum.Kata.VisualizationTools</RootNamespace>
     <IQSharpLoadAutomatically>true</IQSharpLoadAutomatically>
   </PropertyGroup>
 
