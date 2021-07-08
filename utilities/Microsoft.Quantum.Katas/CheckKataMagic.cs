@@ -166,6 +166,9 @@ namespace Microsoft.Quantum.Katas
                 var hasWarnings = false;
 
                 qsim.DisableLogToConsole();
+
+                qsim.OnDisplayableDiagnostic += channel.Display;
+                
                 qsim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
                 qsim.OnLog += (msg) =>
                 {
