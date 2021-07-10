@@ -100,7 +100,7 @@ namespace Microsoft.Quantum.Katas
         /// Checks there is only one operation defined in the code,
         /// and returns its corresponding userAnswer
         /// </summary>
-        protected virtual string Compile(string code, IChannel channel)
+        protected virtual string? Compile(string code, IChannel channel)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Microsoft.Quantum.Katas
 
                 // Gets the names of all the operations found for this snippet
                 var opsNames =
-                        result?
+                        result
                         .Where(e => e.IsQsCallable)
                         .Select(e => e.ToFullName().WithoutNamespace(Microsoft.Quantum.IQSharp.Snippets.SNIPPETS_NAMESPACE))
                         .OrderBy(o => o)
@@ -156,7 +156,7 @@ namespace Microsoft.Quantum.Katas
             }
             SetAllAnswers(skeletonAnswer, userAnswer);
 
-            SimulatorBase currSim = null;
+            SimulatorBase? currSim = null;
             try
             {
                 List<SimulatorBase> testSimulators = CreateSimulators(channel, test);
@@ -190,14 +190,14 @@ namespace Microsoft.Quantum.Katas
             catch (AggregateException agg)
             {
                 foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
-                channel.Stderr($"Test failed on {currSim.GetType().Name}!");
+                channel.Stderr(currSim != null ? $"Test failed on {currSim.GetType().Name}!" : "Test failed.");
                 channel.Stderr($"Try again!");
                 return false;
             }
             catch (Exception e)
             {
                 channel.Stderr(e.Message);
-                channel.Stderr($"Test failed on {currSim.GetType().Name}!");
+                channel.Stderr(currSim != null ? $"Test failed on {currSim.GetType().Name}!" : "Test failed.");
                 channel.Stderr($"Try again!");
                 return false;
             }
