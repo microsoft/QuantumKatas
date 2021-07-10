@@ -68,7 +68,7 @@ namespace Microsoft.Quantum.Katas
 
             foreach (var m in result.warnings) { channel.Stdout(m); }
 
-            return result.Elements.AsEnumerable();
+            return result.Elements;
         }
 
         /// <summary>
