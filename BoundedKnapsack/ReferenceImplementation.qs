@@ -261,7 +261,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         mutable P_found = P;
         mutable correct = false;
 
-        let Q = RegisterSize(n, itemInstanceBounds);
+        let Q = RegisterSize(itemInstanceBounds);
 
         // We will classically count M (the number of solutions), and calculate the optimal number of Grover iterations.
         // Generally this can be replaced by the quantum counting algorithm.
@@ -308,13 +308,16 @@ namespace Quantum.Kata.BoundedKnapsack {
         return (xs_found, P_found);
     }
 
-    internal function RegisterSize(n : Int, itemInstanceBounds : Int[]) : Int {
-        // Calculate the total number of qubits for the register, given the bounds array. The item with index i can have 0 to bᵢ instances,
-        // which requires log₂(bᵢ+1) qubits (rounded up). The auxiliary function BitSizeI is used to facilitate
-        // this calculation. The total number of qubits, Q, is the sum of each individual number of qubits.
+
+    /// # Summary
+    /// Calculate the number of qubits necessary to store a concatenation of the given integers.
+    /// # Remarks
+    /// Storing each integer bᵢ requires log₂(bᵢ+1) qubits (rounded up), computes using BitSizeI.
+    /// Storing all integers requires a sum of registers required to store each one.
+    internal function RegisterSize (arrayElementBounds : Int[]) : Int {
         mutable Q = 0;
-        for bound in itemInstanceBounds {
-            set Q += BitSizeI(bound);
+        for b in arrayElementBounds {
+            set Q += BitSizeI(b);
         }
         return Q;
     }
@@ -353,11 +356,11 @@ namespace Quantum.Kata.BoundedKnapsack {
     // Calculate value M for the oracle (number of solutions), which is used in determining how many
     // Grover Iterations are necessary in Grover's Algorithm.
     internal function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[]) : Int {
-        let Q = RegisterSize(n, itemInstanceBounds);
+        let Q = RegisterSize(itemInstanceBounds);
         mutable m = 0;
         for combo in 0 .. (1 <<< Q) - 1 {
             let binaryCombo = IntAsBoolArray(combo, Q);
-            let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+            let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
 
             // Determine if each combination is a solution.
             mutable ActualBounds = true;
@@ -380,12 +383,18 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    internal function BoolArrayAsIntArray (n : Int, itemInstanceBounds : Int[], binaryCombo : Bool[]) : Int[]{
+    /// # Summary
+    /// Convert a single array of bits which stores n integers into an array of integers written in it.
+    /// Each integer can be between 0 and bᵢ, inclusive, which defines the number of bits its notation takes.
+    internal function BoolArrayConcatenationAsIntArray (arrayElementBounds : Int[], binaryCombo : Bool[]) : Int[] {
+        let n = Length(arrayElementBounds);
         mutable xsCombo = new Int[n];
+        // Track the index at which the next integer starts
         mutable q = 0;
-        for (i, b) in (Enumerated(itemInstanceBounds)) {
-            set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q..q+BitSizeI(b)-1]);
-            set q += BitSizeI(b);
+        for (i, b) in Enumerated(arrayElementBounds) {
+            let bLength = BitSizeI(b);
+            set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q .. q + bLength - 1]);
+            set q += bLength;
         }
         return xsCombo;
     }

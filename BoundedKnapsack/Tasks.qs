@@ -178,26 +178,30 @@ namespace Quantum.Kata.BoundedKnapsack
     //////////////////////////////////////////////////////////////////
 
     // Introduction:
-    // Unlike in the 0-1 knapsack problem, each type of item in the bounded
-    // knapsack problem can have more than one instance. Specifically,
-    // for the item type with index i, between 0 and bᵢ instances (inclusive) can be put into the knapsack.
-    // Let xᵢ represent the number of instances of index i that are put into the knapsack, so 0 ≤ xᵢ ≤ bᵢ for all i.
-    // Thus, we seek a combination xs = [x₀, x₁, ..., xₙ₋₁] that satisfies the bounds,
-    // has total weight at most W, and has total profit that is at least P.
+    // In this version of the problem we still consider n items, indexed 0 to n-1,
+    // the item with index i has a weight of wᵢ and yields a profit of pᵢ.
+    // But in the bounded knapsack version of the problem, unlike in the 0-1 knapsack problem,
+    // each type of item can have more than one instance, and can be selected multiple times.
+    // Specifically, there are bᵢ instances of item type with index i, so this item type
+    // can be selected between 0 and bᵢ times, inclusive.
+    // Let xᵢ represent the number of instances of index i that are put into the knapsack; 0 ≤ xᵢ ≤ bᵢ for all i.
+    // Thus, we seek a combination xs = [x₀, x₁, ..., xₙ₋₁] which
+    // has total weight at most W, and has total profit that is greater than P.
 
     // Again, we slightly modify the problem, such that the total profit must
     // be strictly greater than P, rather than at least P.
 
     // The comparators from Part I can be reused, but the operations for
-    // weight and profit calculation will need to be rewritten.
+    // calculating total weight and profit will need to be rewritten.
 
 
     // Task 2.1. Read combination from a jagged array of qubits
-    // Inputs:
-    //        1) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
+    // Input: A jagged array of qubits of length n. 
+    //        Array selectedItems[i] represents the binary notation of xᵢ in little-endian format.
+    //        Each qubit is guaranteed to be in one of the basis states (|0⟩ or |1⟩).
     // Output: An integer array of length n, containing the combination that this jagged array represents.
     //         The integer at index i in the output array should have value xᵢ.
-    //         The input qubits can be in superposition, and the state of the each qubit should not change.
+    //         The operation should not change the state of the qubits.
     // Example: For state xs = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
     operation MeasureCombination (xs : Qubit[][]) : Int[] {
         // ...

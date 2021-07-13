@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.BoundedKnapsack
 {
+    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Logical;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
@@ -16,6 +17,7 @@ namespace Quantum.Kata.BoundedKnapsack
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Random;
 
     open Quantum.Kata.Utils;
 
@@ -261,63 +263,48 @@ namespace Quantum.Kata.BoundedKnapsack
     // Part II. Bounded Knapsack Problem
     //////////////////////////////////////////////////////////////////
     
-    // Hardcoded sets of knapsack problem parameters, for testing the operations
+    // Hardcoded sets of knapsack problem parameters for testing the operations.
     // The function returns an array of tuples, each representing a set of parameters.
     // The contents of each tuple include: n, W, P, itemWeights, itemProfits, P_max (in that order).
-    // Note: For each set, P is a sample profit threshold for testing that set in the
-    //       knapsack decision problem. P_max is the maximum profit achievable within the
-    //       given bounds and weight constraints of that set (i.e. the solution to the
-    //       knapsack optimization problem). P and P_max will never actually be used in the
-    //       same test.
+    // For each set, 
+    //  * P is a sample profit threshold for testing that set in the knapsack decision problem.
+    //  * P_max is the maximum profit achievable within the given constraints of that set 
+    //    (i.e., the solution to the knapsack optimization problem).
+    //  * P and P_max will never be used in the same test.
     function ExampleSets () : (Int, Int, Int, Int[], Int[], Int[], Int)[] {
-        return [(2, 30, 10, [2,5], [1,3], [7,5], 17),
-                (3, 24, 16, [2,3,10], [2,3,15], [6,5,2], 24),
-                (3, 16, 5, [6,3,1], [5,2,1], [4,7,2], 13),
-                (4, 14, 24, [1,2,3,1], [2,4,9,2], [4,3,2,3], 34)];
+        return [(2, 30, 10, [2, 5], [1, 3], [7, 5], 17),
+                (3, 24, 16, [2, 3, 10], [2, 3, 15], [6, 5, 2], 24),
+                (3, 16, 5, [6, 3, 1], [5, 2, 1], [4, 7, 2], 13),
+                (4, 14, 24, [1, 2, 3, 1], [2, 4, 9, 2], [4, 3, 2, 3], 34)];
     }
 
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T21_MeasureCombination () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+        for (n, _, _, _, _, itemInstanceBounds, _) in ExampleSets() {
+            // Calculate the total number of qubits necessary to store the integers.
+            let Q = RegisterSize(itemInstanceBounds);
+            use register = Qubit[Q];
 
-            // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
-            using (register = Qubit[Q]){
-                // It will be too time-intensive to iterate through all possible combinations of items,
-                // so a random selection of combinations will be used for testing.
-                mutable combos = new Int[4*Q];
-                for (c in 0..4*Q-1){
-                    set combos w/= c <- RandomIntPow2(Q);
-                }
-                
-                // Iterate through the selected combinations.
-                for (combo in combos){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, Q);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+            // It will be too time-intensive to iterate through all possible combinations of items,
+            // so random combinations will be used for testing.
+            for _ in 1 .. 4 * Q {
+                let combo = DrawRandomInt(0, 2^Q - 1);
+                // Prepare the register so that it represents the combination.
+                let binaryCombo = IntAsBoolArray(combo, Q);
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
                     
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
-
-                    // Convert the quantum register.
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                // Convert the quantum register into a jagged array.
+                let jaggedRegister = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Measure the combination written in it as an Int[].
+                let measuredCombo = MeasureCombination(jaggedRegister);
 
-                    // Measure the combination.
-                    let measuredXsCombo = MeasureCombination(xs);
+                // Check that the measured result matches the expected one.
+                let expectedCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
+                AllEqualityFactI(measuredCombo, expectedCombo, "The result doesn't match the expected combination");
 
-                    // Assert that both methods yield the same result
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
-                    Fact(Length(measuredXsCombo) == n, $"Unexpected result for combination {xsCombo} : Output array has length {Length(measuredXsCombo)}, should have {n}.");
-                    for (i in 0..n-1){
-                        Fact(measuredXsCombo[i] == xsCombo[i], $"Unexpected result for combination {xsCombo} : At index {i}, the output has integer {measuredXsCombo[i]}, should be {xsCombo[i]}.");
-                    }
-                    ResetAll(register);
-                }
+                ResetAll(register);
             }
         }
     }
@@ -328,7 +315,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             using (register = Qubit[Q]){
                 // It will be too time-intensive to iterate through all possible combinations of items,
@@ -351,11 +338,10 @@ namespace Quantum.Kata.BoundedKnapsack
                     let xs = RegisterAsJaggedArray(n, itemInstanceBounds, register);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     // Convert the register classically as an Int array.
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
 
                     // Assert that both methods yield the same result
                     Fact(Length(xs) == n, $"Unexpected result for combination {xsCombo} : Output jagged array has length {Length(xs)}, should have {n}.");
@@ -376,7 +362,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             using ((register, target) = (Qubit[Q], Qubit())){
                 // It will be too time-intensive to iterate through all possible combinations of items,
@@ -400,13 +386,12 @@ namespace Quantum.Kata.BoundedKnapsack
                     VerifyBounds(n, itemInstanceBounds, xs, target);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     let output = (M(target) == One);
 
                     // Verify the bounds classically
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
                     mutable actualBounds = true;
                     for (i in 0..n-1){
                         // If any bound isn't satisfied, the operation should return 0.
@@ -451,7 +436,6 @@ namespace Quantum.Kata.BoundedKnapsack
                             IncrementByProduct(x, qy, qz);
                     
                             // Make sure the solution didn't use any measurements
-                            Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                             Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                             let measuredZ = ResultArrayAsInt(MultiM(qz));
@@ -483,7 +467,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             let numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceBounds);
             let numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceBounds);
@@ -511,14 +495,13 @@ namespace Quantum.Kata.BoundedKnapsack
                     CalculateTotalValueOfSelectedItems(itemProfits, xs, totalProfit);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
                     mutable MeasuredProfit = ResultArrayAsInt(MultiM(totalProfit));
 
                     // Calculate the weight and profit classically
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
                     mutable actualWeight = 0;
                     mutable actualProfit = 0;
                     for (i in 0..n-1){
@@ -543,7 +526,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             using ((register, target) = (Qubit[Q], Qubit())){
                 // It will be too time-intensive to iterate through all possible combinations of items,
@@ -567,13 +550,12 @@ namespace Quantum.Kata.BoundedKnapsack
                     VerifyWeight(W, itemWeights, xs, target);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     let output = (M(target) == One);
 
                     // Verify the weight classically
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
                     mutable actualWeight = 0;
                     for (i in 0..n-1){
                         // Add the weight of all instances of this item type.
@@ -595,7 +577,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             using ((register, target) = (Qubit[Q], Qubit())){
                 // It will be too time-intensive to iterate through all possible combinations of items,
@@ -619,13 +601,12 @@ namespace Quantum.Kata.BoundedKnapsack
                     VerifyProfit(P, itemProfits, xs, target);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     let output = (M(target) == One);
 
                     // Verify the profit classically
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
                     mutable actualProfit = 0;
                     for (i in 0..n-1){
                         // Add the profit of all instances of this item type.
@@ -647,7 +628,7 @@ namespace Quantum.Kata.BoundedKnapsack
         for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
 
             // Calculate the total number of qubits
-            let Q = RegisterSize(n, itemInstanceBounds);
+            let Q = RegisterSize(itemInstanceBounds);
 
             using ((register, target) = (Qubit[Q], Qubit())){
                 // It will be too time-intensive to iterate through all possible combinations of items,
@@ -671,13 +652,12 @@ namespace Quantum.Kata.BoundedKnapsack
                     KnapsackValidationOracle(n, W, P, itemWeights, itemProfits, itemInstanceBounds, register, target);
                     
                     // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(M) == 0, "You are not allowed to use measurements in this task");
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
                     let output = (M(target) == One);
 
                     // Verify the combination classically
-                    let xsCombo = BoolArrayAsIntArray(n, itemInstanceBounds, binaryCombo);
+                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
                     mutable actualBounds = true;
                     mutable actualWeight = 0;
                     mutable actualProfit = 0;
@@ -711,7 +691,7 @@ namespace Quantum.Kata.BoundedKnapsack
         let (n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) = testSets[0];
 
         // Calculate the total number of qubits
-        let Q = RegisterSize(n, itemInstanceBounds);
+        let Q = RegisterSize(itemInstanceBounds);
 
         using ((register, target) = (Qubit[Q], Qubit())){
 
