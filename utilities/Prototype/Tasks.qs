@@ -5,10 +5,9 @@ namespace Quantum.Kata.Prototype {
 
     //////////////////////////////////////////////////////////////////
     // Welcome!
-    //////////////////////////////////////////////////////////////////
-
-    // This kata is meant to serve as check for validating
+    // This file is meant to serve as backend for validating
     // the functionality of %kata and %check_kata magic
+    //////////////////////////////////////////////////////////////////
 
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;

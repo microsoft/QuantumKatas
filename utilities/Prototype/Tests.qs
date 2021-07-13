@@ -5,7 +5,6 @@
 // This file contains testing harness to verify
 // if the `%kata` and `%check_kata` magics work as expected.
 // You should not modify anything in this file.
-// The tasks themselves can be found in Tasks.qs file.
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.Prototype {
@@ -15,33 +14,32 @@ namespace Quantum.Kata.Prototype {
     open Microsoft.Quantum.Diagnostics;
     open Quantum.Kata.Utils;
 
-    // This test imposes no limitation on the number of H gates that can be
-    // called by the user to convert |0> to |+> state.
-    // This test would fail on Toffoli Simulator.
-    // Toffoli Simulator is only able to simulate operations
-    // that use X, CNOT,etc gates(and their controlled version.)
-    //
-    // Note : We can't design a test that passes on QuantumSimulator but
-    // fails on CounterSimulator, since latter offers all the functionality of the former
-    @Test("QuantumSimulator")
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation QuantumSimulatorCheck() : Unit {
-        use q = Qubit();
+    /// # Summary
+    /// The operation below checks if all qubits in the register have been
+    /// successfully converted from zeros to ones
+    /// #Input
+    /// ## N
+    /// The number of qubits in the register
+    operation Check_FlipZerosToOnes(N : Int) : Unit {
 
-        H(q);
+        use qs = Qubit[N];
 
-        FlipZeroToPlusNoRestriction(q);
+        FlipZerosToOnes(qs);
 
-        AssertQubit(Zero, q);
-        
-        Message("Test passed...");
+        for q in qs
+        {
+            AssertQubit(One, q);
+        }
+
+        ResetAll(qs);
+
+        Message($"Test passed for {N} qubits");
     }
 
-    // This test allows user to use only one H gate to convert |0> to |+> state.
-    //
-    // This test would fail on Toffoli and Quantum Simulator since they do not support
-    // ResetOracleCallsCount() and GetOracleCallsCount() functionality
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    /// #Summary
+    /// This operation allows user to use only one H gate to convert |0> to |+> state
+    /// using ResetOracleCallsCount() and GetOracleCallsCount(H) respectively.
+    /// This can only be run on a CounterSimulator.
     operation CounterSimulatorCheck() : Unit {
         use q = Qubit();
         H(q);
@@ -52,50 +50,147 @@ namespace Quantum.Kata.Prototype {
         let nu = GetOracleCallsCount(H);
 
         AssertQubit(Zero, q);
-        
+
         EqualityFactI(nu, 1, $"You are allowed to call H gate exactly once, and you called it {nu} times");
-    
+
         Message("Test passed...");
     }
 
-    // This test allocates and manipulates 50 qubits(>30 qubits), so that
-    // full state simulator runs out of memory during the qubit allocation
-    @Test("ToffoliSimulator")
-    operation ToffoliSimulatorCheck() : Unit {
-        use qs = Qubit[150];
+    /// #Summary
+    /// This operation imposes no limitation on the number of H gates that can be
+    /// called by the user to convert |0> to |+> state.
+    /// This test can't be run on ToffoliSimulator, since Toffoli simulator
+    /// allows for only `X`, `CNOT`, `CCNOT` and controlled version of `X` gates.
+    operation QuantumSimulatorCheck() : Unit {
+        use q = Qubit();
 
-        FlipZerosToOnes(qs);
+        H(q);
 
-        for q in qs
-        {
-            AssertQubit(One, q);
-        }
+        FlipZeroToPlusNoRestriction(q);
 
-        ResetAll(qs);
+        AssertQubit(Zero, q);
 
         Message("Test passed...");
+    }
+
+    // ------------------------------------------------------
+    // Toffoli Simulator
+    // - Toffoli simulator can support a large number of qubits.
+    // - However, it can only support the X, CNOT, CCNOT and controlled variants of X gates.
+    // ------------------------------------------------------
+
+    /// # Summary
+    /// The test below allocates and manipulates 150 qubits.
+    /// We can use only Toffoli simulator for this test.
+    /// A full state simulator will run out of memory during the qubit allocation
+    /// if large number of qubits are allocated.
+    /// Below is an example of passing test.
+    @Test("ToffoliSimulator")
+    operation T11_PassOnToffoliSimulator() : Unit {
+        Check_FlipZerosToOnes(150);
 	}
 
+    /// # Summary
+    /// The test below allocates and manipulates 150 qubits.
+    /// We can use only Toffoli simulator for this test.
+    /// A full state simulator will run out of memory during the qubit allocation
+    /// if large number of qubits are allocated, and hence the test would fail
+    /// Below is an example of failing test.
+    @Test("QuantumSimulator")
+    operation T12_FailOnQuantumSimulator() : Unit {
+        Check_FlipZerosToOnes(150);
+	}
 
-    // This test checks if qubits are in |1..1> state.
-    // This test would pass on all simulators if the user used X gate,
-    // CNOT and their controlled versions
+    /// # Summary
+    /// The test below allocates and manipulates 150 qubits.
+    /// We can use only Toffoli simulator for this test.
+    /// A full state simulator will run out of memory during the qubit allocation
+    /// if large number of qubits are allocated, and hence the test would fail
+    /// Below is an example of failing test.
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T13_FailOnCounterSimulator() : Unit {
+        Check_FlipZerosToOnes(150);
+	}
+
+    // ------------------------------------------------------
+    // Counter Simulator
+    // ------------------------------------------------------
+    // This simulator is designed especially for the purpose of imposing
+    // limits on the learner while they think of solutions.
+    //
+    // Note : Any test using the custom functionalities of CounterSimulator would
+    // fail on Toffoli and Quantum Simulator due to lack of support
+    // For details about custom functionalities offered by CounterSimulator,
+    // check the operations in Utils.qs file here()
+
+    /// #Summary
+    /// This test below uses ResetOracleCallsCount() and GetOracleCallsCount(H)
+    /// from the CounterSimulator respectively to allow user to use only one H gate
+    /// Below is an example of passing test
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T21_PassOnCounterSimulator() : Unit {
+        CounterSimulatorCheck();
+    }
+
+    /// #Summary
+    /// This test below uses ResetOracleCallsCount() and GetOracleCallsCount(H)
+    /// and hence would fail on simulators other than CounterSimulator.
+    @Test("QuantumSimulator")
+    operation T22_FailOnQuantumSimulator() : Unit {
+        CounterSimulatorCheck();
+    }
+
+    /// #Summary
+    /// This test below uses ResetOracleCallsCount() and GetOracleCallsCount(H)
+    /// and hence would fail on simulators other than CounterSimulator.
+    @Test("ToffoliSimulator")
+    operation T23_FailOnToffoliSimulator() : Unit {
+        CounterSimulatorCheck();
+    }
+
+    // ------------------------------------------------------
+    // Quantum Simulator
+    // ------------------------------------------------------
+
+    /// # Summary
+    /// This test imposes no limitation on the number of H gates that can be
+    /// called by the user to convert |0> to |+> state.
+    ///
+    /// Note : We are using mutltiple @Test attributes to check if the test succeeded
+    /// on both QuantumSimulator and CounterSimulator since we can't design a test
+    /// that passes on QuantumSimulator but fails on CounterSimulator
+    /// This is because latter offers all the functionality of the former.
+    @Test("QuantumSimulator")
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation T31_PassOnQuantumSimulator() : Unit {
+        QuantumSimulatorCheck();
+    }
+
+    /// # Summary
+    /// This test fails on `ToffoliSimulator` because it allows to simulate
+    /// `X`, `CNOT`, `CCNOT` and controlled version of `X` gates.
+    @Test("ToffoliSimulator")
+    operation T32_FailOnToffoliSimulator() : Unit {
+        QuantumSimulatorCheck();
+    }
+
+    // ------------------------------------------------------
+    // Multiple Simulators
+    // ------------------------------------------------------
+
+    /// #Summary
+    /// This test uses multiple `@Test` attrributes to simulate on multiple simulators
+    /// The test succeeds if its successful on simulators in the set
+    /// {`QuantumSimulator`, `CounterSimulator` , `ToffoliSimulator`}
+    ///
+    /// For succcess, the user needs to succesfully convert
+    /// all qubits from |0..0> to |1..1> state using `X`, `CNOT`, `CCNOT`
+    /// and controlled versions of `X` gates
     @Test("QuantumSimulator")
     @Test("ToffoliSimulator")
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation MultipleSimulatorCheck() : Unit {
-        use qs = Qubit[2];
-
-        FlipZerosToOnes(qs);
-
-        for q in qs
-        {
-            AssertQubit(One, q);
-        }
-
-        ResetAll(qs);
-
-        Message("Test passed...");
+        Check_FlipZerosToOnes(2);
 	}
 
 }
