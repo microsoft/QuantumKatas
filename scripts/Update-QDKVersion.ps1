@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.15.2102129448
+        PS> ./Update-QDKVersion.ps1 -Version 0.18.2106148911
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
@@ -39,22 +39,6 @@ $csFiles | ForEach-Object {
              $_
          }
     } | Set-Content -Encoding UTF8 $_.Path
-}
-
-$ipynbString = "%package Microsoft.Quantum.Katas::$versionRegex"
-$ipynbFiles =  (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.ipynb" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum" } | Select-Object -Unique Path)
-$ipynbFiles | ForEach-Object {
-    if ($_)
-    {
-        (Get-Content $_.Path) | ForEach-Object {
-            $isQuantumPackage = $_ -match $ipynbString
-            if ($isQuantumPackage) {
-                $_ -replace $Matches.oldVersion, $Version
-            } else {
-                $_
-            }
-        } | Set-Content $_.Path
-    }
 }
 
 $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
