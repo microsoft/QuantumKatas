@@ -1,4 +1,4 @@
-// Copyright (c) Wenjun Hou.
+﻿// Copyright (c) Wenjun Hou.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -281,7 +281,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
     @Test("QuantumSimulator")
     operation T21_MeasureCombination () : Unit {
-        for (n, _, _, _, _, itemInstanceBounds, _) in ExampleSets() {
+        for (_, _, _, _, _, itemInstanceBounds, _) in ExampleSets() {
             // Calculate the total number of qubits necessary to store the integers.
             let Q = RegisterSize(itemInstanceBounds);
             use register = Qubit[Q];
@@ -295,7 +295,7 @@ namespace Quantum.Kata.BoundedKnapsack
                 ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
                     
                 // Convert the quantum register into a jagged array.
-                let jaggedRegister = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                let jaggedRegister = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     
                 // Measure the combination written in it as an Int[].
                 let measuredCombo = MeasureCombination(jaggedRegister);
@@ -310,49 +310,30 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    @Test("QuantumSimulator")
     operation T22_RegisterAsJaggedArray () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceBounds, P_max) in ExampleSets()){
+        // Run the test on integers, since qubits are not possible to compare to each other directly.
+        for (_, _, _, _, _, integerBounds, _) in ExampleSets() {
+            // Generate random integers between 0 and integerBounds[i] to fill the array.
+            let integers = ForEach(DrawRandomInt(0, _), integerBounds);
+            // Convert those integers into bit strings.
+            let integersBitstrings = Mapped(IntAsBoolArray, Zipped(integers, Mapped(BitSizeI, integerBounds)));
+            // Concatenate bit strings to get the input array.
+            let inputRegister = Flattened(integersBitstrings);
 
-            // Calculate the total number of qubits
-            let Q = RegisterSize(itemInstanceBounds);
+            // Call the solution to get bit strings back.
+            Message($"Testing {inputRegister}, {integerBounds}...");
+            let actualBitstrings = RegisterAsJaggedArray(inputRegister, integerBounds);
 
-            using (register = Qubit[Q]){
-                // It will be too time-intensive to iterate through all possible combinations of items,
-                // so a random selection of combinations will be used for testing.
-                mutable combos = new Int[2*Q];
-                for (c in 0..2*Q-1){
-                    set combos w/= c <- RandomIntPow2(Q);
-                }
+            // Compare the lengths of the bit strings to the expected ones.
+            let actualLengths = Mapped(Length, actualBitstrings);
+            AllEqualityFactI(actualLengths, Mapped(BitSizeI, integerBounds), 
+                "The lengths of the elements of your return should match the numbers of bits necessary to store bᵢ.");
 
-                // Iterate through the selected combinations.
-                for (combo in combos){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, Q);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
-
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
-
-                    // Convert the quantum register.
-                    let xs = RegisterAsJaggedArray(n, itemInstanceBounds, register);
-                    
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
-
-                    // Convert the register classically as an Int array.
-                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceBounds, binaryCombo);
-
-                    // Assert that both methods yield the same result
-                    Fact(Length(xs) == n, $"Unexpected result for combination {xsCombo} : Output jagged array has length {Length(xs)}, should have {n}.");
-                    for (i in 0..n-1){
-                        Fact(Length(xs[i]) == BitSizeI(itemInstanceBounds[i]), $"Unexpected result for combination {xsCombo} : The array at index {i} in the output jagged array has length {Length(xs[i])}, should have {BitSizeI(itemInstanceBounds[i])}.");
-                        let outputInt = ResultArrayAsInt(MultiM(xs[i]));
-                        Fact(outputInt == xsCombo[i], $"Unexpected result for combination {xsCombo} : At index {i}, the output has integer {outputInt}, should be {xsCombo[i]}.");
-                    }
-                    ResetAll(register);
-                }
-            }
+            // Compare the concatenation of the bit strings to the expected one.
+            AllEqualityFactB(Flattened(actualBitstrings), inputRegister, 
+                "The concatenation of all elements of your return should match the input register.");
+            Message("   Success!");
         }
     }
     
@@ -382,7 +363,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Verify the bounds with qubits
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     VerifyBounds(n, itemInstanceBounds, xs, target);
                     
                     // Make sure the solution didn't use any measurements
@@ -490,7 +471,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Calculate and measure the total weight and profit with qubits
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     CalculateTotalValueOfSelectedItems(itemWeights, xs, totalWeight);
                     CalculateTotalValueOfSelectedItems(itemProfits, xs, totalProfit);
                     
@@ -546,7 +527,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Verify the weight with qubits
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     VerifyWeight(W, itemWeights, xs, target);
                     
                     // Make sure the solution didn't use any measurements
@@ -597,7 +578,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Verify the profit with qubits
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     VerifyProfit(P, itemProfits, xs, target);
                     
                     // Make sure the solution didn't use any measurements
@@ -648,7 +629,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     ResetOracleCallsCount();
 
                     // Verify the combination with qubits
-                    let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
                     KnapsackValidationOracle(n, W, P, itemWeights, itemProfits, itemInstanceBounds, register, target);
                     
                     // Make sure the solution didn't use any measurements

@@ -144,17 +144,14 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 2.2. Convert qubit register into jagged qubit array
-    function RegisterAsJaggedArray_Reference (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][] {
-        // Note: Declaring a new qubit array doesn't actually allocate new qubits; it allocates
-        //       memory to store references to existing qubits.
-        mutable xs = new Qubit[][n];
-        mutable q = 0;
-        for i in 0 .. n - 1 {
-            set xs w/= i <- register[q..q+BitSizeI(itemInstanceBounds[i])-1];
-            set q += BitSizeI(itemInstanceBounds[i]);
-        }
-        return xs;
+    // Task 2.2. Convert qubit register into a jagged qubit array
+    function RegisterAsJaggedArray_Reference<'T> (array : 'T[], b : Int[]) : 'T[][] {
+        let n = Length(b);
+        // Identify bit lengths of integers bᵢ.
+        let bitLengths = Mapped(BitSizeI, b);
+        // Partition the array in accordance to these lengths.
+        // Remember to discard the last element in the return of Partitioned, which will be empty.
+        return Most(Partitioned(bitLengths, array));
     }
 
 
@@ -236,7 +233,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 2.9. Bounded knapsack problem validation oracle
     operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceBounds : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+        let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
         use (outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit());
         within {
             // Compute the result of each verification onto separate qubits
@@ -282,7 +279,7 @@ namespace Quantum.Kata.BoundedKnapsack {
             GroversAlgorithm_Loop(register, KnapsackValidationOracle_Reference(n, W, P, itemWeights, itemProfits, itemInstanceBounds, _, _), iter);
 
             // Measure the combination that Grover's Algorithm finds.
-            let xs = RegisterAsJaggedArray_Reference(n, itemInstanceBounds, register);
+            let xs = RegisterAsJaggedArray_Reference(register, itemInstanceBounds);
             for i in 0 .. n - 1 {
                 let result = MultiM(xs[i]);
                 set xs_found w/= i <- ResultArrayAsInt(result);
@@ -384,19 +381,13 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     /// # Summary
-    /// Convert a single array of bits which stores n integers into an array of integers written in it.
+    /// Convert a single array of bits which stores binary notations of n integers into an array of integers written in it.
     /// Each integer can be between 0 and bᵢ, inclusive, which defines the number of bits its notation takes.
     internal function BoolArrayConcatenationAsIntArray (arrayElementBounds : Int[], binaryCombo : Bool[]) : Int[] {
-        let n = Length(arrayElementBounds);
-        mutable xsCombo = new Int[n];
-        // Track the index at which the next integer starts
-        mutable q = 0;
-        for (i, b) in Enumerated(arrayElementBounds) {
-            let bLength = BitSizeI(b);
-            set xsCombo w/= i <- BoolArrayAsInt(binaryCombo[q .. q + bLength - 1]);
-            set q += bLength;
-        }
-        return xsCombo;
+        // Split the bool array into a jagged bool array.
+        let binaryNotations = RegisterAsJaggedArray_Reference(binaryCombo, arrayElementBounds);
+        // Convert each element of the jagged array into an integer.
+        return Mapped(BoolArrayAsInt, binaryNotations);
     }
     
     

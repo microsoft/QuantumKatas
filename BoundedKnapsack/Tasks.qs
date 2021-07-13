@@ -209,22 +209,26 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    // Task 2.2. Convert qubit register into jagged qubit array
-
-    // To facilitate access to the register's qubits within the oracle, the register is reorganized
-    // into qubit groups, that represent, in little-endian format, the number of instances of each item type.
+    // Task 2.2. Convert an array into a jagged array
+    // To simplify access to the register as an array of integers within the oracle, 
+    // we reorganize the register into several qubit arrays that represent, in little-endian format, 
+    // the number of instances of each item type.
+    // We can do the same transformation with arrays of other types, for example, 
+    // arrays of classical bits (boolean or integer) that store binary notations of several integers.
+    // To make our code reusable, we can make it type-parameterized.
+    // 
     // Inputs:
-    //        1) An integer n, the number of items
-    //        2) An array of Q qubits
-    //        3) An array of n integers, such that itemInstanceBounds[i] = bᵢ.
-    // Output: A jagged array of n arrays of qubits. Small array i should have enough
-    //         qubits to represent any integer from 0 to bᵢ in little-endian format. Q is defined
-    //         such that there are exactly enough total qubits to perform this transformation.
-    //         The input qubits can be in superposition, and the state of the each qubit should not change.
-    // Example: For n = 3, itemInstanceBounds = [6, 15, 13], and register in state |10111100100⟩, return [|101⟩, |1110⟩, |0100⟩].
-    function RegisterAsJaggedArray (n : Int, itemInstanceBounds : Int[], register : Qubit[]) : Qubit[][]{
+    //      1) An array of type T (T could be qubits or classical bits).
+    //      2) An array of n integers bᵢ.
+    // Output: A jagged array of n arrays of type T. 
+    //         i-th element of the return value should have enough bits to represent the integer bᵢ in binary notation.
+    //         The length of the input array of T is defined to be able to store all integers bᵢ.
+    // Example: For b = [6, 15, 13] and a register of qubits in state |10111100100⟩, 
+    //          you need to use 3, 4, and 4 bits to represent the integers bᵢ,
+    //          so you'll return an array of qubit arrays [|101⟩, |1110⟩, |0100⟩].
+    function RegisterAsJaggedArray<'T> (array : 'T[], b : Int[]) : 'T[][] {
         // ...
-        return new Qubit[][0];
+        return new 'T[][0];
     }
 
 
