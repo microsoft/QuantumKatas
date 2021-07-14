@@ -448,26 +448,23 @@ namespace Quantum.Kata.BoundedKnapsack
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T26_CalculateTotalValueOfSelectedItems () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceLimits, P_max) in ExampleSets()){
+        for (_, _, _, itemWeights, itemProfits, itemInstanceLimits, _) in ExampleSets() {
+            for values in [itemWeights, itemProfits] {
+                // Calculate the total number of qubits necessary to store the integers.
+                let Q = RegisterSize(itemInstanceLimits);
 
-            // Calculate the total number of qubits
-            let Q = RegisterSize(itemInstanceLimits);
+                // Calculate the number of bits necessary to store the maximal total value.
+                let numQubitsTotal = NumBitsTotalValue_Reference(values, itemInstanceLimits);
 
-            let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemInstanceLimits);
-            let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemInstanceLimits);
-
-            using ((register, totalWeight, totalProfit) = (Qubit[Q], Qubit[numQubitsTotalWeight], Qubit[numQubitsTotalProfit])){
+                use (register, totalValue) = (Qubit[Q], Qubit[numQubitsTotal]);
                 // It will be too time-intensive to iterate through all possible combinations of items,
-                // so a random selection of combinations will be used for testing.
-                mutable combos = new Int[2*Q];
-                for (c in 0..2*Q-1){
-                    set combos w/= c <- RandomIntPow2(Q);
-                }
-
-                // Iterate through the selected combinations.
-                for (combo in combos){
+                // so random combinations will be used for testing.
+                for _ in 1 .. 4 * Q {
+                    // Generate random integers between 0 and integerLimits[i] to fill the array.
+                    let itemCounts = ForEach(DrawRandomInt(0, _), itemInstanceLimits);
+                    // Convert those integers into bit strings and concatenate them.
+                    let binaryCombo = Flattened(Mapped(IntAsBoolArray, Zipped(itemCounts, Mapped(BitSizeI, itemInstanceLimits))));
                     // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, Q);
                     ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
 
                     // Reset the counter of measurements done
@@ -475,30 +472,26 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     // Calculate and measure the total weight and profit with qubits
                     let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
-                    CalculateTotalValueOfSelectedItems(itemWeights, xs, totalWeight);
-                    CalculateTotalValueOfSelectedItems(itemProfits, xs, totalProfit);
+                    CalculateTotalValueOfSelectedItems(values, xs, totalValue);
                     
                     // Make sure the solution didn't use any measurements
                     Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    mutable MeasuredWeight = ResultArrayAsInt(MultiM(totalWeight));
-                    mutable MeasuredProfit = ResultArrayAsInt(MultiM(totalProfit));
+                    mutable actualValue = MeasureInteger(LittleEndian(totalValue));
 
                     // Calculate the weight and profit classically
-                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceLimits, binaryCombo);
-                    mutable actualWeight = 0;
-                    mutable actualProfit = 0;
-                    for (i in 0..n-1){
+                    mutable expectedValue = 0;
+                    for (val, num) in Zipped(values, itemCounts) {
                         // Add the weight of all instances of this item type.
-                        set actualWeight += itemWeights[i]*xsCombo[i];
-                        set actualProfit += itemProfits[i]*xsCombo[i];
+                        set expectedValue += val * num;
                     }
 
                     // Assert that both methods yield the same result
-                    Fact(actualWeight == MeasuredWeight and actualProfit == MeasuredProfit, $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, itemProfits = {itemProfits}: total weight {MeasuredWeight} and profit {MeasuredProfit}");
-                    ResetAll(register);
-                    ResetAll(totalWeight);
-                    ResetAll(totalProfit);
+                    Fact(actualValue == expectedValue, $"Unexpected result for item counts = {itemCounts}, item values = {values}: total value {actualValue}, expected {expectedValue}");
+
+                    // Check that the operation didn't modify the input state
+                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+                    AssertAllZero(register);
                 }
             }
         }

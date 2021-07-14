@@ -194,11 +194,11 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.6. Calculate total value of selected items
-    operation CalculateTotalValueOfSelectedItems_Reference (itemValues : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl {
+    operation CalculateTotalValueOfSelectedItems_Reference (itemValues : Int[], selectedCounts : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl {
         // The item type with index i contributes xᵢ instances to the knapsack, adding itemValues[i] per instance to the total.
         // Thus, for each item type, we increment the total by their product.
-        for (value, x) in Zipped(itemValues, xs) {
-            IncrementByProduct_Reference(value, x, total);
+        for (value, count) in Zipped(itemValues, selectedCounts) {
+            IncrementByProduct_Reference(value, count, total);
         }
     }
 

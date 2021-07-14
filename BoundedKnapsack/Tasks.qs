@@ -272,12 +272,13 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // Task 2.6. Calculate total value of selected items
     // Inputs:
-    //        1) An array of n integers, describing either the weight of each item or the profit of each item.
-    //        2) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-    //        3) An array of qubits in the |0...0⟩ state. It is guaranteed there are enough qubits to hold the total.
-    // Goal: Transform the total array to represent, in little-endian format, the sum of the values of all the instances that are put in the knapsack.
-    //       The input qubits can be in superposition. Leave the qubits in xs in the same state they started in.
-    operation CalculateTotalValueOfSelectedItems (itemValues : Int[], xs : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl{
+    //      1) An array of n integers, describing the values (the weights or the profits) of the items.
+    //      2) A jagged array of qubits of length n. Array selectedItems[i] represents the number of items of type i xᵢ in little-endian format.
+    //      3) An array of qubits "total" in the |0...0⟩ state to store the total value of the selected items.
+    //         It is guaranteed that there are enough qubits to store the total value.
+    // Goal: Transform the "total" array to represent, in little-endian format, the sum of the values of the items that are put in the knapsack.
+    //       The input qubits can be in a superposition state. Leave the qubits in selectedCounts in the same state they started in.
+    operation CalculateTotalValueOfSelectedItems (itemValues : Int[], selectedCounts : Qubit[][], total : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
