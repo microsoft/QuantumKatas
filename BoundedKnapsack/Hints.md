@@ -46,24 +46,21 @@ up to a point of understanding, and then try finishing the task yourself.
 1) You can use bitwise logic similar to the previous task. Is it necessary to go through all these steps, though, or is there an easier way to solve this task? Remember that you can reuse the code of previous tasks.
 
 
+```
+// Task 2.2. Convert an array into a jagged array
+```
+
+1) For each i, xᵢ can have values from 0 to bᵢ, inclusive. How many distinct values are thus possible for xᵢ? What's the minimum number of (qu)bits required to hold these values?
+2) Consider using library operations from [Microsoft.Quantum.Arrays namespace](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arrays) instead of manipulating array elements manually.
 
 
-// Task 2.2. Convert qubit register into jagged qubit array
-//
-//  1) For each i, xᵢ can have values from 0 to bᵢ. How many distinct values are thus possible for xᵢ? What's the minimum number of qubits
-//     to hold this many distinct values?
-//
-//  2) Additional information on jagged arrays: https://docs.microsoft.com/en-us/quantum/user-guide/language/types#array-types
+```
+// Task 2.4. Increment a quantum integer by a product of classical and quantum integers
+```
 
-
-
-
-// Task 2.4. Increment qubit array by product of an integer and a different qubit array
-//
-//  1) Given two classical unsigned integers and their bitstrings, how would you calculate their product? Could you split this product into
-//     partial products?
-//
-//  2) Additional information on multiplication: https://en.wikipedia.org/wiki/Binary_multiplier#Binary_numbers
+1) Given two classical unsigned integers and their bit string representations, how would you calculate their product? Could you split this product into partial products?
+2) Additional information on multiplication: https://en.wikipedia.org/wiki/Binary_multiplier##Unsigned_integers
+3) Consider using library operations from [Microsoft.Quantum.Arithmetic namespace](https://docs.microsoft.com/en-us/qsharp/api/qsharp/microsoft.quantum.arithmetic) to simplify your implementation.
 
 
 

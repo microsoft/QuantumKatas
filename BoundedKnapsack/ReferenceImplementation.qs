@@ -144,7 +144,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 2.2. Convert qubit register into a jagged qubit array
+    // Task 2.2. Convert an array into a jagged array
     function RegisterAsJaggedArray_Reference<'T> (array : 'T[], b : Int[]) : 'T[][] {
         let n = Length(b);
         // Identify bit lengths of integers bᵢ.
@@ -171,25 +171,23 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 2.4. Increment qubit array by product of an integer and a different qubit array
+    // Task 2.4. Increment a quantum integer by a product of classical and quantum integers
     operation IncrementByProduct_Reference (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl {
-        let zLE = LittleEndian(z);
-
-        // Calculates each partial product, y[i] · x · 2ⁱ
-        // Thus, the following code adds each partial product to z, if the corresponding qubit in y is 1.
-        // For more information, see https://en.wikipedia.org/wiki/Binary_multiplier#Unsigned_numbers
         for (i, control) in Enumerated(y) {
-            Controlled IncrementByInteger([control], (x <<< i, zLE));
+            // Calculate each partial product, y[i] · x · 2ⁱ,
+            // and add each partial product to z, if the corresponding qubit in y is 1.
+            // For more information, see https://en.wikipedia.org/wiki/Binary_multiplier#Unsigned_numbers.
+            // IncrementByInteger performs addition modulo 2ᵐ, where m is the length of register z.
+            Controlled IncrementByInteger([control], (x <<< i, LittleEndian(z)));
         }
     }
 
     
     // Task 2.5. Calculate the number of qubits necessary to hold the maximum total value
-    function NumQubitsTotalValue_Reference (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
-        let n = Length(itemValues);
+    function NumBitsTotalValue_Reference (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
         mutable maxValue = 0;
-        for i in 0 .. n-1 {
-            set maxValue += itemValues[i] * itemInstanceLimits[i];
+        for (v, lim) in Zipped(itemValues, itemInstanceLimits) {
+            set maxValue += v * lim;
         }
         return BitSizeI(maxValue);
     }
@@ -207,7 +205,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 2.7. Verify that weight satisfies limit W
     operation VerifyWeight_Reference (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceLimits);
+        let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemInstanceLimits);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
             // Calculate the total weight
@@ -220,7 +218,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     // Task 2.8. Verify that the total profit exceeds threshold P
     operation VerifyProfit_Reference (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceLimits);
+        let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemInstanceLimits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
             // Calculate the total profit

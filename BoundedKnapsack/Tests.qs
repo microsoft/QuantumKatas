@@ -10,6 +10,7 @@
 namespace Quantum.Kata.BoundedKnapsack
 {
     open Microsoft.Quantum.Arrays;
+    open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Logical;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
@@ -63,7 +64,7 @@ namespace Quantum.Kata.BoundedKnapsack
             for values in [itemWeights, itemProfits] {
                 let res = NumBitsTotalValue01(values);
                 let exp = NumBitsTotalValue01_Reference(values);
-                Fact(res == exp, $"Unexpected result for itemWeights = {itemWeights} : {res} (expected {exp})");
+                Fact(res == exp, $"Unexpected result for values = {itemWeights} : {res} (expected {exp})");
             }
         }
     }
@@ -389,39 +390,42 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T24_IncrementByProduct () : Unit {
-        for (D in 1..3){
-            using ((qy, qz) = (Qubit[D], Qubit[D])){
+        for (n, m) in [(1, 2), (2, 2), (2, 3)] {
+            use (qy, qz) = (Qubit[n], Qubit[m]);
 
-                // Iterate through all possible left operands a.
-                for (x in 0 .. (1 <<< D) - 1){
+            // Iterate through all possible left operands x (integers).
+            for x in 0 .. (1 <<< m) - 1 {
 
-                    // Iterate through all possible right operands y.
-                    for (y in 0 .. (1 <<< D) - 1){
-                        // Prepare the register so that it contains the integer y in little-endian format.
-                        let binaryY = IntAsBoolArray(y, D);
+                // Iterate through all possible right operands y.
+                for y in 0 .. (1 <<< n) - 1 {
+                    let binaryY = IntAsBoolArray(y, n);
+
+                    // Iterate through all initial values of z.
+                    for z in 0 .. (1 <<< m) - 1 {
+                        // Prepare the registers so that they contain the integers y and z in little-endian format.
+                        let binaryZ = IntAsBoolArray(z, m);
                         ApplyPauliFromBitString(PauliX, true, binaryY, qy);
-
-                        // Iterate through all initial values of z.
-                        for (z in 0 .. (1 <<< D) - 1){
-                            // Prepare the register so that it contains the integer z in little-endian format.
-                            let binaryZ = IntAsBoolArray(z, D);
-                            ApplyPauliFromBitString(PauliX, true, binaryZ, qz);
+                        ApplyPauliFromBitString(PauliX, true, binaryZ, qz);
                             
-                            // Reset the counter of measurements done
-                            ResetOracleCallsCount();
+                        // Reset the counter of measurements done.
+                        ResetOracleCallsCount();
 
-                            IncrementByProduct(x, qy, qz);
+                        IncrementByProduct(x, qy, qz);
                     
-                            // Make sure the solution didn't use any measurements
-                            Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                        // Make sure the solution didn't use any measurements.
+                        Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                            let measuredZ = ResultArrayAsInt(MultiM(qz));
-                            Fact(measuredZ == (z + x*y) % (1 <<< D), $"Unexpected result for x = {x}, y = {y}, z = {z} : {measuredZ}");
-                            ResetAll(qz);
-                        }
-                        ResetAll(qy);
+                        // Check that the computation result is correct.
+                        let res = MeasureInteger(LittleEndian(qz));
+                        let exp = (z + x*y) % (1 <<< m);
+                        Fact(res == exp, $"Unexpected result for x = {x}, y = {y}, z = {z} : {res} (expected {exp})");
+
+                        // Check that the value of y has not changed.
+                        ApplyPauliFromBitString(PauliX, true, binaryY, qy);
+                        AssertAllZero(qy);
                     }
                 }
             }
@@ -429,14 +433,15 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T25_NumQubitsTotalValue_Reference () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceLimits, P_max) in ExampleSets()){
-            let numQubitsTotalWeight = NumQubitsTotalValue(itemWeights, itemInstanceLimits);
-            Fact(numQubitsTotalWeight == NumQubitsTotalValue_Reference(itemWeights, itemInstanceLimits), $"Unexpected result for itemWeights = {itemWeights}, itemInstanceLimits = {itemInstanceLimits} : {numQubitsTotalWeight}");
-            
-            let numQubitsTotalProfit = NumQubitsTotalValue(itemProfits, itemInstanceLimits);
-            Fact(numQubitsTotalProfit == NumQubitsTotalValue_Reference(itemProfits, itemInstanceLimits), $"Unexpected result for itemProfits = {itemProfits}, itemInstanceLimits = {itemInstanceLimits} : {numQubitsTotalProfit}");
+    operation T25_NumBitsTotalValue_Reference () : Unit {
+        for (_, _, _, itemWeights, itemProfits, itemInstanceLimits, _) in ExampleSets() {
+            for values in [itemWeights, itemProfits] {
+                let res = NumBitsTotalValue(values, itemInstanceLimits);
+                let exp = NumBitsTotalValue_Reference(values, itemInstanceLimits);
+                Fact(res == exp, $"Unexpected result for values = {itemWeights}, limits = {itemInstanceLimits} : {res} (expected {exp})");
+            }
         }
     }
 
@@ -448,8 +453,8 @@ namespace Quantum.Kata.BoundedKnapsack
             // Calculate the total number of qubits
             let Q = RegisterSize(itemInstanceLimits);
 
-            let numQubitsTotalWeight = NumQubitsTotalValue_Reference(itemWeights, itemInstanceLimits);
-            let numQubitsTotalProfit = NumQubitsTotalValue_Reference(itemProfits, itemInstanceLimits);
+            let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemInstanceLimits);
+            let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemInstanceLimits);
 
             using ((register, totalWeight, totalProfit) = (Qubit[Q], Qubit[numQubitsTotalWeight], Qubit[numQubitsTotalProfit])){
                 // It will be too time-intensive to iterate through all possible combinations of items,

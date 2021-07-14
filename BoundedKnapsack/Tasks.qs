@@ -244,26 +244,27 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
     
-    // Task 2.4. Increment qubit array by product of an integer and a different qubit array
+    // Task 2.4. Increment a quantum integer by a product of classical and quantum integers
     // Inputs:
-    //        1) An integer x
-    //        2) An array of D qubits, representing an arbitrary integer
-    //        3) An second array of D qubits, representing an arbitrary integer
-    // Goal: Increment z by the product of x and y.
-    //       The input qubits can be in superposition. Leave the qubits in y in the same state they started in.
-    operation IncrementByProduct (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl{
+    //      1) An integer x.
+    //      2) An array of n qubits, representing an arbitrary integer y.
+    //      3) An array of m qubits, representing an arbitrary integer z.
+    // Goal: Increment register z by the product of x and y.
+    //       Perform the increment modulo 2ᵐ (you don't need to track the carry bit).
+    //       The input qubits can be in superposition. Leave the qubits in register y in the same state they started in.
+    operation IncrementByProduct (x : Int, y : Qubit[], z : Qubit[]) : Unit is Adj+Ctl {
         // ...
     }
 
     
-    // Task 2.5. Calculate the number of qubits necessary to hold the maximum total value
+    // Task 2.5. Calculate the number of (qu)bits necessary to hold the maximum total value
     // Inputs:
-    //      1) An array of n integers, describing either the weight of each item or the profit of each item.
-    //      2) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
-    // Goal: The number of qubits needed to store the value of the maximum total weight/profit of the items.
-    // Example: For n = 4, itemValues = [1,2,3,4] and itemInstanceLimits = [2,5,4,3], the maximum possible total weight is
-    //          1*2 + 2*5 + 3*4 + 4*3 = 36, which requires 6 qubits, so 6 is returned.
-    function NumQubitsTotalValue (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
+    //      1) An array of n positive integers, describing the value (the weight or the profit) of each item.
+    //      2) An array of n positive integers, describing the bᵢ - the limits on the maximum number of items of type i that can be selected.
+    // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
+    // Example: For n = 4, itemValues = [1, 2, 3, 4], and itemInstanceLimits = [2, 5, 4, 3], 
+    //          the maximum possible total weight is  1*2 + 2*5 + 3*4 + 4*3 = 36, which requires at least 6 qubits, so 6 is returned.
+    function NumBitsTotalValue (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
         // ...
         return 0;
     }
@@ -317,7 +318,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        6) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
     //        7) An array of Q qubits. Q is the minimum number of qubits necessary to store the xs values.
     //        8) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the conditions for the bounds, weight, and profit are all satisfied.
+    // Goal: Flip the state of the target qubit if the conditions for the item numbers, weight, and profit are all satisfied.
     //       The input qubits can be in superposition. Leave the qubits in register in the same state they started in.
     operation KnapsackValidationOracle (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
         // ...
@@ -336,7 +337,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        4) An array of n integers, such that itemWeights[i] = wᵢ
     //        5) An array of n integers, such that itemProfits[i] = pᵢ
     //        6) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
-    // Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the bounds, has total weight at most W,
+    // Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the item numbers, has total weight at most W,
     //         and has total profit more than P, return a tuple containing that combination and its total profit.
     //         Otherwise, return a tuple containing an array of zeros with length n and the input P value.
     operation GroversAlgorithm (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : (Int[], Int) {
@@ -368,7 +369,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        4) An array of n integers, such that itemProfits[i] = pᵢ
     //        5) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
     // Output: An integer, the value of the highest achievable profit among all combinations that satisfy
-    //         both the instance bounds and weight constraint.
+    //         both the instance numbers and weight constraint.
     
     operation KnapsackOptimizationProblem (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : Int {
         // ...
