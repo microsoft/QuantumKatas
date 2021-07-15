@@ -241,63 +241,13 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
     //////////////////////////////////////////////////////////////////
-    // Part III. Knapsack Oracle and Grover Search
+    // Part III. Using Grover's algorithm for knapsack optimization problems
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Using Grover search with bounded knapsack problem oracle to solve (a slightly modified version of the) knapsack decision problem
-    operation GroversAlgorithm_Reference (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : (Int[], Int) {
-        
-        mutable xs_found = new Int[n];
-        mutable P_found = P;
-        mutable correct = false;
 
-        let Q = RegisterSize(itemCountLimits);
-
-        // We will classically count M (the number of solutions), and calculate the optimal number of Grover iterations.
-        // Generally this can be replaced by the quantum counting algorithm.
-        let N = IntAsDouble(1 <<< Q);
-        let m = IntAsDouble(NumberOfSolutions(n, W, P, itemWeights, itemProfits, itemCountLimits));
-        if (m == 0.0) {
-            return (xs_found, P_found);
-        }
-        // Using the formula for the number of iterations, and rounding to the nearest integer
-        mutable iter = Floor(PI() / 4.0 * Sqrt(N/m) + 0.5);
-        mutable attempts = 0;
-
-        use register = Qubit[Q];
-            
-        repeat {
-            // Note: The register is not converted into the jagged array before being used in the oracle, because
-            //         the ApplyToEach operations in the GroverIterations can't directly be called on jagged arrays.
-            GroversAlgorithm_Loop(register, VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemCountLimits, _, _), iter);
-
-            // Measure the combination that Grover's Algorithm finds.
-            let xs = RegisterAsJaggedArray_Reference(register, itemCountLimits);
-            for i in 0 .. n - 1 {
-                let result = MultiM(xs[i]);
-                set xs_found w/= i <- ResultArrayAsInt(result);
-            }
-
-            // Check that the combination is a valid combination.
-            use output = Qubit();
-            VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemCountLimits, register, output);
-            set correct = IsResultOne(MResetZ(output));
-
-            // When the valid combination is found, calculate its profit
-            if (correct) {
-                let numQubitsTotalProfit = NumBitsTotalValue01_Reference(itemProfits);
-                use profit = Qubit[numQubitsTotalProfit];
-                CalculateTotalValueOfSelectedItems_Reference(itemProfits, xs, profit);
-                set P_found = ResultArrayAsInt(MultiM(profit));
-                ResetAll(profit);
-            }
-            ResetAll(register);
-            set attempts += 1;
-        } until (correct or attempts > 10);
-
-        return (xs_found, P_found);
-    }
-
+    //////////////////////////////////////////////////////////////////
+    // Appendix. Service functions used both in reference implementations and in tests
+    //////////////////////////////////////////////////////////////////
 
     /// # Summary
     /// Calculate the number of qubits necessary to store a concatenation of the given integers.
@@ -312,66 +262,6 @@ namespace Quantum.Kata.BoundedKnapsack {
         return Q;
     }
 
-    // Grover loop implementation taken from SolveSATWithGrover kata.
-    internal operation OracleConverterImpl (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
-        use target = Qubit();
-        within {
-            // Put the target into the |-⟩ state
-            X(target);
-            H(target);
-        } apply {
-            // Apply the marking oracle; since the target is in the |-⟩ state,
-            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            markingOracle(register, target);
-        }
-    }
-    
-    internal operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
-        let phaseOracle = OracleConverterImpl(oracle, _);
-        ApplyToEach(H, register);
-            
-        for i in 1 .. iterations {
-            phaseOracle(register);
-            within {
-                ApplyToEachA(H, register);
-                ApplyToEachA(X, register);
-            } apply {
-                Controlled Z(Most(register), Tail(register));
-            }
-        }
-    }
-
-
-    // A placeholder for the quantum counting algorithm, which will be implemented in a separate kata.
-    // Calculate value M for the oracle (number of solutions), which is used in determining how many
-    // Grover Iterations are necessary in Grover's Algorithm.
-    internal function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
-        let Q = RegisterSize(itemCountLimits);
-        mutable m = 0;
-        for combo in 0 .. (1 <<< Q) - 1 {
-            let binaryCombo = IntAsBoolArray(combo, Q);
-            let xsCombo = BoolArrayConcatenationAsIntArray(itemCountLimits, binaryCombo);
-
-            // Determine if each combination is a solution.
-            mutable ActualLimits = true;
-            mutable ActualWeight = 0;
-            mutable ActualProfit = 0;
-            for i in 0 .. n - 1 {
-                // If any bound isn't satisfied, then Limits Verification is not satisfied.
-                if (xsCombo[i] > itemCountLimits[i]){
-                    set ActualLimits = false;
-                }
-                // Add the weight and profit of all instances of this item type.
-                set ActualWeight += itemWeights[i]*xsCombo[i];
-                set ActualProfit += itemProfits[i]*xsCombo[i];
-            }
-            if (ActualLimits and ActualWeight <= W and ActualProfit > P) {
-                set m += 1;
-            }
-        }
-        return m;
-    }
-
 
     /// # Summary
     /// Convert a single array of bits which stores binary notations of n integers into an array of integers written in it.
@@ -381,41 +271,5 @@ namespace Quantum.Kata.BoundedKnapsack {
         let binaryNotations = RegisterAsJaggedArray_Reference(binaryCombo, arrayElementLimits);
         // Convert each element of the jagged array into an integer.
         return Mapped(BoolArrayAsInt, binaryNotations);
-    }
-    
-    
-    // Task 3.2 Solving the bounded knapsack optimization problem
-    operation KnapsackOptimizationProblem_Reference (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
-        // This implementation uses exponential search to search over profit thresholds and find the maximum possible profit.
-        // The Grover Search using the Knapsack Oracle serves as the comparison function.
-        // A description of exponential search is found at https://en.wikipedia.org/wiki/Exponential_search.
-
-        // Determining an upper bound for a search range
-        mutable P_high = 1;
-        mutable upperBoundFound = false;
-        repeat {
-            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemCountLimits);
-            if (P_found > P_high) {
-                set P_high = P_high * 2;
-            }
-            else {
-                set upperBoundFound = true;
-            }
-        } until (upperBoundFound);
-
-
-        // Performing binary search in the determined search range
-        mutable P_low = P_high / 2;
-        repeat {
-            let P_middle = (P_low + P_high) / 2;
-            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemCountLimits);
-            if (P_found > P_high){
-                set P_low = P_middle;
-            }
-            else{
-                set P_high = P_middle;
-            }
-        } until (P_high - P_low == 1);
-        return P_high;
     }
 }

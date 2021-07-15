@@ -72,23 +72,21 @@ up to a point of understanding, and then try finishing the task yourself.
 
 
 
-
-// Task 3.1. Using Grover search with knapsack oracle to solve (a slightly modified version of the) knapsack decision problem
-//
-//  1) How many total qubits are necessary for the register? You may want to revisit Hint #1 for Task 2.2.
-//
-//  2) If you know how to implement the quantum counting algorithm in Q#, feel free to do so. Otherwise, you might consider
-//     using the iteration method in the GraphColoring kata, or classically calculating the ideal number of iterations.
-
-
-
-
-// Task 3.2. Solving the bounded knapsack optimization search
-//
-//  1) The key in this task is choosing an efficient method to adjust the value P over several calls to Grover's algorithm, to ultimately
-//     identify the maximum achievable profit value. The method should minimize the number of calls to Grover's algorithm and the total number of oracle
-//     oracle calls.
-//
-//  2) There are numerous methods of performing the task as previously described. One such method is exponential search. See
-//     https://en.wikipedia.org/wiki/Exponential_search for more information.
 ```
+// Task 3.3. Using Grover search to solve (a slightly modified) knapsack decision problem
+```
+
+1) How many total qubits are necessary for the register? You may want to revisit Hint #1 for Task 2.2.
+2) If you know how to implement the quantum counting algorithm in Q#, feel free to do so. Otherwise, consider
+  using the iteration method in the GraphColoring kata.
+
+
+
+```
+// Task 3.4. Solving the bounded knapsack optimization search
+```
+1) The key in this task is choosing an efficient method to adjust the value P over several calls to Grover's algorithm, to ultimately
+  identify the maximum achievable profit value. The method should minimize the number of calls to Grover's algorithm and the total number of oracle
+  oracle calls.
+2) There are numerous methods of performing the task as previously described. One such method is exponential search. See
+  https://en.wikipedia.org/wiki/Exponential_search for more information.

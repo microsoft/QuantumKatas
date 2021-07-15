@@ -334,53 +334,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     //////////////////////////////////////////////////////////////////
-    // Part III. Grover Search and Knapsack optimization problem
+    // Part III. Using Grover's algorithm for knapsack optimization problems
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Using Grover search with bounded knapsack problem oracle to solve (a slightly modified version of the) knapsack decision problem
-    // Inputs:
-    //        1) An integer n, the number of items
-    //        2) An integer W, the maximum weight the knapsack can hold
-    //        3) An integer P, which the total profit must exceed
-    //        4) An array of n integers, such that itemWeights[i] = wᵢ
-    //        5) An array of n integers, such that itemProfits[i] = pᵢ
-    //        6) An array of n integers, such that itemCountLimits[i] = bᵢ.
-    // Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the item numbers, has total weight at most W,
-    //         and has total profit more than P, return a tuple containing that combination and its total profit.
-    //         Otherwise, return a tuple containing an array of zeros with length n and the input P value.
-    operation GroversAlgorithm (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : (Int[], Int) {
-        // ...
-        return (new Int[0], 0);
-    }
-    
-
-    // Knapsack optimization problem:
-    // The above tasks, when implemented, solve the bounded knapsack decision problem, which
-    // asks: "Is there a valid combination that has more than P profit?"
-
-    // The more common, applicable, and complex knapsack optimization problem, by contrast,
-    // asks "Which valid combination yields the most profit?", or "What's the highest
-    // achievable profit?", and can be solved by repeatedly answering the knapsack decision problem.
-
-    // Thus, we will solve the optimization problem by setting a profit threshold P, repeatedly calling
-    // Grover search with P, and increasing P every time Grover search concludes there exists a combination
-    // more profitable than P. When Grover search determines that there exist no combinations that are
-    // more profitable than P, we will have found the highest achievable profit and thus answered the
-    // knapsack optimization problem.
-     
-    
-    // Task 3.2. Solving the bounded knapsack optimization problem
-    // Inputs:
-    //        1) An integer n, the number of items
-    //        2) An integer W, the maximum weight the knapsack can hold
-    //        3) An array of n integers, such that itemWeights[i] = wᵢ
-    //        4) An array of n integers, such that itemProfits[i] = pᵢ
-    //        5) An array of n integers, such that itemCountLimits[i] = bᵢ.
-    // Output: An integer, the value of the highest achievable profit among all combinations that satisfy
-    //         both the availability constraint and the weight constraint.
-    
-    operation KnapsackOptimizationProblem (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
-        // ...
-        return 0;
-    }
+    // Coming soon...
 }

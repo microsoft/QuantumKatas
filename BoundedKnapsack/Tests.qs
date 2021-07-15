@@ -23,7 +23,7 @@ namespace Quantum.Kata.BoundedKnapsack
     open Quantum.Kata.Utils;
 
 
-    // Hardcoded sets of 0-1 knapsack problem parameters, for testing the operations
+    // Hardcoded sets of 0-1 knapsack problem parameters, for testing the operations.
     // The function returns an array of tuples, each representing a set of parameters.
     // The contents of each tuple include: n, W, P, itemWeights, itemProfits (in that order).
     function ExampleSets01 () : (Int, Int, Int, Int[], Int[])[] {
@@ -623,51 +623,8 @@ namespace Quantum.Kata.BoundedKnapsack
 
 
     //////////////////////////////////////////////////////////////////
-    // Part III. Grover Search and Knapsack Optimization Problem
+    // Part III. Using Grover's algorithm for knapsack optimization problems
     //////////////////////////////////////////////////////////////////
 
-    @Test("QuantumSimulator")
-    operation T31_GroversAlgorithm () : Unit {
-        let testSets = ExampleSets();
-        let (n, W, P, itemWeights, itemProfits, itemCountLimits, P_max) = testSets[0];
-
-        // Calculate the total number of qubits
-        let Q = RegisterSize(itemCountLimits);
-
-        using ((register, target) = (Qubit[Q], Qubit())){
-
-            let (xs_found, P_found) = GroversAlgorithm(n, W, P, itemWeights, itemProfits, itemCountLimits);
-
-            // Verify the found combination classically (should be valid if P < P_max)
-            mutable actualLimits = true;
-            mutable actualWeight = 0;
-            mutable actualProfit = 0;
-            for (i in 0..n-1){
-                // If any bound isn't satisfied, the operation should return 0.
-                if (xs_found[i] > itemCountLimits[i]){
-                    set actualLimits = false;
-                }
-                // Add the weight and profit of all instances of this item type.
-                set actualWeight += itemWeights[i]*xs_found[i];
-                set actualProfit += itemProfits[i]*xs_found[i];
-            }
-            let valid = actualLimits and actualWeight <= W and actualProfit > P;
-
-            // Assert that the output from Grover's algorithm is correct.
-            Fact(not XOR(valid, P < P_max), $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemCountLimits = {itemCountLimits} : {xs_found}");
-            ResetAll(register);
-            Reset(target);
-        }
-    }
-
-
-    @Test("QuantumSimulator")
-    operation T32_KnapsackOptimizationProblem() : Unit {
-        let testSets = ExampleSets();
-        let (n, W, P, itemWeights, itemProfits, itemCountLimits, P_max) = testSets[0];
-
-        let P_max_found = KnapsackOptimizationProblem(n, W, itemWeights, itemProfits, itemCountLimits);
-        Fact(P_max_found == P_max, $"Unexpected result for W = {W}, P = {P}, itemWeights = {itemWeights}, itemProfits = {itemProfits}, itemCountLimits = {itemCountLimits} : {P_max_found}, should be {P_max}");
-    }
 
 }
