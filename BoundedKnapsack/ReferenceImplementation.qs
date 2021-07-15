@@ -230,18 +230,17 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.9. Bounded knapsack problem validation oracle
-    operation KnapsackValidationOracle_Reference (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
+    operation VerifyKnapsackProblemSolution_Reference (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], selectedItemsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        let selectedItems = RegisterAsJaggedArray_Reference(selectedItemsRegister, itemInstanceLimits);
         use (outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit());
         within {
-            // Compute the result of each verification onto separate qubits
-            VerifyLimits_Reference(itemInstanceLimits, xs, outputB);
-            VerifyTotalWeight_Reference(W, itemWeights, itemInstanceLimits, xs, outputW);
-            VerifyTotalProfit_Reference(P, itemProfits, itemInstanceLimits, xs, outputP);
+            // Compute the result of each constraint check.
+            VerifyLimits_Reference(itemInstanceLimits, selectedItems, outputB);
+            VerifyTotalWeight_Reference(W, itemWeights, itemInstanceLimits, selectedItems, outputW);
+            VerifyTotalProfit_Reference(P, itemProfits, itemInstanceLimits, selectedItems, outputP);
         } apply {
-            // Compute the final result, which is the AND operation of the three separate results
-            // Accomplished by a triple-control Toffoli.
-            Controlled X([outputB] + [outputW] + [outputP], target);
+            // The final result is the AND operation of the three separate results (all constraints must be satisfied).
+            Controlled X([outputB, outputW, outputP], target);
         }
     }
 
@@ -274,7 +273,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         repeat {
             // Note: The register is not converted into the jagged array before being used in the oracle, because
             //         the ApplyToEach operations in the GroverIterations can't directly be called on jagged arrays.
-            GroversAlgorithm_Loop(register, KnapsackValidationOracle_Reference(n, W, P, itemWeights, itemProfits, itemInstanceLimits, _, _), iter);
+            GroversAlgorithm_Loop(register, VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemInstanceLimits, _, _), iter);
 
             // Measure the combination that Grover's Algorithm finds.
             let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
@@ -285,7 +284,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
             // Check that the combination is a valid combination.
             use output = Qubit();
-            KnapsackValidationOracle_Reference(n, W, P, itemWeights, itemProfits, itemInstanceLimits, register, output);
+            VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemInstanceLimits, register, output);
             set correct = IsResultOne(MResetZ(output));
 
             // When the valid combination is found, calculate its profit

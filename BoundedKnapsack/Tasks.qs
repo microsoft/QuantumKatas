@@ -313,19 +313,22 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    // Task 2.9. Bounded knapsack problem validation oracle
+    // Task 2.9. Verify the solution to the bounded knapsack problem
     // Inputs:
-    //        1) An integer n, the number of items
-    //        2) An integer W, the maximum weight the knapsack can hold
-    //        3) An integer P, which the total profit must exceed
-    //        4) An array of n integers, such that itemWeights[i] = wᵢ
-    //        5) An array of n integers, such that itemProfits[i] = pᵢ
-    //        6) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
-    //        7) An array of Q qubits. Q is the minimum number of qubits necessary to store the xs values.
-    //        8) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the conditions for the item numbers, weight, and profit are all satisfied.
+    //      1) An integer W, the maximum weight the knapsack can hold.
+    //      2) An integer P, the threshold which the total profit must exceed.
+    //      3) An array of n integers, describing the weights of the items: itemWeights[i] = wᵢ.
+    //      4) An array of n integers, describing the profits of the items: itemProfits[i] = pᵢ.
+    //      5) An array of n integers, describing the maximum numbers of each type of item that can be selected: itemInstanceLimits[i] = bᵢ.
+    //      6) An array of Q qubits, describing the numbers of each type of item selected for the knapsack. 
+    //         (Q is the minimum number of qubits necessary to store the numbers up to bᵢ.)
+    //      7) A qubit in an arbitrary state (target qubit)
+    // Goal: Flip the state of the target qubit if the selection of the items in selectedItemsRegister satisfies both constraints:
+    //        * the total weight of all items is less than or equal to W, 
+    //        * the total profit of all items is greater than P, and
+    //        * the number of i-th type of item is less than or equal to bᵢ.
     //       The input qubits can be in superposition. Leave the qubits in register in the same state they started in.
-    operation KnapsackValidationOracle (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], register : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    operation VerifyKnapsackProblemSolution (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], selectedItemsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl{
         // ...
     }
 
