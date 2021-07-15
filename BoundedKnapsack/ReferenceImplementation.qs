@@ -134,38 +134,34 @@ namespace Quantum.Kata.BoundedKnapsack {
     
 
     // Task 2.1. Read combination from a jagged array of qubits
-    operation MeasureCombination_Reference (xs : Qubit[][]) : Int[] {
-        let n = Length(xs);
-        mutable xsCombo = new Int[n];
-        for i in 0 .. n - 1 {
-            set xsCombo w/= i <- ResultArrayAsInt(MultiM(xs[i]));
-        }
-        return xsCombo;
+    operation MeasureCombination_Reference (selectedItemCounts : Qubit[][]) : Int[] {
+        // Measure each array and convert the result to int.
+        return Mapped(ResultArrayAsInt, ForEach(MultiM, selectedItemCounts));
     }
 
 
     // Task 2.2. Convert an array into a jagged array
     function RegisterAsJaggedArray_Reference<'T> (array : 'T[], b : Int[]) : 'T[][] {
-        let n = Length(b);
         // Identify bit lengths of integers bᵢ.
         let bitLengths = Mapped(BitSizeI, b);
         // Partition the array in accordance to these lengths.
-        // Remember to discard the last element in the return of Partitioned, which will be empty.
+        // Remember to discard the last element in the return of Partitioned, 
+        // which will be empty, since our partitioning is precise.
         return Most(Partitioned(bitLengths, array));
     }
 
 
     // Task 2.3. Verification of limits satisfaction
-    operation VerifyLimits_Reference (itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
-        use satisfy = Qubit[Length(itemInstanceLimits)];
+    operation VerifyLimits_Reference (itemCountLimits : Int[], selectedItemCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        use satisfy = Qubit[Length(itemCountLimits)];
         within {
-            for (x, b, satisfyBit) in Zipped3(xs, itemInstanceLimits, satisfy) {
-                // Check that each individual xᵢ satisfies the limit itemInstanceLimits[i].
+            for (x, b, satisfyBit) in Zipped3(selectedItemCounts, itemCountLimits, satisfy) {
+                // Check that each individual xᵢ satisfies the limit itemCountLimits[i].
                 // If the number represented by x is ≤ bᵢ, then the result will be 1, indicating satisfaction.
                 CompareQubitArrayLeqThanInt_Reference(x, b, satisfyBit);
             }
         } apply {
-            // If all constraints are satisfied, then the combination xs passes limits verification.
+            // If all constraints are satisfied, then the combination passes limits verification.
             Controlled X(satisfy, target);
         }
     }
@@ -184,9 +180,9 @@ namespace Quantum.Kata.BoundedKnapsack {
 
     
     // Task 2.5. Calculate the number of qubits necessary to hold the maximum total value
-    function NumBitsTotalValue_Reference (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
+    function NumBitsTotalValue_Reference (itemValues : Int[], itemCountLimits : Int[]) : Int {
         mutable maxValue = 0;
-        for (v, lim) in Zipped(itemValues, itemInstanceLimits) {
+        for (v, lim) in Zipped(itemValues, itemCountLimits) {
             set maxValue += v * lim;
         }
         return BitSizeI(maxValue);
@@ -204,8 +200,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.7. Verify that the total weight doesn't exceed the limit W
-    operation VerifyTotalWeight_Reference (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemInstanceLimits);
+    operation VerifyTotalWeight_Reference (W : Int, itemWeights : Int[], itemCountLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemCountLimits);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
             // Calculate the total weight
@@ -217,8 +213,8 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.8. Verify that the total profit exceeds threshold P
-    operation VerifyTotalProfit_Reference (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
-        let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemInstanceLimits);
+    operation VerifyTotalProfit_Reference (P : Int, itemProfits : Int[], itemCountLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+        let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemCountLimits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
             // Calculate the total profit
@@ -230,14 +226,14 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.9. Bounded knapsack problem validation oracle
-    operation VerifyKnapsackProblemSolution_Reference (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], selectedItemsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
-        let selectedItems = RegisterAsJaggedArray_Reference(selectedItemsRegister, itemInstanceLimits);
+    operation VerifyKnapsackProblemSolution_Reference (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[], selectedCountsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        let selectedItems = RegisterAsJaggedArray_Reference(selectedCountsRegister, itemCountLimits);
         use (outputB, outputW, outputP) = (Qubit(), Qubit(), Qubit());
         within {
             // Compute the result of each constraint check.
-            VerifyLimits_Reference(itemInstanceLimits, selectedItems, outputB);
-            VerifyTotalWeight_Reference(W, itemWeights, itemInstanceLimits, selectedItems, outputW);
-            VerifyTotalProfit_Reference(P, itemProfits, itemInstanceLimits, selectedItems, outputP);
+            VerifyLimits_Reference(itemCountLimits, selectedItems, outputB);
+            VerifyTotalWeight_Reference(W, itemWeights, itemCountLimits, selectedItems, outputW);
+            VerifyTotalProfit_Reference(P, itemProfits, itemCountLimits, selectedItems, outputP);
         } apply {
             // The final result is the AND operation of the three separate results (all constraints must be satisfied).
             Controlled X([outputB, outputW, outputP], target);
@@ -249,18 +245,18 @@ namespace Quantum.Kata.BoundedKnapsack {
     //////////////////////////////////////////////////////////////////
 
     // Task 3.1. Using Grover search with bounded knapsack problem oracle to solve (a slightly modified version of the) knapsack decision problem
-    operation GroversAlgorithm_Reference (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : (Int[], Int) {
+    operation GroversAlgorithm_Reference (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : (Int[], Int) {
         
         mutable xs_found = new Int[n];
         mutable P_found = P;
         mutable correct = false;
 
-        let Q = RegisterSize(itemInstanceLimits);
+        let Q = RegisterSize(itemCountLimits);
 
         // We will classically count M (the number of solutions), and calculate the optimal number of Grover iterations.
         // Generally this can be replaced by the quantum counting algorithm.
         let N = IntAsDouble(1 <<< Q);
-        let m = IntAsDouble(NumberOfSolutions(n, W, P, itemWeights, itemProfits, itemInstanceLimits));
+        let m = IntAsDouble(NumberOfSolutions(n, W, P, itemWeights, itemProfits, itemCountLimits));
         if (m == 0.0) {
             return (xs_found, P_found);
         }
@@ -273,10 +269,10 @@ namespace Quantum.Kata.BoundedKnapsack {
         repeat {
             // Note: The register is not converted into the jagged array before being used in the oracle, because
             //         the ApplyToEach operations in the GroverIterations can't directly be called on jagged arrays.
-            GroversAlgorithm_Loop(register, VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemInstanceLimits, _, _), iter);
+            GroversAlgorithm_Loop(register, VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemCountLimits, _, _), iter);
 
             // Measure the combination that Grover's Algorithm finds.
-            let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
+            let xs = RegisterAsJaggedArray_Reference(register, itemCountLimits);
             for i in 0 .. n - 1 {
                 let result = MultiM(xs[i]);
                 set xs_found w/= i <- ResultArrayAsInt(result);
@@ -284,7 +280,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
             // Check that the combination is a valid combination.
             use output = Qubit();
-            VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemInstanceLimits, register, output);
+            VerifyKnapsackProblemSolution_Reference(W, P, itemWeights, itemProfits, itemCountLimits, register, output);
             set correct = IsResultOne(MResetZ(output));
 
             // When the valid combination is found, calculate its profit
@@ -349,12 +345,12 @@ namespace Quantum.Kata.BoundedKnapsack {
     // A placeholder for the quantum counting algorithm, which will be implemented in a separate kata.
     // Calculate value M for the oracle (number of solutions), which is used in determining how many
     // Grover Iterations are necessary in Grover's Algorithm.
-    internal function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : Int {
-        let Q = RegisterSize(itemInstanceLimits);
+    internal function NumberOfSolutions (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
+        let Q = RegisterSize(itemCountLimits);
         mutable m = 0;
         for combo in 0 .. (1 <<< Q) - 1 {
             let binaryCombo = IntAsBoolArray(combo, Q);
-            let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceLimits, binaryCombo);
+            let xsCombo = BoolArrayConcatenationAsIntArray(itemCountLimits, binaryCombo);
 
             // Determine if each combination is a solution.
             mutable ActualLimits = true;
@@ -362,7 +358,7 @@ namespace Quantum.Kata.BoundedKnapsack {
             mutable ActualProfit = 0;
             for i in 0 .. n - 1 {
                 // If any bound isn't satisfied, then Limits Verification is not satisfied.
-                if (xsCombo[i] > itemInstanceLimits[i]){
+                if (xsCombo[i] > itemCountLimits[i]){
                     set ActualLimits = false;
                 }
                 // Add the weight and profit of all instances of this item type.
@@ -389,7 +385,7 @@ namespace Quantum.Kata.BoundedKnapsack {
     
     
     // Task 3.2 Solving the bounded knapsack optimization problem
-    operation KnapsackOptimizationProblem_Reference (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : Int {
+    operation KnapsackOptimizationProblem_Reference (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
         // This implementation uses exponential search to search over profit thresholds and find the maximum possible profit.
         // The Grover Search using the Knapsack Oracle serves as the comparison function.
         // A description of exponential search is found at https://en.wikipedia.org/wiki/Exponential_search.
@@ -398,7 +394,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         mutable P_high = 1;
         mutable upperBoundFound = false;
         repeat {
-            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemInstanceLimits);
+            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemCountLimits);
             if (P_found > P_high) {
                 set P_high = P_high * 2;
             }
@@ -412,7 +408,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         mutable P_low = P_high / 2;
         repeat {
             let P_middle = (P_low + P_high) / 2;
-            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemInstanceLimits);
+            let (xs_found, P_found) = GroversAlgorithm_Reference(n, W, P_high, itemWeights, itemProfits, itemCountLimits);
             if (P_found > P_high){
                 set P_low = P_middle;
             }

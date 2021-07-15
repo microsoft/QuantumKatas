@@ -181,10 +181,10 @@ namespace Quantum.Kata.BoundedKnapsack
     // In this version of the problem we still consider n items, indexed 0 to n-1,
     // the item with index i has a weight of wᵢ and yields a profit of pᵢ.
     // But in the bounded knapsack version of the problem, unlike in the 0-1 knapsack problem,
-    // each type of item can have more than one instance, and can be selected multiple times.
-    // Specifically, there are bᵢ instances of item type with index i, so this item type
-    // can be selected between 0 and bᵢ times, inclusive.
-    // Let xᵢ represent the number of instances of index i that are put into the knapsack; 0 ≤ xᵢ ≤ bᵢ for all i.
+    // each type of item can have more than one copy, and can be selected multiple times.
+    // Specifically, there are bᵢ copies of item type i available,
+    // so this item type can be selected between 0 and bᵢ times, inclusive.
+    // Let xᵢ represent the number of copies of index i that are put into the knapsack; 0 ≤ xᵢ ≤ bᵢ for all i.
     // Thus, we seek a combination xs = [x₀, x₁, ..., xₙ₋₁] which
     // has total weight at most W, and has total profit that is greater than P.
 
@@ -197,13 +197,13 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // Task 2.1. Read combination from a jagged array of qubits
     // Input: A jagged array of qubits of length n. 
-    //        Array selectedItems[i] represents the binary notation of xᵢ in little-endian format.
+    //        Array selectedItemCounts[i] represents the binary notation of xᵢ in little-endian format.
     //        Each qubit is guaranteed to be in one of the basis states (|0⟩ or |1⟩).
     // Output: An integer array of length n, containing the combination that this jagged array represents.
     //         The integer at index i in the output array should have value xᵢ.
     //         The operation should not change the state of the qubits.
-    // Example: For state xs = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
-    operation MeasureCombination (xs : Qubit[][]) : Int[] {
+    // Example: For state selectedItemCounts = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
+    operation MeasureCombination (selectedItemCounts : Qubit[][]) : Int[] {
         // ...
         return new Int[0];
     }
@@ -212,7 +212,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // Task 2.2. Convert an array into a jagged array
     // To simplify access to the register as an array of integers within the oracle, 
     // we reorganize the register into several qubit arrays that represent, in little-endian format, 
-    // the number of instances of each item type.
+    // the number of copies of each item type.
     // We can do the same transformation with arrays of other types, for example, 
     // arrays of classical bits (boolean or integer) that store binary notations of several integers.
     // To make our code reusable, we can make it type-parameterized.
@@ -234,12 +234,12 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // Task 2.3. Verification of limits satisfaction
     // Inputs:
-    //      1) An array of n integers itemInstanceLimits[i] = bᵢ.
-    //      2) A jagged array of n qubits. Each array xs[i] represents the number of items xᵢ in little-endian format.
+    //      1) An array of n integers itemCountLimits[i] = bᵢ.
+    //      2) A jagged array of n qubits. Each array selectedItemCounts[i] represents the number of items xᵢ in little-endian format.
     //      3) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if xᵢ ≤ bᵢ for all i.
     //       The input qubits can be in superposition. Leave the qubits in qubit array in the same state they started in.
-    operation VerifyLimits (itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+    operation VerifyLimits (itemCountLimits : Int[], selectedItemCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -262,9 +262,9 @@ namespace Quantum.Kata.BoundedKnapsack
     //      1) An array of n positive integers, describing the value (the weight or the profit) of each item.
     //      2) An array of n positive integers, describing the bᵢ - the limits on the maximum number of items of type i that can be selected.
     // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
-    // Example: For n = 4, itemValues = [1, 2, 3, 4], and itemInstanceLimits = [2, 5, 4, 3], 
+    // Example: For n = 4, itemValues = [1, 2, 3, 4], and itemCountLimits = [2, 5, 4, 3], 
     //          the maximum possible total weight is  1*2 + 2*5 + 3*4 + 4*3 = 36, which requires at least 6 qubits, so 6 is returned.
-    function NumBitsTotalValue (itemValues : Int[], itemInstanceLimits : Int[]) : Int {
+    function NumBitsTotalValue (itemValues : Int[], itemCountLimits : Int[]) : Int {
         // ...
         return 0;
     }
@@ -293,7 +293,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //      5) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total weight is less than or equal to W.
     //       The input qubits can be in superposition. Leave the qubits in the selectedCounts array in the same state they started in.
-    operation VerifyTotalWeight (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+    operation VerifyTotalWeight (W : Int, itemWeights : Int[], itemCountLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -308,7 +308,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //      5) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total profit is greater than P.
     //       The input qubits can be in superposition. Leave the qubits in the selectedCounts array in the same state they started in.
-    operation VerifyTotalProfit (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+    operation VerifyTotalProfit (P : Int, itemProfits : Int[], itemCountLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -319,16 +319,16 @@ namespace Quantum.Kata.BoundedKnapsack
     //      2) An integer P, the threshold which the total profit must exceed.
     //      3) An array of n integers, describing the weights of the items: itemWeights[i] = wᵢ.
     //      4) An array of n integers, describing the profits of the items: itemProfits[i] = pᵢ.
-    //      5) An array of n integers, describing the maximum numbers of each type of item that can be selected: itemInstanceLimits[i] = bᵢ.
+    //      5) An array of n integers, describing the maximum numbers of each type of item that can be selected: itemCountLimits[i] = bᵢ.
     //      6) An array of Q qubits, describing the numbers of each type of item selected for the knapsack. 
-    //         (Q is the minimum number of qubits necessary to store the numbers up to bᵢ.)
+    //         (Q is the minimum number of qubits necessary to store a concatenation of the numbers up to bᵢ.)
     //      7) A qubit in an arbitrary state (target qubit)
-    // Goal: Flip the state of the target qubit if the selection of the items in selectedItemsRegister satisfies both constraints:
+    // Goal: Flip the state of the target qubit if the selection of the items in selectedCountsRegister satisfies both constraints:
     //        * the total weight of all items is less than or equal to W, 
     //        * the total profit of all items is greater than P, and
     //        * the number of i-th type of item is less than or equal to bᵢ.
     //       The input qubits can be in superposition. Leave the qubits in register in the same state they started in.
-    operation VerifyKnapsackProblemSolution (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[], selectedItemsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl{
+    operation VerifyKnapsackProblemSolution (W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[], selectedCountsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
@@ -344,11 +344,11 @@ namespace Quantum.Kata.BoundedKnapsack
     //        3) An integer P, which the total profit must exceed
     //        4) An array of n integers, such that itemWeights[i] = wᵢ
     //        5) An array of n integers, such that itemProfits[i] = pᵢ
-    //        6) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
+    //        6) An array of n integers, such that itemCountLimits[i] = bᵢ.
     // Output: If a combination [x₀, x₁, ..., xₙ₋₁] can be found that satisfies the item numbers, has total weight at most W,
     //         and has total profit more than P, return a tuple containing that combination and its total profit.
     //         Otherwise, return a tuple containing an array of zeros with length n and the input P value.
-    operation GroversAlgorithm (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : (Int[], Int) {
+    operation GroversAlgorithm (n : Int, W : Int, P : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : (Int[], Int) {
         // ...
         return (new Int[0], 0);
     }
@@ -375,11 +375,11 @@ namespace Quantum.Kata.BoundedKnapsack
     //        2) An integer W, the maximum weight the knapsack can hold
     //        3) An array of n integers, such that itemWeights[i] = wᵢ
     //        4) An array of n integers, such that itemProfits[i] = pᵢ
-    //        5) An array of n integers, such that itemInstanceLimits[i] = bᵢ.
+    //        5) An array of n integers, such that itemCountLimits[i] = bᵢ.
     // Output: An integer, the value of the highest achievable profit among all combinations that satisfy
-    //         both the instance numbers and weight constraint.
+    //         both the availability constraint and the weight constraint.
     
-    operation KnapsackOptimizationProblem (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemInstanceLimits : Int[]) : Int {
+    operation KnapsackOptimizationProblem (n : Int, W : Int, itemWeights : Int[], itemProfits : Int[], itemCountLimits : Int[]) : Int {
         // ...
         return 0;
     }

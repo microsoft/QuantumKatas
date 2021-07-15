@@ -64,10 +64,11 @@ up to a point of understanding, and then try finishing the task yourself.
 
 
 
-
+```
 // Task 2.6. Calculate total value of selected items
-//
-//  1) How do the weight of an item and the number of instances of that item affect how much weight that item type contributes to the total?
+```
+
+1) How do the weight of an item and the selected number of copies of that item affect how much weight that item type contributes to the total?
 
 
 
