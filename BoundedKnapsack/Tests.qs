@@ -446,6 +446,7 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T26_CalculateTotalValueOfSelectedItems () : Unit {
         for (_, _, _, itemWeights, itemProfits, itemInstanceLimits, _) in ExampleSets() {
@@ -479,7 +480,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
                     mutable actualValue = MeasureInteger(LittleEndian(totalValue));
 
-                    // Calculate the weight and profit classically
+                    // Calculate the total value classically
                     mutable expectedValue = 0;
                     for (val, num) in Zipped(values, itemCounts) {
                         // Add the weight of all instances of this item type.
@@ -498,108 +499,105 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T27_VerifyWeight () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceLimits, P_max) in ExampleSets()){
+    operation T27_VerifyTotalWeight () : Unit {
+        for (_, W, _, itemWeights, _, itemInstanceLimits, _) in ExampleSets() {
 
-            // Calculate the total number of qubits
+            // Calculate the total number of qubits necessary to store the integers.
             let Q = RegisterSize(itemInstanceLimits);
 
-            using ((register, target) = (Qubit[Q], Qubit())){
-                // It will be too time-intensive to iterate through all possible combinations of items,
-                // so a random selection of combinations will be used for testing.
-                mutable combos = new Int[2*Q];
-                for (c in 0..2*Q-1){
-                    set combos w/= c <- RandomIntPow2(Q);
-                }
+            use (register, target) = (Qubit[Q], Qubit());
+            // It will be too time-intensive to iterate through all possible combinations of items,
+            // so random combinations will be used for testing.
+            for _ in 1 .. 4 * Q {
+                // Generate random integers between 0 and integerLimits[i] to fill the array.
+                let itemCounts = ForEach(DrawRandomInt(0, _), itemInstanceLimits);
+                // Convert those integers into bit strings and concatenate them.
+                let binaryCombo = Flattened(Mapped(IntAsBoolArray, Zipped(itemCounts, Mapped(BitSizeI, itemInstanceLimits))));
+                // Prepare the register so that it represents the combination.
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
 
-                // Iterate through the selected combinations.
-                for (combo in combos){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, Q);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+                // Reset the counter of measurements done
+                ResetOracleCallsCount();
 
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
-
-                    // Verify the weight with qubits
-                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
-                    VerifyWeight(W, itemWeights, xs, target);
+                // Verify the weight with qubits
+                let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
+                VerifyTotalWeight(W, itemWeights, itemInstanceLimits, xs, target);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    let output = (M(target) == One);
+                let result = MResetZ(target) == One;
 
-                    // Verify the weight classically
-                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceLimits, binaryCombo);
-                    mutable actualWeight = 0;
-                    for (i in 0..n-1){
-                        // Add the weight of all instances of this item type.
-                        set actualWeight += itemWeights[i]*xsCombo[i];
-                    }
-
-                    // Assert that both methods yield the same result
-                    Fact(not XOR(actualWeight <= W, output), $"Unexpected result for xs = {xsCombo}, itemWeights = {itemWeights}, W = {W} : {output}");
-                    ResetAll(register);
-                    Reset(target);
+                // Verify the weight classically
+                mutable totalWeight = 0;
+                for (val, num) in Zipped(itemWeights, itemCounts) {
+                    // Add the weight of all instances of this item type.
+                    set totalWeight += val * num;
                 }
+
+                // Assert that both methods yield the same result
+                Fact((totalWeight <= W) == result, $"Unexpected result for item counts = {itemCounts}, item weights = {itemWeights}, W = {W} : {result} (expected {totalWeight <= W})");
+
+                // Check that the operation didn't modify the input state
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+                AssertAllZero(register);
             }
         }
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T28_VerifyProfit () : Unit {
-        for ((n, W, P, itemWeights, itemProfits, itemInstanceLimits, P_max) in ExampleSets()){
+    operation T28_VerifyTotalProfit () : Unit {
+        for (_, _, P, _, itemProfits, itemInstanceLimits, _) in ExampleSets() {
 
-            // Calculate the total number of qubits
+            // Calculate the total number of qubits necessary to store the integers.
             let Q = RegisterSize(itemInstanceLimits);
 
-            using ((register, target) = (Qubit[Q], Qubit())){
-                // It will be too time-intensive to iterate through all possible combinations of items,
-                // so a random selection of combinations will be used for testing.
-                mutable combos = new Int[2*Q];
-                for (c in 0..2*Q-1){
-                    set combos w/= c <- RandomIntPow2(Q);
-                }
+            use (register, target) = (Qubit[Q], Qubit());
+            // It will be too time-intensive to iterate through all possible combinations of items,
+            // so random combinations will be used for testing.
+            for _ in 1 .. 4 * Q {
+                // Generate random integers between 0 and integerLimits[i] to fill the array.
+                let itemCounts = ForEach(DrawRandomInt(0, _), itemInstanceLimits);
+                // Convert those integers into bit strings and concatenate them.
+                let binaryCombo = Flattened(Mapped(IntAsBoolArray, Zipped(itemCounts, Mapped(BitSizeI, itemInstanceLimits))));
+                // Prepare the register so that it represents the combination.
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
 
-                // Iterate through the selected combinations.
-                for (combo in combos){
-                    // Prepare the register so that it represents the combination.
-                    let binaryCombo = IntAsBoolArray(combo, Q);
-                    ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+                // Reset the counter of measurements done
+                ResetOracleCallsCount();
 
-                    // Reset the counter of measurements done
-                    ResetOracleCallsCount();
-
-                    // Verify the profit with qubits
-                    let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
-                    VerifyProfit(P, itemProfits, xs, target);
+                // Verify the profit with qubits
+                let xs = RegisterAsJaggedArray_Reference(register, itemInstanceLimits);
+                VerifyTotalProfit(P, itemProfits, itemInstanceLimits, xs, target);
                     
-                    // Make sure the solution didn't use any measurements
-                    Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
+                // Make sure the solution didn't use any measurements
+                Fact(GetOracleCallsCount(Measure) == 0, "You are not allowed to use measurements in this task");
 
-                    let output = (M(target) == One);
+                let result = MResetZ(target) == One;
 
-                    // Verify the profit classically
-                    let xsCombo = BoolArrayConcatenationAsIntArray(itemInstanceLimits, binaryCombo);
-                    mutable actualProfit = 0;
-                    for (i in 0..n-1){
-                        // Add the profit of all instances of this item type.
-                        set actualProfit += itemProfits[i]*xsCombo[i];
-                    }
-
-                    // Assert that both methods yield the same result
-                    Fact(not XOR(actualProfit > P, output), $"Unexpected result for xs = {xsCombo}, itemProfits = {itemProfits}, P = {P} : {output}");
-                    ResetAll(register);
-                    Reset(target);
+                // Verify the profit classically
+                mutable totalProfit = 0;
+                for (val, num) in Zipped(itemProfits, itemCounts) {
+                    // Add the weight of all instances of this item type.
+                    set totalProfit += val * num;
                 }
+
+                // Assert that both methods yield the same result
+                Fact((totalProfit > P) == result, $"Unexpected result for item counts = {itemCounts}, item profits = {itemProfits}, P = {P} : {result} (expected {totalProfit > P})");
+
+                // Check that the operation didn't modify the input state
+                ApplyPauliFromBitString(PauliX, true, binaryCombo, register);
+                AssertAllZero(register);
             }
         }
     }
 
 
+    // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T29_KnapsackValidationOracle () : Unit {
         for ((n, W, P, itemWeights, itemProfits, itemInstanceLimits, P_max) in ExampleSets()){

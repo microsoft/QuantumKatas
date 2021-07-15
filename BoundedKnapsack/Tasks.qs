@@ -283,28 +283,32 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    // Task 2.7. Verify that weight satisfies limit W
+    // Task 2.7. Verify that the total weight doesn't exceed the limit W
     // Inputs:
-    //        1) An integer W, the maximum weight the knapsack can hold
-    //        2) An array of n integers, such that itemWeights[i] = wᵢ
-    //        3) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-    //        4) A qubit in an arbitrary state (target qubit)
+    //      1) An integer W, the maximum weight the knapsack can hold.
+    //      2) An array of n integers, describing the weights of the items: itemWeights[i] = wᵢ.
+    //      3) An array of n positive integers, describing the bᵢ - the limits on the maximum number of items of type i that can be selected.
+    //      4) A jagged array of qubits, describing the number of each item type put into the knapsack. 
+    //         Array selectedCounts[i] represents xᵢ in little-endian format.
+    //      5) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total weight is less than or equal to W.
-    //       The input qubits can be in superposition. Leave the qubits in xs in the same state they started in.
-    operation VerifyWeight (W : Int, itemWeights : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
+    //       The input qubits can be in superposition. Leave the qubits in the selectedCounts array in the same state they started in.
+    operation VerifyTotalWeight (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 
 
     // Task 2.8. Verify that the total profit exceeds threshold P
     // Inputs:
-    //        1) An integer P, which the total profit must exceed
-    //        2) An array of n integers, such that itemProfits[i] = pᵢ
-    //        3) A jagged array of qubits, with length n. Array xs[i] represents xᵢ in little-endian format.
-    //        4) A qubit in an arbitrary state (target qubit)
+    //      1) An integer P, the threshold which the total profit must exceed.
+    //      2) An array of n integers, describing the profits of the items: itemProfits[i] = pᵢ
+    //      3) An array of n positive integers, describing the bᵢ - the limits on the maximum number of items of type i that can be selected.
+    //      4) A jagged array of qubits, describing the number of each item type put into the knapsack. 
+    //         Array selectedCounts[i] represents xᵢ in little-endian format.
+    //      5) A qubit in an arbitrary state (target qubit).
     // Goal: Flip the state of the target qubit if the total profit is greater than P.
-    //       The input qubits can be in superposition. Leave the qubits in xs in the same state they started in.
-    operation VerifyProfit (P : Int, itemProfits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl{
+    //       The input qubits can be in superposition. Leave the qubits in the selectedCounts array in the same state they started in.
+    operation VerifyTotalProfit (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         // ...
     }
 

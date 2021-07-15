@@ -203,13 +203,13 @@ namespace Quantum.Kata.BoundedKnapsack {
     }
 
 
-    // Task 2.7. Verify that weight satisfies limit W
-    operation VerifyWeight_Reference (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+    // Task 2.7. Verify that the total weight doesn't exceed the limit W
+    operation VerifyTotalWeight_Reference (W : Int, itemWeights : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         let numQubitsTotalWeight = NumBitsTotalValue_Reference(itemWeights, itemInstanceLimits);
         use totalWeight = Qubit[numQubitsTotalWeight];
         within {
             // Calculate the total weight
-            CalculateTotalValueOfSelectedItems_Reference(itemWeights, xs, totalWeight);
+            CalculateTotalValueOfSelectedItems_Reference(itemWeights, selectedCounts, totalWeight);
         } apply {
             CompareQubitArrayLeqThanInt_Reference(totalWeight, W, target);
         }
@@ -217,12 +217,12 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.8. Verify that the total profit exceeds threshold P
-    operation VerifyProfit_Reference (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], xs : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
+    operation VerifyTotalProfit_Reference (P : Int, itemProfits : Int[], itemInstanceLimits : Int[], selectedCounts : Qubit[][], target : Qubit) : Unit is Adj+Ctl {
         let numQubitsTotalProfit = NumBitsTotalValue_Reference(itemProfits, itemInstanceLimits);
         use totalProfit = Qubit[numQubitsTotalProfit];
         within {
             // Calculate the total profit
-            CalculateTotalValueOfSelectedItems_Reference(itemProfits, xs, totalProfit);
+            CalculateTotalValueOfSelectedItems_Reference(itemProfits, selectedCounts, totalProfit);
         } apply {
             CompareQubitArrayGreaterThanInt_Reference(totalProfit, P, target);
         }
@@ -236,8 +236,8 @@ namespace Quantum.Kata.BoundedKnapsack {
         within {
             // Compute the result of each verification onto separate qubits
             VerifyLimits_Reference(itemInstanceLimits, xs, outputB);
-            VerifyWeight_Reference(W, itemWeights, itemInstanceLimits, xs, outputW);
-            VerifyProfit_Reference(P, itemProfits, itemInstanceLimits, xs, outputP);
+            VerifyTotalWeight_Reference(W, itemWeights, itemInstanceLimits, xs, outputW);
+            VerifyTotalProfit_Reference(P, itemProfits, itemInstanceLimits, xs, outputP);
         } apply {
             // Compute the final result, which is the AND operation of the three separate results
             // Accomplished by a triple-control Toffoli.
