@@ -33,7 +33,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         within {
             // flip the bits in odd (0-based positions),
             // so that the condition for flipping the state of the target qubit is "query register is in 1...1 state"
-            for (i in 1 .. 2 .. Length(queryRegister) - 1) {
+            for i in 1 .. 2 .. Length(queryRegister) - 1 {
                 X(queryRegister[i]);
             }
         }
@@ -51,17 +51,16 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     // Task 1.4*. Oracle converter
     operation OracleConverterImpl_Reference (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
-        using (target = Qubit()) {
-            within {
-                // Put the target into the |-⟩ state
-                X(target);
-                H(target);
-            } apply {
-                // Apply the marking oracle; since the target is in the |-⟩ state,
-                // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-                // (phase kickback trick)
-                markingOracle(register, target);
-            }
+        use target = Qubit();
+        within {
+            // Put the target into the |-⟩ state
+            X(target);
+            H(target);
+        } apply {
+            // Apply the marking oracle; since the target is in the |-⟩ state,
+            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+            // (phase kickback trick)
+            markingOracle(register, target);
         }
     }
     
@@ -136,7 +135,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         let phaseOracle = OracleConverter_Reference(oracle);
         HadamardTransform_Reference(register);
             
-        for (i in 1 .. iterations) {
+        for i in 1 .. iterations {
             GroverIteration_Reference(register, phaseOracle);
         }
     }

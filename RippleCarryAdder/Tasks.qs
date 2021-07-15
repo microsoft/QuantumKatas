@@ -22,6 +22,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     //  - Modifying the adder to re-use input qubits
     //  - An alternate, simplified quantum adder
     //  - A simple subtractor
+    //  - Performing arithmetic modulo 2ᴺ
 
     // Each task is wrapped in one operation preceded by the description of the task.
     // Each task (except tasks in which you have to write a test) has a unit test associated with it,
@@ -142,9 +143,9 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 1.7. N-bit adder
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩,
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
-    //      3) N qubit register "sum" in state |0...0⟩,
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) N-qubit register "sum" in state |0...0⟩,
     //      4) qubit "carry" in state |0⟩.
     // Goals:
     //      1) transform the "sum" register into the binary sum of φ and ψ,
@@ -295,8 +296,8 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 3.4. Two-bit majority-UMA adder
     // Inputs:
-    //      1) two qubit register "a" in an arbitrary state |φ⟩,
-    //      2) two qubit register "b" in an arbitrary state |ψ⟩,
+    //      1) two-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) two-qubit register "b" in an arbitrary state |ψ⟩,
     //      3) qubit "carry" in state |0⟩.
     // Goal: construct a two-bit binary adder from task 2.4 using Majority and UMA gates.
     operation TwoBitMajUmaAdder (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
@@ -309,8 +310,8 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 3.5. N-bit majority-UMA adder
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩,
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
     //      3) qubit "carry" in state |0⟩.
     // Goal: construct an N-bit binary adder from task 2.5 using only one extra qubit.
     operation ArbitraryMajUmaAdder (a : Qubit[], b : Qubit[], carry : Qubit) : Unit is Adj {
@@ -328,18 +329,91 @@ namespace Quantum.Kata.RippleCarryAdder {
 
     // Task 4.1. N-bit subtractor
     // Inputs:
-    //      1) N qubit register "a" in an arbitrary state |φ⟩,
-    //      2) N qubit register "b" in an arbitrary state |ψ⟩,
-    //      3) qubit "borrow" in state |0⟩.
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) qubit "borrowBit" in state |0⟩.
     // Goal: construct a binary subtractor:
     //      1) transform register "b" into the state |ψ - φ⟩ ,
-    //      2) set the "borrow" qubit to |1⟩ if that subtraction required a borrow.
+    //      2) set the "borrowBit" qubit to |1⟩ if that subtraction required a borrow.
     //         Leave register "a" unchanged.
-    operation Subtractor (a : Qubit[], b : Qubit[], borrow : Qubit) : Unit is Adj {
+    operation Subtractor (a : Qubit[], b : Qubit[], borrowBit : Qubit) : Unit is Adj {
         // Hint: use the adder you already built, 
         // and experiment with inverting the registers before and after the addition.
 
         // ...
 
     }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part V. Addition and subtraction modulo 2ᴺ
+    //////////////////////////////////////////////////////////////////
+
+    // In the previous parts we considered "normal" arithmetic, in which 
+    // the sum of two numbers can have more bits than each of the summands.
+    // In these tasks we have used an extra qubit to store the "carry" or "borrow" bit (the most significant bit). 
+    // If we want to perform our computation modulo 2ᴺ instead, in classical computing 
+    // we can easily discard this "carry" qubit and get the result modulo 2ᴺ automatically. 
+    // However, in quantum computing information cannot be erased that easily:
+    // this extra qubit is changed after the operation, and "discarding" it can affect the state of the other qubits. 
+    // We need to modify the computation itself so that the last carry qubit is not involved at all.
+    // In this part we will learn to implement operations modulo 2ᴺ which do either not use this extra qubit or uncompute it after use.
+
+    // Task 5.1. Adder modulo 2ᴺ
+    // Inputs:
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) N-qubit register "sum" in state |0...0⟩.
+    // Goal: transform the register "sum" into the state |(φ + ψ) mod 2ᴺ⟩.
+    //       Leave registers "a" and "b" unchanged.
+    operation AdderModuloN (a : Qubit[], b : Qubit[], sum : Qubit[]) : Unit is Adj {
+        // Hint: Consider task 1.7; can you reuse the same logic here? 
+        // Which parts of that computation you don't need in this case?
+        // ...
+    }
+
+
+    // Task 5.2. Two's complement
+    // Input: N qubit register "a" in an arbitrary state |φ⟩.
+    // Goal: Transform the register "a" into two's complement of φ
+    //       (https://en.wikipedia.org/wiki/Two's_complement).
+    // Note that the numbers encoded in the register will range from -2ᴺ to 2ᴺ-1, inclusive.
+    operation TwosComplement (a : Qubit[]) : Unit is Adj {
+        // ...
+    }
+
+
+    // Task 5.3. Subtractor modulo 2ᴺ
+    // Inputs:
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩,
+    //      3) N-qubit register "diff" in state |0...0⟩.
+    // Goal: transform the register "diff" into the state |(ψ - φ) mod 2ᴺ⟩.
+    //       Leave registers "a" and "b" unchanged.
+    operation SubtractorModuloN (a : Qubit[], b : Qubit[], diff : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+
+    // Task 5.4. In-place adder modulo 2ᴺ
+    // Inputs:
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩.
+    // Goal: transform the register "b" into the state |(φ + ψ) mod 2ᴺ⟩.
+    //       Leave register "a" unchanged.
+    operation InPlaceAdderModuloN (a : Qubit[], b : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
+
+    // Task 5.5. In-place subtractor modulo 2ᴺ
+    // Inputs:
+    //      1) N-qubit register "a" in an arbitrary state |φ⟩,
+    //      2) N-qubit register "b" in an arbitrary state |ψ⟩.
+    // Goal: transform the register "b" into the state |(ψ - φ) mod 2ᴺ⟩.
+    //       Leave register a unchanged.
+    operation InPlaceSubtractorModuloN (a : Qubit[], b : Qubit[]) : Unit is Adj {
+        // ...
+    }
+    
 }

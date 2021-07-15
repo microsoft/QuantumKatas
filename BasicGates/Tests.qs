@@ -48,26 +48,25 @@ namespace Quantum.Kata.BasicGates {
                         testImpl : (Qubit[] => Unit is Adj+Ctl),
                         refImpl : (Qubit[] => Unit is Adj+Ctl)
                        ) : Unit {
-        using (qs = Qubit[N]) {
-            // Prepare the input state and show it
-            statePrep(qs);
-            Message("The starting state:");
-            DumpMachine();
+        use qs = Qubit[N];
+        // Prepare the input state and show it
+        statePrep(qs);
+        Message("The starting state:");
+        DumpMachine();
 
-            // Apply the reference solution and show result
-            refImpl(qs);
-            Message("The desired state:");
-            DumpMachine();
-            ResetAll(qs);
+        // Apply the reference solution and show result
+        refImpl(qs);
+        Message("The desired state:");
+        DumpMachine();
+        ResetAll(qs);
 
-            // Prepare the input state again for test implementation
-            statePrep(qs);
-            // Apply learner's solution and show result
-            testImpl(qs);
-            Message("The actual state:");
-            DumpMachine();
-            ResetAll(qs);
-        }
+        // Prepare the input state again for test implementation
+        statePrep(qs);
+        // Apply learner's solution and show result
+        testImpl(qs);
+        Message("The actual state:");
+        DumpMachine();
+        ResetAll(qs);
     }
 
 
@@ -115,7 +114,7 @@ namespace Quantum.Kata.BasicGates {
         Message($"Applying amplitude change with alpha = {dumpAlpha}");
         DumpDiffOnOneQubit(AmplitudeChange(dumpAlpha, _), AmplitudeChange_Reference(dumpAlpha, _));
 
-        for (i in 0 .. 36) {
+        for i in 0 .. 36 {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperControlled(AmplitudeChange(alpha, _), _), 
                                                ArrayWrapperControlled(AmplitudeChange_Reference(alpha, _), _));
@@ -139,7 +138,7 @@ namespace Quantum.Kata.BasicGates {
         Message($"Applying phase change with alpha = {dumpAlpha}");
         DumpDiffOnOneQubit(PhaseChange(dumpAlpha,_), PhaseChange_Reference(dumpAlpha,_));
 
-        for (i in 0 .. 36) {
+        for i in 0 .. 36 {
             let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
             AssertOperationsEqualReferenced(2, ArrayWrapperControlled(PhaseChange(alpha, _), _), 
                                                ArrayWrapperControlled(PhaseChange_Reference(alpha, _), _));
@@ -192,23 +191,22 @@ namespace Quantum.Kata.BasicGates {
     // ------------------------------------------------------
     operation VerifyBellStateConversion (testOp : (Qubit[] => Unit is Adj+Ctl), startState : Int, targetState : Int) : Unit {
         // (note the use of controlled versions of operations to keep track of the phase potentially acquired by testOp)
-        using (qs = Qubit[3]) {
-            H(qs[0]);
+        use qs = Qubit[3];
+        H(qs[0]);
 
-            // prepare Bell state startState
-            Controlled StatePrep_BellState([qs[0]], (Rest(qs), startState));
+        // prepare Bell state startState
+        Controlled StatePrep_BellState([qs[0]], (Rest(qs), startState));
             
-            // apply operation that needs to be tested
-            Controlled testOp([qs[0]], Rest(qs));
+        // apply operation that needs to be tested
+        Controlled testOp([qs[0]], Rest(qs));
             
-            // verify the result by applying adjoint of state prep for target state
-            Controlled Adjoint StatePrep_BellState([qs[0]], (Rest(qs), targetState));
+        // verify the result by applying adjoint of state prep for target state
+        Controlled Adjoint StatePrep_BellState([qs[0]], (Rest(qs), targetState));
             
-            H(qs[0]);
+        H(qs[0]);
 
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
 
@@ -248,25 +246,24 @@ namespace Quantum.Kata.BasicGates {
 
         // Note that the way the problem is formulated, we can't just compare two unitaries,
         // we need to create a specific input state and check that the output state is correct
-        using (qs = Qubit[2]) {
-            for (i in 0 .. 36) {
-                let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
+        use qs = Qubit[2];
+        for i in 0 .. 36 {
+            let alpha = ((2.0 * PI()) * IntAsDouble(i)) / 36.0;
                 
-                within {
-                    // prepare state cos(α) * |0⟩ + sin(α) * |1⟩
-                    Ry(2.0 * alpha, qs[0]);
-                }
-                apply {
-                    // apply operation that needs to be tested
-                    TwoQubitGate1(qs);
-
-                    // apply adjoint reference operation
-                    Adjoint TwoQubitGate1_Reference(qs);
-                }
-                
-                // assert that all qubits end up in |0⟩ state
-                AssertAllZero(qs);
+            within {
+                // prepare state cos(α) * |0⟩ + sin(α) * |1⟩
+                Ry(2.0 * alpha, qs[0]);
             }
+            apply {
+                // apply operation that needs to be tested
+                TwoQubitGate1(qs);
+
+                // apply adjoint reference operation
+                Adjoint TwoQubitGate1_Reference(qs);
+            }
+                
+            // assert that all qubits end up in |0⟩ state
+            AssertAllZero(qs);
         }
     }
     
@@ -275,21 +272,20 @@ namespace Quantum.Kata.BasicGates {
     @Test("QuantumSimulator")
     operation T202_TwoQubitGate2 () : Unit {
         DumpDiff(2, ApplyToEachCA(H, _), TwoQubitGate2, TwoQubitGate2_Reference);
-        using (qs = Qubit[2]) {
-            within {
-                // prepare |+⟩ ⊗ |+⟩ state
-                ApplyToEachCA(H, qs);
-            } apply {
-                // apply operation that needs to be tested
-                TwoQubitGate2(qs);
+        use qs = Qubit[2];
+        within {
+            // prepare |+⟩ ⊗ |+⟩ state
+            ApplyToEachCA(H, qs);
+        } apply {
+            // apply operation that needs to be tested
+            TwoQubitGate2(qs);
             
-                // apply adjoint reference operation
-                Adjoint TwoQubitGate2_Reference(qs);
-            }
-            
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
+            // apply adjoint reference operation
+            Adjoint TwoQubitGate2_Reference(qs);
         }
+            
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
     
     
@@ -297,7 +293,7 @@ namespace Quantum.Kata.BasicGates {
     // Prepare a state for tests 2.3-2.5
     operation StatePrepMiscAmplitudes (qs : Qubit[]) : Unit is Adj+Ctl {
         let alphas = [5.0, 10.0, 15.0];
-        for (index in 0 .. Length(qs) - 1) {
+        for index in 0 .. Length(qs) - 1 {
             Ry(2.0 * (alphas[index] + IntAsDouble(index + 1)), qs[index]);
         }
     }

@@ -22,7 +22,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     function GetClauseQubits (queryRegister : Qubit[], clause : (Int, Bool)[]) : (Qubit[], Bool[]) {
         mutable clauseQubits = new Qubit[Length(clause)];
         mutable flip = new Bool[Length(clause)];
-        for (varIndex in 0 .. Length(clause) - 1) {
+        for varIndex in 0 .. Length(clause) - 1 {
             let (index, isTrue) = clause[varIndex];
             // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
             let qt = queryRegister[index];
@@ -60,7 +60,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     operation EvaluateOrClauses (queryRegister : Qubit[], 
                                  ancillaRegister : Qubit[], 
                                  problem : (Int, Bool)[][]) : Unit is Adj {
-        for (clauseIndex in 0..Length(problem)-1) {
+        for clauseIndex in 0..Length(problem)-1 {
             Oracle_SATClause(queryRegister, ancillaRegister[clauseIndex], problem[clauseIndex]);
         }
     }
@@ -72,14 +72,13 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
                           target : Qubit, 
                           problem : (Int, Bool)[][]) : Unit is Adj {
         // Allocate qubits to store results of clauses evaluation
-        using (ancillaRegister = Qubit[Length(problem)]) {
-            // Compute clauses, evaluate the overall formula as an AND oracle (can use reference depending on the implementation) and uncompute
-            within {
-                EvaluateOrClauses(queryRegister, ancillaRegister, problem);
-            }
-            apply {
-                Controlled X(ancillaRegister, target);
-            }
+        use ancillaRegister = Qubit[Length(problem)];
+        // Compute clauses, evaluate the overall formula as an AND oracle (can use reference depending on the implementation) and uncompute
+        within {
+            EvaluateOrClauses(queryRegister, ancillaRegister, problem);
+        }
+        apply {
+            Controlled X(ancillaRegister, target);
         }
     }
 
@@ -96,18 +95,17 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
     // Helper operation which converts marking oracle into phase oracle using an extra qubit
     operation ApplyMarkingOracleAsPhaseOracle (markingOracle : ((Qubit[], Qubit) => Unit is Adj), register : Qubit[]) : Unit is Adj {
-        using (target = Qubit()) {
-            // Put the target into the |-⟩ state and later back to |0⟩ so we can return it
-            within{
-                X(target);
-                H(target);
-            }
-            // Apply the marking oracle; since the target is in the |-⟩ state,
-            // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
-            apply{
-                markingOracle(register, target);
-            }    
+        use target = Qubit();
+        // Put the target into the |-⟩ state and later back to |0⟩ so we can return it
+        within {
+            X(target);
+            H(target);
         }
+        // Apply the marking oracle; since the target is in the |-⟩ state,
+        // flipping the target if the register satisfies the oracle condition will apply a -1 factor to the state
+        apply {
+            markingOracle(register, target);
+        }    
     }
 
 
@@ -116,15 +114,15 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     operation GroversAlgorithm_Loop (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit {
         ApplyToEach(H, register);
             
-        for (i in 1 .. iterations) {
+        for _ in 1 .. iterations {
             // apply oracle
             ApplyMarkingOracleAsPhaseOracle(oracle, register);
             // apply inversion about the mean
-            within{
+            within {
                 ApplyToEachA(H, register);
                 ApplyToEachA(X, register);
             }
-            apply{
+            apply {
                 Controlled Z(Most(register), Tail(register));
             }
         }
@@ -143,7 +141,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
     function SATClauseAsString (clause : (Int, Bool)[]) : String {
         mutable ret = SATVariableAsString(clause[0]);
-        for (ind in 1 .. Length(clause) - 1) {
+        for ind in 1 .. Length(clause) - 1 {
             set ret = ret + " ∨ " + SATVariableAsString(clause[ind]);
         }
         return ret;
@@ -151,7 +149,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
     function SATInstanceAsString (instance : (Int, Bool)[][]) : String {
         mutable ret = "(" + SATClauseAsString(instance[0]) + ")";
-        for (ind in 1 .. Length(instance) - 1) {
+        for ind in 1 .. Length(instance) - 1 {
             set ret = ret + " ∧ (" + SATClauseAsString(instance[ind]) + ")";
         }
         return ret;
@@ -159,7 +157,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
     function VariableAssignmentAsString (variables : Bool[]) : String {
         mutable ret = $"x0 = {variables[0]}";
-        for (ind in 1 .. Length(variables) - 1) {
+        for ind in 1 .. Length(variables) - 1 {
             set ret = ret + $", x{ind} = {variables[ind]}";
         }
         return ret;
@@ -175,16 +173,15 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
         let oracle = Oracle_SAT(_, _, instance);
 
         mutable correct = 0;
-        using ((register, answer) = (Qubit[N], Qubit())) {
-            for (run in 1..100) {
-                GroversAlgorithm_Loop(register, oracle, iter);
-                let res = MultiM(register);
-                oracle(register, answer);
-                if (MResetZ(answer) == One) {
-                    set correct += 1;
-                }
-                ResetAll(register);
+        use (register, answer) = (Qubit[N], Qubit());
+        for run in 1 .. 100 {
+            GroversAlgorithm_Loop(register, oracle, iter);
+            let res = MultiM(register);
+            oracle(register, answer);
+            if (MResetZ(answer) == One) {
+                set correct += 1;
             }
+            ResetAll(register);
         }
 
         return IntAsDouble(correct) / 100.0;
@@ -193,7 +190,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     // ---------------------------------------------------------------------------------------------
     operation Oracle_SolutionCount (queryRegister : Qubit[], target : Qubit, nSol : Int) : Unit is Adj {
         // Designate first nSol integers solutions (since we don't really care which ones are solutions)
-        for (i in 0 .. nSol - 1) {
+        for i in 0 .. nSol - 1 {
             (ControlledOnInt(i, X))(queryRegister, target);
         }
     }
@@ -204,16 +201,15 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
         let oracle = Oracle_SolutionCount(_, _, nSol);
 
         mutable correct = 0;
-        using ((register, answer) = (Qubit[nQubit], Qubit())) {
-            for (run in 1..100) {
-                GroversAlgorithm_Loop(register, oracle, iter);
-                let res = MultiM(register);
-                oracle(register, answer);
-                if (MResetZ(answer) == One) {
-                    set correct += 1;
-                }
-                ResetAll(register);
+        use (register, answer) = (Qubit[nQubit], Qubit());
+        for run in 1 .. 100 {
+            GroversAlgorithm_Loop(register, oracle, iter);
+            let res = MultiM(register);
+            oracle(register, answer);
+            if (MResetZ(answer) == One) {
+                set correct += 1;
             }
+            ResetAll(register);
         }
 
         return IntAsDouble(correct) / 100.0;

@@ -11,4 +11,4 @@ You can [run the QFT kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Micr
 
 - We follow the standard algorithm described in
 Nielsen, M. A. & Chuang, I. L. (2010). Quantum Computation and Quantum Information. pp.217-221
-- [Lecture 9 "Phase estimation (continued); the quantum Fourier transform"](https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/09.pdf) by John Watrous
+- [Lecture 9 "Phase estimation (continued); the quantum Fourier transform"](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.09.pdf) by John Watrous

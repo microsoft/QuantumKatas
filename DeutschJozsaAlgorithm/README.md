@@ -6,7 +6,7 @@ This kata covers several well-studied algorithms and concepts.
 
 #### Quantum oracles
 
-A good introduction to quantum oracles can be found in [the Q# documentation](https://docs.microsoft.com/quantum/concepts/oracles).
+A good introduction to quantum oracles can be found in [the Q# documentation](https://docs.microsoft.com/azure/quantum/concepts-oracles).
 
 #### Deutsch-Jozsa algorithm
 
@@ -14,7 +14,7 @@ This algorithm has no practical use, but it is famous for being one of the first
 
 * A good place to start is [Wikipedia](https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm).
 * Nielsen, M. A. & Chuang, I. L. (2010). Quantum Computation and Quantum Information. pp. 34-36
-* [Lecture 5: A simple searching algorithm; the Deutsch-Jozsa algorithm](https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/05.pdf)
+* [Lecture 5: A simple searching algorithm; the Deutsch-Jozsa algorithm](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.05.pdf)
 
 #### Bernstein-Vazirani algorithm
 

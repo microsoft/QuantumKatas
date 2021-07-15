@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////
-// This file is a back end for the tasks in Deutsch-Jozsa algorithm tutorial.
+// This file is a back end for the tasks in random number generation tutorial.
 // We strongly recommend to use the Notebook version of the tutorial
 // to enjoy the full experience.
 //////////////////////////////////////////////////////////////////
@@ -15,10 +15,9 @@ namespace Quantum.Kata.RandomNumberGeneration {
     
     // Exercise 1.
     operation RandomBit () : Int {
-        using (q = Qubit()) {
-            // ...
-            return -1;
-        }
+        use q = Qubit();
+        // ...
+        return -1;
     }
 
     // Exercise 2. 
@@ -28,7 +27,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
     }
 
     // Exercise 3.
-    operation RandomNBits (N: Int) : Int {
+    operation RandomNBits (N : Int) : Int {
         // ...
         return -1;
     }

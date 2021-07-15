@@ -112,7 +112,7 @@ namespace Quantum.Kata.Measurements {
     // Example: for bit strings [false, true, false] and [false, false, true]
     //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
-        for (i in 0 .. Length(bits1) - 1) {
+        for i in 0 .. Length(bits1) - 1 {
             if (bits1[i] != bits2[i]) {
                 return i;
             }
@@ -135,16 +135,16 @@ namespace Quantum.Kata.Measurements {
 
     // Task 1.8. Distinguish two superposition states given by two arrays of bit strings - 1 measurement
     function FindFirstSuperpositionDiff_Reference (bits1 : Bool[][], bits2 : Bool[][], Nqubits : Int) : Int {
-        for (i in 0 .. Nqubits - 1) {
+        for i in 0 .. Nqubits - 1 {
             // count the number of 1s in i-th position in bit strings of both arrays
             mutable val1 = 0;
             mutable val2 = 0;
-            for (j in 0 .. Length(bits1) - 1) {
+            for j in 0 .. Length(bits1) - 1 {
                 if (bits1[j][i]) {
                     set val1 += 1;
                 }
             }
-            for (k in 0 .. Length(bits2) - 1) {
+            for k in 0 .. Length(bits2) - 1 {
                 if (bits2[k][i]) {
                     set val2 += 1;
                 }
@@ -181,7 +181,7 @@ namespace Quantum.Kata.Measurements {
 
         // measure all qubits and check in which array you can find the resulting bit string
         let meas = ResultArrayAsBoolArray(MultiM(qs));
-        for (i in 0 .. Length(bits1) - 1) {
+        for i in 0 .. Length(bits1) - 1 {
             if (EqualA(EqualB, bits1[i], meas)) {
                 return 0;
             }
@@ -198,7 +198,7 @@ namespace Quantum.Kata.Measurements {
 
         // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
         let measuredState = ResultArrayAsInt(MultiM(qs));
-        for (s in bits1) {
+        for s in bits1 {
             if (BoolArrayAsInt(s) == measuredState) {
                 return 0;
             }
@@ -219,7 +219,7 @@ namespace Quantum.Kata.Measurements {
         // (and there should never be two or more Ones)
         mutable countOnes = 0;
 
-        for (q in qs) {
+        for q in qs {
             if (M(q) == One) {
                 set countOnes += 1;
             }
@@ -253,7 +253,7 @@ namespace Quantum.Kata.Measurements {
         // (and there should never be a different number of Ones)
         mutable countOnes = 0;
 
-        for (q in qs) {
+        for q in qs {
             if (M(q) == One) {
                 set countOnes += 1;
             }
@@ -407,11 +407,10 @@ namespace Quantum.Kata.Measurements {
         Adjoint WState_Arbitrary_Reference(qs);
 
         // need one qubit to store result of comparison "000" vs "not 000"
-        using (anc = Qubit()) {
-            // compute the OR function into anc
-            (ControlledOnInt(0, X))(qs, anc);
-            set result = MResetZ(anc) == One ? 0 | 1;
-        }
+        use anc = Qubit();
+        // compute the OR function into anc
+        (ControlledOnInt(0, X))(qs, anc);
+        set result = MResetZ(anc) == One ? 0 | 1;
 
         // Fix up the state so that it is identical to the input state
         // (this is not required if the state of the qubits after the operation does not matter)
@@ -566,36 +565,35 @@ namespace Quantum.Kata.Measurements {
         // the final resulting circuit without additional commentary.
         let alpha = ArcCos(Sqrt(2.0 / 3.0));
 
-        using (a = Qubit()) {
-            Z(q);
-            CNOT(a, q);
-            Controlled H([q], a);
-            S(a);
-            X(q);
+        use a = Qubit();
+        Z(q);
+        CNOT(a, q);
+        Controlled H([q], a);
+        S(a);
+        X(q);
 
-            (ControlledOnInt(0, Ry))([a], (-2.0 * alpha, q));
-            CNOT(a, q);
-            Controlled H([q], a);
-            CNOT(a, q);
+        (ControlledOnInt(0, Ry))([a], (-2.0 * alpha, q));
+        CNOT(a, q);
+        Controlled H([q], a);
+        CNOT(a, q);
 
-            // finally, measure in the standard basis
-            let res0 = MResetZ(a);
-            let res1 = M(q);
+        // finally, measure in the standard basis
+        let res0 = MResetZ(a);
+        let res1 = M(q);
 
-            // dispatch on the cases
-            if (res0 == Zero and res1 == Zero) {
-                return 0;
-            }
-            elif (res0 == One and res1 == Zero) {
-                return 1;
-            }
-            elif (res0 == Zero and res1 == One) {
-                return 2;
-            }
-            else {
-                // this should never occur
-                return 3;
-            }
+        // dispatch on the cases
+        if (res0 == Zero and res1 == Zero) {
+            return 0;
+        }
+        elif (res0 == One and res1 == Zero) {
+            return 1;
+        }
+        elif (res0 == Zero and res1 == One) {
+            return 2;
+        }
+        else {
+            // this should never occur
+            return 3;
         }
     }
 }
