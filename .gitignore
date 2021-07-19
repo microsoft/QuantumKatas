@@ -286,3 +286,6 @@ TSWLatexianTemp*
 
 # Python build files
 __pycache__
+
+.fake
+.ionide
