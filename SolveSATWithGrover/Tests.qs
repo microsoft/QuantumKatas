@@ -28,7 +28,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     // helper wrapper to test for operation equality on various register sizes
     operation AssertRegisterOperationsEqual (testOp : (Qubit[] => Unit), refOp : (Qubit[] => Unit is Adj)) : Unit {
-        for (n in 2 .. 10) {
+        for n in 2 .. 10 {
             AssertOperationsEqualReferenced(n, testOp, refOp);
         }
     }
@@ -39,27 +39,26 @@ namespace Quantum.Kata.GroversAlgorithm {
     
     operation AssertOracleImplementsFunction (N : Int, oracle : ((Qubit[], Qubit) => Unit), f : (Bool[] -> Bool)) : Unit {
         let size = 1 <<< N;
-        using ((qs, target) = (Qubit[N], Qubit())) {
-            for (k in 0 .. size - 1) {
-                // Prepare k-th bit vector
-                let binary = IntAsBoolArray(k, N);
+        use (qs, target) = (Qubit[N], Qubit());
+        for k in 0 .. size - 1 {
+            // Prepare k-th bit vector
+            let binary = IntAsBoolArray(k, N);
                 
-                //Message($"{k}/{N} = {binary}");
-                // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0
-                ApplyPauliFromBitString(PauliX, true, binary, qs);
+            //Message($"{k}/{N} = {binary}");
+            // binary is little-endian notation, so the second vector tried has qubit 0 in state 1 and the rest in state 0
+            ApplyPauliFromBitString(PauliX, true, binary, qs);
                 
-                // Apply the operation
-                oracle(qs, target);
+            // Apply the operation
+            oracle(qs, target);
                 
-                // Check that the result is what we'd expect to measure
-                let val = f(binary);
-                AssertQubit(val ? One | Zero, target);
-                Reset(target);
+            // Check that the result is what we'd expect to measure
+            let val = f(binary);
+            AssertQubit(val ? One | Zero, target);
+            Reset(target);
 
-                // Check that the query qubits are still in the same state
-                ApplyPauliFromBitString(PauliX, true, binary, qs);
-                AssertAllZero(qs);
-            }
+            // Check that the query qubits are still in the same state
+            ApplyPauliFromBitString(PauliX, true, binary, qs);
+            AssertAllZero(qs);
         }
     }
     
@@ -111,7 +110,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // ------------------------------------------------------
     function AlternatingBits (args : Bool[]) : Bool {
-        for (i in 0..Length(args)-2) {
+        for i in 0..Length(args)-2 {
             if (args[i] == args[i+1]) {
                 return false;
             }
@@ -124,7 +123,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         let testOp = QubitArrayWrapperOperation(Oracle_AlternatingBits, _);
         let refOp = QubitArrayWrapperOperation(Oracle_AlternatingBits_Reference, _);
 
-        for (n in 2 .. 5) {
+        for n in 2 .. 5 {
             AssertOracleImplementsFunction(n, Oracle_AlternatingBits, AlternatingBits);
 
             AssertOperationsEqualReferenced(n + 1, testOp, refOp);
@@ -141,7 +140,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     function SATClauseAsString (clause : (Int, Bool)[]) : String {
         mutable ret = SATVariableAsString(clause[0]);
-        for (ind in 1 .. Length(clause) - 1) {
+        for ind in 1 .. Length(clause) - 1 {
             set ret = ret + " ∨ " + SATVariableAsString(clause[ind]);
         }
         return ret;
@@ -149,7 +148,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     function SATInstanceAsString (instance : (Int, Bool)[][]) : String {
         mutable ret = "(" + SATClauseAsString(instance[0]) + ")";
-        for (ind in 1 .. Length(instance) - 1) {
+        for ind in 1 .. Length(instance) - 1 {
             set ret = ret + " ∧ (" + SATClauseAsString(instance[ind]) + ")";
         }
         return ret;
@@ -159,7 +158,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     // Evaluate one clause of the SAT formula
     function F_SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
-        for ((index, isTrue) in clause) {
+        for (index, isTrue) in clause {
             if (isTrue == args[index]) {
                 // one true literal is sufficient for the clause to be true
                 return true;
@@ -178,7 +177,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         mutable clause = new (Int, Bool)[nVarInClause];
         mutable usedVariables = new Bool[nVar];
         // Make sure variables in the clause are distinct
-        for (k in 0 .. nVarInClause - 1) {
+        for k in 0 .. nVarInClause - 1 {
             mutable nextInd = -1;
             repeat { 
                 set nextInd = DrawRandomInt(0, nVar - 1);
@@ -192,7 +191,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     @Test("QuantumSimulator")
     operation T15_Oracle_SATClause () : Unit {
-        for (i in 1..10) {
+        for i in 1..10 {
             let nVar = DrawRandomInt(3, 7);
             let clause = Generate_SAT_Clause(nVar, i);
 
@@ -210,7 +209,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // ------------------------------------------------------
     function F_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
-        for (clause in problem) {
+        for clause in problem {
             // One clause can invalidate the whole formula
             if (not F_SATClause(args, clause)) {
                 return false;
@@ -222,7 +221,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation GenerateSATInstance (nVar : Int, nClause : Int, nTerms : Int) : (Int, Bool)[][] {
         mutable problem = new (Int, Bool)[][nClause];
 
-        for (j in 0..nClause-1) {
+        for j in 0..nClause-1 {
             set problem w/= j <- Generate_SAT_Clause(nVar, nTerms);
         }
         return problem;
@@ -257,7 +256,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         RunCrossTests(Oracle_SAT);
 
         // General SAT instances for 3..6 variables
-        for (nVar in 3 .. 6) {
+        for nVar in 3 .. 6 {
             let problem = GenerateSATInstance(nVar, nVar - 1, -1);
             Message($"Testing k-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 
@@ -278,7 +277,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     function F_Exactly1One (args : Bool[]) : Bool {
         mutable nOnes = 0;
-        for (element in args) {
+        for element in args {
             if (element) {
                 set nOnes += 1;
             }
@@ -300,7 +299,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Evaluate one clause of the SAT formula
     function F_Exactly1SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
         mutable nOnes = 0;
-        for ((index, isTrue) in clause) {
+        for (index, isTrue) in clause {
             if (isTrue == args[index]) {
                 // count the number of true literals
                 set nOnes += 1;
@@ -310,7 +309,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     function F_Exactly1_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
-        for (clause in problem) {
+        for clause in problem {
             // One clause can invalidate the whole formula
             if (not F_Exactly1SATClause(args, clause)) {
                 return false;
@@ -322,7 +321,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     @Test("QuantumSimulator")
     operation T22_Oracle_Exactly1SAT () : Unit {
         // General SAT instances for 2..6 variables
-        for (nVar in 2..6) { 
+        for nVar in 2..6 { 
             let problem = GenerateSATInstance(nVar, nVar - 1, 3);
             Message($"Testing exactly-1 3-SAT instance ({nVar}, {SATInstanceAsString(problem)})...");
 

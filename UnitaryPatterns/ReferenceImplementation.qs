@@ -60,7 +60,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Task 8. 2⨯2 chessboard pattern
     operation ChessPattern2x2_Reference (qs : Qubit[]) : Unit {
         H(Head(qs));
-        for (i in 2 .. Length(qs) - 1) {
+        for i in 2 .. Length(qs) - 1 {
             H(qs[i]);
         }
     }
@@ -109,7 +109,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Helper operation: decrement a little-endian register
     operation Decrement (qs : Qubit[]) : Unit {
         X(qs[0]);
-        for (i in 1..Length(qs)-1) {
+        for i in 1..Length(qs)-1 {
             Controlled X(qs[...i-1], qs[i]);
         }
     }
@@ -150,7 +150,7 @@ namespace Quantum.Kata.UnitaryPatterns {
 
     // Helper function for Embedding_Perm: finds first location where bit strings differ. 
     function FirstDiff (bits1 : Bool[], bits2 : Bool[]) : Int {
-        for (i in 0 .. Length(bits1)-1) {
+        for i in 0 .. Length(bits1)-1 {
             if (bits1[i] != bits2[i]) {
                 return i;
             }
@@ -176,7 +176,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         }
         
         // iterate through the bit strings again, setting the final state of qubits
-        for (i in 0..n-1) {
+        for i in 0..n-1 {
             if (bits1[i] == bits2[i]) {
                 // if two bits are the same, set both to 1 using X or nothing
                 if (not bits1[i]) {
@@ -216,7 +216,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Putting everything together: the target pattern is produced by a sequence of controlled H gates. 
     operation Hessenberg_Matrix_Reference (qs : Qubit[]) : Unit {
         let n = Length(qs);
-        for (i in 2^n - 2 .. -1 .. 0) {     
+        for i in 2^n - 2 .. -1 .. 0 {     
             Embed_2x2_Operator(H, i, i+1, qs);
         }
     }

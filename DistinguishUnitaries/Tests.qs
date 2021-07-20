@@ -33,7 +33,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         mutable wrongClassifications = new Int[nUnitaries * nUnitaries]; // [i * nU + j] number of times unitary i was classified as j
         mutable unknownClassifications = new Int[nUnitaries];            // number of times unitary i was classified as something unknown
         
-        for (i in 1 .. nTotal) {
+        for i in 1 .. nTotal {
             // get a random integer to define the unitary used
             let actualIndex = DrawRandomInt(0, nUnitaries - 1);
             
@@ -64,8 +64,8 @@ namespace Quantum.Kata.DistinguishUnitaries {
         }
         
         mutable totalMisclassifications = 0;
-        for (i in 0 .. nUnitaries - 1) {
-            for (j in 0 .. nUnitaries - 1) {
+        for i in 0 .. nUnitaries - 1 {
+            for j in 0 .. nUnitaries - 1 {
                 let misclassifiedIasJ = wrongClassifications[(i * nUnitaries) + j];
                 if (misclassifiedIasJ != 0) {
                     set totalMisclassifications += misclassifiedIasJ;
@@ -156,7 +156,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T109_DistinguishRzFromRy () : Unit {
-        for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
+        for theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1] {
             DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), Ry(theta, _)]), DistinguishRzFromRy(theta, _), -1);
         }
     }
@@ -165,7 +165,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T110_DistinguishRzFromR1WithAngle () : Unit {
-        for (theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1]) {
+        for theta in [0.04, 0.1, 0.25, 0.31, 0.5, 0.87, 1.05, 1.41, 1.66, 1.75, 2.0, 2.16, 2.22, 2.51, 2.93, 3.0, 3.1] {
             DistinguishUnitaries_Framework(Mapped(SingleQubitGateAsUnitary<Qubit>, [Rz(theta, _), R1(theta, _)]), DistinguishRzFromR1WithAngle(theta, _), -1);
         }
     }

@@ -31,7 +31,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Get the first value of the function
         let firstValue = f(0);
         // Try all the following inputs to see if any of the values differ
-        for (input in 1 .. 2 <<< (N - 1)) {
+        for input in 1 .. 2 <<< (N - 1) {
             let nextValue = f(input);
             if (nextValue != firstValue) {
                 // Got two different values - the function is balanced
@@ -60,14 +60,13 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 4.
     operation DeutschJozsaAlgorithm_Reference (N : Int, oracle : (Qubit[] => Unit)) : Bool {
         mutable isConstantFunction = true;
-        using (x = Qubit[N]) {
-            ApplyToEach(H, x);
-            oracle(x);
-            ApplyToEach(H, x);
-            for (q in x) {
-                if (M(q) == One) {
-                    set isConstantFunction = false;
-                }
+        use x = Qubit[N];
+        ApplyToEach(H, x);
+        oracle(x);
+        ApplyToEach(H, x);
+        for q in x {
+            if (M(q) == One) {
+                set isConstantFunction = false;
             }
         }
         return isConstantFunction;

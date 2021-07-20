@@ -75,13 +75,12 @@ namespace Quantum.Kata.CHSHGame {
     operation PlayQuantumCHSH_Reference (askAlice : (Qubit => Bool),
                                          askBob : (Qubit => Bool)) : (Bool, Bool) {
 
-        using ((aliceQubit, bobQubit) = (Qubit(), Qubit())) {
-            CreateEntangledPair_Reference([aliceQubit, bobQubit]);
+        use (aliceQubit, bobQubit) = (Qubit(), Qubit());
+        CreateEntangledPair_Reference([aliceQubit, bobQubit]);
 
-            let aliceResult = askAlice(aliceQubit);
-            let bobResult = askBob(bobQubit);
+        let aliceResult = askAlice(aliceQubit);
+        let bobResult = askBob(bobQubit);
 
-            return (aliceResult, bobResult);
-        }
+        return (aliceResult, bobResult);
     }
 }

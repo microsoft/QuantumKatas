@@ -20,16 +20,15 @@ namespace Quantum.Kata.MultiQubitGates {
 
 
     operation AssertEqualOnZeroState (testImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
-        using (qs = Qubit[2]) {
-            // apply operation that needs to be tested
-            testImpl(qs);
+        use qs = Qubit[2];
+        // apply operation that needs to be tested
+        testImpl(qs);
 
-            // apply adjoint reference operation
-            Adjoint refImpl(qs);
+        // apply adjoint reference operation
+        Adjoint refImpl(qs);
 
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
     @Test("QuantumSimulator")
@@ -39,9 +38,9 @@ namespace Quantum.Kata.MultiQubitGates {
 
     @Test("QuantumSimulator")
     operation T3_QubitSwap () : Unit {
-        for (N in 2 .. 5) {
-            for (j in 0 .. N-2) {
-                for (k in j+1 .. N-1) {
+        for N in 2 .. 5 {
+            for j in 0 .. N-2 {
+                for k in j+1 .. N-1 {
                     AssertOperationsEqualReferenced(N, QubitSwap(_, j, k), QubitSwap_Reference(_, j, k));
                 }
             }
@@ -50,7 +49,7 @@ namespace Quantum.Kata.MultiQubitGates {
 
     @Test("QuantumSimulator")
     operation T4_ControlledRotation () : Unit {
-        for (i in 0 .. 20) {
+        for i in 0 .. 20 {
             let angle = IntAsDouble(i) / 10.0;
             AssertOperationsEqualReferenced(2, ControlledRotation(_, angle), ControlledRotation_Reference(_,angle));
         }
@@ -63,7 +62,7 @@ namespace Quantum.Kata.MultiQubitGates {
 
     @Test("QuantumSimulator")
     operation T5_MultiControls () : Unit {
-        for (i in 0 .. (2 ^ 4) - 1) {
+        for i in 0 .. (2 ^ 4) - 1 {
             let bits = IntAsBoolArray(i, 4);
             AssertOperationsEqualReferenced(5, ArrayControlledOperationWrapper(MultiControls(_, _, bits), _), ArrayControlledOperationWrapper(MultiControls_Reference(_, _, bits), _));
         }

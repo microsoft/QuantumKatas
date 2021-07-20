@@ -26,8 +26,8 @@ namespace Quantum.Kata.GHZGame {
 
     @Test("QuantumSimulator")
     operation T11_WinCondition () : Unit {
-        for (rst in RefereeBits()) {
-            for (i in 0 .. 1 <<< 3 - 1) {
+        for rst in RefereeBits() {
+            for i in 0 .. 1 <<< 3 - 1 {
                 let abc = IntAsBoolArray(i, 3);
                 EqualityFactB(
                     WinCondition(rst, abc),
@@ -42,7 +42,7 @@ namespace Quantum.Kata.GHZGame {
     operation GetClassicalStrategySuccessRate (N : Int, strategy : (Bool => Bool)) : Double {
         let inputs = RefereeBits();
         mutable wins = 0;
-        for (_ in 0 .. N - 1) {
+        for _ in 0 .. N - 1 {
             let rst = inputs[DrawRandomInt(0, Length(inputs) - 1)];
             let abc = PlayClassicalGHZ_Reference(strategy, rst);
             if (WinCondition_Reference(rst, abc)) {
@@ -74,8 +74,8 @@ namespace Quantum.Kata.GHZGame {
     operation T14_PlayClassicalGHZ () : Unit {
         // To test the interaction, run it on several deterministic strategies (not necessarily good ones)
         let inputs = RefereeBits();
-        for (rst in inputs) {
-            for (mode in 0 .. 3) {
+        for rst in inputs {
+            for mode in 0 .. 3 {
                 let result = PlayClassicalGHZ(TestStrategy(_, mode), rst);
                 let expected = PlayClassicalGHZ_Reference(TestStrategy(_, mode), rst);
                 AllEqualityFactB(result, expected, $"Unexpected result for rst={rst}");
@@ -88,16 +88,15 @@ namespace Quantum.Kata.GHZGame {
     //////////////////////////////////////////////////////////////////
 
     operation AssertEqualOnZeroState (N : Int, taskImpl : (Qubit[] => Unit), refImpl : (Qubit[] => Unit is Adj)) : Unit {
-        using (qs = Qubit[N]) {
-            // apply operation that needs to be tested
-            taskImpl(qs);
+        use qs = Qubit[N];
+        // apply operation that needs to be tested
+        taskImpl(qs);
             
-            // apply adjoint reference operation and check that the result is |0ᴺ⟩
-            Adjoint refImpl(qs);
+        // apply adjoint reference operation and check that the result is |0ᴺ⟩
+        Adjoint refImpl(qs);
             
-            // assert that all qubits end up in |0⟩ state
-            AssertAllZero(qs);
-        }
+        // assert that all qubits end up in |0⟩ state
+        AssertAllZero(qs);
     }
 
     @Test("QuantumSimulator")
@@ -109,25 +108,24 @@ namespace Quantum.Kata.GHZGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T22_QuantumStrategy () : Unit {
-        for (_ in 1 .. 4) {
+        for _ in 1 .. 4 {
             // repeat 4 times since we are testing a measurement, it's possible to get
             // correct answer with wrong basis, reduces probability of false positives
-            using (q = Qubit()) {
-                EqualityFactB(QuantumStrategy(false, q), false, "|0⟩ not measured as false");
+            use q = Qubit();
+            EqualityFactB(QuantumStrategy(false, q), false, "|0⟩ not measured as false");
 
-                X(q);
-                EqualityFactB(QuantumStrategy(false, q), true, "|1⟩ not measured as true");
-                Reset(q);
+            X(q);
+            EqualityFactB(QuantumStrategy(false, q), true, "|1⟩ not measured as true");
+            Reset(q);
 
-                H(q);
-                EqualityFactB(QuantumStrategy(true, q), false, "|+⟩ is not measured as false");
-                Reset(q);
+            H(q);
+            EqualityFactB(QuantumStrategy(true, q), false, "|+⟩ is not measured as false");
+            Reset(q);
 
-                X(q);
-                H(q);
-                EqualityFactB(QuantumStrategy(true, q), true, "|-⟩ is not measured as true");
-                Reset(q);
-            }
+            X(q);
+            H(q);
+            EqualityFactB(QuantumStrategy(true, q), true, "|-⟩ is not measured as true");
+            Reset(q);
 
         }
     }
@@ -136,7 +134,7 @@ namespace Quantum.Kata.GHZGame {
     // ------------------------------------------------------
     @Test("QuantumSimulator")
     operation T23_PlayQuantumGHZ () : Unit {
-        for (_ in 0 .. 1000) {
+        for _ in 0 .. 1000 {
             let rst = (RefereeBits())[DrawRandomInt(0, Length(RefereeBits()) - 1)];
             let strategies = [QuantumStrategy_Reference(rst[0], _), 
                               QuantumStrategy_Reference(rst[1], _), 

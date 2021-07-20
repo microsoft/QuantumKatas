@@ -26,12 +26,12 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 1.
     @Test("QuantumSimulator")
     operation T1_ClassicalFunction () : Unit {
-        for (N in 1..5) {
-            for (x in 0..(1 <<< (N - 1)) - 1) {
+        for N in 1 .. 5 {
+            for x in 0 .. (1 <<< (N - 1)) - 1 {
                 let ret = Function_MostSignificantBit(x, N);
                 Fact(ret == 0, $"Unexpected return for x = {x}, N = {N}: expected 0, got {ret}");
             }
-            for (x in (1 <<< (N - 1))..(1 <<< N) - 1) {
+            for x in (1 <<< (N - 1))..(1 <<< N) - 1 {
                 let ret = Function_MostSignificantBit(x, N);
                 Fact(ret == 1, $"Unexpected return for x = {x}, N = {N}: expected 1, got {ret}");
             }
@@ -71,7 +71,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Exercise 3.
     @Test("QuantumSimulator")
     operation T3_QuantumOracle () : Unit {
-        for (N in 1..5) {
+        for N in 1 .. 5 {
             AssertOperationsEqualReferenced(N, PhaseOracle_MostSignificantBit, PhaseOracle_MostSignificantBit_Reference);
         }
     }

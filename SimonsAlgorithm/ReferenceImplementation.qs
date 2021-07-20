@@ -20,7 +20,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     
     // Task 1.1. f(x) = x₀ ⊕ ... ⊕ xₙ₋₁ (parity of the number of bits set to 1)
     operation Oracle_CountBits_Reference (x : Qubit[], y : Qubit) : Unit is Adj {
-        for (q in x) {
+        for q in x {
             CNOT(q, y);
         }
     }
@@ -31,7 +31,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         let N = Length(x);
 
-        for (i in 1 .. N - 1) {
+        for i in 1 .. N - 1 {
             CNOT(x[i - 1], y[i]);
         }
     }
@@ -42,7 +42,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         let N = Length(x);
             
-        for (i in 0 .. N - 1) {
+        for i in 0 .. N - 1 {
             if (A[i] == 1) {
                 CNOT(x[i], y);
             }
@@ -56,8 +56,8 @@ namespace Quantum.Kata.SimonsAlgorithm {
         let N1 = Length(y);
         let N2 = Length(x);
             
-        for (i in 0 .. N1 - 1) {
-            for (j in 0 .. N2 - 1) {
+        for i in 0 .. N1 - 1 {
+            for j in 0 .. N2 - 1 {
                 if ((A[i])[j] == 1) {
                     CNOT(x[j], y[i]);
                 }
@@ -79,29 +79,28 @@ namespace Quantum.Kata.SimonsAlgorithm {
     operation Simon_Algorithm_Reference (N : Int, Uf : ((Qubit[], Qubit[]) => Unit)) : Int[] {
                 
         // allocate input and answer registers with N qubits each
-        using ((x, y) = (Qubit[N], Qubit[N])) {
-            // prepare qubits in the right state
-            SA_StatePrep_Reference(x);
+        use (x, y) = (Qubit[N], Qubit[N]);
+        // prepare qubits in the right state
+        SA_StatePrep_Reference(x);
             
-            // apply oracle
-            Uf(x, y);
+        // apply oracle
+        Uf(x, y);
             
-            // apply Hadamard to each qubit of the input register
-            ApplyToEach(H, x);
+        // apply Hadamard to each qubit of the input register
+        ApplyToEach(H, x);
             
-            // measure all qubits of the input register;
-            // the result of each measurement is converted to an Int
-            mutable j = new Int[N];
-            for (i in 0 .. N - 1) {
-                if (M(x[i]) == One) {
-                    set j w/= i <- 1;
-                }
+        // measure all qubits of the input register;
+        // the result of each measurement is converted to an Int
+        mutable j = new Int[N];
+        for i in 0 .. N - 1 {
+            if (M(x[i]) == One) {
+                set j w/= i <- 1;
             }
-            
-            // since y has not been measured, we reset y qubits
-            ResetAll(y);
-            return j;
         }
+            
+        // since y has not been measured, we reset y qubits
+        ResetAll(y);
+        return j;
     }
     
 }
