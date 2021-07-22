@@ -48,13 +48,13 @@ namespace Quantum.Kata.BoundedKnapsack
     //////////////////////////////////////////////////////////////////
 
     // Introduction:
-    // There exist n items, indexed 0 to n-1.
+    // You are given n items, indexed 0 to n-1.
     // The item with index i has a weight of wᵢ and yields a profit of pᵢ.
     // In the original 0-1 knapsack decision problem, we wish to determine
-    // whether we can put items in a knapsack to get a total profit
+    // whether we can put a subset of items in a knapsack to get a total profit
     // of at least P, while not exceeding a maximum weight W.
 
-    // However, we will slightly modify the problem for this part of the kata:
+    // However, we will slightly modify the problem:
     // the total profit must be strictly greater than P, rather than at least P.
 
     // In the following tasks you will implement an oracle that evaluates whether
@@ -77,8 +77,8 @@ namespace Quantum.Kata.BoundedKnapsack
     
     // Task 1.2. Calculate the number of (qu)bits necessary to hold the maximum total value
     // Input: An array of n positive integers, describing the value (the weight or the profit) of each item.
-    // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
-    // Example: For n = 4 and itemValues = [1, 2, 3, 4], the maximum possible total value is 10, 
+    // Output: The minimum number of (qu)bits needed to store the maximum total value of the items.
+    // Example: For n = 4 and itemValues = [1, 2, 3, 4], the maximum total value is 10, 
     //          which requires at least 4 qubits to store it, so 4 is returned.
     function NumBitsTotalValue01 (itemValues : Int[]) : Int {
         // ...
@@ -86,7 +86,7 @@ namespace Quantum.Kata.BoundedKnapsack
     }
 
 
-    // Task 1.3. Calculate total value of selected items
+    // Task 1.3. Calculate the total value of selected items
     // Inputs:
     //      1) An array of n integers, describing the values (the weights or the profits) of the items.
     //      2) An array of n qubits, describing whether each item is put into the knapsack.
@@ -184,14 +184,14 @@ namespace Quantum.Kata.BoundedKnapsack
     // each type of item can have more than one copy, and can be selected multiple times.
     // Specifically, there are bᵢ copies of item type i available,
     // so this item type can be selected between 0 and bᵢ times, inclusive.
-    // Let xᵢ represent the number of copies of index i that are put into the knapsack; 0 ≤ xᵢ ≤ bᵢ for all i.
+    // Let xᵢ represent the number of copies of index i that are put into the knapsack; the constraint 0 ≤ xᵢ ≤ bᵢ must hold for all i.
     // Thus, we seek a combination xs = [x₀, x₁, ..., xₙ₋₁] which
     // has total weight at most W, and has total profit that is greater than P.
 
     // Again, we slightly modify the problem, such that the total profit must
     // be strictly greater than P, rather than at least P.
 
-    // The comparators from Part I can be reused, but the operations for
+    // The comparators from Part I (tasks 1.4-1.5) can be reused, but the operations for
     // calculating total weight and profit will need to be rewritten.
 
 
@@ -200,7 +200,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //        Array selectedItemCounts[i] represents the binary notation of xᵢ in little-endian format.
     //        Each qubit is guaranteed to be in one of the basis states (|0⟩ or |1⟩).
     // Output: An integer array of length n, containing the combination that this jagged array represents.
-    //         The integer at index i in the output array should have value xᵢ.
+    //         The i-th element of the output array should have value xᵢ.
     //         The operation should not change the state of the qubits.
     // Example: For state selectedItemCounts = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
     operation MeasureCombination (selectedItemCounts : Qubit[][]) : Int[] {
@@ -261,9 +261,9 @@ namespace Quantum.Kata.BoundedKnapsack
     // Inputs:
     //      1) An array of n positive integers, describing the value (the weight or the profit) of each item.
     //      2) An array of n positive integers, describing the bᵢ - the limits on the maximum number of items of type i that can be selected.
-    // Output: The minimum number of (qu)bits needed to store the maximum total weight/profit of the items.
+    // Output: The minimum number of (qu)bits needed to store the maximum total value of the items.
     // Example: For n = 4, itemValues = [1, 2, 3, 4], and itemCountLimits = [2, 5, 4, 3], 
-    //          the maximum possible total weight is  1*2 + 2*5 + 3*4 + 4*3 = 36, which requires at least 6 qubits, so 6 is returned.
+    //          the maximum possible total value is  1*2 + 2*5 + 3*4 + 4*3 = 36, which requires at least 6 qubits, so 6 is returned.
     function NumBitsTotalValue (itemValues : Int[], itemCountLimits : Int[]) : Int {
         // ...
         return 0;
