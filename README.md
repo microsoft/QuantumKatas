@@ -97,6 +97,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
   Explore Grover's search algorithm, using SAT problems as an example. Learn to implement quantum oracles based on the problem description instead of a hard-coded answer. Use Grover's algorithm to solve problems with an unknown number of solutions.
 * **[Solving graph coloring problems using Grover's algorithm](./GraphColoring/)**.
   Continue the exploration of Grover's search algorithm, using graph coloring problems as an example.
+* **[Solving bounded knapsack problem using Grover's algorithm](./BoundedKnapsack/)**.
+  Learn how solve the variants of knapsack problem with Grover's search.
 
 #### Tools and libraries/Building up to Shor's algorithm
 

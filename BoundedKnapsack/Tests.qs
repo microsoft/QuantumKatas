@@ -220,7 +220,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T18_KnapsackValidationOracle_01 () : Unit {
+    operation T18_VerifyKnapsackProblemSolution01 () : Unit {
         for (n, W, P, itemWeights, itemProfits) in ExampleSets01() {
             use (selectedItems, target) = (Qubit[n], Qubit());
             // Iterate through all possible combinations of items.
@@ -437,7 +437,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T25_NumBitsTotalValue_Reference () : Unit {
+    operation T25_NumBitsTotalValue () : Unit {
         for (_, _, _, itemWeights, itemProfits, itemCountLimits, _) in ExampleSets() {
             for values in [itemWeights, itemProfits] {
                 let res = NumBitsTotalValue(values, itemCountLimits);
@@ -568,7 +568,7 @@ namespace Quantum.Kata.BoundedKnapsack
 
     // ------------------------------------------------------
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
-    operation T29_KnapsackValidationOracle () : Unit {
+    operation T29_VerifyKnapsackProblemSolution () : Unit {
         // Skip the last test case to speed up the test.
         for (n, W, P, itemWeights, itemProfits, itemCountLimits, _) in Most(ExampleSets()) {
 
