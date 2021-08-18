@@ -30,7 +30,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     function IsFunctionConstant_Classical_Reference (N : Int, f : (Int -> Int)) : Bool {
         // Get the first value of the function
         let firstValue = f(0);
-        // Try all the following inputs to see if any of the values differ; should be run 2ᴺ⁻¹ + 1 times
+        // Try all the following inputs to see if any of the values differ; should be run 2ᴺ⁻¹ times
         for input in 1 .. 2 ^ (N - 1) {
             let nextValue = f(input);
             if (nextValue != firstValue) {
