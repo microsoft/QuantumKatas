@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.17.2105143879
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.18.2107153439
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -32,23 +32,23 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh BasicGates && \
     ./scripts/prebuild-kata.sh CHSHGame && \
     ./scripts/prebuild-kata.sh DeutschJozsaAlgorithm && \
-    ./scripts/prebuild-kata.sh DistinguishUnitaries && \
+    #./scripts/prebuild-kata.sh DistinguishUnitaries && \
     #./scripts/prebuild-kata.sh GHZGame && \
-    ./scripts/prebuild-kata.sh GraphColoring && \
+    #./scripts/prebuild-kata.sh GraphColoring && \
     ./scripts/prebuild-kata.sh GroversAlgorithm && \
-    ./scripts/prebuild-kata.sh JointMeasurements && \
+    #./scripts/prebuild-kata.sh JointMeasurements && \
     #./scripts/prebuild-kata.sh KeyDistribution_BB84 && \
     #./scripts/prebuild-kata.sh MagicSquareGame && \
     ./scripts/prebuild-kata.sh Measurements && \
-    ./scripts/prebuild-kata.sh PhaseEstimation && \
+    #./scripts/prebuild-kata.sh PhaseEstimation && \
     #./scripts/prebuild-kata.sh QEC_BitFlipCode && \
     ./scripts/prebuild-kata.sh QFT && \
     #./scripts/prebuild-kata.sh RippleCarryAdder && \
-    ./scripts/prebuild-kata.sh SolveSATWithGrover && \
-    ./scripts/prebuild-kata.sh SuperdenseCoding && \
+    #./scripts/prebuild-kata.sh SolveSATWithGrover && \
+    #./scripts/prebuild-kata.sh SuperdenseCoding && \
     ./scripts/prebuild-kata.sh Superposition && \
     ./scripts/prebuild-kata.sh Teleportation && \
-    ./scripts/prebuild-kata.sh TruthTables && \
+    #./scripts/prebuild-kata.sh TruthTables && \
     # Exclude Unitary patterns, since it times out in Binder prebuild
     #./scripts/prebuild-kata.sh UnitaryPatterns && \
     ./scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb && \
@@ -57,11 +57,13 @@ RUN cd ${HOME} && \
     ./scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
-    ./scripts/prebuild-kata.sh tutorials/Oracles Oracles.ipynb && \
+    #./scripts/prebuild-kata.sh tutorials/Oracles Oracles.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitGates SingleQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/SingleQubitSystemMeasurements SingleQubitSystemMeasurements.ipynb && \
+    # Exclude VisualizationTools, as %debug cell times out in Binder prebuild
+    #./scripts/prebuild-kata.sh tutorials/VisualizationTools VisualizationTools.ipynb && \
 # To improve performance when loading packages at IQ# kernel initialization time,
 # we remove all online sources for NuGet such that IQ# Package Loading and NuGet dependency
 # resolution won't attempt to resolve package dependencies again (as it was already done
