@@ -15,13 +15,14 @@ We're so glad you asked!
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
+      * [Validating changes to `%kata` and `%check_kata` magics on local machine](#validating-changes-to-kata-and-check_kata-magics-on-local-machine)
 * [Contributor License Agreement](#contributor-license-agreement)
 * [Code of Conduct](#code-of-conduct)
 
 ## Reporting Bugs
 
 The Quantum Development Kit is distributed across multiple repositories. If you have found a bug in one of the parts of the Quantum Development Kit, try to file the issue against the correct repository.
-Check the list [in the contribution guide](https://docs.microsoft.com/quantum/contributing/#where-do-contributions-go) if you aren't sure which repo is correct.
+Check the list [in the contribution guide](https://docs.microsoft.com/azure/quantum/contributing-overview#where-do-contributions-go) if you aren't sure which repo is correct.
 
 If you think you've found a bug in one of the tasks, start by looking through [the existing issues](https://github.com/Microsoft/QuantumKatas/issues?q=is%3Aissue) in case it has already been reported (or it's not a bug at all). 
 
@@ -91,7 +92,7 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Style guide
 
-* We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/quantum/contributing/style-guide) in our Q# code. 
+* We try to adhere to [the general Q# Style Guide](https://docs.microsoft.com/azure/quantum/contributing-style-guide) in our Q# code. 
 * We also try to maintain a uniform style across the katas and most importantly within each kata. 
   If you're adding a new task to an existing kata, it should be styled the same way as the rest of its tasks. 
   If you're creating a new kata, model it after the style of the existing katas. 
@@ -104,12 +105,12 @@ If the topic you want is not claimed, or is not on the list, go ahead and let us
 
 ### Updating the Katas to the new QDK version
 
-The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/quantum/resources/relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
+The Quantum Development Kit is updated monthly (you can find the latest releases in the [release notes](https://docs.microsoft.com/azure/quantum/qdk-relnotes). After each new release the Katas have to be updated to use the newly released QDK version. 
 
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/Update-QDKVersion.ps1 0.15.2102129448
+   PS> ./scripts/Update-QDKVersion.ps1 0.18.2107153439
 ```
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
@@ -131,7 +132,7 @@ When you contribute any code to the Katas, you need to validate that everything 
          PS> ./scripts/validate-notebooks.ps1 ./BasicGates/BasicGates.ipynb
       ```
 
-      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/quantum/install-guide/qjupyter) 
+      To use this script, you need to be able to [run Q# Jupyter notebooks locally](https://docs.microsoft.com/azure/quantum/install-jupyter-qdk) 
 and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-powershell).
 
    4. If you do a bulk update of the katas, testing each of them individually will take too much time; you can streamline the testing using the scripts used by our continuous integration. 
@@ -159,6 +160,48 @@ This can happen for several reasons:
 To exclude a task from validation, open the corresponding Jupyter notebook and choose ```View -> Cell Toolbar -> Tags``` to see and edit the tags for each cell. Add the tag that is the most fitting description of the failure cause to the cell. 
 After you are done with editing the notebook, choose ```View -> Cell Toolbar -> None``` to turn off tags editing view for the subsequent users of this notebook. Finally, save the notebook.
 
+#### Validating changes to `%kata` and `%check_kata` magics on local machine
+1. Do your changes in the [`KataMagic.cs`](../utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic.cs`](../utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs), for example, add logging statements:
+   ```
+   Logger.LogDebug($"Value : {val}");
+   ```
+2. Generate a custom NuGet package `Microsoft.Quantum.Katas`.
+   1. Build the Microsoft.Quantum.Katas project to produce a NuGet package. To do this, you can add the following field to the [Microsoft.Quantum.Katas.csproj](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) under the `<PropertyGroup>` tag:
+      ```
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      ```
+      If you need to get a version other than 1.0.0, add a field `<Version>version-number</Version>` under the same tag.
+   2. Copy the generated .nupkg file from the `Microsoft.Quantum.Katas\bin\Debug` folder to the folder in which the test kata project resides (such as PhaseEstimation kata).
+   3. Remove the package reference to `Microsoft.Quantum.Katas` package from the .csproj file of your project.
+      > This might cause your project to fail build, for example, if it uses CounterSimulator functionality. It will build successfully from the Q# Notebook once you add this package dynamically.
+   4. Set up NuGet.config file in the project folder to allow the project to discover a NuGet package in the current folder in addition to the standard sources. Here's an example file:
+      ```
+      <?xml version="1.0" encoding="utf-8"?>
+      <configuration>
+        <packageSources>
+          <add key="Local Folder" value="." />
+        </packageSources>
+      </configuration>
+      ```
+3. To observe your changes when running Q# Jupyter Notebook:
+   1. Set the environment variable `IQSHARP_LOG_LEVEL=Debug`.
+      > The environment variable is case-sensitive.
+   2. Navigate to your project folder and run the following command:
+      ```
+      $ start jupyter notebook <your notebook name>
+      ```
+      > This will launch Q# Jupyter Notebooks server in a new window, which is
+      > helpful in debugging the magics since logging is quite noisy.
+   3. In the Q# Jupyter Notebook you opened, use `%package` magic to load the new NuGet package `Microsoft.Quantum.Katas` by adding and executing the following cell:
+      ```
+      %package Microsoft.Quantum.Katas::<package-version>
+      ```
+   2. Reload the workspace by adding and executing the following cell:
+      ```
+      %workspace reload
+      ```
+
+> To validate changes to the `CheckKataMagic` using the `validate-notebooks.ps1` script, update the NuGet.config file being written [by the script](../scripts/validate-notebooks.ps1#L88) to include the local folder instead of `<clear />` by replacing it with `<add key=""Local Folder"" value=""."" />`
 
 ## Contributor License Agreement
 
