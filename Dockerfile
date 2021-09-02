@@ -3,7 +3,7 @@
 # installed for us.
 FROM mcr.microsoft.com/quantum/iqsharp-base:0.18.2108160999
 
-ENV IQSHARP_LOG_PATH=/tmp/iqsharp.log
+ENV IQSHARP_LOG_PATH=${HOME}/iqsharp.log
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
