@@ -3,7 +3,9 @@
 # installed for us.
 FROM mcr.microsoft.com/quantum/iqsharp-base:0.18.2108160999
 
-ENV IQSHARP_LOG_PATH=${HOME}/iqsharp.log
+# Log any issues that may arise during building the image.
+# NB: Remove this before merging to main.
+ENV IQSHARP_LOG_PATH=${HOME}/iqsharp-build.log
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -84,6 +86,10 @@ RUN cd ${HOME} && \
 
 # Set the working directory to $HOME (/home/jovyan/)
 WORKDIR ${HOME}
+
+# Log any issues that may arise when using the image interactively.
+# NB: Remove this before merging to main.
+ENV IQSHARP_LOG_PATH=${HOME}/iqsharp-interactive.log
 
 # Set default command when running a Docker container instance
 CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0"]
