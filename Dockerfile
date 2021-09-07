@@ -3,6 +3,11 @@
 # installed for us.
 FROM mcr.microsoft.com/quantum/iqsharp-base:0.18.2108160999
 
+# As a diagnostic, try downgrading the IQ# kernel.
+RUN rm -rf ${HOME}/.dotnet/tools && \
+    dotnet tool install -g Microsoft.Quantum.IQSharp --version 0.18.2107153439 && \
+    dotnet iqsharp install
+
 # Log any issues that may arise during building the image.
 # NB: Remove this before merging to main.
 ENV IQSHARP_LOG_PATH=${HOME}/iqsharp-build.log
