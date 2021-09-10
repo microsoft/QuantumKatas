@@ -4,7 +4,7 @@ This kata covers phase estimation algorithms, which are some of the most fundame
 
 Phase estimation is the task of estimating the eigenvalue of an eigenvector of a unitary operator. Since the absolute value of the eigenvalue is always 1, the eigenvalue can be represented as exp(2iπφ), and phase estimation algorithms are usually formulated in terms of estimating the phase φ.
 
-You can [run the Phase Estimation kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=PhaseEstimation%2FPhaseEstimation.ipynb)!
+You can [run the Phase Estimation kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/PhaseEstimation%2FPhaseEstimation.ipynb)!
 
 #### Theory
 
