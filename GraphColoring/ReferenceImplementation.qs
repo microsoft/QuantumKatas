@@ -202,14 +202,8 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.2.2 Classical verification of weak coloring
     function IsWeakColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
-        mutable validBits = new Bool[V];
-
         for vertex in 0..V-1{
-            set validBits w/= vertex <- IsVertexWeaklyColored_Reference(V, edges, colors, vertex);
-        }
-
-        for validBit in validBits {
-            if(validBit == false) {
+            if IsVertexWeaklyColored_Reference(V, edges, colors, vertex) == false {
                 return false;
             }
         }
