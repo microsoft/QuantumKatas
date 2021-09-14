@@ -177,7 +177,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 3.1. Determine if an edge starts with mentioned vertex
     function DoesEdgeStartWithVertex_Reference(edge: (Int, Int), vertex : Int) : Bool {
         let (start, end) = edge;
-        return (start == vertex);
+        return (start == vertex) or (end == vertex);
     }
 
     // Task 3.2.1 Determine if a vertex is weakly colored

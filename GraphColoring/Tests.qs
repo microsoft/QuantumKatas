@@ -277,7 +277,7 @@ namespace Quantum.Kata.GraphColoring {
     operation T31_DoesEdgeStartWithVertex () : Unit {
         Fact(DoesEdgeStartWithVertex( (1,2), 1) == true,
              $"Edge (1,2) judged incorrect for vertex 1");
-        Fact(DoesEdgeStartWithVertex( (1,2), 2) == false,
+        Fact(DoesEdgeStartWithVertex( (1,2), 2) == true,
              $"Edge (1,2) judged correct for vertex 2");
         Fact(DoesEdgeStartWithVertex( (1,2), 3) == false,
              $"Edge (1,2) judged correct for vertex 2");
@@ -289,14 +289,14 @@ namespace Quantum.Kata.GraphColoring {
         let colorings = [[0, 0, 0],
                          [3, 2, 0, 0],
                          [1, 0, 1, 2, 1],
-                         [0, 1, 1, 1, 1],
-                         [0, 1, 2, 2, 2]
+                         [0, 0, 1, 1, 1],
+                         [0, 1, 1, 1, 1]
                         ];
         let expectedResults = [[true, true, true],
-                               [true, true, false, true],
-                               [true, true, true, true, false],
-                               [true, false, true, false, false],
-                               [true, true, false, false, true]
+                               [true, true, true, true],
+                               [false, true, true, true, false],
+                               [false, true, true, true, false],
+                               [true, true, true, false, true]
                               ];
         for t in 0..Length(testCases)-2 {
             let (V_t, edges_t) = testCases[t];
@@ -312,7 +312,7 @@ namespace Quantum.Kata.GraphColoring {
         let testCases = ExampleGraphs();
         let exampleColoringForThreeVertices = [[0, 0, 0], [2, 1, 3]];
         let exampleColoringForFourVertices = [[0, 2, 1, 3], [3, 2, 0, 0], [0, 2, 1, 0] ];
-        let exampleColoringForFiveVertices = [[0, 1, 2, 3, 1], [0, 1, 1, 2, 2], [0, 0, 1, 2, 3]];
+        let exampleColoringForFiveVertices = [[0, 1, 1, 2, 0], [0, 0, 1, 1, 1], [0, 1, 1, 1, 1, 1], [0, 1, 2, 2, 1]];
 
 
         let (V0, edges0) = testCases[0];
@@ -322,23 +322,23 @@ namespace Quantum.Kata.GraphColoring {
         }
 
         let (V1, edges1) = testCases[1];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFourVertices, [true, false, true]) {
+        for (coloring, expectedResult) in Zipped(exampleColoringForFourVertices, [true, true, true]) {
                 Fact(IsWeakColoringValid(V1, edges1, coloring) == expectedResult,
                     $"Coloring {coloring} judged {not expectedResult} for graph V = {V1}, edges = {edges1}");
         }
 
         let (V2, edges2) = testCases[2];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices , [true, false, true]) {
+        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices , [false, true, false, true]) {
                 Fact(IsWeakColoringValid(V2, edges2, coloring) == expectedResult,
                     $"Coloring {coloring} judged {not expectedResult} for graph V = {V2}, edges = {edges2}");
         }
         let (V3, edges3) = testCases[3];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, true, false]) {
+        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, false, false, true]) {
                 Fact(IsWeakColoringValid(V3, edges3, coloring) == expectedResult,
                     $"Coloring {coloring} judged {not expectedResult} for graph V = {V3}, edges = {edges3}");
         }
         let (V4, edges4) = testCases[4];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, false, true]) {
+        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, true, false, true]) {
                 Fact(IsWeakColoringValid(V4, edges4, coloring) == expectedResult,
                     $"Coloring {coloring} judged {not expectedResult} for graph V = {V4}, edges = {edges4}");
         }
