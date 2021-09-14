@@ -171,7 +171,7 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.2.1 Determine if a vertex is weakly colored
     // Inputs:
-    //      1) The number of vertices in the graph V (V Γëñ 6).
+    //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E Γëñ 12).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
@@ -212,10 +212,10 @@ namespace Quantum.Kata.GraphColoring {
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of 2V qubits colorsRegister that encodes the color assignments.
-    //      4) A qubit in an arbitrary state |yΓƒ⌐ (target qubit).
+    //      4) A qubit in an arbitrary state |y⟩ (target qubit).
     //      5) A vertex in the graph, indexed 0 through V - 1
     //
-    // Goal: Transform state |x, yΓƒ⌐ into state |x, y Γèò f(x)Γƒ⌐ (Γèò is addition modulo 2),
+    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
     //       where f(x) = 1 if the given weak coloring is valid and 0 otherwise.
     //       Leave the query register in the same state it started in.
     //
