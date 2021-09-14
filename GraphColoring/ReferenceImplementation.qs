@@ -232,7 +232,7 @@ namespace Quantum.Kata.GraphColoring {
                                                         colorsRegister[end * 2 .. end * 2 + 1], conflictQubits[n]);
             }
         } apply {
-            // if any neighbour is non conflicting; atleast one qubit is zero, flip target
+            // if any neighbor is non conflicting; atleast one qubit is zero, flip target
             // Flip for all qubit combinations
             X(target);
             if N != 0 {
@@ -256,7 +256,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     // Task 3.4 Using Grover's search to find weak coloring
-    operation GroversAlgorithmForWeakColouring_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
+    operation GroversAlgorithmForWeakColoring_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // Reuse Grover's search algorithm from task 3.2
         return GroversAlgorithm_Reference(V, oracle);
     }

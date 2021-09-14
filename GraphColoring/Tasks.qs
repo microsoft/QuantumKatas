@@ -172,14 +172,14 @@ namespace Quantum.Kata.GraphColoring {
     // Task 3.2.1 Determine if a vertex is weakly colored
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
-    //      2) An array of E tuples of integers, representing the edges of the graph (E Γëñ 12).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of V integers, representing the vertex coloring of the graph.
     //         i-th element of the array is the color of the vertex number i.
     //      4) A vertex in the graph, indexed 0 through V - 1
     // Output: true if the vertex is weakly colored
-    //         (i.e atleast one neighbouring vertex of different color),
+    //         (i.e atleast one neighboring vertex of different color),
     //         and false otherwise.
     // Example: For vertex 0, in a graph containing edges = [(0, 1), (0, 2), (1, 2)].
     //         and  colors = [0, 1, 0], vertex 0 is weakly colored
@@ -189,14 +189,14 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.2.2 Classical verification of weak coloring
     // Inputs:
-    //      1) The number of vertices in the graph V (V Γëñ 6).
-    //      2) An array of E tuples of integers, representing the edges of the graph (E Γëñ 12).
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of V integers, representing the vertex coloring of the graph.
     //         i-th element of the array is the color of the vertex number i.
     // Output: true if the given weak coloring is valid
-    //         (i.e every vertex is connected by atleast one neighbouring vertex of different color),
+    //         (i.e every vertex is connected by atleast one neighboring vertex of different color),
     //         and false otherwise.
     // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
     //         Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
@@ -207,8 +207,8 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.3.1. Oracle for verifying if a vertex is weakly colored
     // Inputs:
-    //      1) The number of vertices in the graph V (V Γëñ 6).
-    //      2) An array of E tuples of integers, representing the edges of the graph (E Γëñ 12).
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of 2V qubits colorsRegister that encodes the color assignments.
@@ -227,14 +227,14 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.3.2. Oracle for verifying weak coloring
     // Inputs:
-    //      1) The number of vertices in the graph V (V Γëñ 6).
-    //      2) An array of E tuples of integers, representing the edges of the graph (E Γëñ 12).
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of 2V qubits colorsRegister that encodes the color assignments.
-    //      4) A qubit in an arbitrary state |yΓƒ⌐ (target qubit).
+    //      4) A qubit in an arbitrary state |y⟩ (target qubit).
     //
-    // Goal: Transform state |x, yΓƒ⌐ into state |x, y Γèò f(x)Γƒ⌐ (Γèò is addition modulo 2),
+    // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
     //       where f(x) = 1 if the given weak coloring is valid and 0 otherwise.
     //       Leave the query register in the same state it started in.
     //
@@ -247,11 +247,11 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.4. Using Grover's search to find weak coloring
     // Inputs:
-    //      1) The number of vertices in the graph V (V Γëñ 6).
+    //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) A marking oracle which implements vertex coloring verification, as implemented in task 3.3.2.
     //
     // Output: A valid vertex coloring for the graph, in a format used in task 3.2.2.
-    operation GroversAlgorithmForWeakColouring (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
+    operation GroversAlgorithmForWeakColoring (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
         return new Int[V];
     }

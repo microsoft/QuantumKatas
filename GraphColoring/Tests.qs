@@ -362,10 +362,10 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T34_GroversAlgorithmForWeakColouring () : Unit {
+    operation T34_GroversAlgorithmForWeakColoring () : Unit {
         for (V, edges) in ExampleGraphs() {
             Message($"Running on graph V = {V}, edges = {edges}");
-            let coloring = GroversAlgorithmForWeakColouring(V, WeakColoringOracle_Reference(V, edges, _, _));
+            let coloring = GroversAlgorithmForWeakColoring(V, WeakColoringOracle_Reference(V, edges, _, _));
             Fact(IsWeakColoringValid_Reference(V, edges, coloring),
                  $"Got incorrect coloring {coloring}");
             Message($"Got correct coloring {coloring}");
