@@ -284,7 +284,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T321_IsVertexWeaklyColored () : Unit {
+    operation T32_IsVertexWeaklyColored () : Unit {
         let testCases = ExampleGraphs();
         let colorings = [[0, 0, 0],
                          [3, 2, 0, 0],
@@ -308,7 +308,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T322_IsWeakColoringValid () : Unit {
+    operation T33_IsWeakColoringValid () : Unit {
         let testCases = Most(ExampleGraphs());
         // Every coloring would pass on a disconnected graph of 3 vertices
         let exampleColoringForThreeVertices = [[0, 0, 0], [2, 1, 3]];
@@ -353,7 +353,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T331_WeaklyColoredVertexOracle() : Unit {
+    operation T34_WeaklyColoredVertexOracle() : Unit {
         for (V, edges) in Most(ExampleGraphs()) {
             for vertex in 0..V-1 {
                 AssertOracleRecognizesColoring(V, edges, WeaklyColoredVertexOracle(_, _, _, _, vertex), IsVertexWeaklyColored_Reference(_, _, _, vertex));
@@ -362,7 +362,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T332_WeakColoringOracle () : Unit {
+    operation T35_WeakColoringOracle () : Unit {
         // Run test on all test cases except the last one
         for (V, edges) in Most(ExampleGraphs()) {
             AssertOracleRecognizesColoring(V, edges, WeakColoringOracle, IsWeakColoringValid_Reference);
@@ -370,7 +370,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T34_GroversAlgorithmForWeakColoring () : Unit {
+    operation T36_GroversAlgorithmForWeakColoring () : Unit {
         for (V, edges) in ExampleGraphs() {
             Message($"Running on graph V = {V}, edges = {edges}");
             let coloring = GroversAlgorithmForWeakColoring(V, WeakColoringOracle_Reference(V, edges, _, _));

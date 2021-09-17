@@ -180,7 +180,7 @@ namespace Quantum.Kata.GraphColoring {
         return (start == vertex) or (end == vertex);
     }
 
-    // Task 3.2.1 Determine if a vertex is weakly colored
+    // Task 3.2. Determine if a vertex is weakly colored
     function IsVertexWeaklyColored_Reference(V : Int, edges: (Int, Int)[], colors: Int[], vertex : Int) : Bool {
         let predicate = DoesEdgeContainVertex_Reference(_, vertex);
         let connectingEdgesIndices = Where(predicate, edges);
@@ -200,17 +200,19 @@ namespace Quantum.Kata.GraphColoring {
         return false;
     }
 
-    // Task 3.2.2 Classical verification of weak coloring
+    // Task 3.3. Classical verification of weak coloring
     function IsWeakColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // If any vertex is not weakly colored, return false
         for vertex in 0..V-1{
             if IsVertexWeaklyColored_Reference(V, edges, colors, vertex) == false {
                 return false;
             }
         }
+        // If all vertices are weakly colored, return false
         return true;
     }
 
-    // Task 3.3.1. Oracle for verifying if a vertex is weakly colored
+    // Task 3.4. Oracle for verifying if a vertex is weakly colored
     operation WeaklyColoredVertexOracle_Reference (V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
         let predicate = DoesEdgeContainVertex_Reference(_, vertex);
         let connectingEdgesIndices = Where(predicate, edges);
@@ -236,7 +238,7 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
-    // Task 3.3.2. Oracle for verifying weak coloring
+    // Task 3.5. Oracle for verifying weak coloring
     operation WeakColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         use verticesQubits = Qubit[V];
         within {
@@ -249,7 +251,7 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
-    // Task 3.4 Using Grover's search to find weak coloring
+    // Task 3.6. Using Grover's search to find weak coloring
     operation GroversAlgorithmForWeakColoring_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // Reuse Grover's search algorithm from task 3.2
         return GroversAlgorithm_Reference(V, oracle);

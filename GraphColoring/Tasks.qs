@@ -170,7 +170,7 @@ namespace Quantum.Kata.GraphColoring {
         return false;
     }
 
-    // Task 3.2.1 Determine if a vertex is weakly colored
+    // Task 3.2. Determine if a vertex is weakly colored
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
@@ -189,7 +189,7 @@ namespace Quantum.Kata.GraphColoring {
         return false;
     }
 
-    // Task 3.2.2 Classical verification of weak coloring
+    // Task 3.3. Classical verification of weak coloring
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
@@ -208,7 +208,7 @@ namespace Quantum.Kata.GraphColoring {
     }
 
 
-    // Task 3.3.1. Oracle for verifying if a vertex is weakly colored
+    // Task 3.4. Oracle for verifying if a vertex is weakly colored
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
@@ -228,7 +228,7 @@ namespace Quantum.Kata.GraphColoring {
         // ...
     }
 
-    // Task 3.3.2. Oracle for verifying weak coloring
+    // Task 3.5. Oracle for verifying weak coloring
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
@@ -248,12 +248,12 @@ namespace Quantum.Kata.GraphColoring {
     }
 
 
-    // Task 3.4. Using Grover's search to find weak coloring
+    // Task 3.6. Using Grover's search to find weak coloring
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
-    //      2) A marking oracle which implements vertex coloring verification, as implemented in task 3.3.2.
+    //      2) A marking oracle which implements weak coloring verification, as implemented in task 3.5.
     //
-    // Output: A valid vertex coloring for the graph, in a format used in task 3.2.2.
+    // Output: A valid weak coloring for the graph, in a format used in task 3.3.
     operation GroversAlgorithmForWeakColoring (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
         return new Int[V];
