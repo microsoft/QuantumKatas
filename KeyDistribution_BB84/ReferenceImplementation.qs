@@ -107,7 +107,7 @@ namespace Quantum.Kata.KeyDistribution {
 
     // Task 2.6. Putting it all together 
     operation T26_BB84Protocol_Reference () : Unit {
-        let threshold = 99;
+        let threshold = 1;
 
         use qs = Qubit[20];
         // 1. Choose random basis and bits to encode
@@ -146,7 +146,7 @@ namespace Quantum.Kata.KeyDistribution {
     
     // Task 3.2. Catch the eavesdropper
     operation T32_BB84ProtocolWithEavesdropper_Reference () : Unit {
-        let threshold = 90;
+        let threshold = 1;
 
         use qs = Qubit[20];
         // 1. Choose random basis and bits to encode

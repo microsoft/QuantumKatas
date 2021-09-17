@@ -3,7 +3,7 @@
 This kata covers the CHSH game, one of the most famous examples of a nonlocal
 (entanglement) game. 
 
-You can [run the CHSH Game kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=CHSHGame%2FCHSHGame.ipynb)!
+You can [run the CHSH Game kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/CHSHGame%2FCHSHGame.ipynb)!
 
 In a nonlocal game, several cooperating players play a game against a referee answering the referee's questions. The players are free to share information
 (and even qubits!) before the game starts, but are forbidden from communicating
