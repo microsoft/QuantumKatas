@@ -174,15 +174,15 @@ namespace Quantum.Kata.GraphColoring {
     // Part III. Vertex coloring problem
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Determine if an edge starts with mentioned vertex
-    function DoesEdgeStartWithVertex_Reference(edge: (Int, Int), vertex : Int) : Bool {
+    // Task 3.1. Determine if an edge contains the mentioned vertex
+    function DoesEdgeContainVertex_Reference(edge: (Int, Int), vertex : Int) : Bool {
         let (start, end) = edge;
         return (start == vertex) or (end == vertex);
     }
 
     // Task 3.2.1 Determine if a vertex is weakly colored
     function IsVertexWeaklyColored_Reference(V : Int, edges: (Int, Int)[], colors: Int[], vertex : Int) : Bool {
-        let predicate = DoesEdgeStartWithVertex_Reference(_, vertex);
+        let predicate = DoesEdgeContainVertex_Reference(_, vertex);
         let connectingEdgesIndices = Where(predicate, edges);
 
         let N = Length(connectingEdgesIndices);
@@ -212,7 +212,7 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.3.1. Oracle for verifying if a vertex is weakly colored
     operation WeaklyColoredVertexOracle_Reference (V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
-        let predicate = DoesEdgeStartWithVertex_Reference(_, vertex);
+        let predicate = DoesEdgeContainVertex_Reference(_, vertex);
         let connectingEdgesIndices = Where(predicate, edges);
 
         let N = Length(connectingEdgesIndices);

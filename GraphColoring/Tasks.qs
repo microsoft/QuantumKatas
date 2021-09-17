@@ -155,16 +155,17 @@ namespace Quantum.Kata.GraphColoring {
     // Part III. Weak coloring problem
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Determine if an edge starts with mentioned vertex
+    // Task 3.1. Determine if an edge contains the mentioned vertex
     // Inputs:
     //      1) An edge denoted by a tuple of integers.
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //      2) An integer denoting the vertex of the graph.
     // Output: true if the edge starts with vertex provided
     //         and false otherwise.
-    // Examples: edge (0,1) starts with vertex 0, so return true
-    //           edge (0,1) does not start with vertex 1, so return false
-    function DoesEdgeStartWithVertex(edge: (Int, Int), vertex : Int) : Bool {
+    // Examples: edge (0,1) contains vertex 0, so return true
+    //           edge (0,1) contains vertex 1, so return true
+    //           edge (2,3) does not contain vertex 1, so return false
+    function DoesEdgeContainVertex(edge: (Int, Int), vertex : Int) : Bool {
         // ...
         return false;
     }

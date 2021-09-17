@@ -274,12 +274,12 @@ namespace Quantum.Kata.GraphColoring {
     }
 
     @Test("QuantumSimulator")
-    operation T31_DoesEdgeStartWithVertex () : Unit {
-        Fact(DoesEdgeStartWithVertex( (1,2), 1) == true,
+    operation T31_DoesEdgeContainVertex () : Unit {
+        Fact(DoesEdgeContainVertex( (1,2), 1) == true,
              $"Edge (1,2) judged incorrect for vertex 1");
-        Fact(DoesEdgeStartWithVertex( (1,2), 2) == true,
+        Fact(DoesEdgeContainVertex( (1,2), 2) == true,
              $"Edge (1,2) judged correct for vertex 2");
-        Fact(DoesEdgeStartWithVertex( (1,2), 3) == false,
+        Fact(DoesEdgeContainVertex( (1,2), 3) == false,
              $"Edge (1,2) judged correct for vertex 2");
     }
 
