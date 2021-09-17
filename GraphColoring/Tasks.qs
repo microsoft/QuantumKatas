@@ -182,6 +182,7 @@ namespace Quantum.Kata.GraphColoring {
     // Output: true if the vertex is weakly colored
     //         (i.e atleast one neighboring vertex of different color),
     //         and false otherwise.
+    //         Note : An isolated vertex is considered to be weakly colored as per Wikipedia.
     // Example: For vertex 0, in a graph containing edges = [(0, 1), (0, 2), (1, 2)].
     //         and  colors = [0, 1, 0], vertex 0 is weakly colored
     function IsVertexWeaklyColored(V : Int, edges: (Int, Int)[], colors: Int[], vertex : Int) : Bool {
@@ -199,6 +200,7 @@ namespace Quantum.Kata.GraphColoring {
     // Output: true if the given weak coloring is valid
     //         (i.e every vertex is connected by atleast one neighboring vertex of different color),
     //         and false otherwise.
+    //         Note : An isolated vertex is considered to be weakly colored as per Wikipedia.
     // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
     //         Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
     function IsWeakColoringValid (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
