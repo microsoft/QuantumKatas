@@ -309,38 +309,46 @@ namespace Quantum.Kata.GraphColoring {
 
     @Test("QuantumSimulator")
     operation T322_IsWeakColoringValid () : Unit {
-        let testCases = ExampleGraphs();
+        let testCases = Most(ExampleGraphs());
+        // Every coloring would pass on a disconnected graph of 3 vertices
         let exampleColoringForThreeVertices = [[0, 0, 0], [2, 1, 3]];
-        let exampleColoringForFourVertices = [[0, 2, 1, 3], [3, 2, 0, 0], [0, 2, 1, 0] ];
-        let exampleColoringForFiveVertices = [[0, 1, 1, 2, 0], [0, 0, 1, 1, 1], [0, 1, 1, 1, 1, 1], [0, 1, 2, 2, 1]];
+        // Every coloring  would pass on a fully connected graph of 4 vertices;
+        // except for the colorings in which all vertices are of the same color
+        let exampleColoringForFourVertices = [[0, 2, 1, 3], [3, 2, 0, 0], [0, 0, 0, 0] ];
+        let exampleColoringForFiveVertices = [
+            // Graph coloring that fails in all types of graphs, except fully disconnected graphs
+            [0, 0, 0, 0, 0],
+            // Graph coloring that passes all types of graphs regardless of their structure
+            [0, 1, 2, 3, 4],
+            // Random coloring that fails the third graph, and passes the fourth and fifth one
+            [0, 1, 1, 2, 0],
+            // Random coloring that fails the fourth graph, and passes the third and fifth one
+            [0, 0, 1, 1, 1]
+            // Note any colorings that pass the third or the fourth graph
+            // will also pass the fifth graph since fifth graph has all the edges contained
+            // in the third and fourth graph
+            ];
 
+        let coloringAndVerdicts0 = Zipped(exampleColoringForThreeVertices, [true, true]);
+        let coloringAndVerdicts1 = Zipped(exampleColoringForFourVertices, [true, true, false]);
+        let coloringAndVerdicts2 = Zipped(exampleColoringForFiveVertices, [false, true, false, true]);
+        let coloringAndVerdicts3 = Zipped(exampleColoringForFiveVertices, [false, true, true, false]);
+        let coloringAndVerdicts4 = Zipped(exampleColoringForFiveVertices, [false, true, true, true]);
 
-        let (V0, edges0) = testCases[0];
-        for (coloring, expectedResult) in Zipped(exampleColoringForThreeVertices, [true, true]) {
-                Fact(IsWeakColoringValid(V0, edges0, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V0}, edges = {edges0}");
-        }
+        let fullTestCases = Zipped(testCases, [
+                                    coloringAndVerdicts0,
+                                    coloringAndVerdicts1,
+                                    coloringAndVerdicts2,
+                                    coloringAndVerdicts3,
+                                    coloringAndVerdicts4
+                                    ]);
 
-        let (V1, edges1) = testCases[1];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFourVertices, [true, true, true]) {
-                Fact(IsWeakColoringValid(V1, edges1, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V1}, edges = {edges1}");
-        }
-
-        let (V2, edges2) = testCases[2];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices , [false, true, false, true]) {
-                Fact(IsWeakColoringValid(V2, edges2, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V2}, edges = {edges2}");
-        }
-        let (V3, edges3) = testCases[3];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, false, false, true]) {
-                Fact(IsWeakColoringValid(V3, edges3, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V3}, edges = {edges3}");
-        }
-        let (V4, edges4) = testCases[4];
-        for (coloring, expectedResult) in Zipped(exampleColoringForFiveVertices, [true, true, false, true]) {
-                Fact(IsWeakColoringValid(V4, edges4, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V4}, edges = {edges4}");
+        for (testCase, coloringAndVerdicts) in fullTestCases {
+            let (V, edges) = testCase;
+            for (coloring,expectedResult) in coloringAndVerdicts {
+                Fact(IsWeakColoringValid(V, edges, coloring) == expectedResult,
+                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V}, edges = {edges}");
+            }
         }
     }
 
