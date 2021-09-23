@@ -108,7 +108,7 @@ namespace Microsoft.Quantum.Katas
 
                 // Gets the names of all the operations found for this snippet
                 var opsNames =
-                        result
+                    result
                         .Where(e => e.IsQsCallable)
                         .Select(e => e.ToFullName().WithoutNamespace(Microsoft.Quantum.IQSharp.Snippets.SNIPPETS_NAMESPACE))
                         .OrderBy(o => o)
@@ -276,6 +276,7 @@ namespace Microsoft.Quantum.Katas
                             if(simulator is SimulatorBase sim)
                             {
                                 testSimulators.Add(sim);
+                                Logger.LogDebug($"Simulator added of type {sim.GetType()}");
                             }
                             break;
                         }
@@ -319,7 +320,7 @@ namespace Microsoft.Quantum.Katas
             // need to help it with a no-op that uses the null-forgiving
             // operator.
             .Select(value => value!)
-            .ToList() ;
+            .ToList();
 
             return testSimNames;
         }
