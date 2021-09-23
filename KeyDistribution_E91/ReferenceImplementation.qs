@@ -24,12 +24,12 @@ namespace Quantum.Kata.KeyDistributionE91 {
     //////////////////////////////////////////////////////////////////
 	
     // Task 1.1. Entangled Pairs
-    operation EntangledPairs_Reference (qsAlice : Qubit[], qsBob : Qubit[]) : Unit {
+    operation EntangledPairs_Reference (qsAlice : Qubit[], qsBob : Qubit[]) : Unit is Adj{
         Fact(Length(qsAlice) == Length(qsBob), "Alice and Bob should have the same number of qubits");
 
-        for i in IndexRange(qsAlice) {
-            H(qsAlice[i]);
-            CNOT(qsAlice[i], qsBob[i]);
+        for (i, j) in Zipped(qsAlice, qsBob) {
+            H(i);
+            CNOT(i, j);
         }
     }
 
@@ -117,7 +117,6 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
 
     // Task 2.5 Putting it all together 
-    @Test("QuantumSimulator")
     operation T25_E91Protocol_Reference () : Unit {
         // 1. Alice and Bob choose basis multipliers
         let basisListAlice = [0, 1, 2];
@@ -162,7 +161,6 @@ namespace Quantum.Kata.KeyDistributionE91 {
     }
 
     // Task 3.2. Catch the eavesdropper
-    @Test("QuantumSimulator")
     operation T32_E91ProtocolWithEavesdropper_Reference () : Unit {
         // 1. Alice and Bob choose basis multipliers
         let basisListAlice = [0, 1, 2];

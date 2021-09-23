@@ -27,11 +27,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
         use qsBob = Qubit[2];
 
         EntangledPairs(qsAlice, qsBob);
-
-        for (i, j) in Zipped(qsAlice, qsBob) {
-            CNOT(i, j);
-            H(i);
-        }
+        Adjoint EntangledPairs_Reference(qsAlice, qsBob);
 
         AssertAllZero(qsAlice + qsBob);
     }
@@ -84,13 +80,13 @@ namespace Quantum.Kata.KeyDistributionE91 {
     }
 
     @Test("QuantumSimulator")
-    operation T23_GenerateSharedKey() : Unit {
+    function T23_GenerateSharedKey() : Unit {
         // ...
     }
 
 
     @Test("QuantumSimulator")
-    operation T24_CorrelationCheck() : Unit {
+    function T24_CorrelationCheck() : Unit {
         // ...
     }
 
