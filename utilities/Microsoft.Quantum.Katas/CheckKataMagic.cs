@@ -58,8 +58,7 @@ namespace Microsoft.Quantum.Katas
         /// so it will return the operation even if the compilation fails.
         /// </summary>
         protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel) =>
-               Compiler
-               .IdentifyElements(code);
+               Compiler.IdentifyElements(code);
 
         /// <summary>
         /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
