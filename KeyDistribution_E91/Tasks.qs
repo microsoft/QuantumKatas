@@ -24,7 +24,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
     //	    2) "qsBob": an array of N qubits in the |0⟩ states,
     // Goal: Create entangled pairs |Ψ⟩ = 1/√2 (|00⟩ + |11⟩) out of corresponding qubits of
     //        Alice's and Bob's qubits.
-    operation EntangledPairs (qsAlice : Qubit[], qsBob : Qubit[]) : Unit {
+    operation EntangledPairs (qsAlice : Qubit[], qsBob : Qubit[]) : Unit is Adj{
         Fact(Length(qsAlice) == Length(qsBob), "Alice and Bob should have the same number of qubits");
         // ...
 
@@ -155,7 +155,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
     }
 
     // Task 3.2. Catch the eavesdropper
-    // Add an eavesdropper into the BB84 protocol from task 2.5.
+    // Add an eavesdropper into the E91 protocol from task 2.5.
     // Note that we should be able to detect Eve with a CHSH correlation check.
     //
     // This is an open-ended task and is not covered by a test; 
