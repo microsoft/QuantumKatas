@@ -11,9 +11,9 @@ steps:
 
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.6'
+    versionSpec: '3.7'
     architecture: 'x64'
-  displayName: 'Use Python 3.6'
+  displayName: 'Use Python 3.7'
 
 - script: pip install setuptools wheel pytest jupyter numpy matplotlib qsharp pyzmq==19.0.2
   displayName: 'Install Python tools'
