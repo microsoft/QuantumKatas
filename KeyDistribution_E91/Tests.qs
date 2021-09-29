@@ -36,10 +36,11 @@ namespace Quantum.Kata.KeyDistributionE91 {
     operation T21_RotateAndMeasure() : Unit {
         use q = Qubit();
 
-        for mutliplier in 0 .. 3 {
-            let res = RotateAndMeasure_Reference(q, mutliplier);
+        for basisIndex in 1..4 {
+            let res = RotateAndMeasure(q, basisIndex);
+            let rotationAngle = PI() * IntAsDouble(basisIndex - 1) / 4.0;
             within {
-                Ry(IntAsDouble(mutliplier) * PI() / 4.0, q);
+                Ry(rotationAngle, q);
             } apply {
                 AssertQubitWithinTolerance(res, q, 1e-5);
             }
@@ -48,50 +49,66 @@ namespace Quantum.Kata.KeyDistributionE91 {
         
     }
 
-
-    operation randomList<'T>(values: 'T[], count : Int) : 'T[] {
-        let dist = DiscreteUniformDistribution(0,Length(values)-1);
-        mutable outList = new 'T[0];
-
-        for _ in 1 .. count {
-            set outList += [values[dist::Sample()]];
-        }
-        return outList;
-    }
-
     @Test("QuantumSimulator")
-    operation T22_MeasureQubitArray() : Unit {
-        let basisList = [0, 1, 2, 3];
-        use qs = Qubit[5];
+    operation T22_RandomBasesArray() : Unit {
+        let N = 5;
+        let basesIndices = [1,2,3];
 
-        let (bs, rs) = MeasureQubitArray_Reference(qs, basisList);
+        let basesArray = RandomBasesArray(basesIndices, N);
+        EqualityFactI(
+            Length(basesArray), N,
+            "Generated array length does not match the input length"
+            );
 
-        for (q, b, r) in Zipped3(qs, bs, rs) {
-            Message($"b = {b}, m = {r}");
-            DumpMachine();
-            within {
-                Ry(IntAsDouble(b) * PI() / 4.0, q);
-            } apply {
-                AssertQubitWithinTolerance(r, q, 1e-5);
+        for i in basesArray {
+            mutable indexInRange = false;
+            for j in basesIndices { 
+                if i == j {
+                    set indexInRange = true;
+                }
             }
-            Reset(q);
+            Fact(
+                indexInRange, 
+                $"element {i} is not a member of bases array {basesIndices}"
+                );
         }
-
     }
 
     @Test("QuantumSimulator")
-    function T23_GenerateSharedKey() : Unit {
+    operation T23_MeasureQubitArray() : Unit {
+        let N = 5;
+        let basesArray = RandomBasesArray_Reference([1, 2, 3, 4], N);
+
+        use qs = Qubit[N];
+        let results = MeasureQubitArray_Reference(qs, basesArray);
+
+        for (q, b, r) in Zipped3(qs, basesArray, results) {
+            // At this point, qubit should be projected onto an
+            // eigenstate of b. 
+            let rotationAngle = PI() * IntAsDouble(b - 1) / 4.0;
+
+            within {
+                Ry(rotationAngle, q);
+            } apply {
+                AssertQubitWithinTolerance(r, q, 1e-4);   
+            }
+        }
+        ResetAll(qs);
+    }
+
+    @Test("QuantumSimulator")
+    function T24_GenerateSharedKey() : Unit {
         // ...
     }
 
 
     @Test("QuantumSimulator")
-    function T24_CorrelationCheck() : Unit {
+    function T31_CorrelationCheck() : Unit {
         // ...
     }
 
     @Test("QuantumSimulator")
-    operation T31_Eavesdrop() : Unit {
+    operation T32_Eavesdrop() : Unit {
         // ...
     }
 
