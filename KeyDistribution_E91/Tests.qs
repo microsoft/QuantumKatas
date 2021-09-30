@@ -31,6 +31,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
         AssertAllZero(qsAlice + qsBob);
     }
+    
 
     //////////////////////////////////////////////////////////////////
     // Part II. E91 Protocol
@@ -50,7 +51,6 @@ namespace Quantum.Kata.KeyDistributionE91 {
             }
             Reset(q);
         }
-        
     }
 
     @Test("QuantumSimulator")
@@ -61,7 +61,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
         let basesArray = RandomBasesArray(basesIndices, N);
         EqualityFactI(
             Length(basesArray), N,
-            "Generated array length does not match the input length"
+            $"Generated array should be of length {N}"
             );
 
         for i in basesArray {
@@ -125,10 +125,10 @@ namespace Quantum.Kata.KeyDistributionE91 {
         );
     }
 
+
     //////////////////////////////////////////////////////////////////
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
-
 
     @Test("QuantumSimulator")
     function T31_CorrelationCheck() : Unit {

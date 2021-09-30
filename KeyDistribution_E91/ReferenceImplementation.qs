@@ -164,7 +164,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
     }
 
     // Task 3.3. Catch the eavesdropper
-    operation T32_E91ProtocolWithEavesdropper_Reference () : Unit {
+    operation T33_E91ProtocolWithEavesdropper_Reference () : Unit {
         // 1. Alice and Bob are distributed arrays of entangled pairs
         let N = 10;
         use (qsAlice, qsBob) = (Qubit[N] ,Qubit[N]);
