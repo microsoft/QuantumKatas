@@ -75,12 +75,12 @@ namespace Quantum.Kata.Teleportation {
     }
     
     // Task 1.8. Entanglement swapping
-    operation EntanglementSwapping_Reference (qubitPairAlice : Qubit[], qubitPairBob : Qubit[]) : Unit {
-        CNOT(qubitPairAlice[0], qubitPairBob[0]);
-        H(qubitPairAlice[0]);
+    operation EntanglementSwapping_Reference (entangledPairAlice : Qubit[], entangledPairBob : Qubit[]) : Unit {
+        CNOT(entangledPairAlice[0], entangledPairBob[0]);
+        H(entangledPairAlice[0]);
         
-        let classicalBits = (M(qubitPairAlice[0]) == One, M(qubitPairBob[0]) == One);
-        ReconstructMessage_Reference(qubitPairBob[1], classicalBits);
+        let classicalBits = (M(entangledPairAlice[0]) == One, M(entangledPairBob[0]) == One);
+        ReconstructMessage_Reference(entangledPairBob[1], classicalBits);
     }
     
     //////////////////////////////////////////////////////////////////

@@ -170,7 +170,7 @@ namespace Quantum.Kata.Teleportation {
     // The first pair belongs to Alice and the second to Bob. 
     //
     // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here
-    operation EntanglementSwapping (qubitPairAlice : Qubit[], qubitPairBob : Qubit[]) : Unit {
+    operation EntanglementSwapping (entangledPairAlice : Qubit[], entangledPairBob : Qubit[]) : Unit {
         // ...
     }
     
