@@ -190,7 +190,7 @@ namespace Quantum.Kata.Teleportation {
     }
     
     @Test("QuantumSimulator")
-    operation T17_EntanglementSwapping () : Unit {
+    operation T18_EntanglementSwapping () : Unit {
         
         let numRepetitions = 100;
 
@@ -203,7 +203,8 @@ namespace Quantum.Kata.Teleportation {
             H(qubitsBob[0]);
             CNOT(qubitsBob[0], qubitsBob[1]);
             
-            let (c1, c2) = EntanglementSwapping(qubitsAlice, qubitsBob);
+            EntanglementSwapping(qubitsAlice, qubitsBob);
+            let (c1, c2) = (M(qubitsAlice[1]) == One, M(qubitsBob[1]) == One);
             EqualityFactB(c1, c2, "Alice's and Bob's qubits should have been maximally entangled, but measurement result produced different classical bits.");
         }
     }
