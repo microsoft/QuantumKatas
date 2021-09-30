@@ -32,6 +32,10 @@ namespace Quantum.Kata.KeyDistributionE91 {
         AssertAllZero(qsAlice + qsBob);
     }
 
+    //////////////////////////////////////////////////////////////////
+    // Part II. E91 Protocol
+    //////////////////////////////////////////////////////////////////
+
     @Test("QuantumSimulator")
     operation T21_RotateAndMeasure() : Unit {
         use q = Qubit();
@@ -76,11 +80,12 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
     @Test("QuantumSimulator")
     operation T23_MeasureQubitArray() : Unit {
-        let N = 5;
-        let basesArray = RandomBasesArray_Reference([1, 2, 3, 4], N);
+        let N = 10;
 
+        let basesArray = RandomBasesArray_Reference([1, 2, 3, 4], N);
         use qs = Qubit[N];
-        let results = MeasureQubitArray_Reference(qs, basesArray);
+
+        let results = MeasureQubitArray(qs, basesArray);
 
         for (q, b, r) in Zipped3(qs, basesArray, results) {
             // At this point, qubit should be projected onto an
@@ -97,9 +102,32 @@ namespace Quantum.Kata.KeyDistributionE91 {
     }
 
     @Test("QuantumSimulator")
-    function T24_GenerateSharedKey() : Unit {
-        // ...
+    operation T24_GenerateSharedKey() : Unit {
+        let N = 10;
+
+        mutable basesAlice = new Int[0];
+        mutable basesBob = new Int[0];
+        mutable results = new Result[0];
+        
+        for _ in 1..N {
+            set basesAlice += [DrawRandomInt(1,3)];
+            set basesBob += [DrawRandomInt(2,4)];
+            set results += [BoolAsResult(DrawRandomBool(0.5))];
+        }
+
+        let actual = GenerateSharedKey(basesAlice, basesBob, results);
+        let expected = GenerateSharedKey_Reference(basesAlice, basesBob, results);
+
+
+        AllEqualityFactB(
+            actual, expected, 
+            $"Generated key {actual} does not match the expected value {expected}."
+        );
     }
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Eavesdropping
+    //////////////////////////////////////////////////////////////////
 
 
     @Test("QuantumSimulator")
