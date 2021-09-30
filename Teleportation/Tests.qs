@@ -189,6 +189,24 @@ namespace Quantum.Kata.Teleportation {
         TeleportPreparedStateTestLoop(PrepareAndSendMessage_Reference, ReconstructAndMeasureMessage);
     }
     
+    @Test("QuantumSimulator")
+    operation T17_EntanglementSwapping () : Unit {
+        
+        let numRepetitions = 100;
+
+        for i in 0 .. numRepetitions {
+            use qubitsAlice = Qubit[2];
+            H(qubitsAlice[0]);
+            CNOT(qubitsAlice[0], qubitsAlice[1]);
+
+            use qubitsBob = Qubit[2];
+            H(qubitsBob[0]);
+            CNOT(qubitsBob[0], qubitsBob[1]);
+            
+            let (c1, c2) = EntanglementSwapping(qubitsAlice, qubitsBob);
+            EqualityFactB(c1, c2, "Alice's and Bob's qubits should have been maximally entangled, but measurement result produced different classical bits.");
+        }
+    }
     
     // ------------------------------------------------------
     // Test variations of the teleport protocol using different state prep procedures
@@ -266,5 +284,4 @@ namespace Quantum.Kata.Teleportation {
             }
         }
     }
-    
 }

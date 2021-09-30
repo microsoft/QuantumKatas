@@ -150,6 +150,40 @@ namespace Quantum.Kata.Teleportation {
 
         // ...
     }
+
+    // Task 1.8. Entanglement swapping
+    // Another fascinating effect of teleportation can be experienced when we teleport a qubit state
+    // from a qubit that was already entangled in the first place.
+    //
+    // Alice and Bob, independently from each other, each hold an entangled qubit pair in the 
+    // state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2). They hand off one part of their pair to Charlie.
+    //
+    // Charlie can teleport the state from Alice's qubit onto Bob's qubit, thus teleporting the entanglement. 
+    // Just like in "standard" teleportation, Bob still needs to apply the reconstruction steps 
+    // based on Charlie's measurement results.
+    //
+    // The practical outcome is that the entangled state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) now spans across 
+    // Alice's and Bob's qubits - the ones that they didn't send to Charlie. They are now maximally entangled
+    // even though they never interacted in the first place!
+    //
+    // Goal: Entangle one part of Alice's input qubits pair with one part of Bob's input qubit pair,
+    // without the two qubits interacting with each other.
+    // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here
+    //
+    // Input: two already entangled qubit pairs in the state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) each.
+    // The first pair belongs to Alice and the second to Bob. 
+    // 
+    // Output: A pair of classical bits that hold measurement results of the qubits that weren't sent to Charlie. 
+    // The first is the result from Alice's qubit and the second from Bob's qubit.
+    operation EntanglementSwapping (qubitPairAlice : Qubit[], qubitPairBob : Qubit[]) : (Bool, Bool) {
+        CNOT(qubitPairAlice[0], qubitPairBob[0]);
+        H(qubitPairAlice[0]);
+        
+        let classicalBits = (M(qubitPairAlice[0]) == One, M(qubitPairBob[0]) == One);
+        ReconstructMessage_Reference(qubitPairBob[1], classicalBits);
+
+        return (M(qubitPairAlice[1]) == One, M(qubitPairBob[1]) == One);
+    }
     
     
     //////////////////////////////////////////////////////////////////
@@ -245,5 +279,4 @@ namespace Quantum.Kata.Teleportation {
     operation ReconstructMessageWhenThreeEntangledQubits (qCharlie : Qubit, (b1 : Bool, b2 : Bool), b3 : Bool) : Unit {
         // ...
     }
-    
 }

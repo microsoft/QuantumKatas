@@ -74,6 +74,16 @@ namespace Quantum.Kata.Teleportation {
         return Measure([basis], [qBob]) == One;
     }
     
+    // Task 1.7. Entanglement swapping
+    operation EntanglementSwapping_Reference (qubitPairAlice : Qubit[], qubitPairBob : Qubit[]) : (Bool, Bool) {
+        CNOT(qubitPairAlice[0], qubitPairBob[0]);
+        H(qubitPairAlice[0]);
+        
+        let classicalBits = (M(qubitPairAlice[0]) == One, M(qubitPairBob[0]) == One);
+        ReconstructMessage_Reference(qubitPairBob[1], classicalBits);
+
+        return (M(qubitPairAlice[1]) == One, M(qubitPairBob[1]) == One);
+    }
     
     //////////////////////////////////////////////////////////////////
     // Part II. Teleportation using different entangled pair
@@ -177,5 +187,4 @@ namespace Quantum.Kata.Teleportation {
             X(qCharlie);
         }
     }
-    
 }
