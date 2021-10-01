@@ -195,16 +195,16 @@ namespace Quantum.Kata.Teleportation {
         let numRepetitions = 100;
 
         for i in 0 .. numRepetitions {
-            use qubitsAlice = Qubit[2];
-            H(qubitsAlice[0]);
-            CNOT(qubitsAlice[0], qubitsAlice[1]);
+            use (qAlice1, qAlice2) = (Qubit(), Qubit());
+            H(qAlice1);
+            CNOT(qAlice1, qAlice2);
 
-            use qubitsBob = Qubit[2];
-            H(qubitsBob[0]);
-            CNOT(qubitsBob[0], qubitsBob[1]);
+            use (qBob1, qBob2) = (Qubit(), Qubit());
+            H(qBob1);
+            CNOT(qBob1, qBob2);
             
-            EntanglementSwapping(qubitsAlice, qubitsBob);
-            let (c1, c2) = (M(qubitsAlice[1]) == One, M(qubitsBob[1]) == One);
+            EntanglementSwapping(qAlice1, (qBob1, qBob2));
+            let (c1, c2) = (M(qAlice2) == One, M(qBob2) == One);
             EqualityFactB(c1, c2, "Alice's and Bob's qubits should have been maximally entangled, but measurement result produced different classical bits.");
         }
     }

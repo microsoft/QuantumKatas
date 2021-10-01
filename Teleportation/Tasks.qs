@@ -157,20 +157,19 @@ namespace Quantum.Kata.Teleportation {
     //
     // Charlie can now teleport the state of Alice's qubit onto Bob's qubit, thus teleporting the entanglement. 
     // Just like in "standard" teleportation, Bob still needs to apply the reconstruction steps -
-    // based on Charlie's measurement results - to the qubit still in his possession.
+    // based on Charlie's measurement results - to the other qubit in his possession.
     //
     // The practical outcome is that the entangled state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) now spans across 
     // Alice's and Bob's qubits - the ones that they didn't send to Charlie. They are now maximally entangled
     // even though they never interacted in the first place!
     //
-    // Goal: Entangle one part of Alice's input qubits pair with one part of Bob's input qubit pair,
-    // without the two qubits interacting with each other.
+    // Inputs: One qubit making up a part of Alice's entangled pair, and both of Bob's already entangled qubits.
     //
-    // Inputs: Two already entangled qubit pairs in the state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) each.
-    // The first pair belongs to Alice and the second to Bob. 
+    // Goal: Using state teleportation, entangle the other part of Alice's entangled pair 
+    // (the one you do not have access to!) with one part ('qBob2') of Bob's input qubit pair.
     //
-    // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here
-    operation EntanglementSwapping (entangledPairAlice : Qubit[], entangledPairBob : Qubit[]) : Unit {
+    // Hint: You may find your answers for 1.2 and 1.3 useful
+    operation EntanglementSwapping (qAlice1 : Qubit, (qBob1 : Qubit, qBob2 : Qubit)) : Unit {
         // ...
     }
     
