@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.Teleportation {
     
+    open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Preparation;
     open Microsoft.Quantum.Intrinsic;
     
@@ -75,10 +76,19 @@ namespace Quantum.Kata.Teleportation {
     }
     
     // Task 1.8. Entanglement swapping
-    operation EntanglementSwapping_Reference (qAlice1 : Qubit, (qBob1 : Qubit, qBob2 : Qubit)) : Unit {
-        let classicalBits = SendMessage_Reference(qBob1, qAlice1);
-        ReconstructMessage_Reference(qBob2, classicalBits);
+    operation EntanglementSwapping_Reference () : ((Qubit, Qubit) => Int, (Qubit, Int) => Unit) {
+        return (TeleportEntanglement_Reference, AdjustTeleportedState_Reference);
     }
+
+    internal operation TeleportEntanglement_Reference (qAlice1 : Qubit, qBob1 : Qubit) : Int {
+        let (c1, c2) = SendMessage_Reference(qAlice1, qBob1);
+        return BoolArrayAsInt([c1, c2]);
+    } 
+
+    internal operation AdjustTeleportedState_Reference (qBob2 : Qubit, resultCharlie : Int) : Unit {
+        let classicalBits = IntAsBoolArray(resultCharlie, 2);
+        ReconstructMessage_Reference(qBob2, (classicalBits[0], classicalBits[1]));
+    } 
     
     //////////////////////////////////////////////////////////////////
     // Part II. Teleportation using different entangled pair

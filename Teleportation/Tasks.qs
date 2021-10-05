@@ -163,14 +163,22 @@ namespace Quantum.Kata.Teleportation {
     // Alice's and Bob's qubits - the ones that they didn't send to Charlie. They are now maximally entangled
     // even though they never interacted in the first place!
     //
-    // Inputs: One qubit making up a part of Alice's entangled pair, and both of Bob's already entangled qubits.
-    //
-    // Goal: Using state teleportation, entangle the other part of Alice's entangled pair 
-    // (the one you do not have access to!) with one part ('qBob2') of Bob's input qubit pair.
-    //
-    // Hint: You may find your answers for 1.2 and 1.3 useful
-    operation EntanglementSwapping (qAlice1 : Qubit, (qBob1 : Qubit, qBob2 : Qubit)) : Unit {
+    // Goal: Define two operations - the first one performing the entanglement teleportation, 
+    // to be executed by Charlie, and the second one representing the state transformation to be performed 
+    // by Bob after the teleportation.
+    // 
+    // Outputs: A tuple of two operations.
+    // The first operation will take two qubits as input (one belonging to Alice and one to Bob), and produce
+    // a joint measurement result as a two-bit integer.
+    // The second operation will take Bob's other qubit and Charlie's 2-bit integer as input, and should 
+    // use the integer to adjust the state of the qubit to reconstruct the state |Φ⁺⟩ across the
+    // now entangled Alice's and Bob's qubits.
+    //   
+    // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here
+    operation EntanglementSwapping () : ((Qubit, Qubit) => Int, (Qubit, Int) => Unit) {
+
         // ...
+        fail "Not implemented yet";
     }
     
     
