@@ -192,23 +192,23 @@ namespace Quantum.Kata.Teleportation {
     @Test("QuantumSimulator")
     operation T18_EntanglementSwapping () : Unit {
         
-        let numRepetitions = 100;
-
-        for i in 0 .. numRepetitions {
+        for i in 1 .. 15 {
             use (qAlice1, qAlice2) = (Qubit(), Qubit());
-            H(qAlice1);
-            CNOT(qAlice1, qAlice2);
+            Entangle_Reference(qAlice1, qAlice2);
 
             use (qBob1, qBob2) = (Qubit(), Qubit());
-            H(qBob1);
-            CNOT(qBob1, qBob2);
+            Entangle_Reference(qBob1, qBob2);
             
-            let (teleportOp, adjustOp) = EntanglementSwapping();
+            let (teleportOp, adjustOp) = EntanglementSwapping_Reference();
             let result = teleportOp(qAlice1, qBob1);
             adjustOp(qBob2, result);
 
-            let (c1, c2) = (M(qAlice2) == One, M(qBob2) == One);
-            EqualityFactB(c1, c2, "Alice's and Bob's qubits should have been maximally entangled, but measurement result produced different classical bits.");
+            // Apply adjoint reference entanglement operation 
+            // if the state was |Φ⁺⟩ the state should become |00⟩
+            Adjoint Entangle_Reference(qAlice2, qBob2);
+            
+            // Assert that all qubits end up in |0⟩ state
+            AssertAllZero([qAlice2, qBob2]);
         }
     }
     
