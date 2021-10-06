@@ -26,7 +26,7 @@ namespace Quantum.Kata.VisualizationTools {
 
     operation HighProbabilityBasisStates (qs : Qubit[]) : Int[] {
         // ...
-        return EmptyArray<Int>();
+        return EmptyArray();
     }
 
 

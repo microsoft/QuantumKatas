@@ -141,7 +141,7 @@ namespace Quantum.Kata.BoundedKnapsack {
 
 
     // Task 2.2. Convert an array into a jagged array
-    function RegisterAsJaggedArray_Reference<'T> (array : 'T[], b : Int[]) : 'T[][] {
+    function RegisterAsJaggedArray_Reference (array : 'T[], b : Int[]) : 'T[][] {
         // Identify bit lengths of integers bᵢ.
         let bitLengths = Mapped(BitSizeI, b);
         // Partition the array in accordance to these lengths.
