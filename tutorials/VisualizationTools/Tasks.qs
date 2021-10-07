@@ -8,7 +8,6 @@
 //////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.VisualizationTools {
-    open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
 
@@ -26,7 +25,7 @@ namespace Quantum.Kata.VisualizationTools {
 
     operation HighProbabilityBasisStates (qs : Qubit[]) : Int[] {
         // ...
-        return EmptyArray();
+        return [];
     }
 
 
