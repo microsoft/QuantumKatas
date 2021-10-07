@@ -110,7 +110,7 @@ The Quantum Development Kit is updated monthly (you can find the latest releases
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/Update-QDKVersion.ps1 0.18.2109162713 
+   PS> ./scripts/Update-QDKVersion.ps1 0.19.2109165653 
 ```
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
@@ -140,7 +140,7 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
 
 2. **Running on Binder**  
    The Katas can be run online on [Binder](https://mybinder.org); when you make a potentially breaking change (such as an update to the new QDK version or modifying any package dependencies), you need to make sure that this still works.  
-   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
+   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
 
 3. **Continuous integration**  
    When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.
