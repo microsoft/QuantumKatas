@@ -75,11 +75,14 @@ namespace Quantum.Kata.Teleportation {
         return Measure([basis], [qBob]) == One;
     }
     
+
     // Task 1.8. Entanglement swapping
     operation EntanglementSwapping_Reference () : ((Qubit, Qubit) => Int, (Qubit, Int) => Unit) {
         return (TeleportEntanglement_Reference, AdjustTeleportedState_Reference);
     }
 
+    // Helper operations that wrap tasks 1.2 and 1.3 to the format required in task 1.8.
+    // The integer message is an integer representation of the tuple used in 1.2 and 1.3.
     internal operation TeleportEntanglement_Reference (qAlice1 : Qubit, qBob1 : Qubit) : Int {
         let (c1, c2) = SendMessage_Reference(qAlice1, qBob1);
         return BoolArrayAsInt([c1, c2]);
@@ -88,8 +91,9 @@ namespace Quantum.Kata.Teleportation {
     internal operation AdjustTeleportedState_Reference (qBob2 : Qubit, resultCharlie : Int) : Unit {
         let classicalBits = IntAsBoolArray(resultCharlie, 2);
         ReconstructMessage_Reference(qBob2, (classicalBits[0], classicalBits[1]));
-    } 
+    }
     
+
     //////////////////////////////////////////////////////////////////
     // Part II. Teleportation using different entangled pair
     //////////////////////////////////////////////////////////////////

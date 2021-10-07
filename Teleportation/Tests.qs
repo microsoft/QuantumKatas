@@ -189,6 +189,7 @@ namespace Quantum.Kata.Teleportation {
         TeleportPreparedStateTestLoop(PrepareAndSendMessage_Reference, ReconstructAndMeasureMessage);
     }
     
+
     @Test("QuantumSimulator")
     operation T18_EntanglementSwapping () : Unit {
         
@@ -199,15 +200,18 @@ namespace Quantum.Kata.Teleportation {
             use (qBob1, qBob2) = (Qubit(), Qubit());
             Entangle_Reference(qBob1, qBob2);
             
-            let (teleportOp, adjustOp) = EntanglementSwapping_Reference();
+            let (teleportOp, adjustOp) = EntanglementSwapping();
+            // Apply the operations returned by the solution: 
+            // first Charlie's side, then Bob's side.
             let result = teleportOp(qAlice1, qBob1);
             adjustOp(qBob2, result);
 
-            // Apply adjoint reference entanglement operation 
-            // if the state was |Φ⁺⟩ the state should become |00⟩
+            // Apply adjoint of the operation that prepares the |Φ⁺⟩ state:
+            // if the state of Alice's and Bob's qubits was |Φ⁺⟩,
+            // their state should become |00⟩ now.
             Adjoint Entangle_Reference(qAlice2, qBob2);
             
-            // Assert that all qubits end up in |0⟩ state
+            // Assert that Alice's and Bob's qubits end up in |0⟩ state.
             AssertAllZero([qAlice2, qBob2]);
         }
     }

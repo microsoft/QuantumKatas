@@ -151,32 +151,34 @@ namespace Quantum.Kata.Teleportation {
         // ...
     }
 
+
     // Task 1.8. Entanglement swapping
     // Alice and Bob, independently from each other, each hold an entangled qubit pair in the 
     // state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2). They hand off one part of their pair to Charlie.
     //
-    // Charlie can now teleport the state of Alice's qubit onto Bob's qubit, thus teleporting the entanglement. 
+    // Charlie can now teleport the state of Alice's qubit he holds onto Bob's remaining qubit, 
+    // thus teleporting the entanglement. 
     // Just like in "standard" teleportation, Bob still needs to apply the reconstruction steps -
     // based on Charlie's measurement results - to the other qubit in his possession.
     //
-    // The practical outcome is that the entangled state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) now spans across 
-    // Alice's and Bob's qubits - the ones that they didn't send to Charlie. They are now maximally entangled
+    // After this procedure the state |Φ⁺⟩ = (|00⟩ + |11⟩) / sqrt(2) now spans across 
+    // Alice's and Bob's qubits which they didn't send to Charlie. They are now maximally entangled,
     // even though they never interacted in the first place!
     //
-    // Goal: Define two operations - the first one performing the entanglement teleportation, 
-    // to be executed by Charlie, and the second one representing the state transformation to be performed 
-    // by Bob after the teleportation.
-    // 
     // Outputs: A tuple of two operations.
-    // The first operation will take two qubits as input (one belonging to Alice and one to Bob), and produce
-    // a joint measurement result as a two-bit integer.
-    // The second operation will take Bob's other qubit and Charlie's 2-bit integer as input, and should 
-    // use the integer to adjust the state of the qubit to reconstruct the state |Φ⁺⟩ across the
-    // now entangled Alice's and Bob's qubits.
+    // The first operation is Charlie's part of the protocol.
+    // It will take two qubits as input (the ones Alice and Bob sent to Charlie), 
+    // and produce a message, encoded as an integer, that will be sent to Bob.
+    // The second operation is Bob's part of the protocol.
+    // It will take the qubit that remained in Bob's possession and Charlie's integer as input, 
+    // and use the integer to adjust the state of Bob's qubit,
+    // so that Alice's and Bob's qubits end up in the state |Φ⁺⟩.
+    //
+    // Note that you will likely need to create two separate helper operations that implement the two parts of the protocol,
+    // and return them, rather than implement the solution in the body of this operation.
     //   
-    // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here
+    // Hint: You may find your answers for 1.2 and 1.3 useful, as similar steps are needed here.
     operation EntanglementSwapping () : ((Qubit, Qubit) => Int, (Qubit, Int) => Unit) {
-
         // ...
         fail "Not implemented yet";
     }
