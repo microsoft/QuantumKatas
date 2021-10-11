@@ -81,7 +81,7 @@ namespace Quantum.Kata.KeyDistribution {
     function GenerateSharedKey_Reference (basesAlice : Bool[], basesBob : Bool[], measurementsBob : Bool[]) : Bool[] {
         // If Alice and Bob used the same basis, they will have the same value of the bit.
         // The shared key consists of those bits.
-        mutable key = new Bool[0];
+        mutable key = [];
         for (a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob) {
             if (a == b) {
                 set key += [bit];
