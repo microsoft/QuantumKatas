@@ -131,13 +131,53 @@ namespace Quantum.Kata.KeyDistributionE91 {
     //////////////////////////////////////////////////////////////////
 
     @Test("QuantumSimulator")
-    function T31_CorrelationCheck() : Unit {
-        // ...
+    operation T31_CorrelationValue() : Unit {
+        let N = 10;
+        use (qsAlice, qsBob) = (Qubit[N] ,Qubit[N]);
+        EntangledPairs_Reference(qsAlice, qsBob);
+
+        for (qAlice, qBob) in Zipped(qsAlice, qsBob) {
+            let _ = Eavesdrop_Reference(qAlice, qBob, DrawRandomInt(2,3));
+        }
+
+        let basesAlice = RandomBasesArray_Reference([1,2,3], N);
+        let basesBob = RandomBasesArray_Reference([2,3,4], N);
+
+        let resultsAlice = MeasureQubitArray_Reference(qsAlice, basesAlice);
+        let resultsBob = MeasureQubitArray_Reference(qsBob, basesBob);
+
+        let actual = CorrelationValue(basesAlice, basesBob, resultsAlice, resultsBob);
+        let expected = CorrelationValue_Reference(basesAlice, basesBob, resultsAlice, resultsBob);
+        
+        Fact(actual == expected, $"Correlation value {actual} does not match the expected value {expected}.");
+
+        ResetAll(qsAlice + qsBob);
     }
 
     @Test("QuantumSimulator")
     operation T32_Eavesdrop() : Unit {
-        // ...
+        for basisIndex in 2..3 {
+            use (qAlice, qBob) = (Qubit(), Qubit());
+            EntangledPairs_Reference([qAlice], [qBob]);
+            
+            let (r1, r2) = Eavesdrop(qAlice, qBob, basisIndex);
+            
+            // Make sure entanglement was not disturbed until measurement
+            Fact(r1 == r2, "Measurement outcomes do not match for given qubits.");
+
+            for q in [qAlice, qBob] {
+                let rotationAngle = PI() * IntAsDouble(basisIndex - 1) / 4.0;
+
+                // Make sure of the wavefunction collapse
+                within {
+                    Ry(rotationAngle, q);
+                } apply {
+                    AssertQubitWithinTolerance(r1, q, 1e-5);
+                }
+            }
+    
+            ResetAll([qAlice, qBob]);
+        }        
     }
 
 }

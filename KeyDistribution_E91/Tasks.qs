@@ -85,8 +85,8 @@ namespace Quantum.Kata.KeyDistributionE91 {
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. CHSH Correlation Check
-    function CorrelationCheck(basesAlice: Int[], basesBob: Int[], resultsAlice: Result[], resultsBob: Result[]) : Double {
+    // Task 3.1. CHSH Correlation Value
+    function CorrelationValue(basesAlice: Int[], basesBob: Int[], resultsAlice: Result[], resultsBob: Result[]) : Double {
         // ...
 
         return 0.0;

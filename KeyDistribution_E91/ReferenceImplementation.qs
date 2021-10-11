@@ -120,8 +120,8 @@ namespace Quantum.Kata.KeyDistributionE91 {
     // Part III. Eavesdropping
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1 CHSH Correlation Check
-    function CorrelationCheck_Reference (basesAlice: Int[], basesBob: Int[], resultsAlice: Result[], resultsBob: Result[]) : Double {
+    // Task 3.1 CHSH Correlation Value
+    function CorrelationValue_Reference (basesAlice: Int[], basesBob: Int[], resultsAlice: Result[], resultsBob: Result[]) : Double {
         mutable expectationValues = new Double[0];
         
         for (i, j) in [(1,2), (1, 4), (3, 2), (3, 4)] {
@@ -172,7 +172,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
         // Eve eavesdrops on all qubits, guessing the basis at random
         for (qAlice, qBob) in Zipped(qsAlice, qsBob) {
-            let _ = Eavesdrop_Reference(qAlice, qBob, DrawRandomInt(1,2));
+            let _ = Eavesdrop_Reference(qAlice, qBob, DrawRandomInt(2,3));
         }
 
         // 2. Alice and Bob choose random measurement bases
@@ -190,7 +190,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
         Message($"Bob's Key:   {keyBob}\n");
 
         // 5. Compute the CHSH correlation value
-        let s = CorrelationCheck_Reference(basesAlice, basesBob, resultsAlice, resultsBob);
+        let s = CorrelationValue_Reference(basesAlice, basesBob, resultsAlice, resultsBob);
         Message($"S = {s}");
 
         // Reset all qubits to |0⟩
