@@ -86,9 +86,9 @@ namespace Quantum.Kata.TruthTables {
     // Task 9. Find all true input assignments in a truth table
     function AllMinterms_Reference (tt : TruthTable) : Int[] {
         return Mapped(
-                   Fst<Int, Bool>,
+                   Fst,
                    Filtered(
-                       Compose(EqualB(true, _), Snd<Int, Bool>),
+                       Compose(EqualB(true, _), Snd),
                        Enumerated(IntAsBoolArray(tt::bits, 2^tt::numVars))
                    )
                );
