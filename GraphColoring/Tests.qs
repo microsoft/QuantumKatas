@@ -159,7 +159,7 @@ namespace Quantum.Kata.GraphColoring {
     //  - regular-ish graph with 5 vertices (3-colorable, as shown at https://en.wikipedia.org/wiki/File:3-coloringEx.svg without one vertex)
     //  - 6-vertex graph from https://en.wikipedia.org/wiki/File:3-coloringEx.svg
     function ExampleGraphs () : (Int, (Int, Int)[])[] {
-        return [(3, new (Int, Int)[0]),
+        return [(3, []),
                 (4, [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]),
                 (5, [(4, 0), (2, 1), (3, 1), (3, 2)]),
                 (5, [(0, 1), (1, 2), (1, 3), (3, 2), (4, 2), (3, 4)]),

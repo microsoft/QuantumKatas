@@ -26,6 +26,8 @@ variables:
 jobs:
   - job: binaries
     displayName: 'Build Binary Packages'
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: scripts/steps-init.yml
     - template: scripts/steps-binaries.yml
