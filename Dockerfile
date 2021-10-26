@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.19.2109165653
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.20.2110171573
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
