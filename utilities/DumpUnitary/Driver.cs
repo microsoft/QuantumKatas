@@ -18,7 +18,7 @@ namespace Quantum.DumpUnitary
         {
             int N = 3;                  // the number of qubits on which the unitary acts
             int size = 1 << N;
-            Array data = Array.CreateInstance(typeof(double), size, size, 2); ;
+            Array data = Array.CreateInstance(typeof(double), size, size, 2);
 
             using (var qsim = new QuantumSimulator())
             {
@@ -28,10 +28,8 @@ namespace Quantum.DumpUnitary
                     if (diagnostic is DisplayableUnitaryOperator op)
                     {
                         var displayable = (DisplayableUnitaryOperator)diagnostic;
-                        if (displayable.Data is not null) {
-                            // Copy the data into a multidimensional array.
-                            data = displayable.Data.ToMuliDimArray<double>();
-                        }
+                        // Copy the data into a multidimensional array.
+                        data = displayable.Data.ToMuliDimArray<double>();
                     }
                 };
 
