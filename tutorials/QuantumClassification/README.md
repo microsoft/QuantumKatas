@@ -1,6 +1,6 @@
 # Welcome!
 
-This folder contains a Notebook tutorial that introduces circuit-centric quantum classification and the [QML library](https://docs.microsoft.com/azure/quantum/user-guide/libraries/machine-learning/) included in the Microsoft Quantum Development Kit.
+This folder contains a Notebook tutorial that introduces circuit-centric quantum classification and the [QML library](https://docs.microsoft.com/azure/quantum/user-guide/libraries/machine-learning/intro) included in the Microsoft Quantum Development Kit.
 
 The paper ['Circuit-centric quantum classifiers', by Maria Schuld, Alex Bocharov, Krysta Svore and Nathan Wiebe](https://arxiv.org/abs/1804.00633) describes the original proposal behind this type of classifiers.
 
