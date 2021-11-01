@@ -143,7 +143,7 @@ namespace Quantum.Kata.KeyDistribution {
         Fact(Length(qs) == Length(bases), "Input arrays should have the same length");
         
         // ...
-        return new Bool[0];
+        return [];
     }
 
 
@@ -170,7 +170,7 @@ namespace Quantum.Kata.KeyDistribution {
         Fact(Length(basesAlice) == Length(measurementsBob), "Input arrays should have the same length");
 
         // ...
-        return new Bool[0];
+        return [];
     }
 
 

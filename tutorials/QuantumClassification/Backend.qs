@@ -24,7 +24,7 @@ namespace Microsoft.Quantum.Kata.QuantumClassification {
     // The definition of classifier structure for the case when the data is linearly separable and fits into 1 qubit
     function ClassifierStructure() : ControlledRotation[] {
         return [
-            ControlledRotation((0, new Int[0]), PauliY, 0)
+            ControlledRotation((0, []), PauliY, 0)
         ];
     }
 

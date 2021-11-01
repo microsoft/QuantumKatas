@@ -71,7 +71,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // Example: For n = 3 and the qubits state |101⟩, return [true, false, true].
     operation MeasureCombination01 (selectedItems : Qubit[]) : Bool[] {
         // ...
-        return new Bool[0];
+        return [];
     }
 
     
@@ -205,7 +205,7 @@ namespace Quantum.Kata.BoundedKnapsack
     // Example: For state selectedItemCounts = [|101⟩, |1110⟩, |0100⟩], return [5, 7, 2].
     operation MeasureCombination (selectedItemCounts : Qubit[][]) : Int[] {
         // ...
-        return new Int[0];
+        return [];
     }
 
 
