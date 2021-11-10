@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
-
+using Microsoft.Quantum.Diagnostics.Emulation;
 using Microsoft.Quantum.Simulation.Simulators;
 
 namespace Quantum.DumpUnitary
@@ -17,41 +17,40 @@ namespace Quantum.DumpUnitary
             ref string[] matrixElements)
         {
             int N = 3;                  // the number of qubits on which the unitary acts
+            int size = 1 << N;
+            Array data = Array.CreateInstance(typeof(double), size, size, 2);
+
             using (var qsim = new QuantumSimulator())
             {
+                // Extract information produced by DumpOperation call.
+                qsim.OnDisplayableDiagnostic += (diagnostic) =>
+                {
+                    if (diagnostic is DisplayableUnitaryOperator op)
+                    {
+                        var displayable = (DisplayableUnitaryOperator)diagnostic;
+                        // Copy the data into a multidimensional array.
+                        data = displayable.Data.ToMuliDimArray<double>();
+                    }
+                };
+
                 run(qsim, N).Wait();
             }
 
-            // read the content of the files and store it in a single unitary
-            int size = 1 << N;
+            // Convert the matrix elements to the string representation and the pattern.
             string[,] unitary = new string[size, size];
             unitaryPattern = new string[size];
+
             for (int column = 0; column < size; ++column)
             {
-                string fileName = $"DU_{N}_{column}.txt";
-                string[] fileContent = System.IO.File.ReadAllLines(fileName);
                 for (int row = 0; row < size; ++row)
                 {
-                    // skip the first line of the file (header)
-                    string line = fileContent[row + 1];
+                    double realD = (double)data.GetValue(row, column, 0);
+                    double imagD = (double)data.GetValue(row, column, 1);
+                    unitary[row, column] = $"({realD}, {imagD})";
 
-                    // The complex number that represents the amplitude is tab-separated from the rest of the fields, 
-                    // and the real and imaginary components within are separated with spaces.
-                    string[] parts = line.Split('\t');
-                    // drop the index and store real and imaginary parts
-                    string amplitude = parts[1];
-                    string[] amplitudeParts = amplitude.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    string real = amplitudeParts[0];
-                    string imag = amplitudeParts[2];
-
-                    // write the number to the matrix as a string "(real, complex)"
-                    unitary[row, column] = $"({real}, {imag})";
-                    // for a pattern, convert real and complex parts into doubles and add them up
-                    double amplitudeSquare = Math.Pow(double.Parse(real), 2) + Math.Pow(double.Parse(imag), 2);
+                    double amplitudeSquare = Math.Pow(realD, 2) + Math.Pow(imagD, 2);
                     unitaryPattern[row] += (amplitudeSquare > eps) ? 'X' : '.';
                 }
-                // clean up the file with individual amplitudes
-                System.IO.File.Delete(fileName);
             }
 
             // Concatenate the elements of the unitary into a matrix representation
@@ -72,12 +71,12 @@ namespace Quantum.DumpUnitary
             RunDumpUnitary(CallDumpUnitary.Run, ref unitaryPattern, ref matrixElements);
             System.IO.File.WriteAllLines("DumpUnitary.txt", matrixElements);
             System.IO.File.WriteAllLines("DumpUnitaryPattern.txt", unitaryPattern);
-        }
 
-        public static void RunTest(ref string[] unitaryPattern)
-        {
-            string[] matrixElements = null;
-            RunDumpUnitary(Test.Run, ref unitaryPattern, ref matrixElements);
+            Console.WriteLine("Unitary pattern:");
+            foreach (var row in unitaryPattern) 
+            {
+                Console.WriteLine(row);
+            }
         }
     }
 }
