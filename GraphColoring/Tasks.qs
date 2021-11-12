@@ -204,9 +204,8 @@ namespace Quantum.Kata.GraphColoring {
     //      3) An array of V integers, representing the vertex coloring of the graph.
     //         i-th element of the array is the color of the vertex number i.
     // Output: true if the given weak coloring is valid
-    //         (i.e., every vertex is connected to at least one neighboring vertex of different color),
+    //         (i.e., every vertex is isolated or is connected to at least one neighboring vertex of different color),
     //         and false otherwise.
-    // Note: An isolated vertex (a vertex without neighbors) is considered to be weakly colored.
     // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
     //          Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
     function IsWeakColoringValid (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
