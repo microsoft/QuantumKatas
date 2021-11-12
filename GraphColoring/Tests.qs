@@ -273,19 +273,25 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Weak coloring problem
+    //////////////////////////////////////////////////////////////////
+
     @Test("QuantumSimulator")
     operation T31_DoesEdgeContainVertex () : Unit {
-        Fact(DoesEdgeContainVertex( (1,2), 1) == true,
-             $"Edge (1,2) judged incorrect for vertex 1");
-        Fact(DoesEdgeContainVertex( (1,2), 2) == true,
-             $"Edge (1,2) judged correct for vertex 2");
-        Fact(DoesEdgeContainVertex( (1,2), 3) == false,
-             $"Edge (1,2) judged correct for vertex 2");
+        Fact(DoesEdgeContainVertex((1,2), 1) == true,
+             $"Edge (1, 2) should contain vertex 1");
+        Fact(DoesEdgeContainVertex((1,2), 2) == true,
+             $"Edge (1, 2) should contain vertex 2");
+        Fact(DoesEdgeContainVertex((1,2), 3) == false,
+             $"Edge (1, 2) should not contain vertex 2");
     }
+
 
     @Test("QuantumSimulator")
     operation T32_IsVertexWeaklyColored () : Unit {
-        let testCases = ExampleGraphs();
+        let testCases = Most(ExampleGraphs());
         let colorings = [[0, 0, 0],
                          [3, 2, 0, 0],
                          [1, 0, 1, 2, 1],
@@ -298,11 +304,10 @@ namespace Quantum.Kata.GraphColoring {
                                [false, true, true, true, false],
                                [true, true, true, false, true]
                               ];
-        for t in 0..Length(testCases)-2 {
-            let (V_t, edges_t) = testCases[t];
-            for vertex in 0 .. V_t - 1 {
-            Fact(IsVertexWeaklyColored(V_t, edges_t, colorings[t], vertex) == expectedResults[t][vertex],
-                $"Vertex = {vertex} judged {not expectedResults[t][vertex]} for coloring = {colorings[t]} , edges = {edges_t}");
+        for ((V, edges), coloring, expectedResult) in Zipped3(testCases, colorings, expectedResults) {
+            for vertex in 0 .. V - 1 {
+                Fact(IsVertexWeaklyColored(V, edges, coloring, vertex) == expectedResult[vertex],
+                    $"Vertex = {vertex} judged{(not expectedResult[vertex]) ? "" | " not"} weakly colored for coloring = {coloring}, edges = {edges}");
             }
         }
     }
@@ -347,10 +352,11 @@ namespace Quantum.Kata.GraphColoring {
             let (V, edges) = testCase;
             for (coloring,expectedResult) in coloringAndVerdicts {
                 Fact(IsWeakColoringValid(V, edges, coloring) == expectedResult,
-                    $"Coloring {coloring} judged {not expectedResult} for graph V = {V}, edges = {edges}");
+                    $"Coloring {coloring} judged {(not expectedResult) ? "" | " not"} weakly colored for graph V = {V}, edges = {edges}");
             }
         }
     }
+
 
     @Test("QuantumSimulator")
     operation T34_WeaklyColoredVertexOracle() : Unit {
@@ -361,6 +367,7 @@ namespace Quantum.Kata.GraphColoring {
         }
     }
 
+
     @Test("QuantumSimulator")
     operation T35_WeakColoringOracle () : Unit {
         // Run test on all test cases except the last one
@@ -368,6 +375,7 @@ namespace Quantum.Kata.GraphColoring {
             AssertOracleRecognizesColoring(V, edges, WeakColoringOracle, IsWeakColoringValid_Reference);
         }
     }
+
 
     @Test("QuantumSimulator")
     operation T36_GroversAlgorithmForWeakColoring () : Unit {

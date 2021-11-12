@@ -151,26 +151,29 @@ namespace Quantum.Kata.GraphColoring {
         return new Int[V];
     }
 
+
+
     //////////////////////////////////////////////////////////////////
     // Part III. Weak coloring problem
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Determine if an edge contains the mentioned vertex
+    // Task 3.1. Determine if an edge contains the vertex
     // Inputs:
     //      1) An edge denoted by a tuple of integers.
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //      2) An integer denoting the vertex of the graph.
-    // Output: true if the edge starts with vertex provided
+    // Output: true if the edge starts or ends with the vertex provided,
     //         and false otherwise.
-    // Examples: edge (0,1) contains vertex 0, so return true
-    //           edge (0,1) contains vertex 1, so return true
-    //           edge (2,3) does not contain vertex 1, so return false
-    function DoesEdgeContainVertex(edge: (Int, Int), vertex : Int) : Bool {
+    // Examples: edge (0, 1) contains vertex 0, so return true;
+    //           edge (0, 1) contains vertex 1, so return true;
+    //           edge (2, 3) does not contain vertex 1, so return false.
+    function DoesEdgeContainVertex (edge : (Int, Int), vertex : Int) : Bool {
         // ...
         return false;
     }
 
-    // Task 3.2. Determine if a vertex is weakly colored
+
+    // Task 3.2. Determine if a vertex is weakly colored (classical)
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
@@ -178,16 +181,19 @@ namespace Quantum.Kata.GraphColoring {
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of V integers, representing the vertex coloring of the graph.
     //         i-th element of the array is the color of the vertex number i.
-    //      4) A vertex in the graph, indexed 0 through V - 1
+    //      4) A vertex in the graph, indexed 0 through V - 1.
     // Output: true if the vertex is weakly colored
-    //         (i.e atleast one neighboring vertex of different color),
+    //         (i.e., it is connected to at least one neighboring vertex of different color),
     //         and false otherwise.
-    //         Note : An isolated vertex is considered to be weakly colored as per Wikipedia.
-    // Example: For vertex 0, in a graph containing edges = [(0, 1), (0, 2), (1, 2)].
-    //         and  colors = [0, 1, 0], vertex 0 is weakly colored
-    function IsVertexWeaklyColored(V : Int, edges: (Int, Int)[], colors: Int[], vertex : Int) : Bool {
+    // Note: An isolated vertex (a vertex without neighbors) is considered to be weakly colored.
+    // Example: For vertex 0, in a graph containing edges = [(0, 1), (0, 2), (1, 2)],
+    //          and colors = [0, 1, 0], vertex 0 is weakly colored, 
+    //          since it has color 0 and is connected to vertex 1 which has color 1.
+    function IsVertexWeaklyColored (V : Int, edges : (Int, Int)[], colors : Int[], vertex : Int) : Bool {
+        // ...
         return false;
     }
+
 
     // Task 3.3. Classical verification of weak coloring
     // Inputs:
@@ -198,12 +204,13 @@ namespace Quantum.Kata.GraphColoring {
     //      3) An array of V integers, representing the vertex coloring of the graph.
     //         i-th element of the array is the color of the vertex number i.
     // Output: true if the given weak coloring is valid
-    //         (i.e every vertex is connected by atleast one neighboring vertex of different color),
+    //         (i.e., every vertex is connected to at least one neighboring vertex of different color),
     //         and false otherwise.
-    //         Note : An isolated vertex is considered to be weakly colored as per Wikipedia.
+    // Note: An isolated vertex (a vertex without neighbors) is considered to be weakly colored.
     // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
-    //         Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
+    //          Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
     function IsWeakColoringValid (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // ...
         return false;
     }
 
@@ -227,6 +234,7 @@ namespace Quantum.Kata.GraphColoring {
     operation WeaklyColoredVertexOracle(V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
         // ...
     }
+
 
     // Task 3.5. Oracle for verifying weak coloring
     // Inputs:

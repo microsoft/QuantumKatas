@@ -174,25 +174,24 @@ namespace Quantum.Kata.GraphColoring {
     // Part III. Vertex coloring problem
     //////////////////////////////////////////////////////////////////
 
-    // Task 3.1. Determine if an edge contains the mentioned vertex
-    function DoesEdgeContainVertex_Reference(edge: (Int, Int), vertex : Int) : Bool {
+    // Task 3.1. Determine if an edge contains the vertex
+    function DoesEdgeContainVertex_Reference (edge : (Int, Int), vertex : Int) : Bool {
         let (start, end) = edge;
-        return (start == vertex) or (end == vertex);
+        return start == vertex or end == vertex;
     }
 
-    // Task 3.2. Determine if a vertex is weakly colored
-    function IsVertexWeaklyColored_Reference(V : Int, edges: (Int, Int)[], colors: Int[], vertex : Int) : Bool {
+
+    // Task 3.2. Determine if a vertex is weakly colored (classical)
+    function IsVertexWeaklyColored_Reference (V : Int, edges : (Int, Int)[], colors : Int[], vertex : Int) : Bool {
         let predicate = DoesEdgeContainVertex_Reference(_, vertex);
-        let connectingEdgesIndices = Where(predicate, edges);
+        let connectingEdges = Filtered(predicate, edges);
 
-        let N = Length(connectingEdgesIndices);
-
-        if N==0 {
+        // Isolated vertices are weakly colored.
+        if Length(connectingEdges) == 0 {
             return true;
         }
 
-        for connectingEdgeIndex in connectingEdgesIndices {
-            let (start,end) = edges[connectingEdgeIndex];
+        for (start, end) in connectingEdges {
             if colors[start] != colors[end] {
                 return true;
             }
@@ -202,13 +201,13 @@ namespace Quantum.Kata.GraphColoring {
 
     // Task 3.3. Classical verification of weak coloring
     function IsWeakColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
-        // If any vertex is not weakly colored, return false
-        for vertex in 0..V-1{
-            if IsVertexWeaklyColored_Reference(V, edges, colors, vertex) == false {
+        // If any vertex is not weakly colored, return false.
+        for vertex in 0 .. V - 1 {
+            if not IsVertexWeaklyColored_Reference(V, edges, colors, vertex) {
                 return false;
             }
         }
-        // If all vertices are weakly colored, return false
+        // If all vertices are weakly colored, return true.
         return true;
     }
 
@@ -228,7 +227,7 @@ namespace Quantum.Kata.GraphColoring {
                                                         colorsRegister[end * 2 .. end * 2 + 1], conflictQubits[n]);
             }
         } apply {
-            // if any neighbor is non conflicting; atleast one qubit is zero, flip target
+            // if any neighbor is non conflicting; at least one qubit is zero, flip target
             // Flip for all qubit combinations
             X(target);
             if N != 0 {
