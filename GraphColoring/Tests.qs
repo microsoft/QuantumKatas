@@ -370,8 +370,8 @@ namespace Quantum.Kata.GraphColoring {
 
     @Test("QuantumSimulator")
     operation T35_WeakColoringOracle () : Unit {
-        // Run test on all test cases except the last one
-        for (V, edges) in Most(ExampleGraphs()) {
+        // Run test on the first three test cases
+        for (V, edges) in (ExampleGraphs())[... 3] {
             AssertOracleRecognizesColoring(V, edges, WeakColoringOracle, IsWeakColoringValid_Reference);
         }
     }

@@ -246,11 +246,12 @@ namespace Quantum.Kata.GraphColoring {
     operation WeakColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
         use verticesQubits = Qubit[V];
         within {
-            for v in 0..V-1{
-                WeaklyColoredVertexOracle_Reference(V, edges, colorsRegister, verticesQubits[v], v );
+            // Validate that each individual vertex is weakly colored.
+            for v in 0 .. V - 1 {
+                WeaklyColoredVertexOracle_Reference(V, edges, colorsRegister, verticesQubits[v], v);
             }
         } apply {
-            // If all vertices are weakly colored (all qubits are in |1> state), weak coloring is valid
+            // If all vertices are weakly colored (all qubits are in |1⟩ state), weak coloring is valid.
             Controlled X(verticesQubits, target);
         }
     }
