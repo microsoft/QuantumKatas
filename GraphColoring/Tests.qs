@@ -361,7 +361,7 @@ namespace Quantum.Kata.GraphColoring {
     @Test("QuantumSimulator")
     operation T34_WeaklyColoredVertexOracle() : Unit {
         for (V, edges) in Most(ExampleGraphs()) {
-            for vertex in 0..V-1 {
+            for vertex in 0 .. V - 1 {
                 AssertOracleRecognizesColoring(V, edges, WeaklyColoredVertexOracle(_, _, _, _, vertex), IsVertexWeaklyColored_Reference(_, _, _, vertex));
             }
         }

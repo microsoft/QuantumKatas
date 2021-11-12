@@ -199,6 +199,7 @@ namespace Quantum.Kata.GraphColoring {
         return false;
     }
 
+
     // Task 3.3. Classical verification of weak coloring
     function IsWeakColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
         // If any vertex is not weakly colored, return false.
@@ -211,31 +212,35 @@ namespace Quantum.Kata.GraphColoring {
         return true;
     }
 
+
     // Task 3.4. Oracle for verifying if a vertex is weakly colored
     operation WeaklyColoredVertexOracle_Reference (V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
+        // Filter out edges not connected to this vertex.
         let predicate = DoesEdgeContainVertex_Reference(_, vertex);
-        let connectingEdgesIndices = Where(predicate, edges);
+        let connectingEdges = Filtered(predicate, edges);
 
-        let N = Length(connectingEdgesIndices);
+        let N = Length(connectingEdges);
         use conflictQubits = Qubit[N];
 
-        within{
-            for n in 0..N-1 {
-                let connectingEdgeIndex = connectingEdgesIndices[n];
-                let (start,end) = edges[connectingEdgeIndex];
+        within {
+            // Mark all neighbors which are of the SAME color.
+            for ((start, end), conflictQubit) in Zipped(connectingEdges, conflictQubits) {
                 ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1],
-                                                        colorsRegister[end * 2 .. end * 2 + 1], conflictQubits[n]);
+                                                   colorsRegister[end * 2 .. end * 2 + 1], 
+                                                   conflictQubit);
             }
         } apply {
-            // if any neighbor is non conflicting; at least one qubit is zero, flip target
-            // Flip for all qubit combinations
+            // If any neighbor has a different color (i.e., at least one qubit is zero), flip target.
+            // In other words, don't flip only for |1..1⟩.
+            // (Remember that for N = 0, isolated vertex is ok, so target needs to be flipped as well.)
             X(target);
             if N != 0 {
-                // Flip for |1..1>
+                // Flip for |1..1⟩.
                 Controlled X(conflictQubits, target);
             }
         }
     }
+
 
     // Task 3.5. Oracle for verifying weak coloring
     operation WeakColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
@@ -249,6 +254,7 @@ namespace Quantum.Kata.GraphColoring {
             Controlled X(verticesQubits, target);
         }
     }
+
 
     // Task 3.6. Using Grover's search to find weak coloring
     operation GroversAlgorithmForWeakColoring_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {

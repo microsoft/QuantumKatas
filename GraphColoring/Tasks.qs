@@ -223,7 +223,7 @@ namespace Quantum.Kata.GraphColoring {
     //         The vertices are indexed 0 through V - 1.
     //      3) An array of 2V qubits colorsRegister that encodes the color assignments.
     //      4) A qubit in an arbitrary state |y⟩ (target qubit).
-    //      5) A vertex in the graph, indexed 0 through V - 1
+    //      5) A vertex in the graph, indexed 0 through V - 1.
     //
     // Goal: Transform state |x, y⟩ into state |x, y ⊕ f(x)⟩ (⊕ is addition modulo 2),
     //       where f(x) = 1 if the given weak coloring is valid and 0 otherwise.
@@ -231,7 +231,7 @@ namespace Quantum.Kata.GraphColoring {
     //
     // Each color in colorsRegister is represented as a 2-bit integer in little-endian format.
     // See task 1.3 for a more detailed description of color assignments.
-    operation WeaklyColoredVertexOracle(V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
+    operation WeaklyColoredVertexOracle (V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
         // ...
     }
 
