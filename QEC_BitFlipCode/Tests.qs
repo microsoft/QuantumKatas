@@ -253,11 +253,11 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     @Test("QuantumSimulator")
     operation T04_CorrectErrorOnLeftQubit () : Unit {
-        let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnLeftQubit);
+        let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp, CorrectErrorOnLeftQubit);
         let errors = PauliErrors();
         
         for idxError in 0 .. 1 {
-            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp<Qubit[]>);
+            AssertOperationsEqualReferenced(1, partialBind(errors[idxError]), NoOp);
         }
     }
     
@@ -300,12 +300,12 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     @Test("QuantumSimulator")
     operation T06_CorrectErrorOnAnyQubit () : Unit {
         
-        let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp<Qubit[]>, CorrectErrorOnAnyQubit);
+        let partialBind = BindErrorCorrectionRound(Encode_Reference, _, NoOp, CorrectErrorOnAnyQubit);
         let errors = PauliErrors();
         
         for pauliError in errors {
             Message($"Task 06: Testing on {pauliError}...");
-            AssertOperationsEqualReferenced(1, partialBind(pauliError), NoOp<Qubit[]>);
+            AssertOperationsEqualReferenced(1, partialBind(pauliError), NoOp);
         }
     }
     

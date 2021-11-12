@@ -66,7 +66,7 @@ namespace Quantum.Kata.GraphColoring {
     // Example: for N = 2, K = 2 and the qubits in the state |0110⟩ return [2, 1].
     operation MeasureColoring (K : Int, register : Qubit[]) : Int[] {
         // ...
-        return new Int[0];
+        return [];
     }
 
 
