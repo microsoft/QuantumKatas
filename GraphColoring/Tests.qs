@@ -220,8 +220,13 @@ namespace Quantum.Kata.GraphColoring {
     }
 
 
-    operation AssertOracleRecognizesColoring (V : Int, edges : (Int, Int)[], oracle : ((Int, (Int, Int)[], Qubit[], Qubit) => Unit)) : Unit {
-        // Message($"Testing V = {V}, edges = {edges}");
+    operation AssertOracleRecognizesColoring (
+        V : Int,
+        edges : (Int, Int)[],
+        oracle : ((Int, (Int, Int)[],Qubit[], Qubit) => Unit),
+        classicalFunction : ((Int, (Int, Int)[], Int[]) -> Bool)
+    ) : Unit {
+        Message($"Testing V = {V}, edges = {edges}");
         let N = 2 * V;
         use (coloringRegister, target) = (Qubit[N], Qubit());
             // Try all possible colorings of 4 colors on V vertices and check if they are calculated correctly.
@@ -238,7 +243,7 @@ namespace Quantum.Kata.GraphColoring {
             oracle(V, edges, coloringRegister, target);
 
             // Check that the oracle result matches the classical result
-            let val = IsVertexColoringValid_Reference(V, edges, coloring);
+            let val = classicalFunction(V, edges, coloring);
             // Message($"bitmask = {binary}, coloring = {coloring} - expected answer = {val}");
             AssertQubit(val ? One | Zero, target);
             Reset(target);
@@ -253,7 +258,7 @@ namespace Quantum.Kata.GraphColoring {
     operation T22_VertexColoringOracle () : Unit {
         // Run test on all test cases except the last one
         for (V, edges) in Most(ExampleGraphs()) {
-            AssertOracleRecognizesColoring(V, edges, VertexColoringOracle);
+            AssertOracleRecognizesColoring(V, edges, VertexColoringOracle, IsVertexColoringValid_Reference);
         }
     }
 
@@ -263,6 +268,121 @@ namespace Quantum.Kata.GraphColoring {
             Message($"Running on graph V = {V}, edges = {edges}");
             let coloring = GroversAlgorithm(V, VertexColoringOracle_Reference(V, edges, _, _));
             Fact(IsVertexColoringValid_Reference(V, edges, coloring), 
+                 $"Got incorrect coloring {coloring}");
+            Message($"Got correct coloring {coloring}");
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Weak coloring problem
+    //////////////////////////////////////////////////////////////////
+
+    @Test("QuantumSimulator")
+    operation T31_DoesEdgeContainVertex () : Unit {
+        Fact(DoesEdgeContainVertex((1,2), 1) == true,
+             $"Edge (1, 2) should contain vertex 1");
+        Fact(DoesEdgeContainVertex((1,2), 2) == true,
+             $"Edge (1, 2) should contain vertex 2");
+        Fact(DoesEdgeContainVertex((1,2), 3) == false,
+             $"Edge (1, 2) should not contain vertex 2");
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T32_IsVertexWeaklyColored () : Unit {
+        let testCases = Most(ExampleGraphs());
+        let colorings = [[0, 0, 0],
+                         [3, 2, 0, 0],
+                         [1, 0, 1, 2, 1],
+                         [0, 0, 1, 1, 1],
+                         [0, 1, 1, 1, 1]
+                        ];
+        let expectedResults = [[true, true, true],
+                               [true, true, true, true],
+                               [false, true, true, true, false],
+                               [false, true, true, true, false],
+                               [true, true, true, false, true]
+                              ];
+        for ((V, edges), coloring, expectedResult) in Zipped3(testCases, colorings, expectedResults) {
+            for vertex in 0 .. V - 1 {
+                Fact(IsVertexWeaklyColored(V, edges, coloring, vertex) == expectedResult[vertex],
+                    $"Vertex = {vertex} judged{(not expectedResult[vertex]) ? "" | " not"} weakly colored for coloring = {coloring}, edges = {edges}");
+            }
+        }
+    }
+
+    @Test("QuantumSimulator")
+    operation T33_IsWeakColoringValid () : Unit {
+        let testCases = Most(ExampleGraphs());
+        // Every coloring would pass on a disconnected graph of 3 vertices
+        let exampleColoringForThreeVertices = [[0, 0, 0], [2, 1, 3]];
+        // Every coloring  would pass on a fully connected graph of 4 vertices;
+        // except for the colorings in which all vertices are of the same color
+        let exampleColoringForFourVertices = [[0, 2, 1, 3], [3, 2, 0, 0], [0, 0, 0, 0] ];
+        let exampleColoringForFiveVertices = [
+            // Graph coloring that fails in all types of graphs, except fully disconnected graphs
+            [0, 0, 0, 0, 0],
+            // Graph coloring that passes all types of graphs regardless of their structure
+            [0, 1, 2, 3, 4],
+            // Random coloring that fails the third graph, and passes the fourth and fifth one
+            [0, 1, 1, 2, 0],
+            // Random coloring that fails the fourth graph, and passes the third and fifth one
+            [0, 0, 1, 1, 1]
+            // Note any colorings that pass the third or the fourth graph
+            // will also pass the fifth graph since fifth graph has all the edges contained
+            // in the third and fourth graph
+            ];
+
+        let coloringAndVerdicts0 = Zipped(exampleColoringForThreeVertices, [true, true]);
+        let coloringAndVerdicts1 = Zipped(exampleColoringForFourVertices, [true, true, false]);
+        let coloringAndVerdicts2 = Zipped(exampleColoringForFiveVertices, [false, true, false, true]);
+        let coloringAndVerdicts3 = Zipped(exampleColoringForFiveVertices, [false, true, true, false]);
+        let coloringAndVerdicts4 = Zipped(exampleColoringForFiveVertices, [false, true, true, true]);
+
+        let fullTestCases = Zipped(testCases, [
+                                    coloringAndVerdicts0,
+                                    coloringAndVerdicts1,
+                                    coloringAndVerdicts2,
+                                    coloringAndVerdicts3,
+                                    coloringAndVerdicts4
+                                    ]);
+
+        for (testCase, coloringAndVerdicts) in fullTestCases {
+            let (V, edges) = testCase;
+            for (coloring,expectedResult) in coloringAndVerdicts {
+                Fact(IsWeakColoringValid(V, edges, coloring) == expectedResult,
+                    $"Coloring {coloring} judged {(not expectedResult) ? "" | " not"} weakly colored for graph V = {V}, edges = {edges}");
+            }
+        }
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T34_WeaklyColoredVertexOracle() : Unit {
+        for (V, edges) in Most(ExampleGraphs()) {
+            for vertex in 0 .. V - 1 {
+                AssertOracleRecognizesColoring(V, edges, WeaklyColoredVertexOracle(_, _, _, _, vertex), IsVertexWeaklyColored_Reference(_, _, _, vertex));
+            }
+        }
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T35_WeakColoringOracle () : Unit {
+        // Run test on the first three test cases
+        for (V, edges) in (ExampleGraphs())[... 3] {
+            AssertOracleRecognizesColoring(V, edges, WeakColoringOracle, IsWeakColoringValid_Reference);
+        }
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T36_GroversAlgorithmForWeakColoring () : Unit {
+        for (V, edges) in ExampleGraphs() {
+            Message($"Running on graph V = {V}, edges = {edges}");
+            let coloring = GroversAlgorithmForWeakColoring(V, WeakColoringOracle_Reference(V, edges, _, _));
+            Fact(IsWeakColoringValid_Reference(V, edges, coloring),
                  $"Got incorrect coloring {coloring}");
             Message($"Got correct coloring {coloring}");
         }

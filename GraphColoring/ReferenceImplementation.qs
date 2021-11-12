@@ -169,4 +169,98 @@ namespace Quantum.Kata.GraphColoring {
             }
         }
     }
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Vertex coloring problem
+    //////////////////////////////////////////////////////////////////
+
+    // Task 3.1. Determine if an edge contains the vertex
+    function DoesEdgeContainVertex_Reference (edge : (Int, Int), vertex : Int) : Bool {
+        let (start, end) = edge;
+        return start == vertex or end == vertex;
+    }
+
+
+    // Task 3.2. Determine if a vertex is weakly colored (classical)
+    function IsVertexWeaklyColored_Reference (V : Int, edges : (Int, Int)[], colors : Int[], vertex : Int) : Bool {
+        let predicate = DoesEdgeContainVertex_Reference(_, vertex);
+        let connectingEdges = Filtered(predicate, edges);
+
+        // Isolated vertices are weakly colored.
+        if Length(connectingEdges) == 0 {
+            return true;
+        }
+
+        for (start, end) in connectingEdges {
+            if colors[start] != colors[end] {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // Task 3.3. Classical verification of weak coloring
+    function IsWeakColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // If any vertex is not weakly colored, return false.
+        for vertex in 0 .. V - 1 {
+            if not IsVertexWeaklyColored_Reference(V, edges, colors, vertex) {
+                return false;
+            }
+        }
+        // If all vertices are weakly colored, return true.
+        return true;
+    }
+
+
+    // Task 3.4. Oracle for verifying if a vertex is weakly colored
+    operation WeaklyColoredVertexOracle_Reference (V : Int, edges: (Int, Int)[], colorsRegister : Qubit[], target : Qubit, vertex : Int) : Unit is Adj+Ctl {
+        // Filter out edges not connected to this vertex.
+        let predicate = DoesEdgeContainVertex_Reference(_, vertex);
+        let connectingEdges = Filtered(predicate, edges);
+
+        let N = Length(connectingEdges);
+        use conflictQubits = Qubit[N];
+
+        within {
+            // Mark all neighbors which are of the SAME color.
+            for ((start, end), conflictQubit) in Zipped(connectingEdges, conflictQubits) {
+                ColorEqualityOracle_Nbit_Reference(colorsRegister[start * 2 .. start * 2 + 1],
+                                                   colorsRegister[end * 2 .. end * 2 + 1], 
+                                                   conflictQubit);
+            }
+        } apply {
+            // If any neighbor has a different color (i.e., at least one qubit is zero), flip target.
+            // In other words, don't flip only for |1..1⟩.
+            // (Remember that for N = 0, isolated vertex is ok, so target needs to be flipped as well.)
+            X(target);
+            if N != 0 {
+                // Flip for |1..1⟩.
+                Controlled X(conflictQubits, target);
+            }
+        }
+    }
+
+
+    // Task 3.5. Oracle for verifying weak coloring
+    operation WeakColoringOracle_Reference (V : Int, edges : (Int, Int)[], colorsRegister : Qubit[], target : Qubit) : Unit is Adj+Ctl {
+        use verticesQubits = Qubit[V];
+        within {
+            // Validate that each individual vertex is weakly colored.
+            for v in 0 .. V - 1 {
+                WeaklyColoredVertexOracle_Reference(V, edges, colorsRegister, verticesQubits[v], v);
+            }
+        } apply {
+            // If all vertices are weakly colored (all qubits are in |1⟩ state), weak coloring is valid.
+            Controlled X(verticesQubits, target);
+        }
+    }
+
+
+    // Task 3.6. Using Grover's search to find weak coloring
+    operation GroversAlgorithmForWeakColoring_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
+        // Reuse Grover's search algorithm from task 3.2
+        return GroversAlgorithm_Reference(V, oracle);
+    }
+
 }
