@@ -263,4 +263,39 @@ namespace Quantum.Kata.GraphColoring {
         return GroversAlgorithm_Reference(V, oracle);
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Triangle-free coloring problem
+    //////////////////////////////////////////////////////////////////
+
+
+    // Task 4.1. Convert the list of graph edges into an adjacency matrix
+
+
+    // Task 4.2. Extract a list of triangles from an adjacency matrix
+
+
+    // Task 4.3. Classical verification of triangle-free coloring
+
+
+    // Task 4.4. Oracle to check that three colors don't form a triangle
+    //           (f(x) = 1 if at least two of three input bits are different)
+    operation ValidTriangleOracle_Reference (inputs : Qubit[], output : Qubit) : Unit is Adj+Ctl {
+        // We want to NOT mark only all 0s and all 1s - mark them and flip the output qubit
+        (ControlledOnInt(0, X))(inputs, output);
+        Controlled X(inputs, output);
+        X(output);
+    }
+
+
+    // Task 4.5. Oracle for verifying triangle-free edge coloring
+    //           (f(x) = 1 if the graph edge coloring is triangle-free)
+    operation TriangleFreeColoringOracle_Reference (
+        V : Int, 
+        edges : (Int, Int)[], 
+        colorsRegister : Qubit[], 
+        target : Qubit
+    ) : Unit is Adj+Ctl {
+        // ...
+    }
 }

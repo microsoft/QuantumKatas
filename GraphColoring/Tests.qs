@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.GraphColoring {
     
+    open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Intrinsic;
@@ -16,6 +17,7 @@ namespace Quantum.Kata.GraphColoring {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Diagnostics;
+
     open Quantum.Kata.Utils;
     
 
@@ -229,8 +231,8 @@ namespace Quantum.Kata.GraphColoring {
         Message($"Testing V = {V}, edges = {edges}");
         let N = 2 * V;
         use (coloringRegister, target) = (Qubit[N], Qubit());
-            // Try all possible colorings of 4 colors on V vertices and check if they are calculated correctly.
-            // Hack: fix the color of the first vertex, since all colorings are agnostic to the specific colors used.
+        // Try all possible colorings of 4 colors on V vertices and check if they are calculated correctly.
+        // Hack: fix the color of the first vertex, since all colorings are agnostic to the specific colors used.
         for k in 0 .. (1 <<< (N - 2)) - 1 {
             // Prepare k-th coloring
             let binary = [false, false] + IntAsBoolArray(k, N);
@@ -387,4 +389,11 @@ namespace Quantum.Kata.GraphColoring {
             Message($"Got correct coloring {coloring}");
         }
     }
+
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Triangle-free coloring problem
+    //////////////////////////////////////////////////////////////////
+
 }
