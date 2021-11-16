@@ -26,6 +26,7 @@ function Test-One {
 Write-Host "Testing Katas binaries:"
 
 Test-One '..\utilities\DumpUnitary\DumpUnitary.sln'
+Test-One '..\utilities\Common\Common.sln'
 Test-One '..\utilities\Microsoft.Quantum.Katas\Microsoft.Quantum.Katas.sln'
 
 if (-not $all_ok) {

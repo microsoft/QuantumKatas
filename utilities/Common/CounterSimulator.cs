@@ -82,7 +82,6 @@ namespace Microsoft.Quantum.Katas
             {
                 _arityOperationsCount[nQubits] = 1;
             }
-            Console.WriteLine($"{op.ToString()} - {nQubits} qubits");
         }
         #endregion
 
