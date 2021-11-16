@@ -32,6 +32,25 @@ namespace Quantum.Kata.Utils {
 
 
     /// # Summary
+    /// Resets the variable that tracks the numbers of multi-qubit operations.
+    operation ResetNQubitOpCount () : Unit { body intrinsic; }
+
+
+    /// # Summary
+    /// Returns the number of multi-qubit operations that take exactly nQubit qubits.
+    operation GetExactlyNQubitOpCount (nQubit : Int) : Int { body intrinsic; }
+
+
+    /// # Summary
+    /// Returns the number of multi-qubit operations that take nQubit qubits or more.
+    operation GetNPlusQubitOpCount (nQubit : Int) : Int { body intrinsic; }
+
+
+    /// # Summary
     /// Returns the number of multi-qubit operations used by the simulator.
-    operation GetMultiQubitOpCount () : Int { body intrinsic; }
+    /// (Same as GetNPlusQubitOpCount for nQubit = 2.)
+    @Deprecated("GetNPlusQubitOpCount")
+    operation GetMultiQubitOpCount () : Int { 
+        return GetNPlusQubitOpCount(2);
+    }
 }
