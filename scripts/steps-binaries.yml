@@ -24,5 +24,4 @@ steps:
   displayName: 'Publish Artifact: binaries'
   condition: succeededOrFailed()
   inputs:
-    PathtoPublish: $(System.DefaultWorkingDirectory)/drops/nugets
     artifactName: binaries
