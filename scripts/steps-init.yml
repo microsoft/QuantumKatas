@@ -42,17 +42,22 @@ steps:
       $Version = "$(Build.BuildNumber)-alpha"
       $versionRegex = "(?<oldVersion>[0-9|\.|\-|a-z]+)"
 
+      "Updating packages to Microsoft.Quantum.Katas version $Version" | Write-Host
       $csStringPackage = 'PackageReference Include=\"Microsoft\.Quantum\.Katas\" Version=\"' + $versionRegex + '\"'
       $csFiles = (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum.Katas" } | Select-Object -Unique Path)
       $csFiles | ForEach-Object {
           (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
               $isQuantumPackage = $_ -match $csStringPackage
               if ($isQuantumPackage) {
+                  "++ Updating $_"  | Write-Host
                   $_ -replace $Matches.oldVersion, $Version
               } else {
                   $_
               }
           } | Set-Content -Encoding UTF8 $_.Path
       }
+
+      "Changes after update: " | Write-Host
+      git status | Write-Host
     displayName: "Updating Katas package version"
     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
