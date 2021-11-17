@@ -60,4 +60,3 @@ steps:
       "Changes after update: " | Write-Host
       git status | Write-Host
     displayName: "Updating Katas package version"
-    workingDirectory: $(System.DefaultWorkingDirectory)/scripts
