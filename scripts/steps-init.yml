@@ -49,7 +49,6 @@ steps:
           (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
               $isQuantumPackage = $_ -match $csStringPackage
               if ($isQuantumPackage) {
-                  "++ Updating $_"  | Write-Host
                   $_ -replace $Matches.oldVersion, $Version
               } else {
                   $_
