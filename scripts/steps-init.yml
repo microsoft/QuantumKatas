@@ -36,6 +36,23 @@ steps:
   - pwsh: dotnet nuget add source -n build-artifacts $(System.DefaultWorkingDirectory)/binaries/drops/nugets
     displayName: "Adding build-artifacts nuget source"
 
-  - powershell: ./Update-QDKVersion.ps1  -Version  '$(Build.BuildNumber)-alpha'
-    displayName: "Updating QDKVersion"
+  - powershell: |
+      # Updates every csproj using the Microsoft.Quantum.Katas package to use this build's version
+      # old version regular expression accounts for possible suffixes like "-beta"
+      $Version = "$(Build.BuildNumber)-alpha"
+      $versionRegex = "(?<oldVersion>[0-9|\.|\-|a-z]+)"
+
+      $csStringPackage = 'PackageReference Include=\"Microsoft\.Quantum\.Katas\" Version=\"' + $versionRegex + '\"'
+      $csFiles = (Get-ChildItem -Path $katasRoot -file -Recurse -Include "*.csproj" | ForEach-Object { Select-String -Path $_ -Pattern "Microsoft.Quantum.Katas" } | Select-Object -Unique Path)
+      $csFiles | ForEach-Object {
+          (Get-Content -Encoding UTF8 $_.Path) | ForEach-Object {
+              $isQuantumPackage = $_ -match $csStringPackage
+              if ($isQuantumPackage) {
+                  $_ -replace $Matches.oldVersion, $Version
+              } else {
+                  $_
+              }
+          } | Set-Content -Encoding UTF8 $_.Path
+      }
+    displayName: "Updating Katas package version"
     workingDirectory: $(System.DefaultWorkingDirectory)/scripts
