@@ -18,10 +18,10 @@ namespace Microsoft.Quantum.Katas
     /// </summary>
     public class CounterSimulator : QuantumSimulator
     {
-        private Dictionary<String, int> _operationsCount = new Dictionary<String, int>();
-        private Dictionary<long, long> _arityOperationsCount = new Dictionary<long, long>();
+        private Dictionary<ICallable, int> _operationsCount = new Dictionary<ICallable, int>();
         private long _qubitsAllocated = 0;
         private long _maxQubitsAllocated = 0;
+        private long _multiQubitOperations = 0;
 
         /// <param name="throwOnReleasingQubitsNotInZeroState">If set to true, the exception is thrown when trying to release qubits not in zero state.</param>
         /// <param name="randomNumberGeneratorSeed">Seed for the random number generator used by a simulator for measurement outcomes and Primitives.Random operation.</param>
@@ -41,23 +41,23 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         public int GetOperationCount(ICallable op)
         {
-            return _operationsCount.TryGetValue(op.ToString(), out var value) ? value : 0;
+            return _operationsCount.TryGetValue(op, out var value) ? value : 0;
         }
 
-        #region Counting operations upon each operation call
+        #region Counting operations
         /// <summary>
         /// Callback method for the OnOperationStart event.
         /// </summary>
         public void CountOperationCalls(ICallable op, IApplyData data)
         {
             // Count all operations, grouped by operation
-            if (_operationsCount.ContainsKey(op.ToString()))
+            if (_operationsCount.ContainsKey(op))
             {
-                _operationsCount[op.ToString()]++;
+                _operationsCount[op]++;
             }
             else
             {
-                _operationsCount[op.ToString()] = 1;
+                _operationsCount[op] = 1;
             }
 
             // Check if the operation has multiple qubit parameters, if yes, count it
@@ -69,23 +69,15 @@ namespace Microsoft.Quantum.Katas
                     // The operation doesn't have qubit parameters
                     return;
                 }
-                while (enumerator.MoveNext())
+                while (enumerator.MoveNext() && nQubits < 2)
                     nQubits++;
             }
-
-            // Add the operation to the count of operations of corresponding arity
-            if (_arityOperationsCount.ContainsKey(nQubits))
+            if (nQubits >= 2)
             {
-                _arityOperationsCount[nQubits]++;
-            }
-            else
-            {
-                _arityOperationsCount[nQubits] = 1;
+                _multiQubitOperations++;
             }
         }
-        #endregion
 
-        #region Implementations of Q# operations for specific operation counting
         /// <summary>
         /// Custom Native operation to reset the oracle counts back to 0.
         /// </summary>
@@ -101,6 +93,7 @@ namespace Microsoft.Quantum.Katas
             public override Func<QVoid, QVoid> __Body__ => (__in) =>
             {
                 _sim._operationsCount.Clear();
+                _sim._multiQubitOperations = 0;
                 return QVoid.Instance;
             };
         }
@@ -125,78 +118,27 @@ namespace Microsoft.Quantum.Katas
                 if (op == null) 
                     throw new InvalidOperationException($"Expected an operation as the argument, got: {oracle}");
 
-                var actual = _sim._operationsCount.ContainsKey(op.ToString()) ? _sim._operationsCount[op.ToString()] : 0;
+                var actual = _sim._operationsCount.ContainsKey(op) ? _sim._operationsCount[op] : 0;
                 
                 return actual;
             };
         }
-        #endregion
 
-        #region Implementations of Q# operations for counting operations of certain arity
         /// <summary>
-        /// Custom Native operation to reset the operation counts back to 0.
+        /// Custom operation to get the number of multi-qubit operations.
         /// </summary>
-        public class ResetNQubitOpCountImpl : ResetNQubitOpCount
+        public class GetMultiQubitOpCountImpl : GetMultiQubitOpCount
         {
             CounterSimulator _sim;
 
-            public ResetNQubitOpCountImpl(CounterSimulator m) : base(m)
+            public GetMultiQubitOpCountImpl(CounterSimulator m) : base(m)
             {
                 _sim = m;
             }
 
-            public override Func<QVoid, QVoid> __Body__ => (__in) =>
+            public override Func<QVoid, long> __Body__ => (__in) =>
             {
-                _sim._arityOperationsCount.Clear();
-                return QVoid.Instance;
-            };
-        }
-
-
-        /// <summary>
-        /// Custom operation to get the number of operations that take exactly nQubit qubits.
-        /// </summary>
-        public class GetExactlyNQubitOpCountImpl : GetExactlyNQubitOpCount
-        {
-            CounterSimulator _sim;
-
-            public GetExactlyNQubitOpCountImpl(CounterSimulator m) : base(m)
-            {
-                _sim = m;
-            }
-
-            public override Func<long, long> __Body__ => (__in) =>
-            {
-                long nQubit = __in;
-                return _sim._arityOperationsCount.ContainsKey(nQubit) ? _sim._arityOperationsCount[nQubit] : 0;
-            };
-        }
-
-
-        /// <summary>
-        /// Custom operation to get the number of operations that take exactly nQubit qubits.
-        /// </summary>
-        public class GetNPlusQubitOpCountImpl : GetNPlusQubitOpCount
-        {
-            CounterSimulator _sim;
-
-            public GetNPlusQubitOpCountImpl(CounterSimulator m) : base(m)
-            {
-                _sim = m;
-            }
-
-            public override Func<long, long> __Body__ => (__in) =>
-            {
-                long nQubit = __in;
-                long total = 0;
-                foreach (var pair in _sim._arityOperationsCount)
-                {
-                    if (pair.Key >= nQubit)
-                    {
-                        total += pair.Value;
-                    }
-                }
-                return total;
+                return _sim._multiQubitOperations;
             };
         }
         #endregion

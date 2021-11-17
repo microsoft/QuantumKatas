@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Quantum.Katas", "Microsoft.Quantum.Katas.csproj", "{12AE1C9D-3A83-4CE2-8CBB-33ED5F4C28D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\Common\Common.csproj", "{A54E9F57-A233-4B43-A7C8-3F756B6C8789}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CounterSimulatorTests", "..\CounterSimulatorTests\CounterSimulatorTests.csproj", "{154E35BB-ECFA-46E7-AA57-C8D9F567CE89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\Common\Common.csproj", "{A54E9F57-A233-4B43-A7C8-3F756B6C8789}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{A54E9F57-A233-4B43-A7C8-3F756B6C8789}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A54E9F57-A233-4B43-A7C8-3F756B6C8789}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A54E9F57-A233-4B43-A7C8-3F756B6C8789}.Release|Any CPU.Build.0 = Release|Any CPU
-		{154E35BB-ECFA-46E7-AA57-C8D9F567CE89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{154E35BB-ECFA-46E7-AA57-C8D9F567CE89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{154E35BB-ECFA-46E7-AA57-C8D9F567CE89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{154E35BB-ECFA-46E7-AA57-C8D9F567CE89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
