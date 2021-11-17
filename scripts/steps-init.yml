@@ -26,7 +26,7 @@ steps:
   displayName: "Installing IQ#"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-- powershell: ./Update-QDKVersion.ps1 '$(Build.BuildNumber)-alpha'
+- powershell: ./Update-QDKVersion.ps1  -Version  '$(Build.BuildNumber)-alpha'
   displayName: "Updating QDKVersion to current build"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
