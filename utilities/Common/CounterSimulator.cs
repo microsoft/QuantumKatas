@@ -18,7 +18,7 @@ namespace Microsoft.Quantum.Katas
     /// </summary>
     public class CounterSimulator : QuantumSimulator
     {
-        private Dictionary<String, int> _operationsCount = new Dictionary<String, int>();
+        private Dictionary<ICallable, int> _operationsCount = new Dictionary<ICallable, int>();
         private Dictionary<long, long> _arityOperationsCount = new Dictionary<long, long>();
         private long _qubitsAllocated = 0;
         private long _maxQubitsAllocated = 0;
@@ -41,7 +41,7 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         public int GetOperationCount(ICallable op)
         {
-            return _operationsCount.TryGetValue(op.ToString(), out var value) ? value : 0;
+            return _operationsCount.TryGetValue(op, out var value) ? value : 0;
         }
 
         #region Counting operations upon each operation call
@@ -51,13 +51,13 @@ namespace Microsoft.Quantum.Katas
         public void CountOperationCalls(ICallable op, IApplyData data)
         {
             // Count all operations, grouped by operation
-            if (_operationsCount.ContainsKey(op.ToString()))
+            if (_operationsCount.ContainsKey(op))
             {
-                _operationsCount[op.ToString()]++;
+                _operationsCount[op]++;
             }
             else
             {
-                _operationsCount[op.ToString()] = 1;
+                _operationsCount[op] = 1;
             }
 
             // Check if the operation has multiple qubit parameters, if yes, count it
@@ -125,7 +125,7 @@ namespace Microsoft.Quantum.Katas
                 if (op == null) 
                     throw new InvalidOperationException($"Expected an operation as the argument, got: {oracle}");
 
-                var actual = _sim._operationsCount.ContainsKey(op.ToString()) ? _sim._operationsCount[op.ToString()] : 0;
+                var actual = _sim._operationsCount.ContainsKey(op) ? _sim._operationsCount[op] : 0;
                 
                 return actual;
             };
