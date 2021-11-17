@@ -3,6 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Measurement;
+    open Microsoft.Quantum.Convert;
 
     open Quantum.Kata.Utils;
 
@@ -121,4 +122,77 @@
         ResetAll(qs);
         Message("Test passed.");
     }
+
+
+    // ----------------------------------------------------
+    // A unit test that reproduces the checks used in DeutschJozsaAlgorithm kata - 
+    // counting operations called with different parameters.
+    operation OracleProductFunction (x : Qubit[], y : Qubit, r : Int[]) : Unit is Adj {        
+        for i in 0 .. Length(x) - 1 {
+            if r[i] == 1 {
+                CNOT(x[i], y);
+            }
+        }
+    }
+
+
+    operation BernsteinVaziraniAlgorithm (N : Int, Uf : ((Qubit[], Qubit) => Unit)) : Int[] {
+        use (x, y) = (Qubit[N], Qubit());
+            
+        ApplyToEach(H, x + [y]);
+        Z(y);
+            
+        Uf(x, y);
+            
+        ApplyToEach(H, x);
+        Reset(y);
+            
+        mutable r = new Int[N];
+        for i in 0 .. N - 1 {
+            if (M(x[i]) != Zero) {
+                set r w/= i <- 1;
+            }
+        }
+            
+        return r;
+    }
+
+
+    operation AssertBVAlgorithmWorks (r : Int[]) : Unit {
+        let oracle = OracleProductFunction(_, _, r);
+        AllEqualityFactI(BernsteinVaziraniAlgorithm(Length(r), oracle), r, "Bernstein-Vazirani algorithm failed");
+
+        // Oracle calls with each parameter should be counted separately,
+        // since the result of partial application with each parameter is a different callable.
+        let nu = GetOracleCallsCount(oracle);
+        EqualityFactB(nu <= 1, true, $"You are allowed to call the oracle for {r} at most once, and you called it {nu} times");
+    }
+
+
+    function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
+        let rbool = IntAsBoolArray(n, bits);
+        mutable r = new Int[bits];
+        
+        for i in 0 .. bits - 1 {
+            if rbool[i] {
+                set r w/= i <- 1;
+            }
+        }
+        
+        return r;
+    } 
+    
+    
+    @Test("Microsoft.Quantum.Katas.CounterSimulator")
+    operation TestOperationsWithArgumentsCounting () : Unit {
+        ResetOracleCallsCount();
+        
+        for bits in 1 .. 4 {
+            for n in 0 .. 2 ^ bits - 1 {
+                let r = IntArrFromPositiveInt(n, bits);
+                AssertBVAlgorithmWorks(r);
+            }
+        }
+    }
+
 }
