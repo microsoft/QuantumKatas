@@ -30,10 +30,13 @@ jobs:
       vmImage: 'ubuntu-latest'
     steps:
     - template: scripts/steps-init.yml
+      parameters:
+        downloadArtifacts: false
     - template: scripts/steps-binaries.yml
 
   - job: validate_projects
     displayName: 'Validate C# Projects'
+    dependsOn: binaries
     strategy:
       matrix:
         linux:
@@ -57,6 +60,7 @@ jobs:
 
   - job: validate_notebooks_part_1
     displayName: 'Validate Notebooks (part 1)'
+    dependsOn: binaries
     strategy:
       matrix:
         linux:
@@ -76,6 +80,7 @@ jobs:
 
   - job: validate_notebooks_part_2
     displayName: 'Validate Notebooks (part 2)'
+    dependsOn: binaries
     strategy:
       matrix:
         linux:

@@ -1,3 +1,7 @@
+
+parameters:
+  downloadArtifacts: true
+
 steps:
 
 ##
@@ -26,11 +30,12 @@ steps:
   displayName: "Updating QDKVersion to current build"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-- task: DownloadBuildArtifacts@0
-  displayName: 'Download artifact: drop'
-  inputs:
-    downloadPath: $(System.DefaultWorkingDirectory)
-    artifactName: binaries
+- ${{ if eq(parameters.downloadArtifacts, 'true') }}:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download artifact: drop'
+    inputs:
+      downloadPath: $(System.DefaultWorkingDirectory)
+      artifactName: binaries
 
-- pwsh: dotnet nuget add source -n build-artifacts $(System.DefaultWorkingDirectory)\binaries\
-  displayName: "Adding build-artifacts nuget source"
+  - pwsh: dotnet nuget add source -n build-artifacts $(System.DefaultWorkingDirectory)\binaries\
+    displayName: "Adding build-artifacts nuget source"
