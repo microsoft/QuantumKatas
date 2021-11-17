@@ -19,3 +19,10 @@ steps:
 - powershell: ./manifest.ps1
   displayName: "List built assemblies"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: binaries'
+  condition: succeededOrFailed()
+  inputs:
+    PathtoPublish: $(System.DefaultWorkingDirectory)/drops/nugets
+    artifactName: binaries
