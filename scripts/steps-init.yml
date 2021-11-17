@@ -26,10 +26,6 @@ steps:
   displayName: "Installing IQ#"
   workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
-- powershell: ./Update-QDKVersion.ps1  -Version  '$(Build.BuildNumber)-alpha'
-  displayName: "Updating QDKVersion to current build"
-  workingDirectory: $(System.DefaultWorkingDirectory)/scripts
-
 - ${{ if eq(parameters.downloadArtifacts, 'true') }}:
   - task: DownloadBuildArtifacts@0
     displayName: 'Download artifact: drop'
@@ -39,3 +35,7 @@ steps:
 
   - pwsh: dotnet nuget add source -n build-artifacts $(System.DefaultWorkingDirectory)\binaries\
     displayName: "Adding build-artifacts nuget source"
+
+  - powershell: ./Update-QDKVersion.ps1  -Version  '$(Build.BuildNumber)-alpha'
+    displayName: "Updating QDKVersion"
+    workingDirectory: $(System.DefaultWorkingDirectory)/scripts
