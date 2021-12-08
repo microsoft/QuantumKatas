@@ -7,7 +7,7 @@ $all_ok = $True
 function Test-One {
     Param($project)
 
-    $TestsLogs = Join-Path $Env:LOGS_OUTDIR log-tests-quantum-katas.tt
+    $TestsLogs = Join-Path $Env:LOGS_OUTDIR log-tests-quantum-katas.txt
 
     Write-Host "##[info]Testing $project"
     dotnet test $project --diag:"$TestsLogs" `
