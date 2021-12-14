@@ -148,7 +148,7 @@ namespace Quantum.Kata.GraphColoring {
     // Output: A valid vertex coloring for the graph, in a format used in task 2.1.
     operation GroversAlgorithm (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
-        return new Int[V];
+        return [0, size = V];
     }
 
 
@@ -263,6 +263,6 @@ namespace Quantum.Kata.GraphColoring {
     // Output: A valid weak coloring for the graph, in a format used in task 3.3.
     operation GroversAlgorithmForWeakColoring (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
-        return new Int[V];
+        return [0, size = V];
     }
 }

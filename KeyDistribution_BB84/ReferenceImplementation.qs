@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ namespace Quantum.Kata.KeyDistribution {
 
     // Task 2.1. Generate random array
     operation RandomArray_Reference (N : Int) : Bool[] {
-        mutable array = new Bool[N];
+        mutable array = [false, size = N];
 
         for i in 0 .. N - 1 {
             set array w/= i <- DrawRandomBool(0.5);

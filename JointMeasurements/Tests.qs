@@ -28,9 +28,9 @@ namespace Quantum.Kata.JointMeasurements {
                                             stateNames : String[]) : Unit {
         let nTotal = 100;
         // misclassifications will store the number of times state i has been classified as state j (dimension nStates^2)
-        mutable misclassifications = new Int[nStates * nStates];
+        mutable misclassifications = [0, size = nStates * nStates];
         // unknownClassifications will store the number of times state i has been classified as some invalid state (index < 0 or >= nStates)
-        mutable unknownClassifications = new Int[nStates];
+        mutable unknownClassifications = [0, size = nStates];
                 
         use qs = Qubit[nQubits];
         for i in 1 .. nTotal {

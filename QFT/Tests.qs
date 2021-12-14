@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ namespace Quantum.Kata.QFT {
 
     // ------------------------------------------------------
     function IntAsIntArray (j : Int, nBits : Int) : Int[] {
-        mutable bits = new Int[nBits];
+        mutable bits = [0, size = nBits];
         for ind in 0 .. nBits - 1 {
             set bits w/= ind <- ((j &&& (1 <<< (nBits - 1 - ind))) > 0 ? 1 | 0);
         }
