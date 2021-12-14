@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
     // Helper function to get the list of qubits used in the clause and the bitmask of whether they need to be flipped
     function GetClauseQubits (queryRegister : Qubit[], clause : (Int, Bool)[]) : (Qubit[], Bool[]) {
         mutable clauseQubits = new Qubit[Length(clause)];
-        mutable flip = new Bool[Length(clause)];
+        mutable flip = [false, size = Length(clause)];
         for varIndex in 0 .. Length(clause) - 1 {
             let (index, isTrue) = clause[varIndex];
             // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
