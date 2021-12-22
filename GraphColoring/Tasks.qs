@@ -286,6 +286,19 @@ namespace Quantum.Kata.GraphColoring {
     // of the same color form a triangle.
 
     // Task 4.1. Convert the list of graph edges into an adjacency matrix
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    // Output: A 2D array of integers representing this graph as an adjacency matrix:
+    //         the element [i][j] should be -1 if the vertices i and j are not connected with an edge,
+    //         or store the index of the edge if the vertices i and j are connected with an edge.
+    //         Elements [i][i] should be -1 unless there is an edge connecting vertex i to itself.
+    function EdgesListAsAdjacencyMatrix (V : Int, edges : (Int, Int)[]) : Int[][] {
+        // ...
+        return [[0]];
+    }
 
 
     // Task 4.2. Extract a list of triangles from an adjacency matrix

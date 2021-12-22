@@ -270,6 +270,16 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // Task 4.1. Convert the list of graph edges into an adjacency matrix
+    function EdgesListAsAdjacencyMatrix_Reference (V : Int, edges : (Int, Int)[]) : Int[][] {
+        mutable adjVertices = [[-1, size = V], size = V];
+        for edgeInd in 0 .. Length(edges) - 1 {
+            let (v1, v2) = edges[edgeInd];
+            // track both directions in the adjacency matrix
+            set adjVertices w/= v1 <- (adjVertices[v1] w/ v2 <- edgeInd);
+            set adjVertices w/= v2 <- (adjVertices[v2] w/ v1 <- edgeInd);
+        }
+        return adjVertices;
+    }
 
 
     // Task 4.2. Extract a list of triangles from an adjacency matrix

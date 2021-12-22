@@ -9,6 +9,7 @@
 
 namespace Quantum.Kata.GraphColoring {
     
+    open Microsoft.Quantum.Logical;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Measurement;
@@ -396,4 +397,15 @@ namespace Quantum.Kata.GraphColoring {
     // Part IV. Triangle-free coloring problem
     //////////////////////////////////////////////////////////////////
 
+    @Test("QuantumSimulator")
+    operation T41_EdgesListAsAdjacencyMatrix () : Unit {
+        for (V, edges) in ExampleGraphs() {
+            Message($"Running on graph V = {V}, edges = {edges}");
+            let actualAdjMatrix = EdgesListAsAdjacencyMatrix(V, edges);
+            let expectedAdjMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+            let equal = EqualA(EqualA(EqualI, _, _), actualAdjMatrix, expectedAdjMatrix);
+            Fact(equal, $"Got incorrect adjacency matrix {actualAdjMatrix}");
+            Message($"Got correct adjacency matrix");
+        }
+    }
 }
