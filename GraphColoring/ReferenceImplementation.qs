@@ -283,6 +283,19 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // Task 4.2. Extract a list of triangles from an adjacency matrix
+    function AdjacencyMatrixAsTrianglesList_Reference (V : Int, adjacencyMatrix : Int[][]) : (Int, Int, Int)[] {
+        mutable triangles = [];
+        for v1 in 0 .. V - 1 {
+            for v2 in v1 + 1 .. V - 1 {
+                for v3 in v2 + 1 .. V - 1 {
+                    if adjacencyMatrix[v1][v2] > -1 and adjacencyMatrix[v1][v3] > -1 and adjacencyMatrix[v2][v3] > -1 {
+                        set triangles = triangles + [(v1, v2, v3)];
+                    }
+                }
+            }
+        }
+        return triangles;
+    }
 
 
     // Task 4.3. Classical verification of triangle-free coloring

@@ -408,4 +408,26 @@ namespace Quantum.Kata.GraphColoring {
             Message($"Got correct adjacency matrix");
         }
     }
+
+
+    function EqualTriplet(t1 : (Int, Int, Int), t2 : (Int, Int, Int)) : Bool {
+        let (p1, q1, r1) = t1;
+        let (p2, q2, r2) = t2;
+        return p1 == p2 and q1 == q2 and r1 == r2;
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T42_AdjacencyMatrixAsTrianglesList () : Unit {
+        for (V, edges) in ExampleGraphs() {
+            Message($"Running on graph V = {V}, edges = {edges}");
+            let adjMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+
+            let actualTrianglesList = AdjacencyMatrixAsTrianglesList(V, adjMatrix);
+            let expectedTrianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjMatrix);
+            let equal = EqualA(EqualTriplet, actualTrianglesList, expectedTrianglesList);
+            Fact(equal, $"Got incorrect triangles list {actualTrianglesList}");
+            Message($"Got correct triangles list");
+        }
+    }
 }

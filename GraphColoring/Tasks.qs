@@ -295,13 +295,34 @@ namespace Quantum.Kata.GraphColoring {
     //         the element [i][j] should be -1 if the vertices i and j are not connected with an edge,
     //         or store the index of the edge if the vertices i and j are connected with an edge.
     //         Elements [i][i] should be -1 unless there is an edge connecting vertex i to itself.
+    // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
+    //         The adjacency matrix for it would be 
+    //         [-1,  0,  1],
+    //         [ 0, -1,  2],
+    //         [ 1,  2, -1].
     function EdgesListAsAdjacencyMatrix (V : Int, edges : (Int, Int)[]) : Int[][] {
         // ...
-        return [[0]];
+        return [];
     }
 
 
     // Task 4.2. Extract a list of triangles from an adjacency matrix
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An adjacency matrix describing the graph in the format from task 4.1.
+    // Output: An array of 3-tuples listing all triangles in the graph, 
+    //         that is, all triplets of vertices connected by edges.
+    //         Each of the 3-tuples should list the triangle vertices in ascending order,
+    //         and the 3-tuples in the array should be sorted in ascending order as well.
+    // Example: Consider the adjacency matrix
+    //         [-1,  0,  1],
+    //         [ 0, -1,  2],
+    //         [ 1,  2, -1].
+    //         The list of triangles for it would be [(0, 1, 2)].
+    function AdjacencyMatrixAsTrianglesList (V : Int, adjacencyMatrix : Int[][]) : (Int, Int, Int)[] {
+        // ...
+        return [];
+    }
 
 
     // Task 4.3. Classical verification of triangle-free coloring
