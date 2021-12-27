@@ -430,4 +430,39 @@ namespace Quantum.Kata.GraphColoring {
             Message($"Got correct triangles list");
         }
     }
+
+
+    @Test("QuantumSimulator")
+    operation T43_IsVertexColoringTriangleFree () : Unit {
+        let testCases = (ExampleGraphs())[...2];
+
+        // There is only one edge coloring for a disconnected graph of 3 vertices
+        let coloringAndVerdicts0 = [([], true)];
+
+        // For the complete graph with 4 vertices: 
+        let coloringAndVerdicts1 = [([0, 0, 1, 0, 1, 0], false), 
+                                    ([0, 0, 0, 1, 1, 1], false),
+                                    ([0, 0, 1, 1, 0, 0], true)];
+        
+        // For a graph with 5 vertices, 3 in a triangle and 2 separate: any coloring with the triangle of different colors
+        let coloringAndVerdicts2 = [([0, 0, 1, 0, 1], true), 
+                                    ([0, 0, 0, 1, 1], true),
+                                    ([0, 1, 1, 1, 0], false)];
+
+        let fullTestCases = Zipped(testCases, [
+                                    coloringAndVerdicts0,
+                                    coloringAndVerdicts1,
+                                    coloringAndVerdicts2
+                                    ]);
+
+        for (testCase, coloringAndVerdicts) in fullTestCases {
+            let (V, edges) = testCase;
+            for (coloring, expectedResult) in coloringAndVerdicts {
+                Fact(IsVertexColoringTriangleFree(V, edges, coloring) == expectedResult,
+                    $"Coloring {coloring} judged {(not expectedResult) ? "" | " not"} triangle-free for graph V = {V}, edges = {edges}");
+            }
+        }
+    }
+
+
 }

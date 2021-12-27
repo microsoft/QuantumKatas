@@ -326,6 +326,23 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // Task 4.3. Classical verification of triangle-free coloring
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    //      3) An array of E integers, representing the edge coloring of the graph.
+    //         i-th element of the array is the color of the edge number i, and it is 0 or 1.
+    //         The colors of edges in this array are given in the same order as the edges in the "edges" array.
+    // Output: true if the given coloring is triangle-free
+    //         (i.e., no triangle of edges connecting 3 vertices has all three edges in the same color),
+    //         and false otherwise.
+    // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
+    //          Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
+    function IsVertexColoringTriangleFree (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // ...
+        return true;
+    }
 
 
     // Task 4.4. Oracle to check that three colors don't form a triangle

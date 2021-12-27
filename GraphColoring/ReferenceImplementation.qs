@@ -299,6 +299,21 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // Task 4.3. Classical verification of triangle-free coloring
+    function IsVertexColoringTriangleFree_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // Construct adjacency matrix of the graph
+        let adjacencyMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+        // Enumerate all possible triangles of edges
+        let trianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjacencyMatrix);
+
+        for (v1, v2, v3) in trianglesList {
+            if (colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v1][v3]] and 
+                colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v2][v3]]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
     // Task 4.4. Oracle to check that three colors don't form a triangle
