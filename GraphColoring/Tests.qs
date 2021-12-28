@@ -465,4 +465,38 @@ namespace Quantum.Kata.GraphColoring {
     }
 
 
+    // Helper operation to validate oracles for things other than vertex coloring
+    operation VerifySingleOutputFunction(numInputs : Int, op : ((Qubit[], Qubit) => Unit is Adj+Ctl), predicate : (Int -> Bool)) : Unit {
+        for assignment in 0 .. 2^numInputs - 1 {
+            use (inputs, output) = (Qubit[numInputs], Qubit());
+            within {
+                ApplyXorInPlace(assignment, LittleEndian(inputs));
+            } apply {
+                op(inputs, output);
+            }
+
+            // Check that the result is expected
+            let actual = ResultAsBool(MResetZ(output));
+            let expected = predicate(assignment);
+            Fact(actual == expected,
+                $"Oracle evaluation result {actual} does not match expected {expected} for assignment {IntAsBoolArray(assignment, numInputs)}");
+
+            // Check that the inputs were not modified
+            Fact(MeasureInteger(LittleEndian(inputs)) == 0, 
+                $"The input states were modified for assignment {assignment}");
+        }
+    }
+
+
+    function IsTriangleValid (input : Int) : Bool {
+        // the triangle is valid if it has at least two different bits (i.e., not all are the same)
+        return input > 0 and input < 7;
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T44_ValidTriangleOracle () : Unit {
+        VerifySingleOutputFunction(3, ValidTriangleOracle, IsTriangleValid);
+    }
+
 }
