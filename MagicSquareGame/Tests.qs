@@ -299,7 +299,7 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     function DrawMagicSquare (alice : Int[], row : Int, bob : Int[], column : Int) : Unit {
         for i in 0..2 {
-            mutable line = new String[3];
+            mutable line = ["", size = 3];
             for j in 0..2 {
                 if (i == row and j == column and alice[j] != bob[i]) {
                     set line w/= j <- "±";

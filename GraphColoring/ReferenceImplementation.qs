@@ -111,7 +111,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 2.3. Using Grover's search to find vertex coloring
     operation GroversAlgorithm_Reference (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // This task is similar to task 2.2 from SolveSATWithGrover kata, but the percentage of correct solutions is potentially higher.
-        mutable coloring = new Int[V];
+        mutable coloring = [0, size = V];
 
         // Note that coloring register has the number of qubits that is twice the number of vertices (2 qubits per vertex).
         use (register, output) = (Qubit[2 * V], Qubit());
