@@ -499,4 +499,53 @@ namespace Quantum.Kata.GraphColoring {
         VerifySingleOutputFunction(3, ValidTriangleOracle, IsTriangleValid);
     }
 
+
+    function ExampleGraphs_TriangleFreeColoring () : (Int, (Int, Int)[])[] {
+        return [
+            //  trivial graph with no edges (no triangles)
+            (6, []),
+            //  "circle" graph (no triangles)
+            (6, [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 0)]),
+            //  complete bipartite graph K_{1,5} (no triangles)
+            (6, [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5)]),
+            //  complete bipartite graph K_{3,3} (no triangles)
+            (6, [(0, 1), (0, 3), (0, 5), (1, 2), (1, 4), (2, 3), (2, 5), (3, 4), (4, 5)]),
+            //  complete graph with 3 edges (1 triangle)
+            (3, [(0, 1), (1, 2), (2, 0)]),
+            //  disconnected graph consisting of two triangles 0-1-2 and 3-4-5
+            (6, [(0, 1), (4, 3), (2, 1), (5, 4), (5, 0), (2, 0)]),
+            //  square + diagonal (two triangles)
+            (4, [(1, 0), (3, 2), (0, 3), (2, 1), (3, 1)]),
+            //  square + two diagonals (four triangles)
+            (4, [(1, 0), (3, 2), (0, 3), (2, 1), (3, 1), (0, 2)]),
+            //  square + two diagonals + center (4 triangles)
+            (5, [(0, 2), (1, 2), (3, 2), (4, 2), (0, 1), (1, 3), (4, 0), (3, 4)]),
+            //  pyramid of 4 triangles
+            (6, [(2, 1), (2, 3), (1, 3), (1, 0), (1, 5), (3, 5), (3, 4), (0, 5), (5, 4)])
+        ];
+    }
+
+
+    function BoolAsInt (a : Bool) : Int {
+        return a ? 1 | 0;
+    }
+
+    function IsVertexColoringTriangleFree_Wrapper (V : Int, edges: (Int, Int)[], colors: Int) : Bool {
+        let colorBools = IntAsBoolArray(colors, Length(edges));
+        let colorBits = Mapped(BoolAsInt, colorBools);
+        return IsVertexColoringTriangleFree_Reference(V, edges, colorBits);
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T45_TriangleFreeColoringOracle () : Unit {
+        for (V, edges) in ExampleGraphs_TriangleFreeColoring() {
+            Message($"Testing {(V, edges)}");
+            VerifySingleOutputFunction(
+                Length(edges), 
+                TriangleFreeColoringOracle(V, edges, _, _), 
+                IsVertexColoringTriangleFree_Wrapper(V, edges, _));
+        }    
+    }
+
 }

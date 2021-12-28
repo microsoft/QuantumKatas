@@ -334,6 +334,26 @@ namespace Quantum.Kata.GraphColoring {
         colorsRegister : Qubit[], 
         target : Qubit
     ) : Unit is Adj+Ctl {
-        // ...
+        // Construct adjacency matrix of the graph
+        let adjacencyMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+        // Enumerate all possible triangles of edges
+        let trianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjacencyMatrix);
+
+        // Allocate one extra qubit per triangle
+        let nTr = Length(trianglesList);
+        use aux = Qubit[nTr];
+        within {
+            for i in 0 .. nTr - 1 {
+                // For each triangle, form an array of qubits that holds its edge colors
+                let (v1, v2, v3) = trianglesList[i];
+                let edgeColors = [colorsRegister[adjacencyMatrix[v1][v2]],
+                                  colorsRegister[adjacencyMatrix[v1][v3]], 
+                                  colorsRegister[adjacencyMatrix[v2][v3]]];
+                ValidTriangleOracle_Reference(edgeColors, aux[i]);
+            }
+        } apply {
+            // If all triangles are good, all aux qubits are 1
+            Controlled X(aux, target);
+        }
     }
 }
