@@ -10,7 +10,7 @@ to reduce the number of ancillary qubits needed.
 * Part IV covers building an in-place quantum subtractor.
 * Part V covers addition and subtraction modulo 2ᴺ.
 
-You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=RippleCarryAdder%2FRippleCarryAdder.ipynb)!
+You can [run the RippleCarryAdder kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/RippleCarryAdder%2FRippleCarryAdder.ipynb)!
 
 #### Theory
 

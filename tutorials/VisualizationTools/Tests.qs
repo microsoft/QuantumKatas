@@ -89,7 +89,7 @@ namespace Quantum.Kata.VisualizationTools {
         // Normalize the amplitudes, to check the answer programmatically.
         let amplitudesNorm = PNormalized(2.0, amplitudes);
         // Filter out the amplitudes bigger than the threshold.
-        mutable expected = new Int[0];
+        mutable expected = [];
         for i in IndexRange(amplitudes) {
             if amplitudesNorm[i] > 0.01 {
                 set expected += [i];

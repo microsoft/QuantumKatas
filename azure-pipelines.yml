@@ -26,6 +26,8 @@ variables:
 jobs:
   - job: binaries
     displayName: 'Build Binary Packages'
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: scripts/steps-init.yml
     - template: scripts/steps-binaries.yml
@@ -68,7 +70,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 24'
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 27'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
@@ -87,7 +89,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 25'
+    - powershell: './validate-notebooks.ps1 -startindex 28'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 

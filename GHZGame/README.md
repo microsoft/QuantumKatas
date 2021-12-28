@@ -3,7 +3,7 @@
 This kata covers the Greenberger-Horne-Zeilinger game (often abbreviated as GHZ game), 
 a well-known example of a nonlocal (entanglement) game. 
 
-You can [run the GHZ Game kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=GHZGame%2FGHZGame.ipynb)!
+You can [run the GHZ Game kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/GHZGame%2FGHZGame.ipynb)!
 
 In a nonlocal game, several cooperating players play a game against a referee answering the referee's questions. The players are free to share information
 (and even qubits!) before the game starts, but are forbidden from communicating
@@ -13,5 +13,5 @@ purely classical strategy.
 
 #### Theory
 
-* [Lecture 1](https://staff.fnwi.uva.nl/m.walter/physics491/lecture1.pdf) by Michael Walter.
+* [Lecture 1](https://michaelwalter.info/physics491/lecture1.pdf) by Michael Walter.
 * [Lecture 20](https://cs.uwaterloo.ca/~watrous/QC-notes/QC-notes.20.pdf) by John Watrous.
