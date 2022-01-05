@@ -272,7 +272,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 4.1. Convert the list of graph edges into an adjacency matrix
     function EdgesListAsAdjacencyMatrix_Reference (V : Int, edges : (Int, Int)[]) : Int[][] {
         mutable adjVertices = [[-1, size = V], size = V];
-        for edgeInd in 0 .. Length(edges) - 1 {
+        for edgeInd in IndexRange(edges) {
             let (v1, v2) = edges[edgeInd];
             // track both directions in the adjacency matrix
             set adjVertices w/= v1 <- (adjVertices[v1] w/ v2 <- edgeInd);

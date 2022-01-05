@@ -361,7 +361,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 4.5. Oracle for verifying triangle-free edge coloring
     //           (f(x) = 1 if the graph edge coloring is triangle-free)
     // Inputs:
-    //      1) The number of vertices in the graph "V" (V ≤ 6).
+    //      1) The number of vertices in the graph V (V ≤ 6).
     //      2) An array of E tuples of integers "edges", representing the edges of the graph (0 ≤ E ≤ V(V-1)/2).
     //         Each tuple gives the indices of the start and the end vertices of the edge.
     //         The vertices are indexed 0 through V - 1.
