@@ -54,6 +54,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 * **[Single-qubit measurements (tutorial)](./tutorials/SingleQubitSystemMeasurements/)**.
   Learn what quantum measurement is and how to use it for single-qubit systems.
+* **[Multi-qubit measurements (tutorial)](./tutorials/MultiQubitSystemMeasurements/)**.
+  Learn to use measurements for multi-qubit systems.
 * **[Measurements](./Measurements/)**.
   Learn to distinguish quantum states using measurements.
 * **[Distinguish unitaries](./DistinguishUnitaries/)**.
