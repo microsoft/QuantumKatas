@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -30,8 +30,8 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
         let nUnitaries = Length(unitaries);
         let nTotal = 100;
-        mutable wrongClassifications = new Int[nUnitaries * nUnitaries]; // [i * nU + j] number of times unitary i was classified as j
-        mutable unknownClassifications = new Int[nUnitaries];            // number of times unitary i was classified as something unknown
+        mutable wrongClassifications = [0, size = nUnitaries * nUnitaries]; // [i * nU + j] number of times unitary i was classified as j
+        mutable unknownClassifications = [0, size = nUnitaries];            // number of times unitary i was classified as something unknown
         
         for i in 1 .. nTotal {
             // get a random integer to define the unitary used
