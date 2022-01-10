@@ -96,6 +96,10 @@ namespace Quantum.Kata.GraphColoring {
     // Part II. Vertex coloring problem
     //////////////////////////////////////////////////////////////////
 
+    // The vertex graph coloring is a coloring of graph vertices which 
+    // labels each vertex with one of the given colors so that 
+    // no two vertices of the same color are connected by an edge.
+
     // Task 2.1. Classical verification of vertex coloring
     // Inputs:
     //      1) The number of vertices in the graph V (V ≤ 6).
@@ -148,7 +152,7 @@ namespace Quantum.Kata.GraphColoring {
     // Output: A valid vertex coloring for the graph, in a format used in task 2.1.
     operation GroversAlgorithm (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
-        return new Int[V];
+        return [0, size = V];
     }
 
 
@@ -156,6 +160,11 @@ namespace Quantum.Kata.GraphColoring {
     //////////////////////////////////////////////////////////////////
     // Part III. Weak coloring problem
     //////////////////////////////////////////////////////////////////
+
+    // Weak graph coloring is a coloring of graph vertices which 
+    // labels each vertex with one of the given colors so that 
+    // each vertex is either isolated or is connected by an edge
+    // to at least one neighbor of a different color.
 
     // Task 3.1. Determine if an edge contains the vertex
     // Inputs:
@@ -263,6 +272,127 @@ namespace Quantum.Kata.GraphColoring {
     // Output: A valid weak coloring for the graph, in a format used in task 3.3.
     operation GroversAlgorithmForWeakColoring (V : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Int[] {
         // ...
-        return new Int[V];
+        return [0, size = V];
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Triangle-free coloring problem
+    //////////////////////////////////////////////////////////////////
+
+    // Triangle-free graph coloring is a coloring of graph edges which 
+    // labels each edge with one of two colors so that no three edges 
+    // of the same color form a triangle.
+
+    // Task 4.1. Convert the list of graph edges into an adjacency matrix
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    // Output: A 2D array of integers representing this graph as an adjacency matrix:
+    //         the element [i][j] should be -1 if the vertices i and j are not connected with an edge,
+    //         or store the index of the edge if the vertices i and j are connected with an edge.
+    //         Elements [i][i] should be -1 unless there is an edge connecting vertex i to itself.
+    // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
+    //         The adjacency matrix for it would be 
+    //         [-1,  0,  1],
+    //         [ 0, -1,  2],
+    //         [ 1,  2, -1].
+    function EdgesListAsAdjacencyMatrix (V : Int, edges : (Int, Int)[]) : Int[][] {
+        // ...
+        return [];
+    }
+
+
+    // Task 4.2. Extract a list of triangles from an adjacency matrix
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An adjacency matrix describing the graph in the format from task 4.1.
+    // Output: An array of 3-tuples listing all triangles in the graph, 
+    //         that is, all triplets of vertices connected by edges.
+    //         Each of the 3-tuples should list the triangle vertices in ascending order,
+    //         and the 3-tuples in the array should be sorted in ascending order as well.
+    // Example: Consider the adjacency matrix
+    //         [-1,  0,  1],
+    //         [ 0, -1,  2],
+    //         [ 1,  2, -1].
+    //         The list of triangles for it would be [(0, 1, 2)].
+    function AdjacencyMatrixAsTrianglesList (V : Int, adjacencyMatrix : Int[][]) : (Int, Int, Int)[] {
+        // ...
+        return [];
+    }
+
+
+    // Task 4.3. Classical verification of triangle-free coloring
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers, representing the edges of the graph (E ≤ 12).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    //      3) An array of E integers, representing the edge coloring of the graph.
+    //         i-th element of the array is the color of the edge number i, and it is 0 or 1.
+    //         The colors of edges in this array are given in the same order as the edges in the "edges" array.
+    // Output: true if the given coloring is triangle-free
+    //         (i.e., no triangle of edges connecting 3 vertices has all three edges in the same color),
+    //         and false otherwise.
+    // Example: Consider a graph with V = 3 and edges = [(0, 1), (0, 2), (1, 2)].
+    //          Some of the valid colorings for it would be [0, 1, 0] and [-1, 5, 18].
+    function IsVertexColoringTriangleFree (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // ...
+        return true;
+    }
+
+
+    // Task 4.4. Oracle to check that three colors don't form a triangle
+    //           (f(x) = 1 if at least two of three input bits are different)
+    // Inputs:
+    //      1) a 3-qubit array `inputs`,
+    //      2) a qubit `output`.
+    // Goal: Flip the output qubit if and only if at least two of the input qubits are different.
+    // For example, for the result of applying the operation to state (|001⟩ + |110⟩ + |111⟩) ⊗ |0⟩
+    // will be |001⟩ ⊗ |1⟩ + |110⟩ ⊗ |1⟩ + |111⟩ ⊗ |0⟩.
+    operation ValidTriangleOracle (inputs : Qubit[], output : Qubit) : Unit is Adj+Ctl {
+        // ...
+    }
+
+
+    // Task 4.5. Oracle for verifying triangle-free edge coloring
+    //           (f(x) = 1 if the graph edge coloring is triangle-free)
+    // Inputs:
+    //      1) The number of vertices in the graph V (V ≤ 6).
+    //      2) An array of E tuples of integers "edges", representing the edges of the graph (0 ≤ E ≤ V(V-1)/2).
+    //         Each tuple gives the indices of the start and the end vertices of the edge.
+    //         The vertices are indexed 0 through V - 1.
+    //         The graph is undirected, so the order of the start and the end vertices in the edge doesn't matter.
+    //      3) An array of E qubits "colorsRegister" that encodes the color assignments of the edges.
+    //         Each color will be 0 or 1 (stored in 1 qubit).
+    //         The colors of edges in this array are given in the same order as the edges in the "edges" array.
+    //      4) A qubit "target" in an arbitrary state.
+    //
+    // Goal: Implement a marking oracle for function f(x) = 1 if
+    //       the coloring of the edges of the given graph described by this colors assignment is triangle-free, 
+    //       i.e., no triangle of edges connecting 3 vertices has all three edges in the same color.
+    //
+    // Example: a graph with 3 vertices and 3 edges [(0, 1), (1, 2), (2, 0)] has one triangle.
+    // The result of applying the operation to state (|001⟩ + |110⟩ + |111⟩)/√3 ⊗ |0⟩ 
+    // will be 1/√3|001⟩ ⊗ |1⟩ + 1/√3|110⟩ ⊗ |1⟩ + 1/√3|111⟩ ⊗ |0⟩.
+    // The first two terms describe triangle-free colorings, 
+    // and the last term describes a coloring where all edges of the triangle have the same color.
+    //
+    // In this task you are not allowed to use quantum gates that use more qubits than the number of edges in the graph,
+    // unless there are 3 or less edges in the graph. For example, if the graph has 4 edges, you can only use 4-qubit gates or less.
+    // You are guaranteed that in tests that have 4 or more edges in the graph the number of triangles in the graph 
+    // will be strictly less than the number of edges.
+    //
+    // Hint: Make use of functions and operations you've defined in previous tasks.
+    operation TriangleFreeColoringOracle (
+        V : Int, 
+        edges : (Int, Int)[], 
+        colorsRegister : Qubit[], 
+        target : Qubit
+    ) : Unit is Adj+Ctl {
+        // ...
     }
 }
