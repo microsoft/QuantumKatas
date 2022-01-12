@@ -375,16 +375,16 @@ namespace Quantum.Kata.GraphColoring {
     //       the coloring of the edges of the given graph described by this colors assignment is triangle-free, 
     //       i.e., no triangle of edges connecting 3 vertices has all three edges in the same color.
     //
+    // In this task you are not allowed to use quantum gates that use more qubits than the number of edges in the graph,
+    // unless there are 3 or less edges in the graph. For example, if the graph has 4 edges, you can only use 4-qubit gates or less.
+    // You are guaranteed that in tests that have 4 or more edges in the graph the number of triangles in the graph 
+    // will be strictly less than the number of edges.
+    //
     // Example: a graph with 3 vertices and 3 edges [(0, 1), (1, 2), (2, 0)] has one triangle.
     // The result of applying the operation to state (|001⟩ + |110⟩ + |111⟩)/√3 ⊗ |0⟩ 
     // will be 1/√3|001⟩ ⊗ |1⟩ + 1/√3|110⟩ ⊗ |1⟩ + 1/√3|111⟩ ⊗ |0⟩.
     // The first two terms describe triangle-free colorings, 
     // and the last term describes a coloring where all edges of the triangle have the same color.
-    //
-    // In this task you are not allowed to use quantum gates that use more qubits than the number of edges in the graph,
-    // unless there are 3 or less edges in the graph. For example, if the graph has 4 edges, you can only use 4-qubit gates or less.
-    // You are guaranteed that in tests that have 4 or more edges in the graph the number of triangles in the graph 
-    // will be strictly less than the number of edges.
     //
     // Hint: Make use of functions and operations you've defined in previous tasks.
     operation TriangleFreeColoringOracle (
