@@ -169,10 +169,11 @@ namespace Microsoft.Quantum.Katas
 
             try
             {
-                var qsim = CreateSimulator(channel);
+                var qsim = CreateSimulator();
 
                 qsim.DisableExceptionPrinting();
                 qsim.DisableLogToConsole();
+                qsim.OnLog += channel.Stdout;
 
                 qsim.OnDisplayableDiagnostic += channel.Display;
 
@@ -206,8 +207,8 @@ namespace Microsoft.Quantum.Katas
         /// Creates the instance of the simulator to use to run the Test 
         /// (for now always CounterSimulator from the same package).
         /// </summary>
-        public virtual SimulatorBase CreateSimulator(IChannel channel) =>
-            new CounterSimulator().WithJupyterDisplay(channel, ConfigurationSource);
+        public virtual SimulatorBase CreateSimulator() =>
+            new CounterSimulator();
 
         /// <summary>
         /// Returns the OperationInfo with the Test to run based on the given name.
