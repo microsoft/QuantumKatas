@@ -263,4 +263,97 @@ namespace Quantum.Kata.GraphColoring {
         return GroversAlgorithm_Reference(V, oracle);
     }
 
+
+    //////////////////////////////////////////////////////////////////
+    // Part IV. Triangle-free coloring problem
+    //////////////////////////////////////////////////////////////////
+
+
+    // Task 4.1. Convert the list of graph edges into an adjacency matrix
+    function EdgesListAsAdjacencyMatrix_Reference (V : Int, edges : (Int, Int)[]) : Int[][] {
+        mutable adjVertices = [[-1, size = V], size = V];
+        for edgeInd in IndexRange(edges) {
+            let (v1, v2) = edges[edgeInd];
+            // track both directions in the adjacency matrix
+            set adjVertices w/= v1 <- (adjVertices[v1] w/ v2 <- edgeInd);
+            set adjVertices w/= v2 <- (adjVertices[v2] w/ v1 <- edgeInd);
+        }
+        return adjVertices;
+    }
+
+
+    // Task 4.2. Extract a list of triangles from an adjacency matrix
+    function AdjacencyMatrixAsTrianglesList_Reference (V : Int, adjacencyMatrix : Int[][]) : (Int, Int, Int)[] {
+        mutable triangles = [];
+        for v1 in 0 .. V - 1 {
+            for v2 in v1 + 1 .. V - 1 {
+                for v3 in v2 + 1 .. V - 1 {
+                    if adjacencyMatrix[v1][v2] > -1 and adjacencyMatrix[v1][v3] > -1 and adjacencyMatrix[v2][v3] > -1 {
+                        set triangles = triangles + [(v1, v2, v3)];
+                    }
+                }
+            }
+        }
+        return triangles;
+    }
+
+
+    // Task 4.3. Classical verification of triangle-free coloring
+    function IsVertexColoringTriangleFree_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
+        // Construct adjacency matrix of the graph
+        let adjacencyMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+        // Enumerate all possible triangles of edges
+        let trianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjacencyMatrix);
+
+        for (v1, v2, v3) in trianglesList {
+            if (colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v1][v3]] and 
+                colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v2][v3]]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    // Task 4.4. Oracle to check that three colors don't form a triangle
+    //           (f(x) = 1 if at least two of three input bits are different)
+    operation ValidTriangleOracle_Reference (inputs : Qubit[], output : Qubit) : Unit is Adj+Ctl {
+        // We want to NOT mark only all 0s and all 1s - mark them and flip the output qubit
+        (ControlledOnInt(0, X))(inputs, output);
+        Controlled X(inputs, output);
+        X(output);
+    }
+
+
+    // Task 4.5. Oracle for verifying triangle-free edge coloring
+    //           (f(x) = 1 if the graph edge coloring is triangle-free)
+    operation TriangleFreeColoringOracle_Reference (
+        V : Int, 
+        edges : (Int, Int)[], 
+        colorsRegister : Qubit[], 
+        target : Qubit
+    ) : Unit is Adj+Ctl {
+        // Construct adjacency matrix of the graph
+        let adjacencyMatrix = EdgesListAsAdjacencyMatrix_Reference(V, edges);
+        // Enumerate all possible triangles of edges
+        let trianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjacencyMatrix);
+
+        // Allocate one extra qubit per triangle
+        let nTr = Length(trianglesList);
+        use aux = Qubit[nTr];
+        within {
+            for i in 0 .. nTr - 1 {
+                // For each triangle, form an array of qubits that holds its edge colors
+                let (v1, v2, v3) = trianglesList[i];
+                let edgeColors = [colorsRegister[adjacencyMatrix[v1][v2]],
+                                  colorsRegister[adjacencyMatrix[v1][v3]], 
+                                  colorsRegister[adjacencyMatrix[v2][v3]]];
+                ValidTriangleOracle_Reference(edgeColors, aux[i]);
+            }
+        } apply {
+            // If all triangles are good, all aux qubits are 1
+            Controlled X(aux, target);
+        }
+    }
 }

@@ -54,6 +54,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 * **[Single-qubit measurements (tutorial)](./tutorials/SingleQubitSystemMeasurements/)**.
   Learn what quantum measurement is and how to use it for single-qubit systems.
+* **[Multi-qubit measurements (tutorial)](./tutorials/MultiQubitSystemMeasurements/)**.
+  Learn to use measurements for multi-qubit systems.
 * **[Measurements](./Measurements/)**.
   Learn to distinguish quantum states using measurements.
 * **[Distinguish unitaries](./DistinguishUnitaries/)**.
@@ -79,7 +81,7 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 * **[Quantum oracles (tutorial)](./tutorials/Oracles/)**.
   Learn to implement classical functions as equivalent quantum oracles. 
-* **[Exploring Deutsch–Jozsa algorithm (tutorial)](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
+* **[Exploring Deutsch and Deutsch–Jozsa algorithms (tutorial)](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
   Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
   solution to the Deutsch–Jozsa problem to a classical one.
 * **[Deutsch–Jozsa algorithm](./DeutschJozsaAlgorithm/)**.
