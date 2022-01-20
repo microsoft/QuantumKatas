@@ -52,7 +52,7 @@ RUN cd ${HOME} && \
     # Exclude Unitary patterns, since it times out in Binder prebuild
     #./scripts/prebuild-kata.sh UnitaryPatterns && \
     ./scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb && \
-    ./scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial_P1.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
