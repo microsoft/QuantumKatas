@@ -152,6 +152,7 @@ This can happen for several reasons:
  - Some tasks require implementing several code cells at once before running the test, so the first of the cells implemented is guaranteed to fail the associated test (`multicell_solution`).
  - For some tasks the correct solution is randomized and fails (`randomized_solution`) or times out (`timeout`) with relatively high probability.
  - Some code cells contain deliberately invalid code (`invalid_code`) that the learner is supposed to fix.
+ - Some code cells are Azure Quantum demos (`azure_quantum`), executable only with the right Azure Quantum connection information.
 
 > Currently all tags are excluded from validation in the same way: the corresponding cells are not executed when the notebook is validated.
 > The different tags are introduced as a form of documenting the reasons for excluding the tasks.
