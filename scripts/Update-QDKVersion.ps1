@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.21.2112180703
+        PS> ./Update-QDKVersion.ps1 -Version 0.21.2112181770-beta
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
@@ -53,7 +53,7 @@ $dockerPath = Join-Path $katasRoot "Dockerfile"
     } | Set-Content -Path $dockerPath
 
 
-$ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
+$ps1String = "Microsoft.Quantum.IQSharp --version 0.21.2112182074-beta
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
 (Get-Content -Path $ps1Path) | ForEach-Object {
          $isQuantumPackage = $_ -match $ps1String
