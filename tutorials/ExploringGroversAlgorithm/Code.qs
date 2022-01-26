@@ -20,15 +20,14 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
 
     // Helper function to get the list of qubits used in the clause and the bitmask of whether they need to be flipped
     function GetClauseQubits (queryRegister : Qubit[], clause : (Int, Bool)[]) : (Qubit[], Bool[]) {
-        mutable clauseQubits = new Qubit[Length(clause)];
-        mutable flip = [false, size = Length(clause)];
-        for varIndex in 0 .. Length(clause) - 1 {
-            let (index, isTrue) = clause[varIndex];
+        mutable clauseQubits = [];
+        mutable flip = [];
+        for (index, isTrue) in clause {
             // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
             let qt = queryRegister[index];
-            set clauseQubits w/= varIndex <- queryRegister[index];
+            set clauseQubits += [queryRegister[index]];
             // If the negation of the variable is present in the formula, mark the qubit as needing a flip
-            set flip w/= varIndex <- not isTrue;
+            set flip += [not isTrue];
         }
     
         return (clauseQubits, flip);
