@@ -12,9 +12,10 @@ COPY . ${HOME}
 
 # Run some commands as root
 USER root
+# Install nuget for the Quantum Providers package installations
+RUN apt-get install -y nuget
 # Install Python dependencies for the Python visualization and tutorial notebooks
-RUN apt install nuget && \
-    pip install -I --no-cache-dir \
+RUN pip install -I --no-cache-dir \
         matplotlib \
         numpy \
         pytest && \
