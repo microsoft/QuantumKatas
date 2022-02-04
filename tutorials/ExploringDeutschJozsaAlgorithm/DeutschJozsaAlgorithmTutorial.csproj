@@ -8,8 +8,6 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Katas" Version="0.22.187631" />
-    <PackageReference Include="Microsoft.Quantum.Providers.Honeywell" Version="0.22.187631" />
-    <PackageReference Include="Microsoft.Quantum.Providers.IonQ" Version="0.22.187631" />
     <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.22.187631" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
