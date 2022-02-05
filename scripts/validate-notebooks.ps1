@@ -92,7 +92,7 @@ function Validate {
 
         # See the explanation for excluding individual tasks in Contribution guide at 
         # https://github.com/microsoft/QuantumKatas/blob/main/.github/CONTRIBUTING.md#excluding-individual-tasks-from-validation
-        $exclude_from_validation = "['multicell_solution', 'randomized_solution', 'timeout', 'invalid_code', 'work_in_progress']"
+        $exclude_from_validation = "['multicell_solution', 'randomized_solution', 'timeout', 'invalid_code', 'azure_quantum', 'work_in_progress']"
 
         # Run Jupyter nbconvert to execute the kata.
         # dotnet-iqsharp writes some output to stderr, which causes PowerShell to throw
