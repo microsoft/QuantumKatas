@@ -29,6 +29,7 @@ RUN cd ${HOME}/ && \
     dir ${HOME}/.nuget/ && \
 # `dotnet restore` for each solution to ensure NuGet cache is fully populated
     for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
+    dotnet restore ./tutorials/ExploringDeutschJozsaAlgorithm/test.csproj && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
     ./scripts/prebuild-kata.sh BasicGates && \
