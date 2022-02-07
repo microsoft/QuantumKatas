@@ -25,8 +25,7 @@ RUN pip install -I --no-cache-dir \
 USER ${USER}
 
 RUN cd ${HOME}/ && \
-    dir ${HOME}/.nuget/ && \
-    dotnet restore ./tutorials/ExploringDeutschJozsaAlgorithm/test.csproj
+    dotnet restore ./tutorials/ExploringDeutschJozsaAlgorithm/AQ/test.csproj
 
 RUN cd ${HOME}/ && \
 # Install packages needed to submit jobs to hardware separately, since they are not part of any project
