@@ -28,8 +28,8 @@ RUN cd ${HOME}/ && \
 # Install packages needed to submit jobs to hardware separately, since they are not part of any project
     dir ${HOME}/.nuget/ && \
 # `dotnet restore` for each solution to ensure NuGet cache is fully populated
-    for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
     dotnet restore ./tutorials/ExploringDeutschJozsaAlgorithm/test.csproj && \
+    for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
 # Pre-exec notebooks to improve first-use start time
 # (the katas that are less frequently used on Binder are excluded to improve overall Binder build time)
     ./scripts/prebuild-kata.sh BasicGates && \
