@@ -6,6 +6,7 @@ pr:
 - main
 - feature/*
 - release/*
+- imiles/*
 
 schedules:
 - cron: "0 9 * * Sat"
