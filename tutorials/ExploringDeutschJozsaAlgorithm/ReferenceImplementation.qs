@@ -10,6 +10,7 @@
 
 namespace Quantum.Kata.DeutschJozsaAlgorithm {
     
+    open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
@@ -44,20 +45,37 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum oracles
+    // Part II. Single-bit problem
+    //////////////////////////////////////////////////////////////////
+
+    // Exercise 3.
+    operation PhaseOracle_OneMinusX_Reference (x : Qubit) : Unit is Adj + Ctl {
+        Z(x);
+        R(PauliI, 2.0 * PI(), x);
+    }
+    
+
+    // Exercise 4.
+    operation DeutschAlgorithm_Reference (oracle : (Qubit => Unit)) : Bool {
+        use x = Qubit();
+        H(x);
+        oracle(x);
+        H(x);
+        return M(x) == Zero;
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Multi-bit problem
     //////////////////////////////////////////////////////////////////
     
-    // Exercise 3.
+    // Exercise 5.
     operation PhaseOracle_MostSignificantBit_Reference (x : Qubit[]) : Unit is Adj {
         Z(x[0]);
     }
 
 
-    //////////////////////////////////////////////////////////////////
-    // Part III. Quantum algorithm
-    //////////////////////////////////////////////////////////////////
-    
-    // Exercise 4.
+    // Exercise 6.
     operation DeutschJozsaAlgorithm_Reference (N : Int, oracle : (Qubit[] => Unit)) : Bool {
         mutable isConstantFunction = true;
         use x = Qubit[N];

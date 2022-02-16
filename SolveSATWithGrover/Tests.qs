@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -174,8 +174,8 @@ namespace Quantum.Kata.GroversAlgorithm {
             set nVarInClause = nVar;
         }
     
-        mutable clause = new (Int, Bool)[nVarInClause];
-        mutable usedVariables = new Bool[nVar];
+        mutable clause = [(0, false), size = nVarInClause];
+        mutable usedVariables = [false, size = nVar];
         // Make sure variables in the clause are distinct
         for k in 0 .. nVarInClause - 1 {
             mutable nextInd = -1;
@@ -219,7 +219,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     }
 
     operation GenerateSATInstance (nVar : Int, nClause : Int, nTerms : Int) : (Int, Bool)[][] {
-        mutable problem = new (Int, Bool)[][nClause];
+        mutable problem = [[(0, false), size = 0], size = nClause];
 
         for j in 0..nClause-1 {
             set problem w/= j <- Generate_SAT_Clause(nVar, nTerms);

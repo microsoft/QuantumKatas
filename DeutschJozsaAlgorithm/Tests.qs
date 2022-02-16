@@ -181,7 +181,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     function IntArrFromPositiveInt (n : Int, bits : Int) : Int[] {
         
         let rbool = IntAsBoolArray(n, bits);
-        mutable r = new Int[bits];
+        mutable r = [0, size = bits];
         
         for i in 0 .. bits - 1 {
             if (rbool[i]) {

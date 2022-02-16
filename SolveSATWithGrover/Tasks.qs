@@ -241,6 +241,6 @@ namespace Quantum.Kata.GroversAlgorithm {
     // In this task you also need to make your implementation robust to not knowing the optimal number of iterations.
     operation UniversalGroversAlgorithm (N : Int, oracle : ((Qubit[], Qubit) => Unit is Adj)) : Bool[] {
         // ...
-        return new Bool[N];
+        return [false, size = N];
     }
 }

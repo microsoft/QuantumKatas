@@ -228,7 +228,7 @@ namespace Quantum.Kata.BoundedKnapsack
     //          so you'll return an array of qubit arrays [|101⟩, |1110⟩, |0100⟩].
     function RegisterAsJaggedArray<'T> (array : 'T[], b : Int[]) : 'T[][] {
         // ...
-        return new 'T[][0];
+        return [];
     }
 
 
