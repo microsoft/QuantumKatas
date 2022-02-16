@@ -58,9 +58,6 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         protected virtual async Task<ExecutionResult> Run(string input, IChannel channel)
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            Logger.LogDebug($"Asm for the magics in quantumKatas : {asm}");
-
             channel = channel.WithNewLines();
 
             // Expect exactly two arguments, the name of the Kata and the user's answer (code).
@@ -146,82 +143,7 @@ namespace Microsoft.Quantum.Katas
         /// (by calling <c>FindSkeltonAnswer</c>) and replace its implementation with the <c>relevantAnswer</c>
         /// in the simulator.
         /// </summary>
-        protected virtual bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
-        {
-            var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
-            if (skeletonAnswer == null)
-            {
-                channel.Stderr($"Invalid task: {userAnswer}");
-                return false;
-            }
-            SetAllAnswers(skeletonAnswer, userAnswer);
-
-            SimulatorBase? currSim = null;
-            try
-            {
-                List<SimulatorBase> testSimulators = CreateSimulators(channel, test);
-
-                if(testSimulators.Count() == 0)
-                {
-                    throw new Exception($"Got no simulator(s) for the test {test.FullName}");
-                }
-
-                foreach(SimulatorBase testSim in testSimulators)
-                {
-                    Logger.LogDebug($"Simulating test {test.FullName} on {testSim.GetType().Name}");
-
-                    currSim = SetDisplay(testSim, channel);
-
-                    // Register all solutions to previously executed tasks (including the current one)
-                    foreach (KeyValuePair<OperationInfo, OperationInfo> answer in AllAnswers) {
-                        Logger.LogDebug($"Registering {answer.Key.FullName}");
-                        currSim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
-                    }
-
-                    var value = test.RunAsync(currSim, null).Result;
-
-                    channel.Stdout($"Success on {currSim.GetType().Name}!");
-
-                    if (currSim is IDisposable dis) { dis.Dispose(); }
-                }
-
-                return true;
-            }
-            catch (AggregateException agg)
-            {
-                foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
-                channel.Stderr(currSim != null ? $"Test failed on {currSim.GetType().Name}!" : "Test failed.");
-                channel.Stderr($"Try again!");
-                return false;
-            }
-            catch (Exception e)
-            {
-                channel.Stderr(e.Message);
-                channel.Stderr(currSim != null ? $"Test failed on {currSim.GetType().Name}!" : "Test failed.");
-                channel.Stderr($"Try again!");
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
-        /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
-        /// test's namespace
-        /// </summary>
-        protected virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer)
-        {
-            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}");
-            Logger.LogDebug($"Resolved {userAnswer} to {skeletonAnswer.FullName}");
-            return skeletonAnswer;
-        }
-
-        /// <summary>
-        /// Sets the <c>relevantAnswer</c> using <c>userAnswer</c> corresponding to the
-        /// <c>skeletonAnswer</c> to be verified by magic.
-        /// For KataMagic, it verfies the <c>userAnswer</c>
-        /// For CheckKataMagic, it verfies the <c>referenceImplementation</c>
-        /// </summary>
-        protected abstract void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer);
+        protected abstract bool Simulate(OperationInfo test, string userAnswer, IChannel channel);
 
         /// <summary>
         /// Creates the instance of the simulator(s) on which
@@ -236,19 +158,23 @@ namespace Microsoft.Quantum.Katas
 
             var testSimNames = GetSimNamesFromTestAttribute(test);
             Logger.LogDebug($"Simulator count for {test.FullName} = {testSimNames.Count()}");
+            if (testSimNames.Count() == 0) {
+                string errorMessage = $"No simulators found for test {test.FullName}";
+                channel.Stderr(errorMessage);
+                throw new Exception(errorMessage);
+            }
 
             List<Assembly> simulatorAssemblies = GetSimulatorAssemblies();
 
             foreach(var simName in testSimNames)
             {
-                Logger.LogDebug($"Trying to create simulator of the type : {simName}");
-
-                object? simulator = null;
                 bool isSimQualified = simName.Contains('.');
                 string simTypeName = isSimQualified ? simName : "Microsoft.Quantum.Simulation.Simulators." + simName ;
+                Logger.LogDebug($"Trying to create a simulator of the type : {simTypeName}");
 
                 try
                 {
+                    bool isSimulatorAdded = false;
                     foreach(Assembly asm in simulatorAssemblies)
                     {
                         // Gets the Type object with the specified name in the assembly instance
@@ -257,7 +183,7 @@ namespace Microsoft.Quantum.Katas
 
                         // Using binding flags to invoke parameterised constructor with default values
                         // For more details, please refer https://stackoverflow.com/questions/2501143/activator-createinstancetype-for-a-type-without-parameterless-constructor
-                        simulator = (simType != null)
+                        object? simulator = (simType != null)
                             ?   Activator.CreateInstance
                                 (
                                     type : simType,
@@ -271,22 +197,21 @@ namespace Microsoft.Quantum.Katas
                                 )
                             :   null;
 
-                        if(simulator != null)
+                        if(simulator != null && simulator is SimulatorBase sim)
                         {
-                            if(simulator is SimulatorBase sim)
-                            {
-                                testSimulators.Add(sim);
-                                Logger.LogDebug($"Simulator added of type {sim.GetType()}");
-                            }
+                            testSimulators.Add(sim);
+                            isSimulatorAdded = true;
+                            Logger.LogDebug($"Simulator added of type {sim.GetType()}");
                             break;
                         }
                     }
-                    string errorMessage = $"Error while creating an instance of {simName}. " +
-                        $"{simName} not a valid execution target. " +
-                        "Either consider using a fully qualified name for the simulator. " +
-                        "or see that you aren't using Custom simulators as part of Q# projects." ;
-                    if(simulator == null)
+                    if(!isSimulatorAdded) {
+                        string errorMessage = $"Error while creating an instance of {simTypeName}. " +
+                            $"'{simName}' is not a valid execution target. " +
+                            "Either consider using a fully qualified name for the simulator " +
+                            "or see that you aren't using Custom simulators as part of Q# projects." ;
                         throw new Exception(errorMessage);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -342,21 +267,6 @@ namespace Microsoft.Quantum.Katas
             }
 
             return simulatorAssemblies;
-        }
-
-        /// <summary>
-        /// Configures the display method for the simulators.
-        /// Default behaviour is to log the messages in text format provided by the simulator
-        /// </summary>
-        protected virtual SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
-        {
-            simulator.DisableExceptionPrinting();
-            simulator.DisableLogToConsole();
-
-            simulator.OnLog += channel.Stdout;
-            simulator.OnDisplayableDiagnostic += channel.Display;
-
-            return simulator;
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.IQSharp.Jupyter;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Simulators;
+using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
 
 namespace Microsoft.Quantum.Katas
@@ -72,48 +73,85 @@ namespace Microsoft.Quantum.Katas
         }
 
         /// <summary>
-        /// Returns the userAnswer as an operation so that we could verify
-        /// if userAnswer is correct by running appropriate test. 
+        /// Executes the given kata using the provided <c>userAnswer</c> as the actual answer.
+        /// To do this, it finds another operation with the same name but in the Kata's namespace
+        /// (by calling `FindSkeltonAnswer`) and replace its implementation with the userAnswer
+        /// in the simulator.
         /// </summary>
-        protected virtual OperationInfo FindSolution(string userAnswer)
+        protected override bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
         {
-            var solution = Resolver.Resolve(userAnswer);
-
-            Logger.LogDebug($"Found solution operation {solution}");
-
-            if (solution == null)
+            var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
+            if (skeletonAnswer == null)
             {
-                throw new Exception($"Solution not found for : {solution}");
+                channel.Stderr($"Invalid task: {userAnswer}");
+                return false;
             }
-            return solution;
-        }
 
-        /// <inheritdoc/>
-        protected override void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer)
-        {
-            var solution = FindSolution(userAnswer);
-            AllAnswers[skeletonAnswer] = FindSolution(userAnswer);
+            List<SimulatorBase> testSimulators;
+            try 
+            {
+                testSimulators = CreateSimulators(channel, test);
+            } 
+            catch (Exception e) {
+                channel.Stderr($"Failed to create test simulators: {e.Message}");
+                return false;
+            }
+
+            var allTestsPassed = true;
+            foreach(SimulatorBase testSim in testSimulators)
+            {
+                try
+                {
+                    testSim.DisableExceptionPrinting();
+                    testSim.DisableLogToConsole();
+                    testSim.OnDisplayableDiagnostic += channel.Display;
+                    testSim.OnLog += channel.Stdout;
+
+                    // Register all solutions to previously executed tasks (including the current one)
+                    foreach (KeyValuePair<OperationInfo, OperationInfo> answer in AllAnswers) {
+                        Logger.LogDebug($"Registering {answer.Key.FullName}");
+                        testSim.Register(answer.Key.RoslynType, answer.Value.RoslynType, typeof(ICallable));
+                    }
+
+                    var value = test.RunAsync(testSim, null).Result;
+                    channel.Stdout($"Success on {testSim.GetType().Name}!");
+                    if (testSim is IDisposable dis) { dis.Dispose(); }
+                }
+                catch (AggregateException agg)
+                {
+                    foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
+                    channel.Stderr(testSim != null ? $"Test failed on {testSim.GetType().Name}!" : "Test failed.");
+                    channel.Stderr($"Try again!");
+                    allTestsPassed = false;
+                }
+                catch (Exception e)
+                {
+                    channel.Stderr(e.Message);
+                    channel.Stderr(testSim != null ? $"Test failed on {testSim.GetType().Name}!" : "Test failed.");
+                    channel.Stderr($"Try again!");
+                    allTestsPassed = false;
+                }
+            }
+            return allTestsPassed;
         }
 
         /// <summary>
-        /// Logs the messages with rich Jupyter formatting for simulators of the type QuantumSimulator
-        /// and stack traces for exceptions for the other simulators
+        /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
+        /// test's namespace
         /// </summary>
-        protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
+        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer)
         {
-            SimulatorBase sim = base.SetDisplay(simulator, channel);
-
-            if(sim is QuantumSimulator qsim)
+            var userAnswerInfo = Resolver.Resolve(userAnswer);
+            var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswerInfo.FullName}");
+            Logger.LogDebug($"Resolved {userAnswerInfo.FullName} to {skeletonAnswer}");
+            if (skeletonAnswer != null)
             {
-                // To avoid double printing
-                qsim.OnLog -= channel.Stdout;
-                // To display diagnostic output with rich Jupyter formatting
-                return qsim.WithJupyterDisplay(channel, ConfigurationSource);
+                // Remember the last user answer for this task
+                AllAnswers[skeletonAnswer] = userAnswerInfo;
             }
-            else
-            {
-                return sim;
-            }
+            return skeletonAnswer;
         }
+
     }
 }

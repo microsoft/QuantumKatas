@@ -51,60 +51,96 @@ namespace Microsoft.Quantum.Katas
         /// </summary>
         protected ICompilerService Compiler { get; }
 
-        /// <summary>
-        /// Semi-compiles the given code. Checks there is only one operation defined in the code,
-        /// and returns its corresponding OperationInfo
-        /// The compiler does this on a best effort basis, and in particular without relying on any context and/or type information,
-        /// so it will return the operation even if the compilation fails.
-        /// </summary>
+        ///<inheritdoc/>
         protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel) =>
                Compiler.IdentifyElements(code);
 
         /// <summary>
-        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
-        /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
-        /// skeletonAnswer's namespace and with <c>_Reference</c> added to the userAnswer's name.
+        /// Executes the given test by replacing the userAnswer with its reference implementation.
+        /// It is expected that the test will succeed with no warnings.
         /// </summary>
-        protected virtual OperationInfo FindReferenceImplementation(OperationInfo skeletonAnswer, string userAnswer)
-        {
-            var referenceAnswer = Resolver.Resolve($"{skeletonAnswer.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
-            Logger.LogDebug($"Found Reference answer {referenceAnswer} for {userAnswer}");
-
+       protected override bool Simulate(OperationInfo test, string userAnswer, IChannel channel)
+       {
+            // The skeleton answer used to compile the workspace
+            var skeletonAnswer = FindSkeletonAnswer(test, userAnswer);
+            if (skeletonAnswer == null)
+            {
+                channel.Stderr($"Invalid task: {userAnswer}");
+                return false;
+            }
+            
+            // The reference implementation
+            var referenceAnswer = FindReferenceImplementation(test, userAnswer);
             if (referenceAnswer == null)
             {
-                throw new Exception($"Reference answer not found for : {userAnswer}");
+                channel.Stderr($"Reference answer not found: {userAnswer}");
+                return false;
             }
-            return referenceAnswer;
-        }
 
-        /// <inheritdoc/>
-        protected override void SetAllAnswers(OperationInfo skeletonAnswer, string userAnswer)
-        {
-            var referenceAnswer = FindReferenceImplementation(skeletonAnswer, userAnswer);
-            AllAnswers[skeletonAnswer] = referenceAnswer;
-        }
-
-        /// <inheritdoc/>
-        protected override SimulatorBase SetDisplay(SimulatorBase simulator, IChannel channel)
-        {
-            SimulatorBase sim = base.SetDisplay(simulator, channel);
-
-            var simHasWarnings = false;
-
-            sim.OnLog -= channel.Stdout; // Unsubscribe from base Logging
-            sim.OnLog += (msg) =>
+            List<SimulatorBase> testSimulators;
+            try 
             {
-                simHasWarnings = msg?.StartsWith("[WARNING]") ?? simHasWarnings;
-                if(simHasWarnings == true)
+                testSimulators = CreateSimulators(channel, test);
+            } 
+            catch (Exception e) {
+                channel.Stderr($"Failed to create test simulators: {e.Message}");
+                return false;
+            }
+
+            var testsPassedWithoutWarnings = true;
+            foreach(SimulatorBase testSim in testSimulators)
+            {
+                try
                 {
-                    throw new Exception($"Errors on {sim.GetType().Name} : " + msg);
+                    testSim.DisableLogToConsole();
+                    testSim.OnDisplayableDiagnostic += channel.Display;
+
+                    var hasWarnings = false;
+                    testSim.OnLog += (msg) =>
+                    {
+                        hasWarnings = msg?.StartsWith("[WARNING]") ?? hasWarnings;
+                        channel.Stdout(msg);
+                    };
+
+                    var value = test.RunAsync(testSim, null).Result;
+                    testsPassedWithoutWarnings &= !hasWarnings;
+                    channel.Stdout($"Success on {testSim.GetType().Name}!");
+                    
+                    if (testSim is IDisposable dis) { dis.Dispose(); }
                 }
-                else
+                catch (AggregateException agg)
                 {
-                    channel.Stdout($"Msg from {sim.GetType().Name} : " + msg);
+                    foreach (var e in agg.InnerExceptions) { channel.Stderr(e.Message); }
+                    channel.Stderr(testSim != null ? $"Test failed on {testSim.GetType().Name}!" : "Test failed.");
+                    channel.Stderr($"Try again!");
+                    testsPassedWithoutWarnings = false;
                 }
-            };
-            return sim;
-        }
+                catch (Exception e)
+                {
+                    channel.Stderr(e.Message);
+                    channel.Stderr(testSim != null ? $"Test failed on {testSim.GetType().Name}!" : "Test failed.");
+                    channel.Stderr($"Try again!");
+                    testsPassedWithoutWarnings = false;
+                }
+            }
+            return testsPassedWithoutWarnings;
+       }
+
+        /// <summary>
+        /// Returns the original shell for the test's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the `userAnswer` but in the 
+        /// test's namespace
+        /// </summary>
+        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}");
+
+        /// <summary>
+        /// Returns the reference implementation for the test's answer in the workspace for the given userAnswer.
+        /// It does this by finding another operation with the same name as the <c>userAnswer</c> but in the 
+        /// test's namespace and with <c>_Reference</c> added to the userAnswer's name.
+        /// </summary>
+        public virtual OperationInfo FindReferenceImplementation(OperationInfo test, string userAnswer) =>
+            Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswer}_Reference");
+
     }
 }
