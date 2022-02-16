@@ -171,7 +171,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
       ```
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
-      If you need to get a version other than 1.0.0, add a field `<Version>version-number</Version>` under the same tag.
+      If you need to get a version other than 1.0.0, add a field `<PackageVersion>version-number</PackageVersion>` under the same `<PropertyGroup>` tag. It's recommended you use different version numbers to check new changes, to ensure that your tests are running against the code you expect rather than an earlier cached package.
    2. Copy the generated .nupkg file from the `Microsoft.Quantum.Katas\bin\Debug` folder to the folder in which the test kata project resides (such as PhaseEstimation kata).
    3. Remove the package reference to `Microsoft.Quantum.Katas` package from the .csproj file of your project.
       > This might cause your project to fail build, for example, if it uses CounterSimulator functionality. It will build successfully from the Q# Notebook once you add this package dynamically.
