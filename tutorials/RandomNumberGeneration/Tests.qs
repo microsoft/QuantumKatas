@@ -107,7 +107,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let idealCopiesGenerated = IntAsDouble(nRuns) / IntAsDouble(max-min+1);
         let minimumCopiesGenerated = (0.8 * idealCopiesGenerated > 40.0) ? 0.8 * idealCopiesGenerated | 0.0;
 
-        mutable counts = ConstantArray(max + 1, 0);
+        mutable counts = [0, size = max + 1];
         mutable average = 0.0;
 
         ResetOracleCallsCount();
