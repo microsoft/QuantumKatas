@@ -130,13 +130,10 @@ namespace Quantum.Kata.MagicSquareGame {
     // ------------------------------------------------------
     function Pairs<'T> (array : 'T[]) : ('T, 'T)[] {
         let N = Length(array);
-        let length = N * (N - 1) / 2;
-        mutable pairs = new ('T, 'T)[length];
-        mutable i = 0;
+        mutable pairs = [];
         for j in 0..N - 1 {
             for k in j + 1..N - 1 {
-                set pairs w/= i <- (array[j], array[k]);
-                set i += 1;
+                set pairs += [(array[j], array[k])];
             }
         }
         return pairs;

@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.21.2112180703
+        PS> ./Update-QDKVersion.ps1 -Version 0.23.195983
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
