@@ -91,7 +91,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T15_Oracle_ProductFunction () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = ConstantArray(10, 1);
+        mutable r = [1, size = 10];
         let L = Length(r);
         
         for i in 2 .. L {
@@ -99,7 +99,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         }
         
         // the mask with all 0's corresponds to Oracle_Zero
-        set r = ConstantArray(10, 0);
+        set r = [0, size = 10];
         
         for i in 2 .. L {
             AssertTwoOraclesAreEqual(i .. i, Oracle_ProductFunction(_, _, r[0 .. i - 1]), Oracle_Zero_Reference);
@@ -124,7 +124,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     operation T16_Oracle_ProductWithNegationFunction () : Unit {
         // cross-tests
         // the mask for all 1's corresponds to Oracle_OddNumberOfOnes
-        mutable r = ConstantArray(10, 1);
+        mutable r = [1, size = 10];
         let L = Length(r);
         
         for i in 2 .. L {
