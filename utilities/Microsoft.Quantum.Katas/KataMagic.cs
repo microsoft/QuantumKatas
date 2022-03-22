@@ -104,7 +104,7 @@ namespace Microsoft.Quantum.Katas
                 return ExecuteStatus.Error.ToExecutionResult();
             }
 
-            var userAnswer = Compile(code, channel);
+            var userAnswer = await Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
 
             return Simulate(test, userAnswer, channel)
@@ -116,11 +116,11 @@ namespace Microsoft.Quantum.Katas
         /// Compiles the given code. Checks there is only one operation defined in the code,
         /// and returns its corresponding OperationInfo
         /// </summary>
-        public virtual OperationInfo Compile(string code, IChannel channel)
+        public virtual async Task<OperationInfo> Compile(string code, IChannel channel)
         {
             try
             {
-                var result = Snippets.Compile(code);
+                var result = await Snippets.Compile(code);
 
                 foreach (var m in result.warnings) { channel.Stdout(m); }
 
