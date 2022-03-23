@@ -212,7 +212,7 @@ QuantumKatas/
   BasicGates/
     README.md                  # Instructions specific to this kata.
     .vscode/                   # Metadata used by Visual Studio Code.
-    BasicGates.sln             # Visual Studio 2022 solution file.
+    BasicGates.sln             # Visual Studio solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
     BasicGates.ipynb           # Jupyter Notebook front-end for this kata.
 
