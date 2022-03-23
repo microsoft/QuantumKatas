@@ -171,8 +171,8 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 ```
 
 > [!TIP]
-> Both Visual Studio 2019 and Visual Studio Code make it easy to clone repositories from within your development environment.
-> For details, see the [Visual Studio 2019](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
+> Both Visual Studio 2022 and Visual Studio Code make it easy to clone repositories from within your development environment.
+> For details, see the [Visual Studio](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/main.zip.
 
@@ -212,7 +212,7 @@ QuantumKatas/
   BasicGates/
     README.md                  # Instructions specific to this kata.
     .vscode/                   # Metadata used by Visual Studio Code.
-    BasicGates.sln             # Visual Studio 2019 solution file.
+    BasicGates.sln             # Visual Studio 2022 solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
     BasicGates.ipynb           # Jupyter Notebook front-end for this kata.
 
@@ -222,7 +222,7 @@ QuantumKatas/
     ReferenceImplementation.qs # Q# source code containing solutions to the tasks.
 ```
 
-To open the **BasicGates** kata in Visual Studio 2019, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
+To open the **BasicGates** kata in Visual Studio 2022, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
 
 To open the **BasicGates** kata in Visual Studio Code, open the **QuantumKatas/BasicGates/** folder.
 Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the **Command Palette**. Type **Open Folder** on Windows 10 or Linux or **Open** on macOS.
@@ -242,7 +242,7 @@ Once you have a kata open, it's time to run the tests using the following instru
 Initially all tests will fail. Don't panic!
 Open **Tasks.qs** and start filling in the code to complete the tasks. Each task is covered by a unit test. Once you fill in the correct code for a task, rebuild the project and re-run the tests, and the corresponding unit test will pass.
 
-#### Visual Studio 2019
+#### Visual Studio 2022
 
 1. Build the solution.
 2. From the main menu, open **Test Explorer** (**Test** > **Windows**) and select **Run All** to run all unit tests at once.
