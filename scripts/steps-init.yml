@@ -15,7 +15,7 @@ steps:
     architecture: 'x64'
   displayName: 'Use Python 3.7'
 
-- script: pip install setuptools wheel pytest jupyter numpy matplotlib qsharp pyzmq==19.0.2 jinja2==3.0.3
+- script: pip install -r requirements.txt
   displayName: 'Install Python tools'
 
 - powershell: ./install-iqsharp.ps1
