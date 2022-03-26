@@ -5,7 +5,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Providers.Honeywell" Version="0.23.198514-beta" />
-    <PackageReference Include="Microsoft.Quantum.Providers.IonQ" Version="0.23.198514-beta" />
+    <PackageReference Include="Microsoft.Quantum.Providers.Honeywell" Version="0.24.201331-beta" />
+    <PackageReference Include="Microsoft.Quantum.Providers.IonQ" Version="0.24.201331-beta" />
   </ItemGroup>
 </Project>
