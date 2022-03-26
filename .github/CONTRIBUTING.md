@@ -13,7 +13,7 @@ We're so glad you asked!
    * [Contributing new katas](#contributing-new-katas)
    * [Style guide](#style-guide)
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
-   * [Updating the Quickref](#updating-the-quickref)
+   * [Updating the Quickref](#updating-the-quick-reference)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
       * [Validating changes to `%kata` and `%check_kata` magics on local machine](#validating-changes-to-kata-and-check_kata-magics-on-local-machine)
@@ -116,9 +116,9 @@ Updating the Katas to a different QDK version can be done using PowerShell scrip
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
 
-### Updating the Quickref
+### Updating the Quick Reference
 
-You can update the quickref by making your changes in the `.tex` file. After your changes compile the `.tex` file into a `.pdf` file and create a PR with both files. An easy way to compile the `.tex` file is to use (portable) [TEXMAKER](https://www.xm1math.net/texmaker/download.html), this should directly find the needed packages to compline the `.tex` into a `.pdf`.
+You can update the Quick Reference by making your changes in the [`.tex`](../quickref/qsharp-quick-reference.tex) file. After you do your changes compile the `.tex` file into a `.pdf` file and include both files in the pull request. (The changes to the `.pdf` file will not be shown in the pull request, so be careful not to introduce any changes not included in the `.text` source!). To complile your `.tex` file into `.pdf` you will need a compiler, for example [MiKTeX](https://miktex.org/download). MiKTeX will include a simple IDE so you can have a user interface to compile the `.tex` file, MiKTeX will also pull in the required packages to compile the `.pdf` file.
 
 ### Validating your changes
 
