@@ -146,7 +146,7 @@ The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipyn
 ### Quantum Development Kit Installation <a name="install" /> ###
 
 To use the Quantum Katas locally, you'll need the [Quantum Development Kit](https://docs.microsoft.com/azure/quantum), available for Windows 10, macOS, and Linux.
-If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/azure/quantum/install-overview-qdk).
+If you don't already have the Quantum Development Kit installed, see the [install guide for the Quantum Development Kit](https://docs.microsoft.com/azure/quantum/install-command-line-qdk).
 
 **If you want to run the katas and tutorials locally as Jupyter Notebooks**:
 1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/azure/quantum/install-python-qdk) 
@@ -161,6 +161,22 @@ If you don't already have the Quantum Development Kit installed, see the [instal
 Follow the steps in the [QDK install guide](https://docs.microsoft.com/azure/quantum/install-command-line-qdk) for Visual Studio, 
  Visual Studio Code or other editors.
 
+Running the Q# projects of the Katas locally requires downloading and installing the [.NET 6.0 SDK](https://dotnet.microsoft.com/download). You can do this even if you have another .NET version installed, since multiple versions are supported side-by-side.
+
+### Special considerations for .NET 6.0 based Katas ###
+
+The Quantum Development Team is in the process of adding support for .NET 6.0 across all components including the Quantum Katas. If you're using the source currently available, then your projects are using the release `0.23.198514-beta` of the QDK.
+
+Since Visual Studio 2019 does not support .NET 6.0 projects, you will need to upgrade to Visual Studio 2022 and install the corresponding [Microsoft Quantum Development Kit](https://marketplace.visualstudio.com/items?itemName=quantum.DevKit64) extension.
+
+**Important:**
+If you will use Visual Studio Code, the latest version of the extension (`0.23.195983`) does not support .NET 6 binaries. We will add support for this in the next release, but if you intend to try this now, you'll need to follow these steps:
+
+1. Uninstall the "Microsoft Quantum Development Kit for Visual Studio Code" extension.
+
+1. Install the [Microsoft Quantum Development Kit for Visual Studio Code .NET 6 Preview](https://marketplace.visualstudio.com/items?itemName=quantum.quantum-devkit-vscode-net6) extension.
+
+1. Restart Visual Studio Code.
 
 ### Download the Quantum Katas <a name="download" /> ###
 
@@ -171,8 +187,8 @@ $ git clone https://github.com/Microsoft/QuantumKatas.git
 ```
 
 > [!TIP]
-> Both Visual Studio 2019 and Visual Studio Code make it easy to clone repositories from within your development environment.
-> For details, see the [Visual Studio 2019](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
+> Both Visual Studio 2022 and Visual Studio Code make it easy to clone repositories from within your development environment.
+> For details, see the [Visual Studio](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
 If you don't have Git installed, download the katas from https://github.com/Microsoft/QuantumKatas/archive/main.zip.
 
@@ -212,7 +228,7 @@ QuantumKatas/
   BasicGates/
     README.md                  # Instructions specific to this kata.
     .vscode/                   # Metadata used by Visual Studio Code.
-    BasicGates.sln             # Visual Studio 2019 solution file.
+    BasicGates.sln             # Visual Studio solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
     BasicGates.ipynb           # Jupyter Notebook front-end for this kata.
 
@@ -222,7 +238,7 @@ QuantumKatas/
     ReferenceImplementation.qs # Q# source code containing solutions to the tasks.
 ```
 
-To open the **BasicGates** kata in Visual Studio 2019, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
+To open the **BasicGates** kata in Visual Studio 2022, open the **QuantumKatas/BasicGates/BasicGates.sln** solution file.
 
 To open the **BasicGates** kata in Visual Studio Code, open the **QuantumKatas/BasicGates/** folder.
 Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the **Command Palette**. Type **Open Folder** on Windows 10 or Linux or **Open** on macOS.
@@ -242,7 +258,7 @@ Once you have a kata open, it's time to run the tests using the following instru
 Initially all tests will fail. Don't panic!
 Open **Tasks.qs** and start filling in the code to complete the tasks. Each task is covered by a unit test. Once you fill in the correct code for a task, rebuild the project and re-run the tests, and the corresponding unit test will pass.
 
-#### Visual Studio 2019
+#### Visual Studio 2022
 
 1. Build the solution.
 2. From the main menu, open **Test Explorer** (**Test** > **Windows**) and select **Run All** to run all unit tests at once.
