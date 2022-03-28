@@ -7,3 +7,5 @@ pyzmq==19.0.2
 qsharp
 setuptools
 wheel
+pygments>=2.7.4
+ipython>=5.11.0
