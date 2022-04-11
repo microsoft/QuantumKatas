@@ -158,25 +158,11 @@ If you don't already have the Quantum Development Kit installed, see the [instal
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
-Follow the steps in the [QDK install guide](https://docs.microsoft.com/azure/quantum/install-command-line-qdk) for Visual Studio, 
- Visual Studio Code or other editors.
+Follow the steps in the [QDK install guide](https://docs.microsoft.com/azure/quantum/install-command-line-qdk) for Visual Studio, Visual Studio Code or other editors.
 
 Running the Q# projects of the Katas locally requires downloading and installing the [.NET 6.0 SDK](https://dotnet.microsoft.com/download). You can do this even if you have another .NET version installed, since multiple versions are supported side-by-side.
 
-### Special considerations for .NET 6.0 based Katas ###
-
-The Quantum Development Team is in the process of adding support for .NET 6.0 across all components including the Quantum Katas. If you're using the source currently available, then your projects are using the release `0.23.198514-beta` of the QDK.
-
 Since Visual Studio 2019 does not support .NET 6.0 projects, you will need to upgrade to Visual Studio 2022 and install the corresponding [Microsoft Quantum Development Kit](https://marketplace.visualstudio.com/items?itemName=quantum.DevKit64) extension.
-
-**Important:**
-If you will use Visual Studio Code, the latest version of the extension (`0.23.195983`) does not support .NET 6 binaries. We will add support for this in the next release, but if you intend to try this now, you'll need to follow these steps:
-
-1. Uninstall the "Microsoft Quantum Development Kit for Visual Studio Code" extension.
-
-1. Install the [Microsoft Quantum Development Kit for Visual Studio Code .NET 6 Preview](https://marketplace.visualstudio.com/items?itemName=quantum.quantum-devkit-vscode-net6) extension.
-
-1. Restart Visual Studio Code.
 
 ### Download the Quantum Katas <a name="download" /> ###
 
