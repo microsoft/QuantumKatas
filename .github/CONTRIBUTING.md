@@ -13,6 +13,7 @@ We're so glad you asked!
    * [Contributing new katas](#contributing-new-katas)
    * [Style guide](#style-guide)
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
+   * [Updating the Quick Reference](#updating-the-quick-reference)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
       * [Validating changes to `%kata` and `%check_kata` magics on local machine](#validating-changes-to-kata-and-check_kata-magics-on-local-machine)
@@ -110,10 +111,19 @@ The Quantum Development Kit is updated monthly (you can find the latest releases
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/Update-QDKVersion.ps1 0.23.195983 
+   PS> ./scripts/Update-QDKVersion.ps1 0.24.201332 
 ```
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
+
+### Updating the Quick Reference
+
+You can update the Quick Reference by making your changes in the [`.tex` file](../quickref/qsharp-quick-reference.tex). 
+After you do your changes, compile the `.tex` file into a `.pdf` file and include both files in the pull request. 
+(The changes to the `.pdf` file will not be shown in the pull request, so be careful not to introduce any changes not included in the `.tex` source!). 
+To complile your `.tex` file into a `.pdf` you will need a compiler, such as [MiKTeX](https://miktex.org/download). 
+MiKTeX includes a simple IDE that gives you a user interface to compile the `.tex` file. 
+MiKTeX will also pull in all the required packages to compile the `.pdf` file.
 
 ### Validating your changes
 

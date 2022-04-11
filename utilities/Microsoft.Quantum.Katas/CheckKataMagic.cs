@@ -8,6 +8,7 @@ using Microsoft.Jupyter.Core;
 using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
+using System.Threading.Tasks;
 
 namespace Microsoft.Quantum.Katas
 {
@@ -52,8 +53,8 @@ namespace Microsoft.Quantum.Katas
         protected ICompilerService Compiler { get; }
 
         ///<inheritdoc/>
-        protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel) =>
-               Compiler.IdentifyElements(code);
+        protected override Task<IEnumerable<QsNamespaceElement>> GetDeclaredCallables(string code, IChannel channel) =>
+               Task.FromResult(Compiler.IdentifyElements(code));
 
         /// <summary>
         /// Executes the given test by replacing the userAnswer with its reference implementation.

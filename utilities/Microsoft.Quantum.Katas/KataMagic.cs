@@ -12,6 +12,7 @@ using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Simulators;
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
+using System.Threading.Tasks;
 
 namespace Microsoft.Quantum.Katas
 {
@@ -63,9 +64,9 @@ namespace Microsoft.Quantum.Katas
         protected IConfigurationSource ConfigurationSource { get; }
 
         ///<inheritdoc/>
-        protected override IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel)
+        protected override async Task<IEnumerable<QsNamespaceElement>> GetDeclaredCallables(string code, IChannel channel)
         {
-            var result = Snippets.Compile(code);
+            var result = await Snippets.Compile(code);
 
             foreach (var m in result.warnings) { channel.Stdout(m); }
 

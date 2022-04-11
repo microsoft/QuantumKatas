@@ -91,11 +91,9 @@ namespace Quantum.Kata.SimonsAlgorithm {
             
         // measure all qubits of the input register;
         // the result of each measurement is converted to an Int
-        mutable j = new Int[N];
+        mutable j = [];
         for i in 0 .. N - 1 {
-            if (M(x[i]) == One) {
-                set j w/= i <- 1;
-            }
+            set j += [M(x[i]) == One ? 1 | 0];
         }
             
         // since y has not been measured, we reset y qubits

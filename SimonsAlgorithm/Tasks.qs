@@ -123,7 +123,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         
         // Declare an Int array in which the result will be stored;
         // the variable has to be mutable to allow updating it.
-        mutable b = new Int[N];
+        mutable b = [];
         
         // ...
 

@@ -78,7 +78,7 @@ namespace Microsoft.Quantum.Katas
                 return ExecuteStatus.Error.ToExecutionResult();
             }
 
-            var userAnswer = Compile(code, channel);
+            var userAnswer = await Compile(code, channel);
             if (userAnswer == null) { return ExecuteStatus.Error.ToExecutionResult(); }
 
             return Simulate(test, userAnswer, channel)
@@ -97,11 +97,11 @@ namespace Microsoft.Quantum.Katas
         /// Checks there is only one operation defined in the code,
         /// and returns its corresponding userAnswer
         /// </summary>
-        protected virtual string? Compile(string code, IChannel channel)
+        protected virtual async Task<string?> Compile(string code, IChannel channel)
         {
             try
             {
-                var result = GetDeclaredCallables(code, channel);
+                var result = await GetDeclaredCallables(code, channel);
 
                 // Gets the names of all the operations found for this snippet
                 var opsNames =
@@ -135,7 +135,7 @@ namespace Microsoft.Quantum.Katas
         /// Compiles or semi-compiles the given code depending upon the situation
         /// and returns the corresponding QsNamespaceElement Array
         /// </summary>
-        protected abstract IEnumerable<QsNamespaceElement> GetDeclaredCallables(string code, IChannel channel);
+        protected abstract Task<IEnumerable<QsNamespaceElement>> GetDeclaredCallables(string code, IChannel channel);
 
         /// <summary>
         /// Executes the given kata using the <c>relevantAnswer</c> as the actual answer.
