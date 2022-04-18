@@ -4,6 +4,10 @@ on:
   issues:
     types: [closed, edited, deleted, reopened, assigned, unassigned, labeled, unlabeled]
   issue_comment:
+  
+concurrency: 
+  group: ${{ github.event.issue.number }}
+  cancel-in-progress: true
 
 jobs:
   sync-issues:
