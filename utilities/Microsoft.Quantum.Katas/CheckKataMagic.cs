@@ -9,6 +9,7 @@ using Microsoft.Quantum.IQSharp;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.QsCompiler.SyntaxTree;
 using System.Threading.Tasks;
+using Microsoft.Quantum.Simulation.Core;
 
 namespace Microsoft.Quantum.Katas
 {
@@ -95,6 +96,8 @@ namespace Microsoft.Quantum.Katas
                 {
                     testSim.DisableLogToConsole();
                     testSim.OnDisplayableDiagnostic += channel.Display;
+
+                    testSim.Register(skeletonAnswer.RoslynType, referenceAnswer.RoslynType, typeof(ICallable));
 
                     var hasWarnings = false;
                     testSim.OnLog += (msg) =>

@@ -141,7 +141,7 @@ namespace Microsoft.Quantum.Katas
         /// It does this by finding another operation with the same name as the `userAnswer` but in the 
         /// test's namespace
         /// </summary>
-        public virtual OperationInfo FindSkeletonAnswer(OperationInfo test, string userAnswer)
+        public virtual OperationInfo? FindSkeletonAnswer(OperationInfo test, string userAnswer)
         {
             var userAnswerInfo = Resolver.Resolve(userAnswer);
             var skeletonAnswer = Resolver.Resolve($"{test.Header.QualifiedName.Namespace}.{userAnswerInfo.FullName}");
