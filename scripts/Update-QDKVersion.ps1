@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.24.210930
+        PS> ./Update-QDKVersion.ps1 -Version test-123
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
@@ -48,7 +48,7 @@ function FindPatternAndReplaceQDKVersion() {
     )
 
     (Get-Content -Path $targetPath) | ForEach-Object {
-        $isQuantumPackage = $_ -match $stringToReplace
+        $isQuantumPackage = $_ -match $patternToSearch
         if ($isQuantumPackage) {
             $_ -replace $Matches.oldVersion, $Version
         } else {
@@ -59,20 +59,20 @@ function FindPatternAndReplaceQDKVersion() {
 
 $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
-findAndReplace -patternToSearch$patternToSearch$patternToSearch $dockerString -targetPath $dockerPath
+FindPatternAndReplaceQDKVersion -patternToSearch $dockerString -targetPath $dockerPath
 
 $ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
-findAndReplace -patternToSearch$patternToSearch$patternToSearch $ps1String -targetPath $ps1Path
+FindPatternAndReplaceQDKVersion -patternToSearch $ps1String -targetPath $ps1Path
 
 $updateps1String = "PS> ./Update-QDKVersion.ps1 -Version $versionRegex"
 $updateps1Path = Join-Path $katasRoot "scripts\Update-QDKVersion.ps1"
-findAndReplace -patternToSearch$patternToSearch$patternToSearch $updateps1String -targetPath $updateps1Path
+FindPatternAndReplaceQDKVersion -patternToSearch $updateps1String -targetPath $updateps1Path
 
 $contributingString = "PS> ./scripts/Update-QDKVersion.ps1 $versionRegex"
 $contributingPath = Join-Path $katasRoot ".github\CONTRIBUTING.md"
-findAndReplace -patternToSearch$patternToSearch$patternToSearch $contributingString -targetPath $contributingPath
+FindPatternAndReplaceQDKVersion -patternToSearch $contributingString -targetPath $contributingPath
 
 $jsonString = "`"Microsoft.Quantum.Sdk`": `"$versionRegex`""
 $globalJsonPath = Join-Path $katasRoot "global.json"
-findAndReplace -patternToSearch$patternToSearch$patternToSearch $jsonString -targetPath $globalJsonPath
+FindPatternAndReplaceQDKVersion -patternToSearch $jsonString -targetPath $globalJsonPath
