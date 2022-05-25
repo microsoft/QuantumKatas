@@ -43,7 +43,7 @@ $csFiles | ForEach-Object {
 
 function findAndReplace() {
     param (
-        [string]$stringToReplace,
+        [string]$patternToSearch,
         [string]$targetPath
     )
 
@@ -59,20 +59,20 @@ function findAndReplace() {
 
 $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
-findAndReplace -stringToReplace $dockerString -targetPath $dockerPath
+findAndReplace -patternToSearch$patternToSearch$patternToSearch $dockerString -targetPath $dockerPath
 
 $ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
-findAndReplace -stringToReplace $ps1String -targetPath $ps1Path
+findAndReplace -patternToSearch$patternToSearch$patternToSearch $ps1String -targetPath $ps1Path
 
 $updateps1String = "PS> ./Update-QDKVersion.ps1 -Version $versionRegex"
 $updateps1Path = Join-Path $katasRoot "scripts\Update-QDKVersion.ps1"
-findAndReplace -stringToReplace $updateps1String -targetPath $updateps1Path
+findAndReplace -patternToSearch$patternToSearch$patternToSearch $updateps1String -targetPath $updateps1Path
 
 $contributingString = "PS> ./scripts/Update-QDKVersion.ps1 $versionRegex"
 $contributingPath = Join-Path $katasRoot ".github\CONTRIBUTING.md"
-findAndReplace -stringToReplace $contributingString -targetPath $contributingPath
+findAndReplace -patternToSearch$patternToSearch$patternToSearch $contributingString -targetPath $contributingPath
 
 $jsonString = "`"Microsoft.Quantum.Sdk`": `"$versionRegex`""
 $globalJsonPath = Join-Path $katasRoot "global.json"
-findAndReplace -stringToReplace $jsonString -targetPath $globalJsonPath
+findAndReplace -patternToSearch$patternToSearch$patternToSearch $jsonString -targetPath $globalJsonPath
