@@ -41,7 +41,7 @@ $csFiles | ForEach-Object {
     } | Set-Content -Encoding UTF8 $_.Path
 }
 
-function findAndReplace() {
+function FindPatternAndReplaceQDKVersion() {
     param (
         [string]$stringToReplace,
         [string]$targetPath
