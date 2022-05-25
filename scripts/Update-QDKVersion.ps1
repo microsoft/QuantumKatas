@@ -48,7 +48,7 @@ function findAndReplace() {
     )
 
     (Get-Content -Path $targetPath) | ForEach-Object {
-        $isQuantumPackage = $_ -match $jsonString
+        $isQuantumPackage = $_ -match $stringToReplace
         if ($isQuantumPackage) {
             $_ -replace $Matches.oldVersion, $Version
         } else {
