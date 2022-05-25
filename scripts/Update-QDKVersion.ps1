@@ -41,14 +41,14 @@ $csFiles | ForEach-Object {
     } | Set-Content -Encoding UTF8 $_.Path
 }
 
-function findAndReplace() {
+function FindPatternAndReplaceQDKVersion() {
     param (
         [string]$patternToSearch,
         [string]$targetPath
     )
 
     (Get-Content -Path $targetPath) | ForEach-Object {
-        $isQuantumPackage = $_ -match $jsonString
+        $isQuantumPackage = $_ -match $stringToReplace
         if ($isQuantumPackage) {
             $_ -replace $Matches.oldVersion, $Version
         } else {
