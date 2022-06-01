@@ -18,7 +18,7 @@ param(
         
     .EXAMPLE
     
-        PS> ./Update-QDKVersion.ps1 -Version 0.24.208024
+        PS> ./Update-QDKVersion.ps1 -Version 0.24.210930
 #>
 
 $katasRoot = Join-Path $PSScriptRoot "\..\"
@@ -41,48 +41,38 @@ $csFiles | ForEach-Object {
     } | Set-Content -Encoding UTF8 $_.Path
 }
 
+function FindPatternAndReplaceQDKVersion() {
+    param (
+        [string]$patternToSearch,
+        [string]$targetPath
+    )
+
+    (Get-Content -Path $targetPath) | ForEach-Object {
+        $isQuantumPackage = $_ -match $patternToSearch
+        if ($isQuantumPackage) {
+            $_ -replace $Matches.oldVersion, $Version
+        } else {
+            $_
+        }
+    } | Set-Content -Path $targetPath
+}
+
 $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
-(Get-Content -Path $dockerPath) | ForEach-Object {
-         $isQuantumPackage = $_ -match $dockerString
-         if ($isQuantumPackage) {
-             $_ -replace $Matches.oldVersion, $Version
-         } else {
-             $_
-         }
-    } | Set-Content -Path $dockerPath
-
+FindPatternAndReplaceQDKVersion -patternToSearch $dockerString -targetPath $dockerPath
 
 $ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
-(Get-Content -Path $ps1Path) | ForEach-Object {
-         $isQuantumPackage = $_ -match $ps1String
-         if ($isQuantumPackage) {
-             $_ -replace $Matches.oldVersion, $Version
-         } else {
-             $_
-         }
-    } | Set-Content -Path $ps1Path
+FindPatternAndReplaceQDKVersion -patternToSearch $ps1String -targetPath $ps1Path
 
 $updateps1String = "PS> ./Update-QDKVersion.ps1 -Version $versionRegex"
 $updateps1Path = Join-Path $katasRoot "scripts\Update-QDKVersion.ps1"
-(Get-Content -Path $updateps1Path) | ForEach-Object {
-         $isQuantumPackage = $_ -match $updateps1String
-         if ($isQuantumPackage) {
-             $_ -replace $Matches.oldVersion, $Version
-         } else {
-             $_
-         }
-    } | Set-Content -Path $updateps1Path
+FindPatternAndReplaceQDKVersion -patternToSearch $updateps1String -targetPath $updateps1Path
 
 $contributingString = "PS> ./scripts/Update-QDKVersion.ps1 $versionRegex"
 $contributingPath = Join-Path $katasRoot ".github\CONTRIBUTING.md"
-(Get-Content -Path $contributingPath) | ForEach-Object {
-         $isQuantumPackage = $_ -match $contributingString
-         if ($isQuantumPackage) {
-             $_ -replace $Matches.oldVersion, $Version
-         } else {
-             $_
-         }
-    } | Set-Content -Path $contributingPath
+FindPatternAndReplaceQDKVersion -patternToSearch $contributingString -targetPath $contributingPath
 
+$jsonString = "`"Microsoft.Quantum.Sdk`": `"$versionRegex`""
+$globalJsonPath = Join-Path $katasRoot "global.json"
+FindPatternAndReplaceQDKVersion -patternToSearch $jsonString -targetPath $globalJsonPath
