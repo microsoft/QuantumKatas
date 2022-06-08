@@ -42,20 +42,20 @@ namespace Quantum.Kata.KeyDistributionE91 {
     operation RandomBasesArray (basesIndices: Int[], N: Int) : Int[] {
         // ...
 
-        return new Int[N];
+        return [];
     }
 
     // Task 2.3 Measure Qubit Arrays
     operation MeasureQubitArray (qs: Qubit[], basesIndices: Int[]) : Result[] {
         // ...
 
-        return new Result[0];
+        return [];
 
     }
 
     // Task 2.4 Generate the shared key
     function GenerateSharedKey (basesAlice: Int[], basesBob: Int[], results: Result[]) : Bool[] {
-        let key = new Bool[0];
+        let key = [];
         // ...
 
         return key;

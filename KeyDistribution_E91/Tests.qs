@@ -105,9 +105,9 @@ namespace Quantum.Kata.KeyDistributionE91 {
     operation T24_GenerateSharedKey() : Unit {
         let N = 10;
 
-        mutable basesAlice = new Int[0];
-        mutable basesBob = new Int[0];
-        mutable results = new Result[0];
+        mutable basesAlice = [];
+        mutable basesBob = [];
+        mutable results = [];
         
         for _ in 1..N {
             set basesAlice += [DrawRandomInt(1,3)];

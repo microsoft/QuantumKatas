@@ -55,7 +55,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
     // Task 2.2. Random Bases Array
     operation RandomBasesArray_Reference (basesIndices: Int[], N: Int) : Int[] {
         // ...
-        mutable bases = new Int[0];
+        mutable bases = [];
 
         for _ in 1..N {
             let randomIndex = DrawRandomInt(0, Length(basesIndices) - 1);
@@ -67,7 +67,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
     // Task 2.3 Measure Qubit Arrays
     operation MeasureQubitArray_Reference (qs: Qubit[], basesIndices: Int[]) : Result[] {
-        mutable results = new Result[0];
+        mutable results = [];
 
         for (q, b) in Zipped(qs, basesIndices) {
             let outcome = RotateAndMeasure_Reference(q,b);
@@ -79,7 +79,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
     // Task 2.4 Generate the shared key
     function GenerateSharedKey_Reference (basesAlice: Int[], basesBob: Int[], results: Result[]) : Bool[] {
-        mutable key = new Bool[0];
+        mutable key = [];
 
         for (a, b, r) in Zipped3(basesAlice, basesBob, results) {
             if a == b {
@@ -122,7 +122,7 @@ namespace Quantum.Kata.KeyDistributionE91 {
 
     // Task 3.1 CHSH Correlation Value
     function CorrelationValue_Reference (basesAlice: Int[], basesBob: Int[], resultsAlice: Result[], resultsBob: Result[]) : Double {
-        mutable expectationValues = new Double[0];
+        mutable expectationValues = [];
         
         for (i, j) in [(1,2), (1, 4), (3, 2), (3, 4)] {
             mutable sum = 0;
