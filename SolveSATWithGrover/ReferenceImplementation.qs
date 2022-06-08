@@ -135,14 +135,13 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // ------------------------------------------------------
     function GetClauseQubits (queryRegister : Qubit[], clause : (Int, Bool)[]) : (Qubit[], Bool[]) {
-        mutable clauseQubits = new Qubit[Length(clause)];
-        mutable flip = new Bool[Length(clause)];
-        for varIndex in 0 .. Length(clause) - 1 {
-            let (index, isTrue) = clause[varIndex];
+        mutable clauseQubits = [];
+        mutable flip = [];
+        for (index, isTrue) in clause {
             // Add the variable used in the clause to the list of variables which we'll need to call the OR oracle
-            set clauseQubits w/= varIndex <- queryRegister[index];
+            set clauseQubits += [queryRegister[index]];
             // If the negation of the variable is present in the formula, mark the qubit as needing a flip
-            set flip w/= varIndex <- not isTrue;
+            set flip += [not isTrue];
         }
     
         return (clauseQubits, flip);
@@ -206,7 +205,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     // "Exactly one |1⟩" oracle for an arbitrary number of qubits in query register
     operation Oracle_Exactly1One_Reference (queryRegister : Qubit[], target : Qubit) : Unit is Adj {
-        mutable bits = new Bool[Length(queryRegister)];
+        mutable bits = [false, size = Length(queryRegister)];
         for i in 0..Length(queryRegister) - 1 {
             // Iterate over all possible bit strings which have exactly one bit set to 1
             // and perform a controlled X with each of these bit strings as control
@@ -295,7 +294,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
         // This solution tries numbers of iterations that are powers of 2;
         // this is not the only valid solution, since a lot of sequences will eventually yield the answer.
-        mutable answer = new Bool[N];
+        mutable answer = [false, size = N];
         use (register, output) = (Qubit[N], Qubit());
         mutable correct = false;
         mutable iter = 1;

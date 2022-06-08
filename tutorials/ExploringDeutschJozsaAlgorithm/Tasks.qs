@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////
@@ -33,20 +33,32 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
 
     //////////////////////////////////////////////////////////////////
-    // Part II. Quantum oracles
+    // Part II. Single-bit problem
     //////////////////////////////////////////////////////////////////
     
     // Exercise 3.
+    operation PhaseOracle_OneMinusX (x : Qubit) : Unit is Adj + Ctl {
+        // ...
+    }
+
+
+    // Exercise 4.
+    operation DeutschAlgorithm (oracle : (Qubit => Unit)) : Bool {
+        return false;
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // Part III. Multi-bit problem
+    //////////////////////////////////////////////////////////////////
+    
+    // Exercise 5.
     operation PhaseOracle_MostSignificantBit (x : Qubit[]) : Unit {
         // ...
     }
 
 
-    //////////////////////////////////////////////////////////////////
-    // Part III. Quantum algorithm
-    //////////////////////////////////////////////////////////////////
-    
-    // Exercise 4.
+    // Exercise 6.
     operation DeutschJozsaAlgorithm (N : Int, oracle : (Qubit[] => Unit)) : Bool {
         // ...
         return false;

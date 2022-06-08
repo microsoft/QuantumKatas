@@ -259,7 +259,7 @@ namespace Quantum.Kata.Superposition {
         // random tests
         for N in 3 .. 10 {
             // generate 4 distinct numbers corresponding to the bit strings
-            mutable numbers = new Int[4];
+            mutable numbers = [0, size = 4];
 
             repeat {
                 mutable ok = true;

@@ -252,7 +252,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // Declare an Int array in which the result will be stored;
         // the variable has to be mutable to allow updating it.
-        mutable r = new Int[N];
+        mutable r = [0, size = N];
         
         // ...
 
@@ -299,7 +299,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         
         // Declare an Int array in which the result will be stored;
         // the variable has to be mutable to allow updating it.
-        mutable r = new Int[N];
+        mutable r = [0, size = N];
         
         // ...
         return r;
