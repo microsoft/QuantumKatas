@@ -4,18 +4,18 @@ steps:
 # Pre-reqs
 ##
 - task: UseDotNet@2
-  displayName: 'Use .NET Core SDK 3.1.201'
+  displayName: 'Use .NET Core SDK 6.0'
   inputs:
     packageType: sdk
-    version: '3.1.201'
+    version: '6.0.x'
 
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.6'
+    versionSpec: '3.7'
     architecture: 'x64'
-  displayName: 'Use Python 3.6'
+  displayName: 'Use Python 3.7'
 
-- script: pip install setuptools wheel pytest jupyter numpy matplotlib qsharp pyzmq==19.0.2
+- script: pip install -r requirements.txt
   displayName: 'Install Python tools'
 
 - powershell: ./install-iqsharp.ps1

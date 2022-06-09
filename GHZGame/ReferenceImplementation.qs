@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ namespace Quantum.Kata.GHZGame {
         use qs = Qubit[3];
         CreateEntangledTriple_Reference(qs);
             
-        mutable abc = new Bool[3];
+        mutable abc = [false, size = 3];
         for idx in 0 .. 2 {
             set abc w/= idx <- strategies[idx](qs[idx]);
         }

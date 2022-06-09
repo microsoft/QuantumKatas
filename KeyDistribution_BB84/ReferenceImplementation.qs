@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ namespace Quantum.Kata.KeyDistribution {
 
     // Task 2.1. Generate random array
     operation RandomArray_Reference (N : Int) : Bool[] {
-        mutable array = new Bool[N];
+        mutable array = [false, size = N];
 
         for i in 0 .. N - 1 {
             set array w/= i <- DrawRandomBool(0.5);
@@ -81,7 +81,7 @@ namespace Quantum.Kata.KeyDistribution {
     function GenerateSharedKey_Reference (basesAlice : Bool[], basesBob : Bool[], measurementsBob : Bool[]) : Bool[] {
         // If Alice and Bob used the same basis, they will have the same value of the bit.
         // The shared key consists of those bits.
-        mutable key = new Bool[0];
+        mutable key = [];
         for (a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob) {
             if (a == b) {
                 set key += [bit];

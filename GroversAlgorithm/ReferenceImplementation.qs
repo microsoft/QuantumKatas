@@ -89,7 +89,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Task 2.2. Conditional phase flip
     operation ConditionalPhaseFlip_Reference (register : Qubit[]) : Unit is Adj {
         // Define a marking oracle which detects an all zero state
-        let allZerosOracle = Oracle_ArbitraryPattern_Reference(_, _, new Bool[Length(register)]);
+        let allZerosOracle = Oracle_ArbitraryPattern_Reference(_, _, [false, size = Length(register)]);
             
         // Convert it into a phase-flip oracle and apply it
         let flipOracle = OracleConverter_Reference(allZerosOracle);

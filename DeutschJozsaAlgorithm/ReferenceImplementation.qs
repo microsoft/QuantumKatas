@@ -268,7 +268,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
         // measure all qubits of the input register;
         // the result of each measurement is converted to an Int
-        mutable r = new Int[N];
+        mutable r = [0, size = N];
         for i in 0 .. N - 1 {
             if (M(x[i]) != Zero) {
                 set r w/= i <- 1;
@@ -311,7 +311,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
         // Declare an Int array in which the result will be stored;
         // the variable has to be mutable to allow updating it.
-        mutable r = new Int[N];
+        mutable r = [0, size = N];
 
         // measure the output register
         let m = M(y);

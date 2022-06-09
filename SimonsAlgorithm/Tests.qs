@@ -75,7 +75,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
     operation Q13_Oracle_OperatorOutput () : Unit {
         // cross-tests
         // the mask for all 1's should behave the same as Oracle_CountBits
-        mutable A = ConstantArray(11, 1);
+        mutable A = [1, size = 11];
         let L = Length(A);
         
         for i in 2 .. L {
@@ -85,7 +85,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         set A = [1, 1, 0, 0];
         AssertTwoOraclesWithIntArrAreEqual(A, Oracle_OperatorOutput, Oracle_OperatorOutput_Reference);
 
-        set A = ConstantArray(5, 0);
+        set A = [0, size = 5];
         AssertTwoOraclesWithIntArrAreEqual(A, Oracle_OperatorOutput, Oracle_OperatorOutput_Reference);
 
         set A = [1, 0, 1, 1, 1];
@@ -137,7 +137,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         AssertTwoOraclesWithDifferentOutputsAreEqual(5, Oracle_MultidimensionalOperatorOutput(_, _, [B]), Oracle_OperatorOutput_Reference(_, _, B));
         
         // cross-test for bit counting oracle
-        set B = ConstantArray(5, 1);
+        set B = [1, size = 5];
         AssertTwoOraclesWithDifferentOutputsAreEqual(5, Oracle_MultidimensionalOperatorOutput(_, _, [B]), Oracle_CountBits_Reference);
     }
     

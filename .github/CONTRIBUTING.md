@@ -13,6 +13,7 @@ We're so glad you asked!
    * [Contributing new katas](#contributing-new-katas)
    * [Style guide](#style-guide)
    * [Updating the Katas to the new QDK version](#updating-the-katas-to-the-new-qdk-version)
+   * [Updating the Quick Reference](#updating-the-quick-reference)
    * [Validating your changes](#validating-your-changes)
       * [Excluding individual tasks from validation](#excluding-individual-tasks-from-validation)
       * [Validating changes to `%kata` and `%check_kata` magics on local machine](#validating-changes-to-kata-and-check_kata-magics-on-local-machine)
@@ -110,10 +111,19 @@ The Quantum Development Kit is updated monthly (you can find the latest releases
 Updating the Katas to a different QDK version can be done using PowerShell script [Update-QDKVersion](https://github.com/microsoft/QuantumKatas/blob/main/scripts/Update-QDKVersion.ps1). It takes one parameter, the version to be used, so the command looks like this:
 
 ```powershell
-   PS> ./scripts/Update-QDKVersion.ps1 0.18.2109162713 
+   PS> ./scripts/Update-QDKVersion.ps1 0.24.210930 
 ```
 
 After running this script you should validate that the update didn't introduce any breaking changes; see the next section for how to do this.
+
+### Updating the Quick Reference
+
+You can update the Quick Reference by making your changes in the [`.tex` file](../quickref/qsharp-quick-reference.tex). 
+After you do your changes, compile the `.tex` file into a `.pdf` file and include both files in the pull request. 
+(The changes to the `.pdf` file will not be shown in the pull request, so be careful not to introduce any changes not included in the `.tex` source!). 
+To complile your `.tex` file into a `.pdf` you will need a compiler, such as [MiKTeX](https://miktex.org/download). 
+MiKTeX includes a simple IDE that gives you a user interface to compile the `.tex` file. 
+MiKTeX will also pull in all the required packages to compile the `.pdf` file.
 
 ### Validating your changes
 
@@ -140,7 +150,7 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
 
 2. **Running on Binder**  
    The Katas can be run online on [Binder](https://mybinder.org); when you make a potentially breaking change (such as an update to the new QDK version or modifying any package dependencies), you need to make sure that this still works.  
-   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?filepath=index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
+   You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
 
 3. **Continuous integration**  
    When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.
@@ -152,6 +162,7 @@ This can happen for several reasons:
  - Some tasks require implementing several code cells at once before running the test, so the first of the cells implemented is guaranteed to fail the associated test (`multicell_solution`).
  - For some tasks the correct solution is randomized and fails (`randomized_solution`) or times out (`timeout`) with relatively high probability.
  - Some code cells contain deliberately invalid code (`invalid_code`) that the learner is supposed to fix.
+ - Some code cells are Azure Quantum demos (`azure_quantum`), executable only with the right Azure Quantum connection information.
 
 > Currently all tags are excluded from validation in the same way: the corresponding cells are not executed when the notebook is validated.
 > The different tags are introduced as a form of documenting the reasons for excluding the tasks.

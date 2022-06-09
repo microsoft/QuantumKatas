@@ -111,7 +111,7 @@ namespace Quantum.Kata.KeyDistribution {
     @Test("QuantumSimulator")
     operation T25_CheckKeysMatch () : Unit {
         // Hard-coded test to validate that the solution checks the right relation with error rate
-        mutable key1 = ConstantArray(10, false);
+        mutable key1 = [false, size = 10];
         mutable key2 = key1 w/ 3 <- true;
         mutable errorRate = 15;
         mutable result = CheckKeysMatch(key1, key2, errorRate);

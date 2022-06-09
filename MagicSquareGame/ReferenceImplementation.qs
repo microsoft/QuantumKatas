@@ -133,24 +133,24 @@ namespace Quantum.Kata.MagicSquareGame {
     // are equivalent. Alice and Bob can choose to use either method without affecting their
     // strategy.
     operation AliceQuantum_Reference(rowIndex : Int, qs : Qubit[]) : Int[] {
-        mutable cells = new Int[3];
+        mutable cells = [];
         for column in 0..2 {
             // Alice uses joint measurement to measure the qubits in the observable's Pauli bases.
             let obs = GetMagicObservables_Reference(rowIndex, column);
             let result = MeasureObservable_Reference(obs, qs);
-            set cells w/= column <- IsResultZero(result) ? 1 | -1;
+            set cells += [IsResultZero(result) ? 1 | -1];
         }
         return cells;
     }
 
     operation BobQuantum_Reference(columnIndex : Int, qs : Qubit[]) : Int[] {
-        mutable cells = new Int[3];
+        mutable cells = [];
         for row in 0..2 {
             // Bob converts the observable into an operator before measuring it.
             let obs = GetMagicObservables_Reference(row, columnIndex);
             let op = ApplyMagicObservables_Reference(obs, _);
             let result = MeasureOperator_Reference(op, qs);
-            set cells w/= row <- IsResultZero(result) ? 1 | -1;
+            set cells += [IsResultZero(result) ? 1 | -1];
         }
         return cells;
     }
@@ -158,12 +158,10 @@ namespace Quantum.Kata.MagicSquareGame {
 
     // Task 2.7. Play the magic square game using the quantum strategy
     operation PlayQuantumMagicSquare_Reference (askAlice : (Qubit[] => Int[]), askBob : (Qubit[] => Int[])) : (Int[], Int[]) {
-        mutable alice = new Int[3];
-        mutable bob = new Int[3];
         use qs = Qubit[4];
         CreateEntangledState_Reference(qs);
-        set alice = askAlice(qs[0..1]);
-        set bob = askBob(qs[2..3]);
+        let alice = askAlice(qs[0..1]);
+        let bob = askBob(qs[2..3]);
         ResetAll(qs);
         return (alice, bob);
     }

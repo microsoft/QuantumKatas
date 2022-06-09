@@ -24,7 +24,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     operation DistinguishTwoStates (statePrep : ((Qubit, Int) => Unit is Adj), testImpl : (Qubit => Bool), stateName : String[], checkFinalState : Bool) : Unit {
         let nTotal = 100;
         let nStates = 2;
-        mutable misclassifications = new Int[nStates];
+        mutable misclassifications = [0, size = nStates];
         
         use q = Qubit();
         for i in 1 .. nTotal {

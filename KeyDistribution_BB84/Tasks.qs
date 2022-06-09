@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 namespace Quantum.Kata.KeyDistribution {
@@ -97,7 +97,7 @@ namespace Quantum.Kata.KeyDistribution {
     //       and true indicates |+⟩/|-⟩ basis) to use when encoding/measuring the bits.
     operation RandomArray (N : Int) : Bool[] {
         // ...
-        return new Bool[N];
+        return [false, size = N];
     }
 
 
@@ -143,7 +143,7 @@ namespace Quantum.Kata.KeyDistribution {
         Fact(Length(qs) == Length(bases), "Input arrays should have the same length");
         
         // ...
-        return new Bool[0];
+        return [];
     }
 
 
@@ -170,7 +170,7 @@ namespace Quantum.Kata.KeyDistribution {
         Fact(Length(basesAlice) == Length(measurementsBob), "Input arrays should have the same length");
 
         // ...
-        return new Bool[0];
+        return [];
     }
 
 

@@ -1,7 +1,7 @@
 # We use the iqsharp-base image, as that includes
 # the .NET Core SDK, IQ#, and Jupyter Notebook already
 # installed for us.
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.18.2109162713
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.24.210930
 
 # Add metadata indicating that this image is used for the katas.
 ENV IQSHARP_HOSTING_ENV=KATAS_DOCKERFILE
@@ -24,7 +24,11 @@ RUN pip install -I --no-cache-dir \
 # From now on, just run things as the jovyan user
 USER ${USER}
 
-RUN cd ${HOME} && \
+RUN cd ${HOME}/ && \
+# Install packages needed to submit jobs to hardware separately, since they are not part of any project
+    dotnet restore ./tutorials/ExploringDeutschJozsaAlgorithm/AQ/ProviderDependencies.csproj
+
+RUN cd ${HOME}/ && \
 # `dotnet restore` for each solution to ensure NuGet cache is fully populated
     for solution in $(find . -type f -name "*.sln"); do dotnet restore "$solution"; done && \
 # Pre-exec notebooks to improve first-use start time
@@ -52,11 +56,12 @@ RUN cd ${HOME} && \
     # Exclude Unitary patterns, since it times out in Binder prebuild
     #./scripts/prebuild-kata.sh UnitaryPatterns && \
     ./scripts/prebuild-kata.sh tutorials/ComplexArithmetic ComplexArithmetic.ipynb && \
-    ./scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/ExploringDeutschJozsaAlgorithm DeutschJozsaAlgorithmTutorial_P1.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/ExploringGroversAlgorithm ExploringGroversAlgorithmTutorial.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/LinearAlgebra LinearAlgebra.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitGates MultiQubitGates.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/MultiQubitSystems MultiQubitSystems.ipynb && \
+    ./scripts/prebuild-kata.sh tutorials/MultiQubitSystemMeasurements MultiQubitSystemMeasurements.ipynb && \
     #./scripts/prebuild-kata.sh tutorials/Oracles Oracles.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/Qubit Qubit.ipynb && \
     ./scripts/prebuild-kata.sh tutorials/RandomNumberGeneration RandomNumberGenerationTutorial.ipynb && \
