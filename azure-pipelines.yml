@@ -70,7 +70,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 27'
+    - powershell: './validate-notebooks.ps1 -startindex 0 -endindex 35'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
@@ -89,7 +89,7 @@ jobs:
     steps:
     - template: scripts/steps-init.yml
 
-    - powershell: './validate-notebooks.ps1 -startindex 28'
+    - powershell: './validate-notebooks.ps1 -startindex 36'
       displayName: "Validating notebooks"
       workingDirectory: $(System.DefaultWorkingDirectory)/scripts
 
