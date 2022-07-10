@@ -155,6 +155,7 @@ If you don't already have the Quantum Development Kit installed, see the [instal
    * "Complex arithmetic" and "Linear algebra" require the [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
    * "Exploring Grover's search algorithm" requires the [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
    * "Quantum classification" requires [`matplotlib`](https://matplotlib.org/3.1.1/users/installing.html) and [`numpy`](https://numpy.org/install/) packages.
+  > Note: Refer to [Updating IQ# kernel](https://docs.microsoft.com/en-us/azure/quantum/install-update-qdk?tabs=tabid-conda#update-the-iq-jupyter-kernel) for updating IQ# kernel to a new version with monthly QDK releases.
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
