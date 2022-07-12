@@ -150,15 +150,16 @@ If you don't already have the Quantum Development Kit installed, see the [instal
 
 **If you want to run the katas and tutorials locally as Jupyter Notebooks**:
 1. Follow the steps in the [QDK install guide for Python](https://docs.microsoft.com/azure/quantum/install-python-qdk) 
-  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/azure/quantum/install-jupyter-qdk).
+  and the [QDK install guide for Jupyter Notebooks](https://docs.microsoft.com/en-us/azure/quantum/install-command-line-qdk#q-and-jupyter-notebooks).
 2. Several tutorials require installing additional Python packages:
    * "Complex arithmetic" and "Linear algebra" require the [`pytest` package](https://docs.pytest.org/en/latest/getting-started.html).
    * "Exploring Grover's search algorithm" requires the [`matplotlib` package](https://matplotlib.org/3.1.1/users/installing.html).
    * "Quantum classification" requires [`matplotlib`](https://matplotlib.org/3.1.1/users/installing.html) and [`numpy`](https://numpy.org/install/) packages.
+> Refer to [Updating IQ# kernel](https://docs.microsoft.com/azure/quantum/install-update-qdk#update-the-iq-jupyter-kernel) for updating IQ# kernel to a new version with monthly QDK releases.
 
 **If you want to run the katas and tutorials locally as Q# projects**:
 
-Follow the steps in the [QDK install guide](https://docs.microsoft.com/azure/quantum/install-command-line-qdk) for Visual Studio, Visual Studio Code or other editors.
+Follow the steps in the [QDK install guide](https://docs.microsoft.com/en-us/azure/quantum/install-command-line-qdk#q-and-other-ides) for Visual Studio, Visual Studio Code or other editors.
 
 Running the Q# projects of the Katas locally requires downloading and installing the [.NET 6.0 SDK](https://dotnet.microsoft.com/download). You can do this even if you have another .NET version installed, since multiple versions are supported side-by-side.
 
