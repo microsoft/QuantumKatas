@@ -31,8 +31,9 @@ namespace Quantum.Kata.SimonsAlgorithm {
     //      2) a qubit in an arbitrary state |y⟩
     // Goal: Transform state |x, y⟩ into |x, y ⊕ x₀ ⊕ x₁ ... ⊕ xₙ₋₁⟩ (⊕ is addition modulo 2).
     operation Oracle_CountBits (x : Qubit[], y : Qubit) : Unit is Adj {        
-        // ...
-
+        for q in x {
+            CNOT(q, y);
+        }
     }
     
     

@@ -289,3 +289,5 @@ __pycache__
 
 # BizTalk build output
 build/267DevDivSNKey2048.snk
+
+.fake
