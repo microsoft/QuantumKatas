@@ -74,22 +74,22 @@ namespace Quantum.Kata.RippleCarryAdder {
     operation ArbitraryAdder_Reference (a : Qubit[], b : Qubit[], sum : Qubit[], carry : Qubit) : Unit is Adj {
         let N = Length(a);
         if N == 1 {
-            OneBitAdder(a[0], b[0], sum[0], carry);
+            OneBitAdder_Reference(a[0], b[0], sum[0], carry);
         }
         else {
-            use carries = Qubit[N-1];
+            use internalCarries = Qubit[N-1];
             within {
-                LowestBitCarry(a[0], b[0], carries[0]);
+                LowestBitCarry_Reference(a[0], b[0], internalCarries[0]);
                 for i in 1..N-2 {
-                    HighBitCarry(a[i], b[i], carries[i-1], carries[i]);
+                    HighBitCarry_Reference(a[i], b[i], internalCarries[i-1], internalCarries[i]);
                 }
             }
             apply {
-                LowestBitSum(a[0], b[0], sum[0]);
+                LowestBitSum_Reference(a[0], b[0], sum[0]);
                 for i in 1..N-1 {
-                    HighBitSum(a[i], b[i], carries[i-1], sum[i]);
+                    HighBitSum_Reference(a[i], b[i], internalCarries[i-1], sum[i]);
                 }
-                HighBitCarry(a[N-1], b[N-1], carries[N-2], carry);
+                HighBitCarry_Reference(a[N-1], b[N-1], internalCarries[N-2], carry);
             }
         }
     }
