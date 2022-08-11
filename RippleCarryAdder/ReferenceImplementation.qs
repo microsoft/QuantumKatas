@@ -73,28 +73,24 @@ namespace Quantum.Kata.RippleCarryAdder {
     // Task 1.7. N-bit adder
     operation ArbitraryAdder_Reference (a : Qubit[], b : Qubit[], sum : Qubit[], carry : Qubit) : Unit is Adj {
         let N = Length(a);
-        if (N == 1) {
-            LowestBitSum_Reference(a[0], b[0], sum[0]);
-            LowestBitCarry_Reference(a[0], b[0], carry);
+        if N == 1 {
+            OneBitAdder_Reference(a[0], b[0], sum[0], carry);
         }
         else {
             use internalCarries = Qubit[N-1];
-            LowestBitSum_Reference(a[0], b[0], sum[0]);
-            LowestBitCarry_Reference(a[0], b[0], internalCarries[0]);
-                
-            for i in 1 .. N-2 {
-                HighBitSum_Reference(a[i], b[i], internalCarries[i-1], sum[i]);
-                HighBitCarry_Reference(a[i], b[i], internalCarries[i-1], internalCarries[i]);
+            within {
+                LowestBitCarry_Reference(a[0], b[0], internalCarries[0]);
+                for i in 1..N-2 {
+                    HighBitCarry_Reference(a[i], b[i], internalCarries[i-1], internalCarries[i]);
+                }
             }
-
-            HighBitSum_Reference(a[N-1], b[N-1], internalCarries[N-2], sum[N-1]);
-            HighBitCarry_Reference(a[N-1], b[N-1], internalCarries[N-2], carry);
-
-            // Clean up the ancillary qubits
-            for i in N-2 .. -1 .. 1 {
-                Adjoint HighBitCarry_Reference(a[i], b[i], internalCarries[i-1], internalCarries[i]);
+            apply {
+                LowestBitSum_Reference(a[0], b[0], sum[0]);
+                for i in 1..N-1 {
+                    HighBitSum_Reference(a[i], b[i], internalCarries[i-1], sum[i]);
+                }
+                HighBitCarry_Reference(a[N-1], b[N-1], internalCarries[N-2], carry);
             }
-            Adjoint LowestBitCarry_Reference(a[0], b[0], internalCarries[0]);
         }
     }
 
