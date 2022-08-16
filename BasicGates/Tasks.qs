@@ -195,6 +195,18 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
+    // Task 2.4. Two-qubit gate - 4
+    // Input: Two qubits (stored in an array of length 2) in an arbitrary
+    //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
+    // Goal:  Change the two-qubit state to β|00⟩ + α|01⟩ + γ|10⟩ + δ|11⟩.
+    operation TwoQubitGate4 (qs : Qubit[]) : Unit is Adj+Ctl {
+        // Hint: This task can be solved using one library function;
+        // as an exercise, try to express the solution using several 
+        // (possibly controlled) Pauli gates. 
+        // ...
+    }
+
+
     // Task 2.4. Toffoli gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
