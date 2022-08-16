@@ -310,7 +310,13 @@ namespace Quantum.Kata.BasicGates {
         AssertOperationsEqualReferenced(2, SwapWrapper, TwoQubitGate3_Reference);
         AssertOperationsEqualReferenced(2, TwoQubitGate3, TwoQubitGate3_Reference);
     }
-    
+
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    operation T204_TwoQubitGate4 () : Unit {
+        DumpDiff(2, StatePrepMiscAmplitudes, TwoQubitGate4, TwoQubitGate4_Reference);
+        AssertOperationsEqualReferenced(2, TwoQubitGate4, TwoQubitGate4_Reference);
+    }
     
     // ------------------------------------------------------
     @Test("QuantumSimulator")
