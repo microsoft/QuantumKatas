@@ -320,7 +320,7 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T204_ToffoliGate () : Unit {
+    operation T205_ToffoliGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, ToffoliGate, ToffoliGate_Reference);
         AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
@@ -328,7 +328,7 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T205_FredkinGate () : Unit {
+    operation T206_FredkinGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, FredkinGate, FredkinGate_Reference);
         AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }

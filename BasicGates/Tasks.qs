@@ -207,7 +207,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 2.4. Toffoli gate
+    // Task 2.5. Toffoli gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Flip the state of the third qubit if the state of the first two is |11⟩:
@@ -218,7 +218,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 2.5. Fredkin gate
+    // Task 2.6. Fredkin gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Swap the states of second and third qubit if and only if the state of the first qubit is |1⟩:
