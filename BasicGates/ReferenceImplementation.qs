@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.BasicGates {
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Math;
 
@@ -155,6 +156,18 @@ namespace Quantum.Kata.BasicGates {
         CNOT(qs[0], qs[1]);
         CNOT(qs[1], qs[0]);
         CNOT(qs[0], qs[1]);
+    }
+
+    // Task 2.4. Two-qubit gate - 4
+    // Input: Two qubits (stored in an array of length 2) in an arbitrary
+    //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
+    // Goal:  Change the two-qubit state to β|00⟩ + α|01⟩ + γ|10⟩ + δ|11⟩.
+    operation TwoQubitGate4_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
+        // Hint: This task can be solved using one library function;
+        // as an exercise, try to express the solution using several (possibly controlled) Pauli gates. 
+        CNOT(qs[0], qs[1]);
+        X(qs[1]);
+        // alternatively ControlledOnInt(0, X)([qs[0]], qs[1]);
     }
 
 
