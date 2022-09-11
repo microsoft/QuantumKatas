@@ -290,7 +290,7 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    // Prepare a state for tests 2.3-2.5
+    // Prepare a state for tests 2.3-2.6
     operation StatePrepMiscAmplitudes (qs : Qubit[]) : Unit is Adj+Ctl {
         let alphas = [5.0, 10.0, 15.0];
         for index in 0 .. Length(qs) - 1 {
@@ -315,6 +315,7 @@ namespace Quantum.Kata.BasicGates {
     @Test("QuantumSimulator")
     operation T204_TwoQubitGate4 () : Unit {
         DumpDiff(2, StatePrepMiscAmplitudes, TwoQubitGate4, TwoQubitGate4_Reference);
+        AssertOperationsEqualReferenced(2, qs => ControlledOnInt(0, X)([qs[0]], qs[1]), TwoQubitGate4_Reference);
         AssertOperationsEqualReferenced(2, TwoQubitGate4, TwoQubitGate4_Reference);
     }
     
