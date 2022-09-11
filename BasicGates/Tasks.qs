@@ -155,10 +155,12 @@ namespace Quantum.Kata.BasicGates {
     //////////////////////////////////////////////////////////////////
     // Part II. Multi-Qubit Gates
     //////////////////////////////////////////////////////////////////
+
     // In the following tasks the order of qubit states in task description matches the order of qubits in the array 
     // (i.e.,  |10⟩  state corresponds to qs[0] in state |1⟩ and qs[1] in state |0⟩).
     // Note also that the states shown in test output use little-endian notation (similarly to DumpMachine), 
     // see tutorial MultiQubitGates, for a refresher on endianness.
+
     // Task 2.1. Two-qubit gate - 1
     // Input: Two unentangled qubits (stored in an array of length 2).
     //        The first qubit will be in state |ψ⟩ = α |0⟩ + β |1⟩, the second - in state |0⟩
@@ -173,7 +175,7 @@ namespace Quantum.Kata.BasicGates {
 
 
     // Task 2.2. Two-qubit gate - 2
-    // Input: Two qubits (stored in an array of length 2)
+    // Input: Two unentangled qubits (stored in an array of length 2)
     //        in state |+⟩ ⊗ |+⟩ = (|00⟩ + |01⟩ + |10⟩ + |11⟩) / 2.
     // Goal:  Change the two-qubit state to (|00⟩ + |01⟩ + |10⟩ - |11⟩) / 2.
     // Note that while the starting state can be represented as a tensor product of single-qubit states,
@@ -195,7 +197,19 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 2.4. Toffoli gate
+    // Task 2.4. Two-qubit gate - 4
+    // Input: Two qubits (stored in an array of length 2) in an arbitrary
+    //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
+    // Goal:  Change the two-qubit state to β|00⟩ + α|01⟩ + γ|10⟩ + δ|11⟩.
+    operation TwoQubitGate4 (qs : Qubit[]) : Unit is Adj+Ctl {
+        // Hint: This task can be solved using one library function;
+        // as an exercise, try to express the solution using several 
+        // (possibly controlled) Pauli gates. 
+        // ...
+    }
+
+
+    // Task 2.5. Toffoli gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Flip the state of the third qubit if the state of the first two is |11⟩:
@@ -206,7 +220,7 @@ namespace Quantum.Kata.BasicGates {
     }
 
 
-    // Task 2.5. Fredkin gate
+    // Task 2.6. Fredkin gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Swap the states of second and third qubit if and only if the state of the first qubit is |1⟩:

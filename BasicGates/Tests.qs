@@ -290,7 +290,7 @@ namespace Quantum.Kata.BasicGates {
     
     
     // ------------------------------------------------------
-    // Prepare a state for tests 2.3-2.5
+    // Prepare a state for tests 2.3-2.6
     operation StatePrepMiscAmplitudes (qs : Qubit[]) : Unit is Adj+Ctl {
         let alphas = [5.0, 10.0, 15.0];
         for index in 0 .. Length(qs) - 1 {
@@ -310,11 +310,18 @@ namespace Quantum.Kata.BasicGates {
         AssertOperationsEqualReferenced(2, SwapWrapper, TwoQubitGate3_Reference);
         AssertOperationsEqualReferenced(2, TwoQubitGate3, TwoQubitGate3_Reference);
     }
-    
+
+    // ------------------------------------------------------
+    @Test("QuantumSimulator")
+    operation T204_TwoQubitGate4 () : Unit {
+        DumpDiff(2, StatePrepMiscAmplitudes, TwoQubitGate4, TwoQubitGate4_Reference);
+        AssertOperationsEqualReferenced(2, qs => ControlledOnInt(0, X)([qs[0]], qs[1]), TwoQubitGate4_Reference);
+        AssertOperationsEqualReferenced(2, TwoQubitGate4, TwoQubitGate4_Reference);
+    }
     
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T204_ToffoliGate () : Unit {
+    operation T205_ToffoliGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, ToffoliGate, ToffoliGate_Reference);
         AssertOperationsEqualReferenced(3, ToffoliGate, ToffoliGate_Reference);
     }
@@ -322,7 +329,7 @@ namespace Quantum.Kata.BasicGates {
     
     // ------------------------------------------------------
     @Test("QuantumSimulator")
-    operation T205_FredkinGate () : Unit {
+    operation T206_FredkinGate () : Unit {
         DumpDiff(3, StatePrepMiscAmplitudes, FredkinGate, FredkinGate_Reference);
         AssertOperationsEqualReferenced(3, FredkinGate, FredkinGate_Reference);
     }

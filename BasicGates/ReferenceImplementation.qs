@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 namespace Quantum.Kata.BasicGates {
+    open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Math;
 
@@ -157,8 +158,20 @@ namespace Quantum.Kata.BasicGates {
         CNOT(qs[0], qs[1]);
     }
 
+    // Task 2.4. Two-qubit gate - 4
+    // Input: Two qubits (stored in an array of length 2) in an arbitrary
+    //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
+    // Goal:  Change the two-qubit state to β|00⟩ + α|01⟩ + γ|10⟩ + δ|11⟩.
+    operation TwoQubitGate4_Reference (qs : Qubit[]) : Unit is Adj+Ctl {
+        // Hint: This task can be solved using one library function;
+        // as an exercise, try to express the solution using several (possibly controlled) Pauli gates. 
+        CNOT(qs[0], qs[1]);
+        X(qs[1]);
+        // alternatively ControlledOnInt(0, X)([qs[0]], qs[1]);
+    }
 
-    // Task 2.4. Toffoli gate
+
+    // Task 2.5. Toffoli gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Flip the state of the third qubit if the state of the first two is |11⟩:
@@ -169,7 +182,7 @@ namespace Quantum.Kata.BasicGates {
         // alternatively (Controlled X)(qs[0..1], qs[2]);
     }
 
-    // Task 2.5. Fredkin gate
+    // Task 2.6. Fredkin gate
     // Input: Three qubits (stored in an array of length 3) in an arbitrary three-qubit state
     //        α|000⟩ + β|001⟩ + γ|010⟩ + δ|011⟩ + ε|100⟩ + ζ|101⟩ + η|110⟩ + θ|111⟩.
     // Goal:  Swap the states of second and third qubit if and only if the state of the first qubit is |1⟩:
