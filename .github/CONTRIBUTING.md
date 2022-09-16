@@ -33,7 +33,7 @@ You can also [create a pull request](https://help.github.com/articles/about-pull
 
 ## Improving Documentation
 
-If you are interested in contributing to conceptual documentation about the Quantum Development Kit, please see the [MicrosoftDocs/quantum-docs-pr](https://github.com/MicrosoftDocs/quantum-docs-pr) repository.
+If you are interested in contributing to conceptual documentation about the Quantum Development Kit, please see the [MicrosoftDocs/quantum-docs](https://github.com/MicrosoftDocs/quantum-docs) repository.
 
 Besides, each kata has a README.md file with a brief description of the topic covered in the kata and a list of useful links on that topic. If you have come across a paper/tutorial/lecture which was really helpful for solving some of the kata's tasks, feel free to create a pull request to add it to the corresponding README file.
 
