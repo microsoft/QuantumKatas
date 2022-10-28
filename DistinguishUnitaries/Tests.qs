@@ -84,7 +84,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
     
     // ------------------------------------------------------
     // A helper operation used to differentiate the unitary we pass as an argument from gates used normally
-    internal function SingleQubitGateAsUnitary<'UInput> (unitary : ('UInput => Unit is Adj+Ctl)) : ('UInput => Unit is Adj+Ctl) {
+    internal function SingleQubitGateAsUnitary<'UInput> (unitary : 'UInput => Unit is Adj+Ctl) : 'UInput => Unit is Adj+Ctl {
         return input => unitary(input);
     }
 
