@@ -70,16 +70,13 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
     // Part II. Single-bit problem
     //////////////////////////////////////////////////////////////////
 
-    // We need to compare phase oracles as their controlled versions to account for the global phase.
-    operation ControlledWrapper (qs : Qubit[], phaseOracle : (Qubit => Unit is Adj + Ctl)) : Unit is Adj + Ctl {
-        Controlled phaseOracle([qs[0]], qs[1]);
-    }
-
     // Exercise 3.
     @Test("QuantumSimulator")
     operation T3_PhaseOracle_OneMinusX () : Unit {
-        AssertOperationsEqualReferenced(2, ControlledWrapper(_, PhaseOracle_OneMinusX), 
-                                           ControlledWrapper(_, PhaseOracle_OneMinusX_Reference));
+        // We need to compare phase oracles as their controlled versions to account for the global phase.
+        AssertOperationsEqualReferenced(2, 
+            qs => Controlled PhaseOracle_OneMinusX([qs[0]], qs[1]), 
+            qs => Controlled PhaseOracle_OneMinusX_Reference([qs[0]], qs[1]));
     }
 
     

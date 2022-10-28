@@ -44,17 +44,17 @@ namespace Quantum.Kata.DistinguishUnitaries {
 
             // check the constraint on the number of allowed calls to the unitary
             // note that a unitary can be implemented as Controlled on |1⟩, so we need to count variants as well
-            if (maxCalls > 0) {
+            if maxCalls > 0 {
                 let actualCalls = GetOracleCallsCount(unitaries[actualIndex]) + 
                                   GetOracleCallsCount(Adjoint unitaries[actualIndex]) + 
                                   GetOracleCallsCount(Controlled unitaries[actualIndex]);
-                if (actualCalls > maxCalls) {
+                if actualCalls > maxCalls {
                     fail $"You are allowed to do at most {maxCalls} calls, and you did {actualCalls}";
                 }
             }
             
-            if (returnedIndex != actualIndex) {
-                if (returnedIndex < 0 or returnedIndex >= nUnitaries) {
+            if returnedIndex != actualIndex {
+                if returnedIndex < 0 or returnedIndex >= nUnitaries {
                     set unknownClassifications w/= actualIndex <- unknownClassifications[actualIndex] + 1;
                 } else {
                     let index = actualIndex * nUnitaries + returnedIndex;
@@ -67,12 +67,12 @@ namespace Quantum.Kata.DistinguishUnitaries {
         for i in 0 .. nUnitaries - 1 {
             for j in 0 .. nUnitaries - 1 {
                 let misclassifiedIasJ = wrongClassifications[(i * nUnitaries) + j];
-                if (misclassifiedIasJ != 0) {
+                if misclassifiedIasJ != 0 {
                     set totalMisclassifications += misclassifiedIasJ;
                     Message($"Misclassified {i} as {j} in {misclassifiedIasJ} test runs.");
                 }
             }
-            if (unknownClassifications[i] != 0) {
+            if unknownClassifications[i] != 0 {
                 set totalMisclassifications += unknownClassifications[i];
                 Message($"Misclassified {i} as unknown unitary in {unknownClassifications[i]} test runs.");
             }
@@ -83,13 +83,9 @@ namespace Quantum.Kata.DistinguishUnitaries {
     
     
     // ------------------------------------------------------
-    // A pair of helper wrappers used to differentiate the unitary we pass as an argument from gates used normally
-    internal operation SingleQubitGateWrapper<'UInput> (unitary : ('UInput => Unit is Adj+Ctl), input : 'UInput) : Unit is Adj+Ctl {
-        unitary(input);
-    }
-
-    internal function SingleQubitGateAsUnitary<'UInput> (unitary : ('UInput => Unit is Adj+Ctl)) : ('UInput => Unit is Adj+Ctl) {
-        return SingleQubitGateWrapper(unitary, _);
+    // A helper operation used to differentiate the unitary we pass as an argument from gates used normally
+    internal function SingleQubitGateAsUnitary<'UInput> (unitary : 'UInput => Unit is Adj+Ctl) : 'UInput => Unit is Adj+Ctl {
+        return input => unitary(input);
     }
 
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
@@ -182,50 +178,26 @@ namespace Quantum.Kata.DistinguishUnitaries {
     // Part II. Multi-Qubit Gates
     //////////////////////////////////////////////////////////////////
     
-    operation IXWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
-        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
-        X(qs[1]);
-    }
-
-    operation CNOTWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
-        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
-        CNOT(qs[0], qs[1]);
-    }
-
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T201_DistinguishIXfromCNOT () : Unit {
-        DistinguishUnitaries_Framework([IXWrapper, CNOTWrapper], DistinguishIXfromCNOT, 1);
+        DistinguishUnitaries_Framework([qs => X(qs[1]), qs => CNOT(qs[0], qs[1])], DistinguishIXfromCNOT, 1);
     }
 
     // ------------------------------------------------------
-    operation ReverseCNOTWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
-        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
-        CNOT(qs[1], qs[0]);
-    }
-
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T202_CNOTDirection () : Unit {
-        DistinguishUnitaries_Framework([CNOTWrapper, ReverseCNOTWrapper], CNOTDirection, 1);
+        DistinguishUnitaries_Framework([qs => CNOT(qs[0], qs[1]), qs => CNOT(qs[1], qs[0])], CNOTDirection, 1);
     }
 
     // ------------------------------------------------------
-    operation SWAPWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
-        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
-        SWAP(qs[1], qs[0]);
-    }
-
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T203_DistinguishCNOTfromSWAP () : Unit {
-        DistinguishUnitaries_Framework([CNOTWrapper, SWAPWrapper], DistinguishCNOTfromSWAP, 1);
+        DistinguishUnitaries_Framework([qs => CNOT(qs[0], qs[1]), qs => SWAP(qs[0], qs[1])], DistinguishCNOTfromSWAP, 1);
     }
 
     // ------------------------------------------------------
-    operation IdentityWrapper (qs : Qubit[]) : Unit is Adj+Ctl {
-        Fact(Length(qs) == 2, "This unitary can only be applied to arrays of length 2.");
-    }
-
     @Test("Microsoft.Quantum.Katas.CounterSimulator")
     operation T204_DistinguishTwoQubitUnitaries () : Unit {
-        DistinguishUnitaries_Framework([IdentityWrapper, CNOTWrapper, ReverseCNOTWrapper, SWAPWrapper], DistinguishTwoQubitUnitaries, 2);
+        DistinguishUnitaries_Framework([NoOp, qs => CNOT(qs[0], qs[1]), qs => CNOT(qs[1], qs[0]), qs => SWAP(qs[0], qs[1])], DistinguishTwoQubitUnitaries, 2);
     }
 }
