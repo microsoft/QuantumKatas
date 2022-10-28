@@ -218,11 +218,6 @@ namespace Quantum.Kata.GraphColoring {
 
 
     // ------------------------------------------------------
-    operation QubitArrayWrapperOperation (op : ((Qubit[], Qubit) => Unit is Adj), qs : Qubit[]) : Unit is Adj {        
-        op(Most(qs), Tail(qs));
-    }
-
-
     operation AssertOracleRecognizesColoring (
         V : Int,
         edges : (Int, Int)[],
@@ -526,13 +521,9 @@ namespace Quantum.Kata.GraphColoring {
     }
 
 
-    function BoolAsInt (a : Bool) : Int {
-        return a ? 1 | 0;
-    }
-
     function IsVertexColoringTriangleFree_Wrapper (V : Int, edges: (Int, Int)[], colors: Int) : Bool {
         let colorBools = IntAsBoolArray(colors, Length(edges));
-        let colorBits = Mapped(BoolAsInt, colorBools);
+        let colorBits = Mapped(a -> a ? 1 | 0, colorBools);
         return IsVertexColoringTriangleFree_Reference(V, edges, colorBits);
     }
 

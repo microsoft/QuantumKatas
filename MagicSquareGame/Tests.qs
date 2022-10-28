@@ -139,13 +139,10 @@ namespace Quantum.Kata.MagicSquareGame {
         return pairs;
     }
 
-    operation ControlledWrapper (op : (Qubit[] => Unit is Adj+Ctl), qs : Qubit[]) : Unit is Adj+Ctl {
-        Controlled op([Head(qs)], Rest(qs));
-    }
-
     operation AssertOperationsEqualWithPhase (N : Int, op1 : (Qubit[] => Unit is Adj+Ctl), op2 : (Qubit[] => Unit is Adj+Ctl)) : Unit {
-        // To check that the operations don't introduce a phase, compare their controlled versions
-        AssertOperationsEqualReferenced(N + 1, ControlledWrapper(op1, _), ControlledWrapper(op2, _));
+         AssertOperationsEqualReferenced(N + 1, 
+             qs => Controlled op1([Head(qs)], Rest(qs)), 
+             qs => Controlled op2([Head(qs)], Rest(qs)));
     }
 
     // Helper function to checks that each pair of operations in the array commutes (i.e., AB = BA)
