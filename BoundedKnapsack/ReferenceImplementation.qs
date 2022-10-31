@@ -67,7 +67,7 @@ namespace Quantum.Kata.BoundedKnapsack {
         // a[j] = 1 for all j > i (meaning a and binaryB have the same digits above i).
 
         for i in D - 1 .. -1 .. 0 {
-            if (not binaryB[i]) {
+            if not binaryB[i] {
                 // Checks if a has a greater bit than b at index i AND all bits above index i have equal values in a and b.
                 Controlled X(a[i ...], target);
                 // Flips the qubit if b's corresponding bit is 0.

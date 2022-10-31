@@ -82,7 +82,7 @@ namespace Quantum.Kata.GraphColoring {
     // Task 2.1. Classical verification of vertex coloring
     function IsVertexColoringValid_Reference (V : Int, edges: (Int, Int)[], colors: Int[]) : Bool {
         for (start, end) in edges {
-            if (colors[start] == colors[end]) {
+            if colors[start] == colors[end] {
                 return false;
             }
         }
@@ -123,7 +123,7 @@ namespace Quantum.Kata.GraphColoring {
             let res = MultiM(register);
             // to check whether the result is correct, apply the oracle to the register plus ancilla after measurement
             oracle(register, output);
-            if (MResetZ(output) == One) {
+            if MResetZ(output) == One {
                 set correct = true;
                 // Read off coloring
                 set coloring = MeasureColoring_Reference(V, register);
@@ -133,7 +133,7 @@ namespace Quantum.Kata.GraphColoring {
         fixup {
             set iter += 1;
         }
-        if (not correct) {
+        if not correct {
             fail "Failed to find a coloring";
         }
         return coloring;
@@ -306,8 +306,8 @@ namespace Quantum.Kata.GraphColoring {
         let trianglesList = AdjacencyMatrixAsTrianglesList_Reference(V, adjacencyMatrix);
 
         for (v1, v2, v3) in trianglesList {
-            if (colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v1][v3]] and 
-                colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v2][v3]]) {
+            if colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v1][v3]] and 
+                colors[adjacencyMatrix[v1][v2]] == colors[adjacencyMatrix[v2][v3]] {
                 return false;
             }
         }

@@ -170,7 +170,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
         while (true) {
             let pimultiple = PI() * IntAsDouble(2 * pifactor + offset);
             let times = Round(pimultiple / angle);
-            if (AbsD(pimultiple - (IntAsDouble(times) * angle)) / PI() < accuracy) {
+            if AbsD(pimultiple - (IntAsDouble(times) * angle)) / PI() < accuracy {
                 return times;
             }
             set pifactor += 1;
@@ -191,7 +191,7 @@ namespace Quantum.Kata.DistinguishUnitaries {
                 unitary(q);
             }
             // for Rz, we'll never venture away from |0⟩ state, so as soon as we got |1⟩ we know it's not Rz
-            if (MResetZ(q) == One) {
+            if MResetZ(q) == One {
                 set measuredOne = true;
             }
             // if we try several times and still only get |0⟩s, chances are that it is Rz

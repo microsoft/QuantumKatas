@@ -72,7 +72,7 @@ namespace Quantum.Kata.GHZGame {
 
     // Task 2.2. Quantum strategy
     operation QuantumStrategy_Reference (input : Bool, qubit : Qubit) : Bool {
-        if (input) {
+        if input {
             H(qubit);
         }
         return ResultAsBool(M(qubit));

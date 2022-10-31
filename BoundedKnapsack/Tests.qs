@@ -605,7 +605,7 @@ namespace Quantum.Kata.BoundedKnapsack
                     // Add the weight of all instances of this item type.
                     set totalProfit += itemProfits[i] * selectedItemCountsIntegers[i];
                     set totalWeight += itemWeights[i] * selectedItemCountsIntegers[i];
-                    if (selectedItemCountsIntegers[i] > itemCountLimits[i]) {
+                    if selectedItemCountsIntegers[i] > itemCountLimits[i] {
                         set limitsSatisfied = false;
                     }
                 }
