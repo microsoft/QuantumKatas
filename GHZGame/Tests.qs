@@ -45,7 +45,7 @@ namespace Quantum.Kata.GHZGame {
         for _ in 0 .. N - 1 {
             let rst = inputs[DrawRandomInt(0, Length(inputs) - 1)];
             let abc = PlayClassicalGHZ_Reference(strategy, rst);
-            if (WinCondition_Reference(rst, abc)) {
+            if WinCondition_Reference(rst, abc) {
                 set wins = wins + 1;
             }
         }

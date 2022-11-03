@@ -177,12 +177,12 @@ namespace Quantum.Kata.BasicGates {
         CNOT(qs[0], qs[1]);
             
         // now we have |00⟩ + |11⟩ - modify it based on state arg
-        if (state % 2 == 1) {
+        if state % 2 == 1 {
             // negative phase
             Z(qs[1]);
         }
             
-        if (state / 2 == 1) {
+        if state / 2 == 1 {
             X(qs[1]);
         }
     }

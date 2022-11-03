@@ -184,7 +184,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         mutable r = [0, size = bits];
         
         for i in 0 .. bits - 1 {
-            if (rbool[i]) {
+            if rbool[i] {
                 set r w/= i <- 1;
             }
         }

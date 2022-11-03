@@ -85,7 +85,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
         for i in IndexRange(x) {
-            if (r[i] == 1) {
+            if r[i] == 1 {
                 CNOT(x[i], y);
             }
         }
@@ -105,7 +105,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         EqualityFactI(Length(x), Length(r), "Arrays should have the same length");
             
         for i in IndexRange(x) {
-            if (r[i] == 1) {
+            if r[i] == 1 {
                 CNOT(x[i], y);
             } else {
                 // do a 0-controlled NOT
@@ -140,7 +140,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         within {
             for i in 0 .. P - 1 {
                     
-                if (prefix[i] == 0) {
+                if prefix[i] == 0 {
                     X(x[i]);
                 }
             }
@@ -222,7 +222,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // measure all qubits of the input register;
         // the result of each measurement is converted to an Int
         for i in 0 .. N - 1 {
-            if (M(x[i]) != Zero) {
+            if M(x[i]) != Zero {
                 set isConstantFunction = false;
             }
         }
@@ -270,7 +270,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // the result of each measurement is converted to an Int
         mutable r = [0, size = N];
         for i in 0 .. N - 1 {
-            if (M(x[i]) != Zero) {
+            if M(x[i]) != Zero {
                 set r w/= i <- 1;
             }
         }
@@ -303,7 +303,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
             
         // f(x) = Σᵢ (𝑟ᵢ 𝑥ᵢ + (1 - 𝑟ᵢ)(1 - 𝑥ᵢ)) = 2 Σᵢ 𝑟ᵢ 𝑥ᵢ + Σᵢ 𝑟ᵢ + Σᵢ 𝑥ᵢ + N = Σᵢ 𝑟ᵢ + N
         // remove the N from the expression
-        if (N % 2 == 1) {
+        if N % 2 == 1 {
             X(y);
         }
             
@@ -315,7 +315,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
 
         // measure the output register
         let m = M(y);
-        if (m == One) {
+        if m == One {
             // adjust parity of bit vector r
             set r w/= 0 <- 1;
         }
