@@ -24,8 +24,8 @@ namespace Quantum.Kata.Superposition {
                                       verbose : Bool,
                                       testStr : String) : Unit {
         use qs = Qubit[N];
-        if (verbose) {
-            if (testStr != "") {
+        if verbose {
+            if testStr != "" {
                 Message($"The desired state for {testStr}");
             } else {
                 Message("The desired state:");
@@ -38,7 +38,7 @@ namespace Quantum.Kata.Superposition {
         // apply operation that needs to be tested
         testImpl(qs);
 
-        if (verbose) {
+        if verbose {
             Message("The actual state:");
             DumpMachine(());
         }
@@ -49,7 +49,7 @@ namespace Quantum.Kata.Superposition {
         // assert that all qubits end up in |0⟩ state
         AssertAllZero(qs);
 
-        if (verbose) {
+        if verbose {
             Message("Test case passed");
         }
     }

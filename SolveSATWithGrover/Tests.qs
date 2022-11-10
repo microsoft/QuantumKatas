@@ -111,7 +111,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // ------------------------------------------------------
     function AlternatingBits (args : Bool[]) : Bool {
         for i in 0..Length(args)-2 {
-            if (args[i] == args[i+1]) {
+            if args[i] == args[i+1] {
                 return false;
             }
         }
@@ -159,7 +159,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     // Evaluate one clause of the SAT formula
     function F_SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
         for (index, isTrue) in clause {
-            if (isTrue == args[index]) {
+            if isTrue == args[index] {
                 // one true literal is sufficient for the clause to be true
                 return true;
             }
@@ -170,7 +170,7 @@ namespace Quantum.Kata.GroversAlgorithm {
 
     operation Generate_SAT_Clause (nVar : Int, nTerms : Int) : (Int, Bool)[] {
         mutable nVarInClause = (nTerms > 0) ? nTerms | DrawRandomInt(1, 4);
-        if (nVarInClause > nVar) {
+        if nVarInClause > nVar {
             set nVarInClause = nVar;
         }
     
@@ -211,7 +211,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     function F_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
         for clause in problem {
             // One clause can invalidate the whole formula
-            if (not F_SATClause(args, clause)) {
+            if not F_SATClause(args, clause) {
                 return false;
             }
         }
@@ -278,7 +278,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     function F_Exactly1One (args : Bool[]) : Bool {
         mutable nOnes = 0;
         for element in args {
-            if (element) {
+            if element {
                 set nOnes += 1;
             }
         }
@@ -300,7 +300,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     function F_Exactly1SATClause (args : Bool[], clause : (Int, Bool)[]) : Bool {
         mutable nOnes = 0;
         for (index, isTrue) in clause {
-            if (isTrue == args[index]) {
+            if isTrue == args[index] {
                 // count the number of true literals
                 set nOnes += 1;
             }
@@ -311,7 +311,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     function F_Exactly1_SAT (args : Bool[], problem : (Int, Bool)[][]) : Bool {
         for clause in problem {
             // One clause can invalidate the whole formula
-            if (not F_Exactly1SATClause(args, clause)) {
+            if not F_Exactly1SATClause(args, clause) {
                 return false;
             }
         }
@@ -343,7 +343,7 @@ namespace Quantum.Kata.GroversAlgorithm {
     operation RunGroverOnOneInstance (nVar : Int, problem : (Int, Bool)[][]) : Unit {
         let oracle = Oracle_SAT_Reference(_, _, problem);
         let answer = UniversalGroversAlgorithm(nVar, oracle);
-        if (not F_SAT(answer, problem)) {
+        if not F_SAT(answer, problem) {
             fail $"Incorrect answer {answer} for {problem}";
         }
     }

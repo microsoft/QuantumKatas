@@ -243,7 +243,7 @@ namespace Quantum.Kata.QFT {
                 PreparePeriodicState_Reference(register, F);
                 // Feed it to the solution
                 let FRet = Frequency(register);
-                if (FRet != F) {
+                if FRet != F {
                     fail $"Expected frequency {F}, returned frequency {FRet} (n = {N})";
                 }
                 ResetAll(register);

@@ -67,7 +67,7 @@ namespace Quantum.Kata.SuperdenseCoding {
         // [1; 0]:    |Φ⁻⟩ = (|00⟩ - |11⟩) / sqrt(2)
         // [1; 1]:    |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
 
-        if (message::Bit1) { // accesses the item 'Bit1' of 'message'
+        if message::Bit1 { // accesses the item 'Bit1' of 'message'
             // ...
         }
         // ...

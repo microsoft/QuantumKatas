@@ -35,10 +35,10 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 1.3. Reconstruct the message (Bob's task)
     operation ReconstructMessage_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool)) : Unit {
-        if (b1) {
+        if b1 {
             Z(qBob);
         }
-        if (b2) {
+        if b2 {
             X(qBob);
         }
     }
@@ -58,7 +58,7 @@ namespace Quantum.Kata.Teleportation {
     // Task 1.5. Prepare the message specified and send it (Alice's task)
     operation PrepareAndSendMessage_Reference (qAlice : Qubit, basis : Pauli, state : Bool) : (Bool, Bool) {
         use message = Qubit();
-        if (state) {
+        if state {
             X(message);
         }
             
@@ -102,11 +102,11 @@ namespace Quantum.Kata.Teleportation {
     operation ReconstructMessage_PhiMinus_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool)) : Unit {
         // Bob can apply a Z gate to his qubit to convert the pair to |Φ⁺⟩
         // and use the standard teleportation reconstruction process.
-        if (not b1) {
+        if not b1) {
             Z(qBob);
         }
         
-        if (b2) {
+        if b2 {
             X(qBob);
         }
     }
@@ -116,11 +116,11 @@ namespace Quantum.Kata.Teleportation {
     operation ReconstructMessage_PsiPlus_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool)) : Unit {
         // Bob can apply an X gate to his qubit to convert the pair to |Φ⁺⟩
         // and use the standard teleportation reconstruction process.
-        if (b1) {
+        if b1 {
             Z(qBob);
         }
         
-        if (not b2) {
+        if not b2 {
             X(qBob);
         }
     }
@@ -130,11 +130,11 @@ namespace Quantum.Kata.Teleportation {
     operation ReconstructMessage_PsiMinus_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool)) : Unit {
         // Bob can apply a Z gate and an X gate to his qubit to convert the pair to |Φ⁺⟩
         // and use the standard teleportation reconstruction process.
-        if (not b1) {
+        if not b1 {
             Z(qBob);
         }
         
-        if (not b2) {
+        if not b2 {
             X(qBob);
         }
     }
@@ -184,15 +184,15 @@ namespace Quantum.Kata.Teleportation {
     
     // Task 4.2. Reconstruct the message (Charlie's task)
     operation ReconstructMessageWhenThreeEntangledQubits_Reference (qCharlie : Qubit, (b1 : Bool, b2 : Bool), b3 : Bool) : Unit {
-        if (b1) {
+        if b1 {
             Z(qCharlie);
         }
         
-        if (b2) {
+        if b2 {
             X(qCharlie);
         }
         
-        if (b3) {
+        if b3 {
             X(qCharlie);
         }
     }

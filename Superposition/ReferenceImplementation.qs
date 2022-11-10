@@ -110,11 +110,11 @@ namespace Quantum.Kata.Superposition {
         CNOT(qs[0], qs[1]);
 
         // now we have |00⟩ + |11⟩ - modify it based on index arg
-        if (index % 2 == 1) {
+        if index % 2 == 1 {
             // negative phase
             Z(qs[1]);
         }
-        if (index / 2 == 1) {
+        if index / 2 == 1 {
             X(qs[1]);
         }
     }
@@ -154,7 +154,7 @@ namespace Quantum.Kata.Superposition {
             H(q);
         }
         // for odd numbers, flip the last bit to 1
-        if (not isEven) {
+        if not isEven {
             X(Tail(qs));
         }
     }
@@ -179,7 +179,7 @@ namespace Quantum.Kata.Superposition {
 
         // iterate through the bit string and CNOT to qubits corresponding to true bits
         for i in 1 .. Length(qs) - 1 {
-            if (bits[i]) {
+            if bits[i] {
                 CNOT(Head(qs), qs[i]);
             }
         }
@@ -199,7 +199,7 @@ namespace Quantum.Kata.Superposition {
     // helper function for TwoBitstringSuperposition_Reference
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
         for i in 0 .. Length(bits1) - 1 {
-            if (bits1[i] != bits2[i]) {
+            if bits1[i] != bits2[i] {
                 return i;
             }
         }
@@ -216,16 +216,16 @@ namespace Quantum.Kata.Superposition {
 
         // iterate through the bit strings again setting the final state of qubits
         for i in 0 .. Length(qs) - 1 {
-            if (bits1[i] == bits2[i]) {
+            if bits1[i] == bits2[i] {
                 // if two bits are the same apply X or nothing
-                if (bits1[i]) {
+                if bits1[i] {
                     X(qs[i]);
                 }
             } else {
                 // if two bits are different, set their difference using CNOT
-                if (i > firstDiff) {
+                if i > firstDiff {
                     CNOT(qs[firstDiff], qs[i]);
-                    if (bits1[i] != bits1[firstDiff]) {
+                    if bits1[i] != bits1[firstDiff] {
                         X(qs[i]);
                     }
                 }
@@ -251,7 +251,7 @@ namespace Quantum.Kata.Superposition {
         // Set up the right pattern on the main qubits with control on ancillas
         for i in 0 .. 3 {
             for j in 0 .. Length(qs) - 1 {
-                if (bits[i][j]) {
+                if bits[i][j] {
                     (ControlledOnInt(i, X))(anc, qs[j]);
                 }
             }
@@ -259,10 +259,10 @@ namespace Quantum.Kata.Superposition {
 
         // Uncompute the ancillas, using patterns on main qubits as control
         for i in 0 .. 3 {
-            if (i % 2 == 1) {
+            if i % 2 == 1 {
                 (ControlledOnBitString(bits[i], X))(qs, anc[0]);
             }
-            if (i / 2 == 1) {
+            if i / 2 == 1 {
                 (ControlledOnBitString(bits[i], X))(qs, anc[1]);
             }
         }
@@ -279,8 +279,8 @@ namespace Quantum.Kata.Superposition {
     operation AllStatesWithParitySuperposition_Reference (qs : Qubit[], parity : Int) : Unit is Adj + Ctl {
         // base of recursion: if N = 1, set the qubit to parity
         let N = Length(qs);
-        if (N == 1) {
-            if (parity == 1) {
+        if N ==1 {
+            if parity == 1 {
                 X(qs[0]);
             }
         } else {
@@ -302,7 +302,7 @@ namespace Quantum.Kata.Superposition {
         let res = MResetZ(anc);
         // Now, if we got measurement result that matches parity, we're good; 
         // otherwise we can apply X to any one qubit to get our result!
-        if ((res == Zero ? 0 | 1) != parity) {
+        if (res == Zero ? 0 | 1) != parity {
             X(qs[0]);
         }
     }
@@ -402,7 +402,7 @@ namespace Quantum.Kata.Superposition {
 
         let N = Length(qs);
 
-        if (N == 1) {
+        if N ==1 {
             // base of recursion: |1⟩
             X(qs[0]);
         } else {
@@ -437,7 +437,7 @@ namespace Quantum.Kata.Superposition {
 
         let N = Length(qs);
 
-        if (N == 1) {
+        if N ==1 {
             // base case of recursion: |1⟩
             X(qs[0]);
         } else {
@@ -468,7 +468,7 @@ namespace Quantum.Kata.Superposition {
     // transform the qubit to state sqrt((N-1) / N) |0⟩ + sqrt(1/N) |1⟩.
     operation FractionSuperposition(denominator : Int, q : Qubit) : Unit is Adj + Ctl {
 
-        if (denominator == 1) {
+        if denominator == 1 {
             X(q);
         } else {
             // represent the target state as cos(theta) * |0⟩ + sin(theta) * |1⟩, as in task 1.3
@@ -483,7 +483,7 @@ namespace Quantum.Kata.Superposition {
     operation WState_Arbitrary_Postselect (qs : Qubit[]) : Unit {
         let N = Length(qs);
 
-        if (N == 1) {
+        if N ==1 {
             // base case of recursion: |1⟩
             X(qs[0]);
         } else {
@@ -491,7 +491,7 @@ namespace Quantum.Kata.Superposition {
             // as a hack, we know we're not doing it on more than 64 qubits
             mutable P = 1;
             for i in 1 .. 6 {
-                if (P < N) {
+                if P < N {
                     set P *= 2;
                 }
             }
@@ -505,7 +505,7 @@ namespace Quantum.Kata.Superposition {
                 // measure extra qubits; if all of the results are Zero, we got the right state on main qubits
                 mutable allZeros = true;
                 for i in 0 .. (P - N) - 1 {
-                    if (MResetZ(anc[i]) == One) {
+                    if MResetZ(anc[i]) == One {
                         set allZeros = false;
                     }
                 }

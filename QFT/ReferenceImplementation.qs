@@ -44,7 +44,7 @@ namespace Quantum.Kata.QFT {
     //       0.j₁j₂...jₙ = j₁ / 2¹ + j₂ / 2² + ... + jₙ / 2ⁿ.
     operation BinaryFractionClassical_Reference (q : Qubit, j : Int[]) : Unit is Adj+Ctl {
         for ind in 0 .. Length(j) - 1 {
-            if (j[ind] == 1) {
+            if j[ind] == 1 {
                 Rotation_Reference(q, ind + 1);
             }
         }

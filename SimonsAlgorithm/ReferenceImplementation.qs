@@ -43,7 +43,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
         let N = Length(x);
             
         for i in 0 .. N - 1 {
-            if (A[i] == 1) {
+            if A[i] == 1 {
                 CNOT(x[i], y);
             }
         }
@@ -58,7 +58,7 @@ namespace Quantum.Kata.SimonsAlgorithm {
             
         for i in 0 .. N1 - 1 {
             for j in 0 .. N2 - 1 {
-                if ((A[i])[j] == 1) {
+                if A[i])[j] == 1 {
                     CNOT(x[j], y[i]);
                 }
             }
