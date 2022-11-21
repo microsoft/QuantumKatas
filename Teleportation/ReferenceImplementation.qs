@@ -102,7 +102,7 @@ namespace Quantum.Kata.Teleportation {
     operation ReconstructMessage_PhiMinus_Reference (qBob : Qubit, (b1 : Bool, b2 : Bool)) : Unit {
         // Bob can apply a Z gate to his qubit to convert the pair to |Φ⁺⟩
         // and use the standard teleportation reconstruction process.
-        if not b1) {
+        if not b1 {
             Z(qBob);
         }
         

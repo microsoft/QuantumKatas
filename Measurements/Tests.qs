@@ -355,7 +355,7 @@ namespace Quantum.Kata.Measurements {
             // Set up the right pattern on the main qubits with control on ancillas
             for i in 0 .. 3 {
                 for j in 0 .. N - 1 {
-                    if bits[i])[j] {
+                    if bits[i][j] {
                         (ControlledOnInt(i, X))(anc, qs[j]);
                     }
                 }
