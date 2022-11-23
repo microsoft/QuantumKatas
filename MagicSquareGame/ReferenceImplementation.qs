@@ -103,7 +103,7 @@ namespace Quantum.Kata.MagicSquareGame {
         let (sign, paulis) = observable;
         ApplyPauli(paulis, qs);
         // remember to apply the sign - this will be important when measuring these observables!
-        if (sign < 0) {
+        if sign < 0 {
             R(PauliI, 2.0 * PI(), qs[0]);
         }
     }

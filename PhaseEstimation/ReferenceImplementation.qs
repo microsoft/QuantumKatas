@@ -26,7 +26,7 @@ namespace Quantum.Kata.PhaseEstimation {
     
     // Task 1.1. Inputs to QPE: eigenstates of Z/S/T gates.
     operation Eigenstates_ZST_Reference (q : Qubit, state : Int) : Unit is Adj {
-        if (state == 1) {
+        if state == 1 {
             X(q);
         }
     }

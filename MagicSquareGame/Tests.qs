@@ -89,7 +89,7 @@ namespace Quantum.Kata.MagicSquareGame {
             let rowIndex = DrawRandomInt(0, 2);
             let columnIndex = DrawRandomInt(0, 2);
             let (alice, bob) = moves(rowIndex, columnIndex);
-            if (WinCondition_Reference(rowIndex, columnIndex, alice, bob)) {
+            if WinCondition_Reference(rowIndex, columnIndex, alice, bob) {
                 set wins += 1;
             }
         }
@@ -207,10 +207,10 @@ namespace Quantum.Kata.MagicSquareGame {
             for obs2 in [PauliI, PauliX, PauliY, PauliZ] {
                 for i in 1..100 {
                     // Start by preparing the qubits in a uniform superposition with some signs
-                    if ((i % 4) / 2 == 1) {
+                    if (i % 4) / 2 == 1 {
                         X(qs[0]);
                     }
-                    if ((i % 4) % 2 == 1) {
+                    if (i % 4) % 2 == 1 {
                         X(qs[1]);
                     }
                     ApplyToEach(H, qs);
@@ -240,10 +240,10 @@ namespace Quantum.Kata.MagicSquareGame {
             for obs2 in [PauliI, PauliX, PauliY, PauliZ] {
                 for i in 1..100 {
                     // Start by preparing the qubits in a uniform superposition with some signs
-                    if ((i % 4) / 2 == 1) {
+                    if (i % 4) / 2 == 1 {
                         X(qs[0]);
                     }
-                    if ((i % 4) % 2 == 1) {
+                    if (i % 4) % 2 == 1 {
                         X(qs[1]);
                     }
                     ApplyToEach(H, qs);
@@ -297,9 +297,9 @@ namespace Quantum.Kata.MagicSquareGame {
             for j in 0..2 {
                 if (i == row and j == column and alice[j] != bob[i]) {
                     set line w/= j <- "±";
-                } elif (i == row) {
+                } elif i == row {
                     set line w/= j <- alice[j] == 1 ? "+" | (alice[j] == -1 ? "-" | "?");
-                } elif (j == column) {
+                } elif j == column {
                     set line w/= j <- bob[i] == 1 ? "+" | (bob[i] == -1 ? "-" | "?");
                 } else {
                     set line w/= j <- " ";

@@ -40,12 +40,12 @@ namespace Quantum.Kata.Teleportation {
         CNOT(q1, q2);
         
         // now we have |00⟩ + |11⟩ - modify it based on state arg
-        if (state % 2 == 1) {
+        if state % 2 == 1 {
             // negative phase
             Z(q2);
         }
         
-        if (state / 2 == 1) {
+        if state / 2 == 1 {
             X(q2);
         }
     }

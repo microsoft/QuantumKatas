@@ -56,10 +56,10 @@ namespace Quantum.Kata.KeyDistribution {
     // Task 2.2. Prepare Alice's qubits
     operation PrepareAlicesQubits_Reference (qs : Qubit[], bases : Bool[], bits : Bool[]) : Unit is Adj {
         for i in 0 .. Length(qs) - 1 {
-            if (bits[i]) {
+            if bits[i] {
                 X(qs[i]);
             }
-            if (bases[i]) {
+            if bases[i] {
                 H(qs[i]);
             }
         }
@@ -69,7 +69,7 @@ namespace Quantum.Kata.KeyDistribution {
     // Task 2.3. Measure Bob's qubits
     operation MeasureBobsQubits_Reference (qs : Qubit[], bases : Bool[]) : Bool[] {
         for i in 0 .. Length(qs) - 1 {
-            if (bases[i]) {
+            if bases[i] {
                 H(qs[i]);
             }
         }
@@ -83,7 +83,7 @@ namespace Quantum.Kata.KeyDistribution {
         // The shared key consists of those bits.
         mutable key = [];
         for (a, b, bit) in Zipped3(basesAlice, basesBob, measurementsBob) {
-            if (a == b) {
+            if a == b {
                 set key += [bit];
             }
         }
@@ -96,7 +96,7 @@ namespace Quantum.Kata.KeyDistribution {
         let N = Length(keyAlice);
         mutable mismatchCount = 0;
         for i in 0 .. N - 1 {
-            if (keyAlice[i] != keyBob[i]) {
+            if keyAlice[i] != keyBob[i] {
                 set mismatchCount += 1;
             }
         }
@@ -128,7 +128,7 @@ namespace Quantum.Kata.KeyDistribution {
         let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
 
         // 6. Ensure at least the minimum percentage of bits match
-        if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
+        if CheckKeysMatch_Reference(keyAlice, keyBob, threshold) {
             Message($"Successfully generated keys {keyAlice}/{keyBob}");
         }
     }
@@ -172,7 +172,7 @@ namespace Quantum.Kata.KeyDistribution {
         let keyBob = GenerateSharedKey_Reference(basesAlice, basesBob, bitsBob);
 
         // 6. Ensure at least the minimum percentage of bits match
-        if (CheckKeysMatch_Reference(keyAlice, keyBob, threshold)) {
+        if CheckKeysMatch_Reference(keyAlice, keyBob, threshold) {
             Message($"Successfully generated keys {keyAlice}/{keyBob}");
         } else {
             Message($"Caught an eavesdropper, discarding the keys {keyAlice}/{keyBob}");

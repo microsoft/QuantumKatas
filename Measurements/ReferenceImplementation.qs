@@ -37,7 +37,7 @@ namespace Quantum.Kata.Measurements {
 
     // Task 1.2. Set qubit to |0⟩ state
     operation InitializeQubit_Reference (q : Qubit) : Unit {
-        if (M(q) == One) {
+        if M(q) == One {
             X(q);
         }
     }
@@ -113,7 +113,7 @@ namespace Quantum.Kata.Measurements {
     //          return 0 corresponds to state |010⟩, and return 1 corresponds to state |001⟩.
     function FindFirstDiff_Reference (bits1 : Bool[], bits2 : Bool[]) : Int {
         for i in 0 .. Length(bits1) - 1 {
-            if (bits1[i] != bits2[i]) {
+            if bits1[i] != bits2[i] {
                 return i;
             }
         }
@@ -140,12 +140,12 @@ namespace Quantum.Kata.Measurements {
             mutable val1 = 0;
             mutable val2 = 0;
             for j in 0 .. Length(bits1) - 1 {
-                if (bits1[j][i]) {
+                if bits1[j][i] {
                     set val1 += 1;
                 }
             }
             for k in 0 .. Length(bits2) - 1 {
-                if (bits2[k][i]) {
+                if bits2[k][i] {
                     set val2 += 1;
                 }
             }
@@ -166,7 +166,7 @@ namespace Quantum.Kata.Measurements {
 
         let res = ResultAsBool(M(qs[diff]));
 
-        if (res == bits1[0][diff]) {
+        if res == bits1[0][diff] {
             return 0;
         }
         else {
@@ -182,7 +182,7 @@ namespace Quantum.Kata.Measurements {
         // measure all qubits and check in which array you can find the resulting bit string
         let meas = ResultArrayAsBoolArray(MultiM(qs));
         for i in 0 .. Length(bits1) - 1 {
-            if (EqualA(EqualB, bits1[i], meas)) {
+            if EqualA(EqualB, bits1[i], meas) {
                 return 0;
             }
         }
@@ -199,7 +199,7 @@ namespace Quantum.Kata.Measurements {
         // measure all qubits and, treating the result as an integer, check whether it can be found in one of the bit arrays
         let measuredState = ResultArrayAsInt(MultiM(qs));
         for s in bits1 {
-            if (BoolArrayAsInt(s) == measuredState) {
+            if BoolArrayAsInt(s) == measuredState {
                 return 0;
             }
         }
@@ -220,12 +220,12 @@ namespace Quantum.Kata.Measurements {
         mutable countOnes = 0;
 
         for q in qs {
-            if (M(q) == One) {
+            if M(q) == One {
                 set countOnes += 1;
             }
         }
 
-        if (countOnes > 1) {
+        if countOnes > 1 {
             fail "Impossible to get multiple Ones when measuring W state";
         }
         return countOnes == 0 ? 0 | 1;
@@ -254,7 +254,7 @@ namespace Quantum.Kata.Measurements {
         mutable countOnes = 0;
 
         for q in qs {
-            if (M(q) == One) {
+            if M(q) == One {
                 set countOnes += 1;
             }
         }
@@ -519,7 +519,7 @@ namespace Quantum.Kata.Measurements {
         let basis = DrawRandomInt(0, 1);
 
         // randomize over std and had
-        if (basis == 0) {
+        if basis == 0 {
 
             // use standard basis
             let result = M(q);

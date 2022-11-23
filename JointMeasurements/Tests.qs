@@ -46,7 +46,7 @@ namespace Quantum.Kata.JointMeasurements {
             let ans = testImpl(qs);
             if ((ans >= 0) and (ans < nStates)) {
                 // classification result is a valid state index - check if is it correct
-                if (ans != state) {
+                if ans != state {
                     set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
                 }
             }
@@ -55,7 +55,7 @@ namespace Quantum.Kata.JointMeasurements {
                 set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
             }
 
-            if (preserveState) {
+            if preserveState {
                 // check that the state of the qubit after the operation is unchanged
                 Adjoint statePrep(qs, state, alpha);
                 AssertAllZero(qs);
@@ -68,12 +68,12 @@ namespace Quantum.Kata.JointMeasurements {
         mutable totalMisclassifications = 0;
         for i in 0 .. nStates - 1 {
             for j in 0 .. nStates - 1 {
-                if (misclassifications[(i * nStates) + j] != 0) {
+                if misclassifications[(i * nStates) + j] != 0 {
                     set totalMisclassifications += misclassifications[i * nStates + j];
                     Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
                 }
             }
-            if (unknownClassifications[i] != 0) {
+            if unknownClassifications[i] != 0 {
                 set totalMisclassifications += unknownClassifications[i];
                 Message($"Misclassified {stateNames[i]} as Unknown State in {unknownClassifications[i]} test runs.");
             }
@@ -92,7 +92,7 @@ namespace Quantum.Kata.JointMeasurements {
             CNOT(qs[0], qs[i]);
         }
             
-        if (state == 1) {
+        if state == 1 {
             // flip the state of the first half of the qubits
             for i in 0 .. Length(qs) / 2 - 1 {
                 X(qs[i]);
@@ -127,7 +127,7 @@ namespace Quantum.Kata.JointMeasurements {
         
         let N = Length(qs);
             
-        if (N == 1) {
+        if N == 1 {
             // base case of recursion: |1⟩
             X(qs[0]);
         }
@@ -146,7 +146,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     operation StatePrep_GHZOrWState (qs : Qubit[], state : Int, alpha : Double) : Unit is Adj {
         
-        if (state == 0) {
+        if state == 0 {
             StatePrep_ParityMeasurement(qs, 0, alpha);
         } else {
             StatePrep_WState_Arbitrary(qs);
@@ -169,7 +169,7 @@ namespace Quantum.Kata.JointMeasurements {
         Ry(2.0 * alpha, qs[0]);
         CNOT(qs[0], qs[1]);
             
-        if (state == 1) {
+        if state == 1 {
             X(qs[1]);
         }
             

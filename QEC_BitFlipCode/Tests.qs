@@ -34,15 +34,15 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     operation StatePrep_Bitmask (qs : Qubit[], bits : Int) : Unit is Adj {
         
-        if (bits / 4 == 1) {
+        if bits / 4 == 1 {
             X(qs[0]);
         }
             
-        if ((bits / 2) % 2 == 1) {
+        if (bits / 2) % 2 == 1 {
             X(qs[1]);
         }
             
-        if (bits % 2 == 1) {
+        if bits % 2 == 1 {
             X(qs[2]);
         }
     }
@@ -51,7 +51,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     function FindFirstDiff_Reference (bits1 : Int[], bits2 : Int[]) : Int {
         mutable firstDiff = -1;
         for i in 0 .. Length(bits1) - 1 {
-            if (bits1[i] != bits2[i] and firstDiff == -1) {
+            if bits1[i] != bits2[i] and firstDiff == -1 {
                 set firstDiff = i;
             }
         }
@@ -70,14 +70,14 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         H(qs[firstDiff]);
             
         for i in 0 .. Length(qs) - 1 {
-            if (bits1[i] == bits2[i]) {
-                if (bits1[i] == 1) {
+            if bits1[i] == bits2[i] {
+                if bits1[i] == 1 {
                     X(qs[i]);
                 }
             } else {
-                if (i > firstDiff) {
+                if i > firstDiff {
                     CNOT(qs[firstDiff], qs[i]);
-                    if (bits1[i] != bits1[firstDiff]) {
+                    if bits1[i] != bits1[firstDiff] {
                         X(qs[i]);
                     }
                 }
@@ -121,7 +121,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             let bitsStr1 = ToString_Bitmask(b1);
             
             for b2 in b1 + 1 .. 7 {
-                if (Parity(b1) == Parity(b2)) {
+                if Parity(b1) == Parity(b2) {
                     let bits2 = IntToBoolArray(b2);
                     let bitsStr2 = ToString_Bitmask(b2);
                     let p = Parity(b1);
@@ -179,7 +179,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
         StatePrep_Rotate(qs, alpha);
         Encode_Reference(qs);
             
-        if (hasError) {
+        if hasError {
             X(qs[0]);
         }
     }
@@ -276,7 +276,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
             let θ = DrawRandomDouble(0.0, 1.0);
             let statePrep = BoundCA([H, Rz(θ, _)]);
             mutable errorStr = "no error";
-            if (idxError > 0) {
+            if idxError > 0 {
                 set errorStr = $"error on qubit {idxError}";
             }
                 

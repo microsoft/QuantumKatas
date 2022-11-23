@@ -46,11 +46,11 @@ namespace Quantum.Kata.SuperdenseCoding {
         // "11" as Y and |Ψ⁻⟩ = (|01⟩ - |10⟩) / sqrt(2)
         
         // Also, since Y(q) = iX(Z(q)), we can express this shorter:
-        if (message::Bit1) {
+        if message::Bit1 {
             Z(qAlice);
         }
         
-        if (message::Bit2) {
+        if message::Bit2 {
             X(qAlice);
         }
     }

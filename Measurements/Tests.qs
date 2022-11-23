@@ -40,7 +40,7 @@ namespace Quantum.Kata.Measurements {
 
             // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
             let ans = testImpl(q);
-            if (ans != (state == 1)) {
+            if ans != (state == 1) {
                 set misclassifications w/= state <- misclassifications[state] + 1;
             }
 
@@ -50,7 +50,7 @@ namespace Quantum.Kata.Measurements {
         
         mutable totalMisclassifications = 0;
         for i in 0 .. nStates - 1 {
-            if (misclassifications[i] != 0) {
+            if misclassifications[i] != 0 {
                 set totalMisclassifications += misclassifications[i];
                 Message($"Misclassified {stateName[i]} as {stateName[1 - i]} in {misclassifications[i]} test runs.");   
             }
@@ -63,7 +63,7 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation StatePrep_IsQubitOne (q : Qubit, state : Int) : Unit {
-        if (state != 0) {
+        if state != 0 {
             // convert |0⟩ to |1⟩
             X(q);
         }
@@ -94,7 +94,7 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation StatePrep_IsQubitPlus (q : Qubit, state : Int) : Unit {
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to |-⟩
             X(q);
             H(q);
@@ -114,7 +114,7 @@ namespace Quantum.Kata.Measurements {
     // |A⟩ =   cos(alpha) * |0⟩ + sin(alpha) * |1⟩,
     // |B⟩ = - sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
     operation StatePrep_IsQubitA (alpha : Double, q : Qubit, state : Int) : Unit {
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to |B⟩
             X(q);
             Ry(2.0 * alpha, q);
@@ -168,14 +168,14 @@ namespace Quantum.Kata.Measurements {
             // do state prep: convert |0...0⟩ to outcome with return equal to state
             statePrep(qs, state);
 
-            if (measurementsPerRun > 0) {
+            if measurementsPerRun > 0 {
                 ResetOracleCallsCount();
             }
             // get the solution's answer and verify that it's a match, if not, increase the exact mismatch count
             let ans = testImpl(qs);
             if ((ans >= 0) and (ans < nStates)) {
                 // classification result is a valid state index - check if is it correct
-                if (ans != state) {
+                if ans != state {
                     set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
                 }
             }
@@ -184,7 +184,7 @@ namespace Quantum.Kata.Measurements {
                 set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
             }
             // if we have a max number of measurements per solution run specified, check that it is not exceeded
-            if (measurementsPerRun > 0) {
+            if measurementsPerRun > 0 {
                 let nm = GetOracleCallsCount(Measure);
                 EqualityFactB(nm <= 1, true, $"You are allowed to do at most one measurement, and you did {nm}");
             }
@@ -196,12 +196,12 @@ namespace Quantum.Kata.Measurements {
         mutable totalMisclassifications = 0;
         for i in 0 .. nStates - 1 {
             for j in 0 .. nStates - 1 {
-                if (misclassifications[(i * nStates) + j] != 0) {
+                if misclassifications[(i * nStates) + j] != 0 {
                     set totalMisclassifications += misclassifications[i * nStates + j];
                     Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
                 }
             }
-            if (unknownClassifications[i] != 0) {
+            if unknownClassifications[i] != 0 {
                 set totalMisclassifications += unknownClassifications[i];
                 Message($"Misclassified {stateNames[i]} as Unknown State in {unknownClassifications[i]} test runs.");
             }
@@ -213,7 +213,7 @@ namespace Quantum.Kata.Measurements {
 
     // ------------------------------------------------------
     operation StatePrep_ZeroZeroOrOneOne (qs : Qubit[], state : Int) : Unit {
-        if (state == 1) {
+        if state == 1 {
             // |11⟩
             X(qs[0]);
             X(qs[1]);
@@ -229,12 +229,12 @@ namespace Quantum.Kata.Measurements {
     // ------------------------------------------------------
     operation StatePrep_BasisStateMeasurement (qs : Qubit[], state : Int) : Unit {
 
-        if (state / 2 == 1) {
+        if state / 2 == 1 {
             // |10⟩ or |11⟩
             X(qs[0]);
         }
 
-        if (state % 2 == 1) {
+        if state % 2 == 1 {
             // |01⟩ or |11⟩
             X(qs[1]);
         }
@@ -249,7 +249,7 @@ namespace Quantum.Kata.Measurements {
     // ------------------------------------------------------
     operation StatePrep_Bitstring (qs : Qubit[], bits : Bool[]) : Unit {
         for i in 0 .. Length(qs) - 1 {
-            if (bits[i]) {
+            if bits[i] {
                 X(qs[i]);
             }
         }
@@ -301,7 +301,7 @@ namespace Quantum.Kata.Measurements {
     // ------------------------------------------------------
     operation StatePrep_FindFirstDiff (bits1 : Bool[], bits2 : Bool[]) : Int {
         for i in 0 .. Length(bits1) - 1 {
-            if (bits1[i] != bits2[i]) {
+            if bits1[i] != bits2[i] {
                 return i;
             }
         }
@@ -313,14 +313,14 @@ namespace Quantum.Kata.Measurements {
     operation StatePrep_BitstringSuperposition (qs : Qubit[], bits : Bool[][]) : Unit {
         let L = Length(bits);
         Fact(L == 1 or L == 2 or L == 4, "State preparation only supports arrays of 1, 2 or 4 bit strings");
-        if (L == 1) {
+        if L == 1 {
             for i in 0 .. Length(qs) - 1 {
-                if (bits[0][i]) {
+                if bits[0][i] {
                     X(qs[i]);
                 }
             }
         }
-        if (L == 2) {
+        if L == 2 {
             // find the index of the first bit at which the bit strings are different
             let firstDiff = StatePrep_FindFirstDiff(bits[0], bits[1]);
 
@@ -329,23 +329,23 @@ namespace Quantum.Kata.Measurements {
 
             // iterate through the bit strings again setting the final state of qubits
             for i in 0 .. Length(qs) - 1 {
-                if (bits[0][i] == bits[1][i]) {
+                if bits[0][i] == bits[1][i] {
                     // if two bits are the same, apply X or nothing
-                    if (bits[0][i]) {
+                    if bits[0][i] {
                         X(qs[i]);
                     }
                 } else {
                     // if two bits are different, set their difference using CNOT
-                    if (i > firstDiff) {
+                    if i > firstDiff {
                         CNOT(qs[firstDiff], qs[i]);
-                        if (bits[0][i] != bits[0][firstDiff]) {
+                        if bits[0][i] != bits[0][firstDiff] {
                             X(qs[i]);
                         }
                     }
                 }
             }
         }
-        if (L == 4) {
+        if L == 4 {
             let N = Length(qs);
 
             use anc = Qubit[2];
@@ -355,7 +355,7 @@ namespace Quantum.Kata.Measurements {
             // Set up the right pattern on the main qubits with control on ancillas
             for i in 0 .. 3 {
                 for j in 0 .. N - 1 {
-                    if ((bits[i])[j]) {
+                    if bits[i][j] {
                         (ControlledOnInt(i, X))(anc, qs[j]);
                     }
                 }
@@ -363,10 +363,10 @@ namespace Quantum.Kata.Measurements {
 
             // Uncompute the ancillas, using patterns on main qubits as control
             for i in 0 .. 3 {
-                if (i % 2 == 1) {
+                if i % 2 == 1 {
                     (ControlledOnBitString(bits[i], X))(qs, anc[0]);
                 }
-                if (i / 2 == 1) {
+                if i / 2 == 1 {
                     (ControlledOnBitString(bits[i], X))(qs, anc[1]);
                 }
             }
@@ -384,7 +384,7 @@ namespace Quantum.Kata.Measurements {
     function IntArrayAsStateName (qubits : Int, bitStrings : Bool[][]) : String {
         mutable statename = "";
         for i in 0 .. Length(bitStrings) - 1 {
-            if (i > 0) {
+            if i > 0 {
                 set statename += " + ";
             }
             set statename += BoolArrayAsKetState(bitStrings[i]);
@@ -480,7 +480,7 @@ namespace Quantum.Kata.Measurements {
     operation WState_Arbitrary_Reference (qs : Qubit[]) : Unit is Adj + Ctl {
         let N = Length(qs);
 
-        if (N == 1) {
+        if N == 1 {
             // base case of recursion: |1⟩
             X(qs[0]);
         } else {
@@ -499,7 +499,7 @@ namespace Quantum.Kata.Measurements {
 
     operation StatePrep_AllZerosOrWState (qs : Qubit[], state : Int) : Unit {
 
-        if (state == 1) {
+        if state == 1 {
             // prep W state
             WState_Arbitrary_Reference(qs);
         }
@@ -525,7 +525,7 @@ namespace Quantum.Kata.Measurements {
 
     operation StatePrep_GHZOrWState (qs : Qubit[], state : Int) : Unit {
 
-        if (state == 0) {
+        if state == 0 {
             // prep GHZ state
             GHZ_State_Reference(qs);
         } else {
@@ -552,11 +552,11 @@ namespace Quantum.Kata.Measurements {
         CNOT(qs[0], qs[1]);
 
         // now we have |00⟩ + |11⟩ - modify it based on state arg
-        if (state % 2 == 1) {
+        if state % 2 == 1 {
             // negative phase
             Z(qs[1]);
         }
-        if (state / 2 == 1) {
+        if state / 2 == 1 {
             X(qs[1]);
         }
     }
@@ -625,7 +625,7 @@ namespace Quantum.Kata.Measurements {
 
         WState_Arbitrary_Reference(qs);
 
-        if (state == 0) {
+        if state == 0 {
             // prep 1/sqrt(3) ( |100⟩ + ω |010⟩ + ω² |001⟩ )
             R1(2.0 * PI() / 3.0, qs[1]);
             R1(4.0 * PI() / 3.0, qs[2]);
@@ -650,7 +650,7 @@ namespace Quantum.Kata.Measurements {
 
     operation StatePrep_IsQubitZeroOrPlus (q : Qubit, state : Int) : Unit {
 
-        if (state != 0) {
+        if state != 0 {
             // convert |0⟩ to |+⟩
             H(q);
         }
@@ -673,7 +673,7 @@ namespace Quantum.Kata.Measurements {
 
             // get the solution's answer and verify that it's a match
             let ans = testImpl(qs[0]);
-            if (ans == (state == 0)) {
+            if ans == (state == 0) {
                 set nOk += 1;
             }
 
@@ -681,7 +681,7 @@ namespace Quantum.Kata.Measurements {
             ResetAll(qs);
         }
 
-        if (IntAsDouble(nOk) < threshold * IntAsDouble(nTotal)) {
+        if IntAsDouble(nOk) < threshold * IntAsDouble(nTotal) {
             fail $"{nTotal - nOk} test runs out of {nTotal} returned incorrect state which does not meet the required threshold of at least {threshold * 100.0}%.";
         }
     }
@@ -727,7 +727,7 @@ namespace Quantum.Kata.Measurements {
             }
 
             // keep track of the number of inconclusive answers given
-            if (ans == -1) {
+            if ans == -1 {
                 set nInconc += 1;
             }
 
@@ -748,15 +748,15 @@ namespace Quantum.Kata.Measurements {
             ResetAll(qs);
         }
 
-        if (IntAsDouble(nInconc) > thresholdInconcl * IntAsDouble(nTotal)) {
+        if IntAsDouble(nInconc) > thresholdInconcl * IntAsDouble(nTotal) {
             fail $"{nInconc} test runs out of {nTotal} returned inconclusive which does not meet the required threshold of at most {thresholdInconcl * 100.0}%.";
         }
 
-        if (IntAsDouble(nConclOne) < thresholdConcl * IntAsDouble(nTotal)) {
+        if IntAsDouble(nConclOne) < thresholdConcl * IntAsDouble(nTotal) {
             fail $"Only {nConclOne} test runs out of {nTotal} returned conclusive |0⟩ which does not meet the required threshold of at least {thresholdConcl * 100.0}%.";
         }
 
-        if (IntAsDouble(nConclPlus) < thresholdConcl * IntAsDouble(nTotal)) {
+        if IntAsDouble(nConclPlus) < thresholdConcl * IntAsDouble(nTotal) {
             fail $"Only {nConclPlus} test runs out of {nTotal} returned conclusive |+> which does not meet the required threshold of at least {thresholdConcl * 100.0}%.";
         }
     }
@@ -772,10 +772,10 @@ namespace Quantum.Kata.Measurements {
         let alpha = (2.0 * PI()) / 3.0;
         H(q);
 
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to 1/sqrt(2) (|0⟩ + |1⟩)
         }
-        elif (state == 1) {
+        elif state == 1 {
             // convert |0⟩ to 1/sqrt(2) (|0⟩ + ω |1⟩), where ω = exp(2iπ/3)
             R1(alpha, q);
         }
@@ -812,7 +812,7 @@ namespace Quantum.Kata.Measurements {
             }
 
             // check if upon conclusive result the answer is actually correct
-            if (ans == state) {
+            if ans == state {
                 fail $"State {state} led to incorrect conclusive response {ans}.";
             }
 
