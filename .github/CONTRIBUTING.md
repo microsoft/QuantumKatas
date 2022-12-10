@@ -173,7 +173,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
 
 #### Validating changes to `%kata` and `%check_kata` magics on local machine
 1. Do your changes in the [`KataMagic.cs`](../utilities/Microsoft.Quantum.Katas/KataMagic.cs) and [`CheckKataMagic.cs`](../utilities/Microsoft.Quantum.Katas/CheckKataMagic.cs), for example, add logging statements:
-   ```
+   ```csharp
    Logger.LogDebug($"Value : {val}");
    ```
 2. Generate a custom NuGet package `Microsoft.Quantum.Katas`.
@@ -186,7 +186,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    3. Remove the package reference to `Microsoft.Quantum.Katas` package from the .csproj file of your project.
       > This might cause your project to fail build, for example, if it uses CounterSimulator functionality. It will build successfully from the Q# Notebook once you add this package dynamically.
    4. Set up NuGet.config file in the project folder to allow the project to discover a NuGet package in the current folder in addition to the standard sources. Here's an example file:
-      ```
+      ```xml
       <?xml version="1.0" encoding="utf-8"?>
       <configuration>
         <packageSources>
@@ -198,7 +198,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    1. Set the environment variable `IQSHARP_LOG_LEVEL=Debug`.
       > The environment variable is case-sensitive.
    2. Navigate to your project folder and run the following command:
-      ```
+      ```bash
       $ start jupyter notebook <your notebook name>
       ```
       > This will launch Q# Jupyter Notebooks server in a new window, which is
