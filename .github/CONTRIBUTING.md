@@ -181,7 +181,7 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
       ```xml
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
-      If you need to get a version other than 1.0.0, add a field the below field under the same tag.
+      If you need to get a version other than 1.0.0, add the below field under the same tag.
       ```xml
       <Version>version-number</Version>
       ```
