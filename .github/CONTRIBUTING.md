@@ -178,10 +178,13 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
    ```
 2. Generate a custom NuGet package `Microsoft.Quantum.Katas`.
    1. Build the Microsoft.Quantum.Katas project to produce a NuGet package. To do this, you can add the following field to the [Microsoft.Quantum.Katas.csproj](../utilities/Microsoft.Quantum.Katas/Microsoft.Quantum.Katas.csproj) under the `<PropertyGroup>` tag:
-      ```
+      ```xml
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       ```
-      If you need to get a version other than 1.0.0, add a field `<Version>version-number</Version>` under the same tag.
+      If you need to get a version other than 1.0.0, add a field the below field under the same tag.
+      ```xml
+      <Version>version-number</Version>
+      ```
    2. Copy the generated .nupkg file from the `Microsoft.Quantum.Katas\bin\Debug` folder to the folder in which the test kata project resides (such as PhaseEstimation kata).
    3. Remove the package reference to `Microsoft.Quantum.Katas` package from the .csproj file of your project.
       > This might cause your project to fail build, for example, if it uses CounterSimulator functionality. It will build successfully from the Q# Notebook once you add this package dynamically.
