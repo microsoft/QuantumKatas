@@ -48,7 +48,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let actual = IsFunctionConstant_Classical(N, f);
         
         // check that the return value is correct
-        if (actual != expected) {
+        if actual != expected {
             let actualStr = ConstantOrBalanced(actual);
             let expectedStr = ConstantOrBalanced(expected);
             fail $"    identified as {actualStr} but it is {expectedStr}.";
@@ -87,14 +87,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let actual = DeutschAlgorithm(oracle);
         
         // check that the return value is correct
-        if (actual != expected) {
+        if actual != expected {
             let actualStr = ConstantOrBalanced(actual);
             let expectedStr = ConstantOrBalanced(expected);
             fail $"    identified as {actualStr} but it is {expectedStr}.";
         }
 
         let nu = GetOracleCallsCount(oracle);
-        if (nu > 1) {
+        if nu > 1 {
             fail $"    took {nu} oracle calls to decide; you are only allowed to call the oracle once";
         }
 
@@ -137,14 +137,14 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         let actual = DeutschJozsaAlgorithm(N, oracle);
         
         // check that the return value is correct
-        if (actual != expected) {
+        if actual != expected {
             let actualStr = ConstantOrBalanced(actual);
             let expectedStr = ConstantOrBalanced(expected);
             fail $"    identified as {actualStr} but it is {expectedStr}.";
         }
 
         let nu = GetOracleCallsCount(oracle);
-        if (nu > 1) {
+        if nu > 1 {
             fail $"    took {nu} oracle calls to decide; you are only allowed to call the oracle once";
         }
 
