@@ -304,7 +304,7 @@ namespace Quantum.Kata.GroversAlgorithm {
             let res = MultiM(register);
             // to check whether the result is correct, apply the oracle to the register plus ancilla after measurement
             oracle(register, output);
-            if (MResetZ(output) == One) {
+            if MResetZ(output) == One {
                 set correct = true;
                 set answer = ResultArrayAsBoolArray(res);
             }
@@ -313,7 +313,7 @@ namespace Quantum.Kata.GroversAlgorithm {
         fixup {
             set iter *= 2;
         }
-        if (not correct) {
+        if not correct {
             fail "Failed to find an answer";
         }
         Message($"{answer}");

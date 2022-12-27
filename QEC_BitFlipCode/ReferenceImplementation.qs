@@ -35,7 +35,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     
     // Task 4. Error Correction I
     operation CorrectErrorOnLeftQubit_Reference (register : Qubit[]) : Unit {
-        if (Measure([PauliZ, PauliZ], register[0 .. 1]) == One) {
+        if Measure([PauliZ, PauliZ], register[0 .. 1]) == One {
             X(register[0]);
         }
     }
@@ -66,7 +66,7 @@ namespace Quantum.Kata.QEC_BitFlipCode {
     // Task 6. Error Correction II
     operation CorrectErrorOnAnyQubit_Reference (register : Qubit[]) : Unit {
         let idx = DetectErrorOnAnyQubit_Reference(register);
-        if (idx > 0) {
+        if idx > 0 {
             X(register[idx - 1]);
         }
     }

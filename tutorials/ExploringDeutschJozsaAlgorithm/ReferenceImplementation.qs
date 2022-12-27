@@ -34,7 +34,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         // Try all the following inputs to see if any of the values differ; should be run 2ᴺ⁻¹ times
         for input in 1 .. 2 ^ (N - 1) {
             let nextValue = f(input);
-            if (nextValue != firstValue) {
+            if nextValue != firstValue {
                 // Got two different values - the function is balanced
                 return false;
             }
@@ -83,7 +83,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         oracle(x);
         ApplyToEach(H, x);
         for q in x {
-            if (M(q) == One) {
+            if M(q) == One {
                 set isConstantFunction = false;
             }
         }

@@ -178,10 +178,10 @@ namespace Quantum.Kata.UnitaryPatterns {
     function TwoPatterns_Pattern (size : Int, row : Int, col : Int) : Bool {
         // top right and bottom left quarters are all 0
         let s2 = size / 2;
-        if (row / s2 != col / s2) {
+        if row / s2 != col / s2 {
             return false;
         }
-        if (row / s2 == 0) {
+        if row / s2 == 0 {
             // top left quarter is an anti-diagonal
             return row % s2 + col % s2 == s2 - 1;
         }
@@ -201,12 +201,12 @@ namespace Quantum.Kata.UnitaryPatterns {
     function IncreasingBlocks_Pattern (size : Int, row : Int, col : Int) : Bool {
         // top right and bottom left quarters are all 0
         let s2 = size / 2;
-        if (row / s2 != col / s2) {
+        if row / s2 != col / s2 {
             return false;
         }
-        if (row / s2 == 0) {
+        if row / s2 == 0 {
             // top left quarter is the same pattern for s2, except for the start of the recursion
-            if (s2 == 1) {
+            if s2 == 1 {
                 return true;
             }
             return IncreasingBlocks_Pattern(s2, row, col);

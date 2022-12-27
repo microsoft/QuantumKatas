@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.Quantum.Sdk/0.27.238334">
+<Project Sdk="Microsoft.Quantum.Sdk/0.27.244707">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>

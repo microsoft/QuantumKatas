@@ -57,7 +57,7 @@ namespace Quantum.Kata.JointMeasurements {
     operation ControlledX_Reference (qs : Qubit[]) : Unit {
         H(qs[1]);
         
-        if (MeasureAllZ(qs) == One){
+        if MeasureAllZ(qs) == One {
             X(qs[1]);  
 	    }
     }
@@ -82,10 +82,10 @@ namespace Quantum.Kata.JointMeasurements {
             let m = M(a);
                 
             // apply fixups
-            if (p2 == One) {
+            if p2 == One {
                 Z(c);
             }
-            if (p1 != m) {
+            if p1 != m {
                 X(t);
             }
         }

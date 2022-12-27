@@ -38,12 +38,12 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
 
             // get the solution's answer and verify if NOT a match, then differentiate what kind of mismatch
             let ans = testImpl(q);
-            if (ans != (state == 1)) {
+            if ans != (state == 1) {
                 set misclassifications w/= state <- misclassifications[state] + 1;
             }
                 
             // If the final state is to be verified, check if it matches the measurement outcome
-            if (checkFinalState) {
+            if checkFinalState {
                 Adjoint statePrep(q, state);
                 AssertQubit(Zero, q);
             } else {
@@ -53,7 +53,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
         
         mutable totalMisclassifications = 0;
         for i in 0 .. nStates - 1 {
-            if (misclassifications[i] != 0) {
+            if misclassifications[i] != 0 {
                 set totalMisclassifications += misclassifications[i];
                 Message($"Misclassified {stateName[i]} as {stateName[1 - i]} in {misclassifications[i]} test runs.");   
             }
@@ -67,7 +67,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // Exercise 2. Distinguish |0❭ and |1❭
     // ------------------------------------------------------
     operation StatePrep_IsQubitZero (q : Qubit, state : Int) : Unit is Adj {
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to |1⟩
             X(q);
         }
@@ -84,7 +84,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // Exercise 3. Distinguish |+❭ and |-❭ using Measure operation
     // ------------------------------------------------------
     operation StatePrep_IsQubitMinus (q : Qubit, state : Int) : Unit is Adj {
-        if (state == 1) {
+        if state == 1 {
             // convert |0⟩ to |-⟩
             X(q);
             H(q);
@@ -106,7 +106,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // |ψ₊⟩ =   0.6 * |0⟩ + 0.8 * |1⟩,
     // |ψ₋⟩ =  -0.8 * |0⟩ + 0.6 * |1⟩.
     operation StatePrep_IsQubitPsiPlus (q : Qubit, state : Int) : Unit is Adj {
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to |ψ₋⟩
             X(q);
             Ry(2.0 * ArcTan2(0.8, 0.6), q);
@@ -130,7 +130,7 @@ namespace Quantum.Kata.SingleQubitSystemMeasurements {
     // |A⟩ =   cos(alpha) * |0⟩ - i sin(alpha) * |1⟩,
     // |B⟩ = - i sin(alpha) * |0⟩ + cos(alpha) * |1⟩.
     operation StatePrep_IsQubitA (alpha : Double, q : Qubit, state : Int) : Unit is Adj {
-        if (state == 0) {
+        if state == 0 {
             // convert |0⟩ to |B⟩
             X(q);
             Rx(2.0 * alpha, q);

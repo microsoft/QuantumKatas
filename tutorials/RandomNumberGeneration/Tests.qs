@@ -135,7 +135,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         }
 
         for i in min..max {
-            if (counts[i] < Floor(minimumCopiesGenerated)) {
+            if counts[i] < Floor(minimumCopiesGenerated) {
                 Message($"Unexpectedly low number of {i}'s generated. Only {counts[i]} out of {nRuns} were {i}");
                 return false;
             }
@@ -147,7 +147,7 @@ namespace Quantum.Kata.RandomNumberGeneration {
         mutable totalCount = 0;
         for i in 0 .. arrSize - 1 {
             set totalCount = totalCount + counts[i];
-            if (totalCount >= sampleSize / 2) {
+            if totalCount >= sampleSize / 2 {
                 return i;
             }
         }
@@ -196,15 +196,15 @@ namespace Quantum.Kata.RandomNumberGeneration {
         let goalZeroCount = (x == 0.0) ? 0 | (x == 1.0) ? nRuns | Floor(x * IntAsDouble(nRuns));
         // We don't have tests with probabilities near 0.0 or 1.0, so for those the matching has to be exact
         if (goalZeroCount == 0 or goalZeroCount == nRuns) {
-            if (zeroCount != goalZeroCount) {
+            if zeroCount != goalZeroCount {
                 Message($"Expected {x * 100.0}% 0's, instead got {zeroCount} 0's out of {nRuns}");
                 return false;
             }
         } else {
-            if (zeroCount < goalZeroCount - 4 * nRuns / 100) {
+            if zeroCount < goalZeroCount - 4 * nRuns / 100 {
                 Message($"Unexpectedly low number of 0's generated: expected around {x * IntAsDouble(nRuns)} 0's, got {zeroCount} out of {nRuns}");
                 return false;
-            } elif (zeroCount > goalZeroCount + 4 * nRuns / 100) {
+            } elif zeroCount > goalZeroCount + 4 * nRuns / 100 {
                 Message($"Unexpectedly high number of 0's generated: expected around {x * IntAsDouble(nRuns)} 0's, got {zeroCount} out of {nRuns}");
                 return false;
             }

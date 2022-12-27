@@ -55,7 +55,7 @@ namespace Quantum.Kata.RippleCarryAdder {
     function BinaryXor (bits : Bool[]) : Bool {
         mutable ans = false;
         for bit in bits {
-            if (bit) {
+            if bit {
                 set ans = not ans;
             }
         }
@@ -148,7 +148,7 @@ namespace Quantum.Kata.RippleCarryAdder {
         let N = Length(bits);
         let astr = $"Inputs a:{BoolArrayAsResultArray(bits[0 .. (N/2)-1])}";
         let postfix = " produce unexpected output: ";
-        if (N % 2 == 0) {
+        if N % 2 == 0 {
             // Only a and b inputs
             return astr + $" and b:{BoolArrayAsResultArray(bits[N/2 ...])}" + postfix;
         }
