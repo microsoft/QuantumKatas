@@ -1,0 +1,21 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"image": "publicquantumkatas.azurecr.io/katas:latest",
+	"extensions": [
+		"quantum.quantum-devkit-vscode",
+		"ms-toolsai.jupyter",
+		"ms-python.python"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"workbench.editorAssociations": {
+					"*.md": "vscode.markdown.preview.editor",
+					"*.ipynb": "jupyter-notebook"
+				}
+			}
+		}
+	}
+}
