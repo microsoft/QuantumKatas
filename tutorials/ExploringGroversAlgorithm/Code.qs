@@ -177,7 +177,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
             GroversAlgorithm_Loop(register, oracle, iter);
             let res = MultiM(register);
             oracle(register, answer);
-            if (MResetZ(answer) == One) {
+            if MResetZ(answer) == One {
                 set correct += 1;
             }
             ResetAll(register);
@@ -205,7 +205,7 @@ namespace Quantum.Kata.ExploringGroversAlgorithm
             GroversAlgorithm_Loop(register, oracle, iter);
             let res = MultiM(register);
             oracle(register, answer);
-            if (MResetZ(answer) == One) {
+            if MResetZ(answer) == One {
                 set correct += 1;
             }
             ResetAll(register);

@@ -28,13 +28,13 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
 
     // Exercise 7. State selection using partial measurements
     operation StateSelction_Reference(qs : Qubit[], i : Int) : Unit  {
-        if (i == 0) {
-            if (M(qs[0]) == One){
+        if i == 0 {
+            if M(qs[0]) == One {
                 // apply the X gate to the second qubit
                 X(qs[1]);
             }
         } else {
-            if (M(qs[0]) == Zero){
+            if M(qs[0]) == Zero {
                 // apply the X gate to the second qubit only
                 X(qs[1]);
             }
