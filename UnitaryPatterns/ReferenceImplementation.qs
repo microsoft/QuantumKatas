@@ -80,7 +80,7 @@ namespace Quantum.Kata.UnitaryPatterns {
 
         let N = Length(qs);
         // for N = 1, we need an identity
-        if (N > 1) {
+        if N > 1 {
             // do the bottom-right quarter
             ApplyToEachCA(Controlled H([Tail(qs)], _), Most(qs));
             // do the top-left quarter by calling the same operation recursively
@@ -151,7 +151,7 @@ namespace Quantum.Kata.UnitaryPatterns {
     // Helper function for Embedding_Perm: finds first location where bit strings differ. 
     function FirstDiff (bits1 : Bool[], bits2 : Bool[]) : Int {
         for i in 0 .. Length(bits1)-1 {
-            if (bits1[i] != bits2[i]) {
+            if bits1[i] != bits2[i] {
                 return i;
             }
         }
@@ -171,24 +171,24 @@ namespace Quantum.Kata.UnitaryPatterns {
         // we care only about 2 inputs: basis state of bits1 and bits2
 
         // make sure that the state corresponding to bits1 has qs[diff] set to |0⟩
-        if (bits1[diff]) { 
+        if bits1[diff] { 
             X(qs[diff]); 
         }
         
         // iterate through the bit strings again, setting the final state of qubits
         for i in 0..n-1 {
-            if (bits1[i] == bits2[i]) {
+            if bits1[i] == bits2[i] {
                 // if two bits are the same, set both to 1 using X or nothing
-                if (not bits1[i]) {
+                if not bits1[i] {
                     X(qs[i]);
                 }
             } else {
                 // if two bits are different, set both to 1 using CNOT
-                if (i > diff) {
-                    if (not bits1[i]) {
+                if i > diff {
+                    if not bits1[i] {
                         (ControlledOnInt(0,X))([qs[diff]], qs[i]);
                     }
-                    if (not bits2[i]) {
+                    if not bits2[i] {
                         CNOT(qs[diff], qs[i]);
                     }
                 }
@@ -196,7 +196,7 @@ namespace Quantum.Kata.UnitaryPatterns {
         }
 
         // move the differing bit to the last qubit
-        if (diff < n-1) {
+        if diff < n-1 {
             SWAP(qs[n-1], qs[diff]);
         }
     }

@@ -266,7 +266,7 @@ namespace Quantum.Kata.Superposition {
                 for i in 0 .. 3 {
                     set numbers w/= i <- DrawRandomInt(0, 1 <<< N - 1);
                     for j in 0 .. i - 1 {
-                        if (numbers[i] == numbers[j]) {
+                        if numbers[i] == numbers[j] {
                             set ok = false;
                         }
                     }

@@ -47,7 +47,7 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
             let ans = testImpl(qs);
             if ((ans >= 0) and (ans < nStates)) {
                 // classification result is a valid state index - check if is it correct
-                if (ans != state) {
+                if ans != state {
                     set misclassifications w/= ((state * nStates) + ans) <- (misclassifications[(state * nStates) + ans] + 1);
                 }
             }
@@ -56,7 +56,7 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
                 set unknownClassifications w/= state <- (unknownClassifications[state] + 1);  
             }
 
-            if (preserveState) {
+            if preserveState {
                 // check that the state of the qubit after the operation is unchanged
                 Adjoint statePrep(qs, state, alpha);
                 AssertAllZero(qs);
@@ -69,12 +69,12 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
         mutable totalMisclassifications = 0;
         for i in 0 .. nStates - 1 {
             for j in 0 .. nStates - 1 {
-                if (misclassifications[(i * nStates) + j] != 0) {
+                if misclassifications[(i * nStates) + j] != 0 {
                     set totalMisclassifications += misclassifications[i * nStates + j];
                     Message($"Misclassified {stateNames[i]} as {stateNames[j]} in {misclassifications[(i * nStates) + j]} test runs.");
                 }
             }
-            if (unknownClassifications[i] != 0) {
+            if unknownClassifications[i] != 0 {
                 set totalMisclassifications += unknownClassifications[i];
                 Message($"Misclassified {stateNames[i]} as Unknown State in {unknownClassifications[i]} test runs.");
             }
@@ -87,11 +87,11 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
     // Exercise 3: Distinguish four basis states
     // ------------------------------------------------------
     operation StatePrep_BasisStateMeasurement(qs : Qubit[], state : Int, dummyVar : Double) : Unit is Adj {
-        if (state / 2 == 1) {
+        if state / 2 == 1 {
             // |10⟩ or |11⟩
             X(qs[0]);
         }
-        if (state % 2 == 1) {
+        if state % 2 == 1 {
             // |01⟩ or |11⟩
             X(qs[1]);
         }
@@ -107,7 +107,7 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
     // Exercise 5: Distinguish orthogonal states using partial measurements
     // ------------------------------------------------------
     operation StatePrep_IsPlusPlusMinus (qs : Qubit[], state : Int, dummyVar : Double) : Unit is Adj{
-        if (state == 0){
+        if state == 0 {
             // prepare the state |++-⟩
             H(qs[0]);
             H(qs[1]);
@@ -152,7 +152,7 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
         // set the second qubit in a superposition a |0⟩ + b|1⟩
         // with a = cos alpha, b = sin alpha
         Ry(2.0 * alpha, qs[1]); 
-        if (Choice == 1) { 
+        if Choice == 1 { 
             // if the Choice is 1, change the state to b|0⟩ + a|1⟩
             X(qs[1]);
         }
@@ -227,7 +227,7 @@ namespace Quantum.Kata.MultiQubitSystemMeasurements {
             CNOT(qs[0], qs[i]);
         }
             
-        if (state == 1) {
+        if state == 1 {
             // flip the state of the first half of the qubits
             for i in 0 .. Length(qs) / 2 - 1 {
                 X(qs[i]);

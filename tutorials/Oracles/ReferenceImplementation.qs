@@ -98,7 +98,7 @@ namespace Quantum.Kata.Oracles {
     operation ArbitraryBitPattern_Oracle_Challenge_Reference (x : Qubit[], pattern : Bool[]) : Unit is Adj + Ctl {
         within {
             for i in IndexRange(x) {
-                if (not pattern[i]) {
+                if not pattern[i] {
                     X(x[i]);
                 }
             }

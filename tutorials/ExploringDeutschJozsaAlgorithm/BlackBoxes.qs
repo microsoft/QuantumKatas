@@ -40,7 +40,7 @@ namespace Quantum.Kata.DeutschJozsaAlgorithm {
         mutable nOnes = 0;
         mutable xBits = x;
         while (xBits > 0) {
-            if (xBits % 2 > 0) {
+            if xBits % 2 > 0 {
                 set nOnes += 1;
             }
             set xBits /= 2;
