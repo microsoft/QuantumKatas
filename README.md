@@ -173,7 +173,7 @@ If you have Git installed, clone the Microsoft/QuantumKatas repository:
 $ git clone https://github.com/Microsoft/QuantumKatas.git
 ```
 
-> **TIP**
+> **TIP**  
 > Both Visual Studio 2022 and Visual Studio Code make it easy to clone repositories from within your development environment.
 > For details, see the [Visual Studio](https://docs.microsoft.com/azure/devops/repos/git/clone?view=azure-devops&tabs=visual-studio#clone-from-another-git-provider) and [Visual Studio Code](https://code.visualstudio.com/docs/editor/versioncontrol#_cloning-a-repository) documentation.
 
@@ -230,7 +230,7 @@ To open the **BasicGates** kata in Visual Studio 2022, open the **QuantumKatas/B
 To open the **BasicGates** kata in Visual Studio Code, open the **QuantumKatas/BasicGates/** folder.
 Press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) to open the **Command Palette**. Type **Open Folder** on Windows 10 or Linux or **Open** on macOS.
 
-> **TIP**
+> **TIP**  
 > Almost all commands available in Visual Studio Code are in the Command Palette.
 > If you get stuck, press **Ctrl + Shift + P** (or **⌘ + Shift + P** on macOS) and start typing to search through all available commands.
 >
