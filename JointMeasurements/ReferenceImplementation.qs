@@ -64,7 +64,7 @@ namespace Quantum.Kata.JointMeasurements {
     
     
     // Task 7**. Controlled X gate with arbitrary target
-    operation ControlledX_General_Reference (qs : Qubit[]) : Unit {
+    operation ControlledX_General_Reference (qs : Qubit[]) : Unit is Adj {
         // This implementation follows the description at https://arxiv.org/pdf/1201.5734.pdf.
         // Note the parity notation used in the table of fixups in the paper
         // differs from the notation used in Q#.

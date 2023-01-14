@@ -106,7 +106,7 @@ namespace Quantum.Kata.JointMeasurements {
     //        two-qubit state α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩.
     // Goal:  Change the two-qubit state to α|00⟩ + β|01⟩ + δ|10⟩ + γ|11⟩ using only single-qubit gates and joint measurements.
     //        Do not use two-qubit gates.
-    operation ControlledX_General (qs : Qubit[]) : Unit {
+    operation ControlledX_General (qs : Qubit[]) : Unit is Adj {
         // Hint: You can use an extra qubit to perform this operation.
         // ...
     }
