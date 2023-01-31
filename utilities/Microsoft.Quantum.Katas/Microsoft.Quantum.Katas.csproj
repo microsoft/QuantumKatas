@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="all" />
-    <BuildOutputInPackage Include="..\Common\bin\$(Configuration)\netstandard2.1\Microsoft.Quantum.Katas.Common.dll" />
+    <BuildOutputInPackage Include="..\Common\bin\$(Configuration)\net6.0\Microsoft.Quantum.Katas.Common.dll" />
   </ItemGroup>
 
   <ItemGroup>
