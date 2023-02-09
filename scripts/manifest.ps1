@@ -23,8 +23,8 @@ $artifacts = @{
     ) | ForEach-Object { Join-Path $Env:NUGET_OUTDIR "$_.$Env:NUGET_VERSION.nupkg" };
 
     Assemblies = @(
-        ".\utilities\Common\bin\$Env:BUILD_CONFIGURATION\netstandard2.1\Microsoft.Quantum.Katas.Common.dll",
-        ".\utilities\Microsoft.Quantum.Katas\bin\$Env:BUILD_CONFIGURATION\netstandard2.1\Microsoft.Quantum.Katas.dll"
+        ".\utilities\Common\bin\$Env:BUILD_CONFIGURATION\net6.0\Microsoft.Quantum.Katas.Common.dll",
+        ".\utilities\Microsoft.Quantum.Katas\bin\$Env:BUILD_CONFIGURATION\net6.0\Microsoft.Quantum.Katas.dll"
     ) | ForEach-Object { Join-Path $PSScriptRoot (Join-Path ".." $_) };
 } 
 
