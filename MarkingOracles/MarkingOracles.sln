@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkingOracles", "MarkingOracles.csproj", "{1FD1C660-6646-44B0-B252-32378CBF682B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD1C660-6646-44B0-B252-32378CBF682B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DE89BFF-6EB5-4848-AB40-A01C1CD406FB}
+	EndGlobalSection
+EndGlobal
