@@ -8,5 +8,5 @@ qsharp
 setuptools
 wheel
 pygments>=2.7.4
-ipython==7.33.0
+ipython==8.10.0
 nbclient<=0.6.3
