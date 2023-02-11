@@ -81,6 +81,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 * **[Quantum oracles (tutorial)](./tutorials/Oracles/)**.
   Learn to implement classical functions as equivalent quantum oracles. 
+* **[Marking oracles](./MarkingOracles/)**.
+  Practice implementing marking oracles for a variety of classical functions.
 * **[Exploring Deutsch and Deutsch–Jozsa algorithms (tutorial)](./tutorials/ExploringDeutschJozsaAlgorithm/)**.
   Learn to implement classical functions and equivalent quantum oracles, and compare the quantum
   solution to the Deutsch–Jozsa problem to a classical one.
@@ -89,7 +91,7 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 * **[Simon's algorithm](./SimonsAlgorithm/)**.
   Learn about Simon's algorithm.
 
-#### Grover's search algorithm
+#### Grover's Search Algorithm
 
 * **[Implementing Grover's algorithm](./GroversAlgorithm/)**.
   Learn about Grover's search algorithm and how to write quantum oracles to use with it.
@@ -102,20 +104,20 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 * **[Solving bounded knapsack problem using Grover's algorithm](./BoundedKnapsack/)**.
   Learn how solve the variants of knapsack problem with Grover's search.
 
-#### Tools and libraries/Building up to Shor's algorithm
+#### Tools and Libraries/Building up to Shor's Algorithm
 
 * **[Quantum Fourier transform](./QFT/)**.
   Learn to implement quantum Fourier transform and to use it to perform simple state transformations.
 * **[Phase estimation](./PhaseEstimation/)**.
   Learn about phase estimation algorithms.
 
-#### Entanglement games
+#### Entanglement Games
 
 * **[CHSH game](./CHSHGame/)**.
 * **[GHZ game](./GHZGame/)**.
 * **[Mermin-Peres magic square game](./MagicSquareGame)**.
 
-#### Reversible computing
+#### Reversible Computing
 
 * **[Truth tables](./TruthTables/)**.
   Learn to represent and manipulate Boolean functions as truth tables and to implement them as quantum operations.
