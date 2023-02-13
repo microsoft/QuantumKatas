@@ -11,9 +11,9 @@ steps:
 
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.7'
+    versionSpec: '3.9'
     architecture: 'x64'
-  displayName: 'Use Python 3.7'
+  displayName: 'Use Python 3.9'
 
 - script: pip install -r requirements.txt
   displayName: 'Install Python tools'
