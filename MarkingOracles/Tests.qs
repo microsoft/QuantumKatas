@@ -72,31 +72,6 @@ namespace Quantum.Kata.MarkingOracles {
 
 
     // ------------------------------------------------------
-    function PatternMatchingF(args : Bool[], indices : Int[], pattern : Bool[]) : Bool {
-        for i in 0 .. Length(indices) - 1 {
-            if args[indices[i]] != pattern[i] {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    @Test("QuantumSimulator")
-    operation T02_PatternMatchingOracle () : Unit {
-        for (N, indices, pattern) in [
-            (2, [], []),
-            (2, [1], [true]),
-            (3, [0, 2], [false, true]),
-            (4, [1, 3], [true, false]),
-            (5, [0, 1, 4], [true, true, false])
-        ] {
-            AssertOracleImplementsFunction(N, PatternMatchingOracle(_, _, indices, pattern), PatternMatchingF(_, indices, pattern));
-        }
-    }
-
-
-    // ------------------------------------------------------
     function PeriodicGivenPeriodF(args : Bool[], P : Int) : Bool {
         let N = Length(args);
         for i in 0 .. N - P - 1 {
@@ -109,7 +84,7 @@ namespace Quantum.Kata.MarkingOracles {
 
 
     @Test("QuantumSimulator")
-    operation T03_PeriodicGivenPeriodOracle () : Unit {
+    operation T02_PeriodicGivenPeriodOracle () : Unit {
         for N in 2 .. 6 {
             for P in 2 .. N - 1 {
                 AssertOracleImplementsFunction(N, PeriodicGivenPeriodOracle(_, _, P), PeriodicGivenPeriodF(_, P));
@@ -131,7 +106,7 @@ namespace Quantum.Kata.MarkingOracles {
 
 
     @Test("QuantumSimulator")
-    operation T04_PeriodicOracle () : Unit {
+    operation T03_PeriodicOracle () : Unit {
         for N in 2 .. 6 {
             AssertOracleImplementsFunction(N, PeriodicOracle, PeriodicF);
         }
@@ -150,7 +125,7 @@ namespace Quantum.Kata.MarkingOracles {
 
 
     @Test("QuantumSimulator")
-    operation T05_ContainsSubstringAtPositionOracle () : Unit {
+    operation T04_ContainsSubstringAtPositionOracle () : Unit {
         for (N, P, pattern) in [
             (2, 1, [true]),
             (3, 0, [false, true]),
@@ -160,6 +135,31 @@ namespace Quantum.Kata.MarkingOracles {
             AssertOracleImplementsFunction(N, 
                 ContainsSubstringAtPositionOracle(_, _, pattern, P), 
                 ContainsSubstringAtPositionF(_, pattern, P));
+        }
+    }
+
+
+    // ------------------------------------------------------
+    function PatternMatchingF(args : Bool[], indices : Int[], pattern : Bool[]) : Bool {
+        for i in 0 .. Length(indices) - 1 {
+            if args[indices[i]] != pattern[i] {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Test("QuantumSimulator")
+    operation T05_PatternMatchingOracle () : Unit {
+        for (N, indices, pattern) in [
+            (2, [], []),
+            (2, [1], [true]),
+            (3, [0, 2], [false, true]),
+            (4, [1, 3], [true, false]),
+            (5, [0, 1, 4], [true, true, false])
+        ] {
+            AssertOracleImplementsFunction(N, PatternMatchingOracle(_, _, indices, pattern), PatternMatchingF(_, indices, pattern));
         }
     }
 

@@ -34,15 +34,7 @@ namespace Quantum.Kata.MarkingOracles {
     }
 
 
-    // Task 2. Pattern matching.
-    operation PatternMatchingOracle_Reference (input : Qubit[], target : Qubit, indices : Int[], pattern : Bool[]) : Unit is Adj {
-        // Get the list of qubits that should be used as controls
-        let ctrl = Subarray(indices, input);
-        ControlledOnBitString(pattern, X)(ctrl, target);
-    }
-
-
-    // Task 3. Is bit string periodic with period P?
+    // Task 2. Is bit string periodic with period P?
     operation PeriodicGivenPeriodOracle_Reference (input : Qubit[], target : Qubit, P : Int) : Unit is Adj {
         let N = Length(input);
         // Compute XORs of the bits that should be equal in the first N - P qubits
@@ -57,7 +49,7 @@ namespace Quantum.Kata.MarkingOracles {
     }
 
 
-    // Task 4. Is the bit string periodic?
+    // Task 3. Is the bit string periodic?
     operation PeriodicOracle_Reference (input : Qubit[], target : Qubit) : Unit is Adj {
         let N = Length(input);
         // Check whether the bit string is periodic for any period
@@ -74,9 +66,17 @@ namespace Quantum.Kata.MarkingOracles {
     }
 
 
-    // Task 5. Does the bit string contain the given substring at the given position?
+    // Task 4. Does the bit string contain the given substring at the given position?
     operation ContainsSubstringAtPositionOracle_Reference (input : Qubit[], target : Qubit, pattern : Bool[], P : Int) : Unit is Adj {
         ControlledOnBitString(pattern, X)(input[P .. P + Length(pattern) - 1], target);
+    }
+
+
+    // Task 5. Pattern matching.
+    operation PatternMatchingOracle_Reference (input : Qubit[], target : Qubit, indices : Int[], pattern : Bool[]) : Unit is Adj {
+        // Get the list of qubits that should be used as controls
+        let ctrl = Subarray(indices, input);
+        ControlledOnBitString(pattern, X)(ctrl, target);
     }
 
 
