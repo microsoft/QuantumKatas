@@ -200,9 +200,14 @@ After you are done with editing the notebook, choose ```View -> Cell Toolbar -> 
 3. To observe your changes when running Q# Jupyter Notebook:
    1. Set the environment variable `IQSHARP_LOG_LEVEL=Debug`.
       > The environment variable is case-sensitive.
-   2. Navigate to your project folder and run the following command:
+   2. Navigate to your project folder and run the following command:  
+      **For Windows:**  
       ```bash
       $ start jupyter notebook <your notebook name>
+      ```
+      **For Ubuntu:**
+      ```bash
+      $ gnome-terminal -- start jupyter notebook <your notebook name>
       ```
       > This will launch Q# Jupyter Notebooks server in a new window, which is
       > helpful in debugging the magics since logging is quite noisy.
