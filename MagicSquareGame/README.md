@@ -14,7 +14,6 @@ You can [run the MagicSquareGame kata as a Jupyter Notebook](https://mybinder.or
 
 * [Mermin-Peres magic square game on Wikipedia](https://en.wikipedia.org/wiki/Quantum_pseudo-telepathy#The_Mermin-Peres_magic_square_game).
 * Exercise 4 from the [assignment](http://edu.itp.phys.ethz.ch/fs13/atqit/sol01.pdf) from Advanced Topics in Quantum Information Theory course by Christandl and Renner.
-* A [blog post](http://twistedoakstudios.com/blog/Post6536_implementing-quantum-pseudo-telepathy) by Craig Gidney.
 
 #### Q#
 
