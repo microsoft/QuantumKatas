@@ -61,7 +61,7 @@ $dockerString = "FROM mcr.microsoft.com/quantum/iqsharp-base:$versionRegex"
 $dockerPath = Join-Path $katasRoot "Dockerfile"
 FindPatternAndReplaceQDKVersion -patternToSearch $dockerString -targetPath $dockerPath
 
-$ps1String = "Microsoft.Quantum.IQSharp --version $versionRegex"
+$ps1String = "Microsoft.Quantum.IQSharp --version 0.27.262190-beta
 $ps1Path = Join-Path $katasRoot "scripts\install-iqsharp.ps1"
 FindPatternAndReplaceQDKVersion -patternToSearch $ps1String -targetPath $ps1Path
 
