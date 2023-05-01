@@ -3,7 +3,7 @@ jupyter
 matplotlib
 numpy
 pytest
-pyzmq==19.0.2
+pyzmq
 qsharp
 setuptools
 wheel
