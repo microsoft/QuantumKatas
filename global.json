@@ -4,6 +4,6 @@
         "rollForward": "latestMinor"
     },
     "msbuild-sdks": {
-        "Microsoft.Quantum.Sdk": "0.28.263081"
+        "Microsoft.Quantum.Sdk": "0.28.276173-beta"
     }
 }
