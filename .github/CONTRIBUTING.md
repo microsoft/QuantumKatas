@@ -152,6 +152,8 @@ and to [have PowerShell installed](https://github.com/PowerShell/PowerShell#get-
    The Katas can be run online on [Binder](https://mybinder.org); when you make a potentially breaking change (such as an update to the new QDK version or modifying any package dependencies), you need to make sure that this still works.  
    You can check this by pushing your changes to a branch on GitHub and navigating to the Binder link used for the Katas (https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/index.ipynb) and change account name (`microsoft`) and branch (`main`) in the url to your GitHub username and branch name, respectively. After that you can navigate to the kata you want to check using the links from index notebook.
 
+   > Note that mybinder.org is running with reduced capacity, so getting a virtual machine and launching the notebooks on it might take several attempts. 
+
 3. **Continuous integration**  
    When you open a pull request or add a commit to it, continuous integration pipeline is executed to validate your changes. You can see the details of jobs executed in the "Checks" section on the pull request page; make sure to monitor the results, and if the run fails, try to figure out the reason and fix it.
 

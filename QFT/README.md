@@ -5,8 +5,6 @@ It covers the following topics:
 - implementing the quantum Fourier transform
 - using the QFT to solve simple tasks
 
-You can [run the QFT kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/QFT%2FQFT.ipynb)!
-
 #### Theory
 
 - We follow the standard algorithm described in
