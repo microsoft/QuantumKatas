@@ -141,7 +141,8 @@ Here is the learning path we suggest you to follow if you are starting to learn 
 
 The Quantum Katas are now available as Jupyter Notebooks online! See [index.ipynb](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/index.ipynb) for the list of all katas and tutorials, and instructions for running them online.
 
-> While running the Katas online is the easiest option to get started, if you want to save your progress and enjoy better performance, we recommend you to choose the local option. 
+> Note that mybinder.org is running with reduced capacity, so getting a virtual machine and launching the notebooks on it might take several attempts. 
+> While running the Katas online is the easiest option to get started, if you want to save your progress and enjoy better performance, we recommend you to choose the local setup option. 
 
 ## Run the katas locally <a name="kata-locally" /> ##
 
@@ -228,11 +229,12 @@ QuantumKatas/
     .vscode/                   # Metadata used by Visual Studio Code.
     BasicGates.sln             # Visual Studio solution file.
     BasicGates.csproj          # Project file used to build both classical and quantum code.
+
     BasicGates.ipynb           # Jupyter Notebook front-end for this kata.
+    Workbook_BasicGates.ipynb  # Jupyter Notebook workbook for this kata.
 
     Tasks.qs                   # Q# source code that you will fill as you solve each task.
     Tests.qs                   # Q# tests that verify your solutions.
-    TestSuiteRunner.cs         # C# source code used to run the Q# tests.
     ReferenceImplementation.qs # Q# source code containing solutions to the tasks.
 ```
 

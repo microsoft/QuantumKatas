@@ -11,6 +11,6 @@ After this you can run the tutorial locally by navigating to this folder and sta
 
     jupyter notebook ExploringQuantumClassificationLibrary.ipynb
 
-Alternatively, you can run the tutorial online [here](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/tutorials%2FQuantumClassification%2FExploringQuantumClassificationLibrary.ipynb). Be warned that this tutorial includes some heavy computations, so we recommend to run it locally and to use the online version only for reading.
+Be warned that this tutorial includes some heavy computations, so we recommend to run it locally and to use the online version only for reading.
 
 The Q# project in this folder contains the back-end of the tutorial and is not designed for direct use.

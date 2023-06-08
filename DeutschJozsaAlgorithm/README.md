@@ -1,8 +1,6 @@
 # Welcome!
 
-You can [run the DeutschJozsaAlgorithm kata as a Jupyter Notebook](https://mybinder.org/v2/gh/Microsoft/QuantumKatas/main?urlpath=/notebooks/DeutschJozsaAlgorithm%2FDeutschJozsaAlgorithm.ipynb)!
-
-This kata covers several well-studied algorithms and concepts. 
+This kata covers the concept of a quantum oracle and Deutsch-Jozsa and Bernstein-Vazirani algorithms. 
 
 #### Quantum oracles
 
