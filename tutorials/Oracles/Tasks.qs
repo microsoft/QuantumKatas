@@ -80,7 +80,7 @@ namespace Quantum.Kata.Oracles {
     }
 
     // Task 4.3.
-    operation Meeting_Oracle (x : Qubit[], jasmine : Qubit[], z : Qubit) : Unit is Adj + Ctl {
+    operation Meeting_Oracle (x : Qubit[], jasmine : Qubit[], y : Qubit) : Unit is Adj + Ctl {
         // ...
     }
 }
