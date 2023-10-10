@@ -1,5 +1,7 @@
 # Introduction
 
+>**We are modernizing the quantum katas experience.   Please visit https://quantum.microsoft.com/experience/quantum-katas to try the new online Azure Quantum katas experience, with integrated assistance from Copilot in Azure Quantum.** 
+
 The Quantum Katas are a collection of self-paced tutorials and programming exercises to help you learn quantum computing and Q# programming.
 
 Each kata is a separate set of exercises that includes:
