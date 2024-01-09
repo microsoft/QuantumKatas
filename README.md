@@ -6,7 +6,7 @@ For the Modern QDK repository, please visit [Microsoft/qsharp](http://github.com
 
 For more information about the Modern QDK and Azure Quantum, visit https://aka.ms/AQ/Documentation
 
-# Introduction
+## Introduction ##
 
 The Quantum Katas are a collection of self-paced tutorials and programming exercises to help you learn quantum computing and Q# programming.
 
