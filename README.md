@@ -4,7 +4,7 @@
 
 For the Modern QDK repository, please visit [Microsoft/qsharp](http://github.com/microsoft/qsharp).
 
-For more information about the Modern QDK and Azure Quantum, visit https://aka.ms/AQ/Documentation
+For more information about the Modern QDK and Azure Quantum, visit [https://aka.ms/AQ/Documentation](https://aka.ms/AQ/Documentation).
 
 ## Introduction ##
 
