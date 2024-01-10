@@ -2,7 +2,7 @@
 
 >**We have modernized the quantum katas experience.   Please visit https://quantum.microsoft.com/experience/quantum-katas to try the new online Azure Quantum katas experience, with integrated assistance from Copilot in Azure Quantum.** 
 
-For the Modern QDK repository, please visit [Microsoft/qsharp](http://github.com/microsoft/qsharp).
+For the Modern QDK repository, please visit [Microsoft/qsharp](https://github.com/microsoft/qsharp).
 
 For more information about the Modern QDK and Azure Quantum, visit [https://aka.ms/AQ/Documentation](https://aka.ms/AQ/Documentation).
 
