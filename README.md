@@ -1,6 +1,12 @@
-# Introduction
+# DEPRECATION NOTICE
 
 >**We are modernizing the quantum katas experience.   Please visit https://quantum.microsoft.com/experience/quantum-katas to try the new online Azure Quantum katas experience, with integrated assistance from Copilot in Azure Quantum.** 
+
+For the Modern QDK repository, please visit [Microsoft/qsharp](https://github.com/microsoft/qsharp).
+
+For more information about the Modern QDK and Azure Quantum, visit [https://aka.ms/AQ/Documentation](https://aka.ms/AQ/Documentation).
+
+## Introduction ##
 
 The Quantum Katas are a collection of self-paced tutorials and programming exercises to help you learn quantum computing and Q# programming.
 
