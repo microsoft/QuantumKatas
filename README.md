@@ -1,6 +1,6 @@
 # DEPRECATION NOTICE
 
->**We have modernized the quantum katas experience.   Please visit https://quantum.microsoft.com/experience/quantum-katas to try the new online Azure Quantum katas experience, with integrated assistance from Copilot in Azure Quantum.** 
+>**We are modernizing the quantum katas experience.   Please visit https://quantum.microsoft.com/experience/quantum-katas to try the new online Azure Quantum katas experience, with integrated assistance from Copilot in Azure Quantum.** 
 
 For the Modern QDK repository, please visit [Microsoft/qsharp](https://github.com/microsoft/qsharp).
 
