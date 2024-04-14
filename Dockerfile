@@ -16,7 +16,9 @@ USER root
 RUN pip install -I --no-cache-dir \
         matplotlib \
         numpy \
-        pytest && \
+        pytest \
+        traitlets==5.9.0 \
+        qsharp-jupyterlab && \
 # Give permissions to the jovyan user
     chown -R ${USER} ${HOME} && \
     chmod +x ${HOME}/scripts/*.sh
@@ -84,6 +86,11 @@ RUN cd ${HOME}/ && \
               </packageSources>\
           </configuration>\
     " > ${HOME}/.nuget/NuGet/NuGet.Config
+
+# Install other tutorial-specific packages
+RUN dotnet iqsharp install --user
+RUN cd ${HOME}/tutorials/QuantumClassification/ && \
+    dotnet add package Microsoft.Quantum.MachineLearning --version 0.28.302812
 
 # Set the working directory to $HOME (/home/jovyan/)
 WORKDIR ${HOME}
